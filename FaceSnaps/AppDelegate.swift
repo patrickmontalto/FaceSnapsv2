@@ -24,8 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window.backgroundColor = UIColor.white
         
-        let photoListController = PhotoListController()
-        let navigationController = UINavigationController(rootViewController: photoListController)
+        let tabController = FaceSnapsTabController()
+//        let photoListController = PhotoListController()
+        let navigationController = UINavigationController(rootViewController: tabController)
         
         window.rootViewController = navigationController
         
