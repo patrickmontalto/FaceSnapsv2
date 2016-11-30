@@ -24,11 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window.backgroundColor = UIColor.white
         
-        let tabController = FaceSnapsTabController()
-//        let photoListController = PhotoListController()
-        let navigationController = UINavigationController(rootViewController: tabController)
-        
-        window.rootViewController = navigationController
+//        let tabController = FaceSnapsTabController()
+//        let navigationController = UINavigationController(rootViewController: tabController)
+//        
+//        window.rootViewController = navigationController
+        let loginController = LoginViewController()
+        window.rootViewController = loginController
         
         // Tell the application that this window is the main window (key window)
         window.makeKeyAndVisible()

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A0805E71DEE2D01002DB0DF /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0805E61DEE2D01002DB0DF /* LoginController.swift */; };
+		3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0805E81DEE5134002DB0DF /* LoginTextField.swift */; };
 		3A32A6AE1DA2E5E700AEE45F /* PhotoMetadataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6AD1DA2E5E700AEE45F /* PhotoMetadataController.swift */; };
 		3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */; };
 		3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6B11DA5F21C00AEE45F /* CoreDataController.swift */; };
@@ -37,6 +39,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A0805E61DEE2D01002DB0DF /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		3A0805E81DEE5134002DB0DF /* LoginTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
 		3A32A6AD1DA2E5E700AEE45F /* PhotoMetadataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoMetadataController.swift; sourceTree = "<group>"; };
 		3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3A32A6B11DA5F21C00AEE45F /* CoreDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
@@ -135,6 +139,7 @@
 				3A32A6C31DA95BE800AEE45F /* PhotoSortListController.swift */,
 				3A7C7FB61DEE2737008608D1 /* HomeController.swift */,
 				3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */,
+				3A0805E61DEE2D01002DB0DF /* LoginController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -144,6 +149,7 @@
 			children = (
 				3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */,
 				3A32A6C11DA94D8F00AEE45F /* PhotoCell.swift */,
+				3A0805E81DEE5134002DB0DF /* LoginTextField.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -197,7 +203,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Patrick Montalto";
 				TargetAttributes = {
 					3A32DD0B1DA0309100CD2669 = {
@@ -245,11 +251,13 @@
 				3A32A6C81DA9845500AEE45F /* SortItemSelector.swift in Sources */,
 				3A32A6B91DA6067E00AEE45F /* Tag.swift in Sources */,
 				3A32A6BE1DA94AAA00AEE45F /* PhotoDataSource.swift in Sources */,
+				3A0805E71DEE2D01002DB0DF /* LoginController.swift in Sources */,
 				3A32A6C61DA97A8E00AEE45F /* SortableDataSource.swift in Sources */,
 				3A32A6B51DA5F2A600AEE45F /* FaceSnap.xcdatamodeld in Sources */,
 				3A9FA6181DA17FF800FDFE63 /* FilteredImageBuilder.swift in Sources */,
 				CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */,
 				3A32A6C21DA94D8F00AEE45F /* PhotoCell.swift in Sources */,
+				3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
 				3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */,
 				3A32DD121DA0309100CD2669 /* PhotoListController.swift in Sources */,
@@ -302,6 +310,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -351,6 +360,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
