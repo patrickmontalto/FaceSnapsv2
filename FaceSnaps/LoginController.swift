@@ -7,14 +7,9 @@
 //
 
 import UIKit
-import ActiveLabel
 
-class LoginViewController: UIViewController, ActiveLabelDelegate {
-    
-    func didSelect(_ text: String, type: ActiveType) {
-        print(text)
-    }
-    
+class LoginViewController: UIViewController {
+
     
     lazy var logoView: UIStackView = {
         let stackView = UIStackView()
@@ -73,35 +68,38 @@ class LoginViewController: UIViewController, ActiveLabelDelegate {
         return button
     }()
     
-    lazy var getHelpLabel: ActiveLabel = {
-        let label = ActiveLabel()
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 12.0)
-        let customType = ActiveType.custom(pattern: "\\sGet help signing in\\b")
-        label.numberOfLines = 1
-        label.enabledTypes = [customType]
+    lazy var getHelpLabel: UILabel = {
+        let label = UILabel()
+        let text = "Forgot your login details? Get help signing in."
+        let nonBoldRange = NSMakeRange(0, 26)
+        let attributes = [
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12.0),
+            NSForegroundColorAttributeName: UIColor.white
+        ]
         
-        label.customColor[customType] = UIColor.white
-        label.configureLinkAttribute = { (type, attributes, isSelected) in
-            var atts = attributes
-            switch type {
-            case .custom:
-                atts[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 12.0)
-            default: ()
-            }
-            
-            return atts
-        }
-        label.delegate = self
-        label.text = "Forget your login details? Get help signing in."
-        label.handleCustomTap(for: customType, handler: { (element) in
-            print("Tapped this!")
-        })
+        let nonAttributes = [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 12.0),
+            NSForegroundColorAttributeName: UIColor.white
+        ]
+        
+        label.attributedText = text.NSStringWithAttributes(attributes: attributes, nonAttributes: nonAttributes, nonAttrRange: nonBoldRange)
+        
+        label.sizeToFit()
+        label.isUserInteractionEnabled = true
 
-    
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
+    lazy var getHelpView: UIView = {
+        let helpView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 20))
+        helpView.addSubview(self.getHelpLabel)
+        self.getHelpLabel.center = helpView.center
+
+        return helpView
+    }()
+
 
     lazy var loginStackView: UIStackView = {
         let stackView = UIStackView()
@@ -113,7 +111,7 @@ class LoginViewController: UIViewController, ActiveLabelDelegate {
         stackView.addArrangedSubview(self.usernameTextField)
         stackView.addArrangedSubview(self.passwordTextField)
         stackView.addArrangedSubview(self.loginButton)
-        stackView.addArrangedSubview(self.getHelpLabel)
+        stackView.addArrangedSubview(self.getHelpView)
         
         return stackView
     }()
@@ -138,21 +136,22 @@ class LoginViewController: UIViewController, ActiveLabelDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //view.backgroundColor = UIColor(red: 180/255.0, green: 50/255.0, blue: 70/255.0, alpha: 1.0)
         super.hideKeyboardWhenTappedAround()
         self.usernameTextField.addTarget(self, action: #selector(LoginViewController.textFieldEmptyCheck(sender:)), for: .editingChanged)
         self.passwordTextField.addTarget(self, action: #selector(LoginViewController.textFieldEmptyCheck(sender:)), for: .editingChanged)
         
         self.view.layer.addSublayer(gradient)
 
-//        let customType = ActiveType.custom(pattern: "\\sGet help signing in\\b")
-//        getHelpLabel.customize { (label) in
-//            label.text = "Forget your login details? Get help signing in."
-//            label.handleCustomTap(for: customType, handler: { (element) in
-//                print("TAPPED")
-//            })
-//        }
+        getHelpLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(LoginViewController.handleTapOnLabel(tapGesture:))))
 
+    }
+    
+    func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
+        let range = NSMakeRange(27, 20)
+        let didTapLink = tapGesture.didTapAttributedTextInLabel(label: getHelpLabel, inRange: range)
+        if didTapLink {
+            print("Tapped!")
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -165,7 +164,9 @@ class LoginViewController: UIViewController, ActiveLabelDelegate {
             loginButton.heightAnchor.constraint(equalToConstant: 44),
             loginStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 35),
             loginStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 64),
-            loginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -35)
+            loginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -35),
+            getHelpLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            getHelpLabel.topAnchor.constraint(equalTo: getHelpView.topAnchor)
         ])
     }
     
