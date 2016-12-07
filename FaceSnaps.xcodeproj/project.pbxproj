@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A0805E71DEE2D01002DB0DF /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0805E61DEE2D01002DB0DF /* LoginController.swift */; };
 		3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0805E81DEE5134002DB0DF /* LoginTextField.swift */; };
+		3A0805EB1DEF6CFE002DB0DF /* GradientLayerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0805EA1DEF6CFE002DB0DF /* GradientLayerAnimator.swift */; };
 		3A32A6AE1DA2E5E700AEE45F /* PhotoMetadataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6AD1DA2E5E700AEE45F /* PhotoMetadataController.swift */; };
 		3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */; };
 		3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6B11DA5F21C00AEE45F /* CoreDataController.swift */; };
@@ -32,6 +33,7 @@
 		3A7C7FB91DEE27D0008608D1 /* FaceSnapsTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */; };
 		3A9FA6181DA17FF800FDFE63 /* FilteredImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */; };
 		3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */; };
+		63326B2C9953F92A38E4C7AE /* Pods_FaceSnaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */; };
 		CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */; };
 		CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */; };
 		CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */; };
@@ -39,8 +41,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		39E323E2EB82704E9F8D43DC /* Pods-FaceSnaps.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceSnaps.release.xcconfig"; path = "Pods/Target Support Files/Pods-FaceSnaps/Pods-FaceSnaps.release.xcconfig"; sourceTree = "<group>"; };
 		3A0805E61DEE2D01002DB0DF /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		3A0805E81DEE5134002DB0DF /* LoginTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
+		3A0805EA1DEF6CFE002DB0DF /* GradientLayerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientLayerAnimator.swift; sourceTree = "<group>"; };
 		3A32A6AD1DA2E5E700AEE45F /* PhotoMetadataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoMetadataController.swift; sourceTree = "<group>"; };
 		3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3A32A6B11DA5F21C00AEE45F /* CoreDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
@@ -66,6 +70,8 @@
 		3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsTabController.swift; sourceTree = "<group>"; };
 		3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageBuilder.swift; sourceTree = "<group>"; };
 		3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageCell.swift; sourceTree = "<group>"; };
+		8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceSnaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96DFA07437B7867F08D307F4 /* Pods-FaceSnaps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceSnaps.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FaceSnaps/Pods-FaceSnaps.debug.xcconfig"; sourceTree = "<group>"; };
 		CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellAnimator.swift; sourceTree = "<group>"; };
 		CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDeletionManager.swift; sourceTree = "<group>"; };
@@ -77,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63326B2C9953F92A38E4C7AE /* Pods_FaceSnaps.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +95,8 @@
 			children = (
 				3A32DD0E1DA0309100CD2669 /* FaceSnaps */,
 				3A32DD0D1DA0309100CD2669 /* Products */,
+				D0E4AED5AEDFAB5181C29C07 /* Pods */,
+				A6B89373F5758EB91CA1EF8E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -124,6 +133,7 @@
 				3A32A6C71DA9845500AEE45F /* SortItemSelector.swift */,
 				CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */,
 				CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */,
+				3A0805EA1DEF6CFE002DB0DF /* GradientLayerAnimator.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -167,6 +177,14 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		A6B89373F5758EB91CA1EF8E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CDE86F311DB4068200076D65 /* Convenience */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +194,15 @@
 			name = Convenience;
 			sourceTree = "<group>";
 		};
+		D0E4AED5AEDFAB5181C29C07 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				96DFA07437B7867F08D307F4 /* Pods-FaceSnaps.debug.xcconfig */,
+				39E323E2EB82704E9F8D43DC /* Pods-FaceSnaps.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -183,9 +210,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3A32DD1E1DA0309100CD2669 /* Build configuration list for PBXNativeTarget "FaceSnaps" */;
 			buildPhases = (
+				D49E3BFCCFF706036F58ACB1 /* [CP] Check Pods Manifest.lock */,
 				3A32DD081DA0309100CD2669 /* Sources */,
 				3A32DD091DA0309100CD2669 /* Frameworks */,
 				3A32DD0A1DA0309100CD2669 /* Resources */,
+				852743B38BC2D304A727028F /* [CP] Embed Pods Frameworks */,
+				27030925BC8FFC3702806942 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -243,6 +273,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		27030925BC8FFC3702806942 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FaceSnaps/Pods-FaceSnaps-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		852743B38BC2D304A727028F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FaceSnaps/Pods-FaceSnaps-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D49E3BFCCFF706036F58ACB1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3A32DD081DA0309100CD2669 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -260,6 +338,7 @@
 				3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
 				3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */,
+				3A0805EB1DEF6CFE002DB0DF /* GradientLayerAnimator.swift in Sources */,
 				3A32DD121DA0309100CD2669 /* PhotoListController.swift in Sources */,
 				3A32A6BC1DA6069900AEE45F /* Location.swift in Sources */,
 				3A32A6C41DA95BE800AEE45F /* PhotoSortListController.swift in Sources */,
@@ -387,6 +466,7 @@
 		};
 		3A32DD1F1DA0309100CD2669 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 96DFA07437B7867F08D307F4 /* Pods-FaceSnaps.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = D5L2TLU9VB;
@@ -400,6 +480,7 @@
 		};
 		3A32DD201DA0309100CD2669 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 39E323E2EB82704E9F8D43DC /* Pods-FaceSnaps.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = D5L2TLU9VB;

@@ -7,9 +7,13 @@
 //
 
 import UIKit
+import ActiveLabel
 
-
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, ActiveLabelDelegate {
+    
+    func didSelect(_ text: String, type: ActiveType) {
+        print(text)
+    }
     
     
     lazy var logoView: UIStackView = {
@@ -62,19 +66,44 @@ class LoginViewController: UIViewController {
         
         button.backgroundColor = .white
         button.setTitleColor(.black, for: .normal)
-        button.setTitleColor(.gray, for: .disabled)
+        button.setTitleColor(.lightGray, for: .disabled)
         button.layer.cornerRadius = 4.0
         button.isEnabled = false
         
         return button
     }()
     
+    lazy var getHelpLabel: ActiveLabel = {
+        let label = ActiveLabel()
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 12.0)
+        let customType = ActiveType.custom(pattern: "\\sGet help signing in\\b")
+        label.numberOfLines = 1
+        label.enabledTypes = [customType]
+        
+        label.customColor[customType] = UIColor.white
+        label.configureLinkAttribute = { (type, attributes, isSelected) in
+            var atts = attributes
+            switch type {
+            case .custom:
+                atts[NSFontAttributeName] = UIFont.boldSystemFont(ofSize: 12.0)
+            default: ()
+            }
+            
+            return atts
+        }
+        label.delegate = self
+        label.text = "Forget your login details? Get help signing in."
+        label.handleCustomTap(for: customType, handler: { (element) in
+            print("Tapped this!")
+        })
+
+    
+        return label
+    }()
+    
+
     lazy var loginStackView: UIStackView = {
-        // Logo
-        // Username (prefill with currently signed in user)
-        // Password
-        // Login button
-        // Forgot your login details? Get help signing in.
         let stackView = UIStackView()
         stackView.alignment = .fill
         stackView.distribution = .fill
@@ -84,6 +113,7 @@ class LoginViewController: UIViewController {
         stackView.addArrangedSubview(self.usernameTextField)
         stackView.addArrangedSubview(self.passwordTextField)
         stackView.addArrangedSubview(self.loginButton)
+        stackView.addArrangedSubview(self.getHelpLabel)
         
         return stackView
     }()
@@ -92,14 +122,37 @@ class LoginViewController: UIViewController {
 //        
 //    }()
     
+    lazy var gradient: CAGradientLayer = {
+        
+        let gradientLayer = CAGradientLayer()
+        
+        gradientLayer.frame = self.view.bounds
+        
+        gradientLayer.colors = [GradientLayerAnimator.color1, GradientLayerAnimator.color2]
+        
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        
+        return gradientLayer
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 180/255.0, green: 50/255.0, blue: 70/255.0, alpha: 1.0)
+        //view.backgroundColor = UIColor(red: 180/255.0, green: 50/255.0, blue: 70/255.0, alpha: 1.0)
         super.hideKeyboardWhenTappedAround()
         self.usernameTextField.addTarget(self, action: #selector(LoginViewController.textFieldEmptyCheck(sender:)), for: .editingChanged)
         self.passwordTextField.addTarget(self, action: #selector(LoginViewController.textFieldEmptyCheck(sender:)), for: .editingChanged)
         
-    
+        self.view.layer.addSublayer(gradient)
+
+//        let customType = ActiveType.custom(pattern: "\\sGet help signing in\\b")
+//        getHelpLabel.customize { (label) in
+//            label.text = "Forget your login details? Get help signing in."
+//            label.handleCustomTap(for: customType, handler: { (element) in
+//                print("TAPPED")
+//            })
+//        }
+
     }
     
     override func viewWillLayoutSubviews() {
@@ -137,7 +190,6 @@ extension LoginViewController: UITextFieldDelegate {
         loginButton.isEnabled = true
     }
 }
-
 
 
 
