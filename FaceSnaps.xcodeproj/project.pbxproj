@@ -12,6 +12,8 @@
 		3A0805EB1DEF6CFE002DB0DF /* GradientLayerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0805EA1DEF6CFE002DB0DF /* GradientLayerAnimator.swift */; };
 		3A17EA4A1DF7EC0100031834 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A17EA491DF7EC0100031834 /* AttributedString.swift */; };
 		3A17EA4C1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A17EA4B1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift */; };
+		3A17EA4E1DFF57A000031834 /* UIView+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A17EA4D1DFF57A000031834 /* UIView+Resize.swift */; };
+		3A17EA501DFF644C00031834 /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A17EA4F1DFF644C00031834 /* LineView.swift */; };
 		3A32A6AE1DA2E5E700AEE45F /* PhotoMetadataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6AD1DA2E5E700AEE45F /* PhotoMetadataController.swift */; };
 		3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */; };
 		3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6B11DA5F21C00AEE45F /* CoreDataController.swift */; };
@@ -49,6 +51,8 @@
 		3A0805EA1DEF6CFE002DB0DF /* GradientLayerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientLayerAnimator.swift; sourceTree = "<group>"; };
 		3A17EA491DF7EC0100031834 /* AttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedString.swift; sourceTree = "<group>"; };
 		3A17EA4B1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+AttributedText.swift"; sourceTree = "<group>"; };
+		3A17EA4D1DFF57A000031834 /* UIView+Resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Resize.swift"; sourceTree = "<group>"; };
+		3A17EA4F1DFF644C00031834 /* LineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		3A32A6AD1DA2E5E700AEE45F /* PhotoMetadataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoMetadataController.swift; sourceTree = "<group>"; };
 		3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3A32A6B11DA5F21C00AEE45F /* CoreDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
@@ -164,6 +168,7 @@
 				3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */,
 				3A32A6C11DA94D8F00AEE45F /* PhotoCell.swift */,
 				3A0805E81DEE5134002DB0DF /* LoginTextField.swift */,
+				3A17EA4F1DFF644C00031834 /* LineView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -196,6 +201,7 @@
 				CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */,
 				3A17EA491DF7EC0100031834 /* AttributedString.swift */,
 				3A17EA4B1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift */,
+				3A17EA4D1DFF57A000031834 /* UIView+Resize.swift */,
 			);
 			name = Convenience;
 			sourceTree = "<group>";
@@ -344,6 +350,7 @@
 				3A32A6C21DA94D8F00AEE45F /* PhotoCell.swift in Sources */,
 				3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
+				3A17EA501DFF644C00031834 /* LineView.swift in Sources */,
 				3A17EA4C1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift in Sources */,
 				3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */,
 				3A0805EB1DEF6CFE002DB0DF /* GradientLayerAnimator.swift in Sources */,
@@ -357,6 +364,7 @@
 				3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */,
 				3A32A6B71DA6060A00AEE45F /* Photo.swift in Sources */,
 				CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */,
+				3A17EA4E1DFF57A000031834 /* UIView+Resize.swift in Sources */,
 				3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */,
 				3A7C7FB71DEE2737008608D1 /* HomeController.swift in Sources */,
 				3A32A6C01DA94BD900AEE45F /* PhotoFetchedResultsController.swift in Sources */,

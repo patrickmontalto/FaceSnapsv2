@@ -19,6 +19,7 @@ class LoginViewController: UIViewController {
         stackView.alignment = .center
         stackView.axis = .vertical
         stackView.addArrangedSubview(imageView)
+
         return stackView
     }()
     
@@ -86,16 +87,18 @@ class LoginViewController: UIViewController {
         
         label.sizeToFit()
         label.isUserInteractionEnabled = true
-
+        label.tag = 1
         
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     lazy var getHelpView: UIView = {
-        let helpView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 20))
+        let helpView = UIView()
+        helpView.translatesAutoresizingMaskIntoConstraints = false
         helpView.addSubview(self.getHelpLabel)
         self.getHelpLabel.center = helpView.center
+        
 
         return helpView
     }()
@@ -116,9 +119,130 @@ class LoginViewController: UIViewController {
         return stackView
     }()
     
-//    lazy var facebookLoginStackView: UIStackView {
-//        
-//    }()
+    lazy var lineViewLeft: UILineView = {
+        let lineView = UILineView(frame: .zero)
+        return lineView
+    }()
+    
+    lazy var lineViewRight: UILineView = {
+        let lineView = UILineView(frame: .zero)
+        return lineView
+    }()
+    
+    lazy var dividerWidth: CGFloat = {
+        var stackViewWidth = self.view.frame.width - 70
+        var spacing: CGFloat = 48
+        
+        return (stackViewWidth - 2*(spacing)) / 2
+    }()
+    
+    lazy var orLabel: UILabel = {
+        let label = UILabel()
+        label.text = "OR"
+        label.textColor = UIColor.white.withAlphaComponent(0.6)
+        label.font = .systemFont(ofSize: 12.0, weight: UIFontWeightSemibold)
+        label.sizeToFit()
+        label.textAlignment = .center
+
+        return label
+    }()
+    
+    
+    lazy var dividerView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 24
+        
+        
+        stackView.addArrangedSubview(self.lineViewLeft)
+        stackView.addArrangedSubview(self.orLabel)
+        stackView.addArrangedSubview(self.lineViewRight)
+
+        return stackView
+    }()
+    
+    lazy var facebookLoginButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Log In With Facebook", for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 14.0)
+        button.setTitleColor(.white, for: .normal)
+        
+        let fbLogo = UIImage(named: "facebook-white")!
+
+        button.setImage(fbLogo, for: .normal)
+        button.titleEdgeInsets = UIEdgeInsetsMake(0, 8, 0, -8)
+        button.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 8)
+        button.sizeToFit()
+
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    
+    lazy var facebookLoginView: UIView = {
+        let view = UIView()
+        view.addSubview(self.facebookLoginButton)
+        return view
+    }()
+    
+    lazy var facebookLoginStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = self.verticalSpacing
+        stackView.addArrangedSubview(self.dividerView)
+        stackView.addArrangedSubview(self.facebookLoginView)
+        
+        return stackView
+    }()
+    
+    lazy var verticalSpacing: CGFloat = {
+        return 24
+    }()
+    
+    lazy var signupView: UIView = {
+        let view = UIView()
+        view.addSubview(self.signupLabel)
+        view.layer.backgroundColor = UIColor.white.withAlphaComponent(0.08).cgColor
+        
+        let topBorder = CALayer()
+        topBorder.backgroundColor = UIColor.white.withAlphaComponent(0.2).cgColor
+        topBorder.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1.0)
+        view.layer.addSublayer(topBorder)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var signupLabel: UILabel = {
+        let label = UILabel()
+        let text = "Don't have an account? Sign Up."
+        let nonBoldRange = NSMakeRange(0, 23)
+        let attributes = [
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12.0),
+            NSForegroundColorAttributeName: UIColor.white
+        ]
+        
+        let nonAttributes = [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 12.0),
+            NSForegroundColorAttributeName: UIColor.white
+        ]
+        
+        label.attributedText = text.NSStringWithAttributes(attributes: attributes, nonAttributes: nonAttributes, nonAttrRange: nonBoldRange)
+        
+        label.sizeToFit()
+        label.isUserInteractionEnabled = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.tag = 2
+        return label
+    }()
+    
+    // TODO: Signup View and buttons
+    lazy var signUpView: UIView = {
+        let view = UIView()
+        
+        return view
+    }()
     
     lazy var gradient: CAGradientLayer = {
         
@@ -141,14 +265,27 @@ class LoginViewController: UIViewController {
         self.passwordTextField.addTarget(self, action: #selector(LoginViewController.textFieldEmptyCheck(sender:)), for: .editingChanged)
         
         self.view.layer.addSublayer(gradient)
-
-        getHelpLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(LoginViewController.handleTapOnLabel(tapGesture:))))
+        
+        configureTapRecognizer()
 
     }
     
+    func configureTapRecognizer() {
+        let getHelpTap = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.handleTapOnLabel(tapGesture:)))
+        let signupTap = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.handleTapOnLabel(tapGesture:)))
+        
+        
+        getHelpLabel.addGestureRecognizer(getHelpTap)
+        signupLabel.addGestureRecognizer(signupTap)
+        
+        
+    }
+    
     func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
-        let range = NSMakeRange(27, 20)
-        let didTapLink = tapGesture.didTapAttributedTextInLabel(label: getHelpLabel, inRange: range)
+        let view = tapGesture.view!
+        let range = view.tag == 1 ? NSMakeRange(27, 20) : NSMakeRange(24, 8)
+        let label = view.tag == 1 ? getHelpLabel : signupLabel
+        let didTapLink = tapGesture.didTapAttributedTextInLabel(label: label, inRange: range)
         if didTapLink {
             print("Tapped!")
         }
@@ -156,7 +293,10 @@ class LoginViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         view.addSubview(loginStackView)
+        view.addSubview(facebookLoginStackView)
+        view.addSubview(signupView)
         loginStackView.translatesAutoresizingMaskIntoConstraints = false
+        facebookLoginStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             usernameTextField.heightAnchor.constraint(equalToConstant: 44),
@@ -166,7 +306,27 @@ class LoginViewController: UIViewController {
             loginStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 64),
             loginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -35),
             getHelpLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            getHelpLabel.topAnchor.constraint(equalTo: getHelpView.topAnchor)
+            getHelpLabel.topAnchor.constraint(equalTo: getHelpView.topAnchor),
+            getHelpView.leftAnchor.constraint(equalTo: loginStackView.leftAnchor),
+            getHelpView.rightAnchor.constraint(equalTo: loginStackView.rightAnchor),
+            getHelpView.heightAnchor.constraint(equalToConstant: 20),
+            facebookLoginStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 35),
+            facebookLoginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -35),
+            facebookLoginStackView.topAnchor.constraint(equalTo: loginStackView.bottomAnchor, constant: verticalSpacing),
+            lineViewLeft.heightAnchor.constraint(equalToConstant: 1),
+            lineViewLeft.widthAnchor.constraint(equalToConstant: dividerWidth),
+            lineViewRight.heightAnchor.constraint(equalToConstant: 1),
+            lineViewRight.widthAnchor.constraint(equalToConstant: dividerWidth),
+            facebookLoginView.heightAnchor.constraint(equalToConstant: 30),
+            facebookLoginButton.centerXAnchor.constraint(equalTo: loginStackView.centerXAnchor),
+            facebookLoginButton.centerYAnchor.constraint(equalTo: facebookLoginView.centerYAnchor),
+            
+            signupView.heightAnchor.constraint(equalToConstant: 56),
+            signupView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            signupView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            signupView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            signupLabel.centerXAnchor.constraint(equalTo: signupView.centerXAnchor),
+            signupLabel.centerYAnchor.constraint(equalTo: signupView.centerYAnchor)
         ])
     }
     
