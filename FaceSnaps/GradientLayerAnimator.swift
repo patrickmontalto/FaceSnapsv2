@@ -42,5 +42,58 @@ struct GradientLayerAnimator {
     static let color19 = UIColor(red: 169/255, green: 45/255, blue: 107/255, alpha: 1.0).cgColor
     static let color20 = UIColor(red: 134/255, green: 54/255, blue: 127/255, alpha: 1.0).cgColor
     
+    static let gradientColors = [
+        [color1, color2],
+        [color2, color3],
+        [color3, color4],
+        [color4, color5],
+        [color5, color6],
+        [color6, color7],
+        [color7, color8],
+        [color8, color9],
+        [color9, color10],
+        [color10, color11],
+        [color11, color12],
+        [color12, color13],
+        [color13, color14],
+        [color14, color15],
+        [color15, color16],
+        [color16, color17],
+        [color17, color18],
+        [color18, color19],
+        [color19, color20],
+        [color20, color1]
+    ]
     
+    var delegate: CAAnimationDelegate!
+    
+    var toIndex: Int
+    
+    var animationViewPosition: CAAnimation?
+    
+    init(delegate: CAAnimationDelegate) {
+        self.delegate = delegate
+        toIndex = 1
+    }
+    
+    mutating func animateGradient(layer: CAGradientLayer)  {
+        let fromColors = layer.colors
+        let toColors = GradientLayerAnimator.gradientColors[toIndex]
+        layer.colors = toColors
+        
+        let animation: CABasicAnimation = CABasicAnimation(keyPath: "colors")
+        
+        animation.fromValue = fromColors
+        animation.toValue = toColors
+        animation.duration = 3.00
+        animation.isRemovedOnCompletion = true
+        animation.fillMode = kCAFillModeForwards
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.delegate = delegate
+        
+        layer.add(animation, forKey: "animateGradient")
+        
+        // Set the index as the current index of the gradient's colors
+        toIndex = (toIndex + 1) % GradientLayerAnimator.gradientColors.count
+    }
 }

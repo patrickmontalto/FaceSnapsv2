@@ -9,6 +9,12 @@
 import UIKit
 
 class LoginViewController: UIViewController {
+    
+    lazy var animator: GradientLayerAnimator = {
+        var animator = GradientLayerAnimator(delegate: self)
+        
+        return animator
+    }()
 
     
     lazy var logoView: UIStackView = {
@@ -167,6 +173,7 @@ class LoginViewController: UIViewController {
         button.setTitle("Log In With Facebook", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 14.0)
         button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.gray, for: .highlighted)
         
         let fbLogo = UIImage(named: "facebook-white")!
 
@@ -212,6 +219,7 @@ class LoginViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
     
     lazy var signupLabel: UILabel = {
         let label = UILabel()
@@ -267,8 +275,13 @@ class LoginViewController: UIViewController {
         self.view.layer.addSublayer(gradient)
         
         configureTapRecognizer()
-
+        
+        // Add observer for app moving into background and app resuming
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(LoginViewController.appMovedToBackground), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(LoginViewController.appWillEnterForeground), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
     }
+    
     
     func configureTapRecognizer() {
         let getHelpTap = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.handleTapOnLabel(tapGesture:)))
@@ -281,6 +294,7 @@ class LoginViewController: UIViewController {
         
     }
     
+    // TODO: Present view controllers for each action tapped
     func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
         let view = tapGesture.view!
         let range = view.tag == 1 ? NSMakeRange(27, 20) : NSMakeRange(24, 8)
@@ -350,6 +364,60 @@ extension LoginViewController: UITextFieldDelegate {
         }
         loginButton.isEnabled = true
     }
+}
+
+// Animations
+
+extension LoginViewController: CAAnimationDelegate {
+    
+    // Add animation to gradient
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        animator.animateGradient(layer: gradient)
+    }
+    
+    // Continuously execute the animation
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if flag {
+            animator.animateGradient(layer: gradient)
+        }
+    }
+    
+    // Observe when the app moves to background to save the animation position
+    func appMovedToBackground() {
+        animator.animationViewPosition = gradient.animation(forKey: "animateGradient")
+        pauseLayer(layer: gradient) // Apple's method from QA1673
+    }
+    
+    // Observe when the app moves to foreground to resume the animation
+    func appWillEnterForeground() {
+        if let animationViewPosition = animator.animationViewPosition  {
+            gradient.add(animationViewPosition, forKey: "animateGradient")
+            animator.animationViewPosition = nil
+        }
+        resumeLayer(layer: gradient) // Apple's method from QA1673
+    }
+    
+    // Set the timeOffset on the layer using the current absolute time
+    func pauseLayer(layer: CALayer) {
+        let pausedTime = layer.convertTime(CACurrentMediaTime(), from: nil)
+        layer.speed = 0.0
+        layer.timeOffset = pausedTime
+    }
+    
+    // Resume the layer animation using timeOffset and pausedTime
+    func resumeLayer(layer: CALayer) {
+        let pausedTime = layer.timeOffset
+        layer.speed = 1
+        layer.timeOffset = 0
+        layer.beginTime = 0
+        let timeSincePause = layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        layer.beginTime = timeSincePause
+    }
+
+    
+    
 }
 
 
