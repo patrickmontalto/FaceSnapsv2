@@ -10,13 +10,16 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    lazy var gradient: CAGradientLayer = {
+        return FaceSnapsGradient(parentView: self.view)
+    }()
+    
     lazy var animator: GradientLayerAnimator = {
-        var animator = GradientLayerAnimator(delegate: self)
+        var animator = GradientLayerAnimator(layer: self.gradient)
         
         return animator
     }()
 
-    
     lazy var logoView: UIStackView = {
         let stackView = UIStackView()
         let imageView = UIImageView()
@@ -252,20 +255,7 @@ class LoginViewController: UIViewController {
         return view
     }()
     
-    lazy var gradient: CAGradientLayer = {
-        
-        let gradientLayer = CAGradientLayer()
-        
-        gradientLayer.frame = self.view.bounds
-        
-        gradientLayer.colors = [GradientLayerAnimator.color1, GradientLayerAnimator.color2]
-        
-        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
-        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
-        
-        return gradientLayer
-    }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         super.hideKeyboardWhenTappedAround()
@@ -276,10 +266,6 @@ class LoginViewController: UIViewController {
         
         configureTapRecognizer()
         
-        // Add observer for app moving into background and app resuming
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(LoginViewController.appMovedToBackground), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(LoginViewController.appWillEnterForeground), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     
@@ -374,49 +360,8 @@ extension LoginViewController: CAAnimationDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        animator.animateGradient(layer: gradient)
+        animator.animateGradient()
     }
-    
-    // Continuously execute the animation
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        if flag {
-            animator.animateGradient(layer: gradient)
-        }
-    }
-    
-    // Observe when the app moves to background to save the animation position
-    func appMovedToBackground() {
-        animator.animationViewPosition = gradient.animation(forKey: "animateGradient")
-        pauseLayer(layer: gradient) // Apple's method from QA1673
-    }
-    
-    // Observe when the app moves to foreground to resume the animation
-    func appWillEnterForeground() {
-        if let animationViewPosition = animator.animationViewPosition  {
-            gradient.add(animationViewPosition, forKey: "animateGradient")
-            animator.animationViewPosition = nil
-        }
-        resumeLayer(layer: gradient) // Apple's method from QA1673
-    }
-    
-    // Set the timeOffset on the layer using the current absolute time
-    func pauseLayer(layer: CALayer) {
-        let pausedTime = layer.convertTime(CACurrentMediaTime(), from: nil)
-        layer.speed = 0.0
-        layer.timeOffset = pausedTime
-    }
-    
-    // Resume the layer animation using timeOffset and pausedTime
-    func resumeLayer(layer: CALayer) {
-        let pausedTime = layer.timeOffset
-        layer.speed = 1
-        layer.timeOffset = 0
-        layer.beginTime = 0
-        let timeSincePause = layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
-        layer.beginTime = timeSincePause
-    }
-
-    
     
 }
 

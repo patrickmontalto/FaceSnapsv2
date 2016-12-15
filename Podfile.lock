@@ -1,22 +1,3 @@
-PODS:
-  - ActiveLabel (0.7.0)
-
-DEPENDENCIES:
-  - ActiveLabel (from `https://github.com/optonaut/ActiveLabel.swift.git`, commit `c1ba467e214bcbc5cec89097a0bffa1f9ef9b895`)
-
-EXTERNAL SOURCES:
-  ActiveLabel:
-    :commit: c1ba467e214bcbc5cec89097a0bffa1f9ef9b895
-    :git: https://github.com/optonaut/ActiveLabel.swift.git
-
-CHECKOUT OPTIONS:
-  ActiveLabel:
-    :commit: c1ba467e214bcbc5cec89097a0bffa1f9ef9b895
-    :git: https://github.com/optonaut/ActiveLabel.swift.git
-
-SPEC CHECKSUMS:
-  ActiveLabel: eb405c5b99275be52fac161f7a55cab1dd672c54
-
-PODFILE CHECKSUM: 57478a43347a76e9cd6155a2c00e2f2ebd78fd9b
+PODFILE CHECKSUM: 42df516b1ff9f748d4412846aa7752c840f8c89f
 
 COCOAPODS: 1.0.1

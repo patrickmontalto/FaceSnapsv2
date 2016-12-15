@@ -37,6 +37,8 @@
 		3A7C7FB91DEE27D0008608D1 /* FaceSnapsTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */; };
 		3A9FA6181DA17FF800FDFE63 /* FilteredImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */; };
 		3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */; };
+		3ABF878E1E01EB0500388866 /* SignInHelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878D1E01EB0500388866 /* SignInHelpController.swift */; };
+		3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */; };
 		63326B2C9953F92A38E4C7AE /* Pods_FaceSnaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */; };
 		CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */; };
 		CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */; };
@@ -78,6 +80,8 @@
 		3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsTabController.swift; sourceTree = "<group>"; };
 		3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageBuilder.swift; sourceTree = "<group>"; };
 		3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageCell.swift; sourceTree = "<group>"; };
+		3ABF878D1E01EB0500388866 /* SignInHelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInHelpController.swift; sourceTree = "<group>"; };
+		3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsGradient.swift; sourceTree = "<group>"; };
 		8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceSnaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DFA07437B7867F08D307F4 /* Pods-FaceSnaps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceSnaps.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FaceSnaps/Pods-FaceSnaps.debug.xcconfig"; sourceTree = "<group>"; };
 		CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellAnimator.swift; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 				3A7C7FB61DEE2737008608D1 /* HomeController.swift */,
 				3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */,
 				3A0805E61DEE2D01002DB0DF /* LoginController.swift */,
+				3ABF878D1E01EB0500388866 /* SignInHelpController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 				3A32A6C11DA94D8F00AEE45F /* PhotoCell.swift */,
 				3A0805E81DEE5134002DB0DF /* LoginTextField.swift */,
 				3A17EA4F1DFF644C00031834 /* LineView.swift */,
+				3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -342,8 +348,10 @@
 				3A32A6B91DA6067E00AEE45F /* Tag.swift in Sources */,
 				3A32A6BE1DA94AAA00AEE45F /* PhotoDataSource.swift in Sources */,
 				3A0805E71DEE2D01002DB0DF /* LoginController.swift in Sources */,
+				3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */,
 				3A32A6C61DA97A8E00AEE45F /* SortableDataSource.swift in Sources */,
 				3A32A6B51DA5F2A600AEE45F /* FaceSnap.xcdatamodeld in Sources */,
+				3ABF878E1E01EB0500388866 /* SignInHelpController.swift in Sources */,
 				3A9FA6181DA17FF800FDFE63 /* FilteredImageBuilder.swift in Sources */,
 				3A17EA4A1DF7EC0100031834 /* AttributedString.swift in Sources */,
 				CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */,

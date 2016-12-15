@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct GradientLayerAnimator {
+class GradientLayerAnimator: NSObject, CAAnimationDelegate {
     
     // Constants
     static let color1 = UIColor(red: 158/255, green: 50/255, blue: 122/255, alpha: 1.0).cgColor
@@ -65,18 +65,26 @@ struct GradientLayerAnimator {
         [color20, color1]
     ]
     
-    var delegate: CAAnimationDelegate!
+    var layer: CAGradientLayer!
     
-    var toIndex: Int
+    var toIndex: Int!
     
     var animationViewPosition: CAAnimation?
     
-    init(delegate: CAAnimationDelegate) {
-        self.delegate = delegate
+    init(layer: CAGradientLayer) {
+        super.init()
+        
+        self.layer = layer
         toIndex = 1
+        
+        // Add observer for app moving into background and app resuming
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appWillEnterForeground), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
-    mutating func animateGradient(layer: CAGradientLayer)  {
+    
+    func animateGradient()  {
         let fromColors = layer.colors
         let toColors = GradientLayerAnimator.gradientColors[toIndex]
         layer.colors = toColors
@@ -89,11 +97,51 @@ struct GradientLayerAnimator {
         animation.isRemovedOnCompletion = true
         animation.fillMode = kCAFillModeForwards
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        animation.delegate = delegate
+        animation.delegate = self
         
         layer.add(animation, forKey: "animateGradient")
         
         // Set the index as the current index of the gradient's colors
         toIndex = (toIndex + 1) % GradientLayerAnimator.gradientColors.count
     }
+    
+    // Continuously execute the animation
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if flag {
+            animateGradient()
+        }
+    }
+    
+    // Observe when the app moves to background to save the animation position
+    func appMovedToBackground() {
+        animationViewPosition = layer.animation(forKey: "animateGradient")
+        pauseLayer(layer: layer) // Apple's method from QA1673
+    }
+    
+    // Observe when the app moves to foreground to resume the animation
+    func appWillEnterForeground() {
+        if let viewPosition = animationViewPosition  {
+            layer.add(viewPosition, forKey: "animateGradient")
+            animationViewPosition = nil
+        }
+        resumeLayer(layer: layer) // Apple's method from QA1673
+    }
+    
+    // Set the timeOffset on the layer using the current absolute time
+    func pauseLayer(layer: CALayer) {
+        let pausedTime = layer.convertTime(CACurrentMediaTime(), from: nil)
+        layer.speed = 0.0
+        layer.timeOffset = pausedTime
+    }
+    
+    // Resume the layer animation using timeOffset and pausedTime
+    func resumeLayer(layer: CALayer) {
+        let pausedTime = layer.timeOffset
+        layer.speed = 1
+        layer.timeOffset = 0
+        layer.beginTime = 0
+        let timeSincePause = layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        layer.beginTime = timeSincePause
+    }
+
 }

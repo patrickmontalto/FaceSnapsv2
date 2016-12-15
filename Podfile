@@ -6,5 +6,5 @@ target 'FaceSnaps' do
   use_frameworks!
 
   # Pods for FaceSnaps
-  pod 'ActiveLabel', :git => 'https://github.com/optonaut/ActiveLabel.swift.git', :commit => 'c1ba467e214bcbc5cec89097a0bffa1f9ef9b895'
+  #pod 'ActiveLabel', :git => 'https://github.com/optonaut/ActiveLabel.swift.git', :commit => 'c1ba467e214bcbc5cec89097a0bffa1f9ef9b895'
 end
