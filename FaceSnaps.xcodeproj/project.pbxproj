@@ -37,6 +37,9 @@
 		3A7C7FB91DEE27D0008608D1 /* FaceSnapsTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */; };
 		3A9FA6181DA17FF800FDFE63 /* FilteredImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */; };
 		3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */; };
+		3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */; };
+		3AB17FA01E02329F005E8739 /* LoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9F1E02329F005E8739 /* LoginViews.swift */; };
+		3AB17FA41E04FEE9005E8739 /* InteractableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */; };
 		3ABF878E1E01EB0500388866 /* SignInHelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878D1E01EB0500388866 /* SignInHelpController.swift */; };
 		3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */; };
 		63326B2C9953F92A38E4C7AE /* Pods_FaceSnaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */; };
@@ -80,6 +83,9 @@
 		3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsTabController.swift; sourceTree = "<group>"; };
 		3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageBuilder.swift; sourceTree = "<group>"; };
 		3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageCell.swift; sourceTree = "<group>"; };
+		3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookLoginViews.swift; sourceTree = "<group>"; };
+		3AB17F9F1E02329F005E8739 /* LoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViews.swift; sourceTree = "<group>"; };
+		3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractableLabel.swift; sourceTree = "<group>"; };
 		3ABF878D1E01EB0500388866 /* SignInHelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInHelpController.swift; sourceTree = "<group>"; };
 		3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsGradient.swift; sourceTree = "<group>"; };
 		8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceSnaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,6 +181,9 @@
 				3A0805E81DEE5134002DB0DF /* LoginTextField.swift */,
 				3A17EA4F1DFF644C00031834 /* LineView.swift */,
 				3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */,
+				3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */,
+				3AB17F9F1E02329F005E8739 /* LoginViews.swift */,
+				3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -345,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A32A6C81DA9845500AEE45F /* SortItemSelector.swift in Sources */,
+				3AB17FA41E04FEE9005E8739 /* InteractableLabel.swift in Sources */,
 				3A32A6B91DA6067E00AEE45F /* Tag.swift in Sources */,
 				3A32A6BE1DA94AAA00AEE45F /* PhotoDataSource.swift in Sources */,
 				3A0805E71DEE2D01002DB0DF /* LoginController.swift in Sources */,
@@ -370,11 +380,13 @@
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,
 				3A7C7FB91DEE27D0008608D1 /* FaceSnapsTabController.swift in Sources */,
 				3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */,
+				3AB17FA01E02329F005E8739 /* LoginViews.swift in Sources */,
 				3A32A6B71DA6060A00AEE45F /* Photo.swift in Sources */,
 				CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */,
 				3A17EA4E1DFF57A000031834 /* UIView+Resize.swift in Sources */,
 				3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */,
 				3A7C7FB71DEE2737008608D1 /* HomeController.swift in Sources */,
+				3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */,
 				3A32A6C01DA94BD900AEE45F /* PhotoFetchedResultsController.swift in Sources */,
 				3A32A6AE1DA2E5E700AEE45F /* PhotoMetadataController.swift in Sources */,
 				3A32DD101DA0309100CD2669 /* AppDelegate.swift in Sources */,
