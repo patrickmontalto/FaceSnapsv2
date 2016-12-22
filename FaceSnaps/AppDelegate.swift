@@ -29,7 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        
 //        window.rootViewController = navigationController
         let loginController = LoginViewController()
-        window.rootViewController = loginController
+        let loginFlowNavController = LoginFlowNavigationController(rootViewController: loginController)
+        window.rootViewController = loginFlowNavController
         
         // Tell the application that this window is the main window (key window)
         window.makeKeyAndVisible()

@@ -40,6 +40,10 @@
 		3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */; };
 		3AB17FA01E02329F005E8739 /* LoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9F1E02329F005E8739 /* LoginViews.swift */; };
 		3AB17FA41E04FEE9005E8739 /* InteractableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */; };
+		3AB17FAA1E0A4815005E8739 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FA91E0A4815005E8739 /* UIColor.swift */; };
+		3AB17FAC1E0B2080005E8739 /* LoginFlowNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FAB1E0B2080005E8739 /* LoginFlowNavigationController.swift */; };
+		3AB17FAE1E0B6441005E8739 /* UITextField+Blank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FAD1E0B6441005E8739 /* UITextField+Blank.swift */; };
+		3AB17FB01E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FAF1E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift */; };
 		3ABF878E1E01EB0500388866 /* SignInHelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878D1E01EB0500388866 /* SignInHelpController.swift */; };
 		3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */; };
 		63326B2C9953F92A38E4C7AE /* Pods_FaceSnaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */; };
@@ -86,6 +90,10 @@
 		3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookLoginViews.swift; sourceTree = "<group>"; };
 		3AB17F9F1E02329F005E8739 /* LoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViews.swift; sourceTree = "<group>"; };
 		3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractableLabel.swift; sourceTree = "<group>"; };
+		3AB17FA91E0A4815005E8739 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		3AB17FAB1E0B2080005E8739 /* LoginFlowNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFlowNavigationController.swift; sourceTree = "<group>"; };
+		3AB17FAD1E0B6441005E8739 /* UITextField+Blank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Blank.swift"; sourceTree = "<group>"; };
+		3AB17FAF1E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+CurrentDevice.swift"; sourceTree = "<group>"; };
 		3ABF878D1E01EB0500388866 /* SignInHelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInHelpController.swift; sourceTree = "<group>"; };
 		3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsGradient.swift; sourceTree = "<group>"; };
 		8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceSnaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -169,6 +177,7 @@
 				3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */,
 				3A0805E61DEE2D01002DB0DF /* LoginController.swift */,
 				3ABF878D1E01EB0500388866 /* SignInHelpController.swift */,
+				3AB17FAB1E0B2080005E8739 /* LoginFlowNavigationController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -217,6 +226,9 @@
 				3A17EA491DF7EC0100031834 /* AttributedString.swift */,
 				3A17EA4B1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift */,
 				3A17EA4D1DFF57A000031834 /* UIView+Resize.swift */,
+				3AB17FA91E0A4815005E8739 /* UIColor.swift */,
+				3AB17FAD1E0B6441005E8739 /* UITextField+Blank.swift */,
+				3AB17FAF1E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift */,
 			);
 			name = Convenience;
 			sourceTree = "<group>";
@@ -369,9 +381,11 @@
 				3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
 				3A17EA501DFF644C00031834 /* LineView.swift in Sources */,
+				3AB17FAC1E0B2080005E8739 /* LoginFlowNavigationController.swift in Sources */,
 				3A17EA4C1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift in Sources */,
 				3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */,
 				3A0805EB1DEF6CFE002DB0DF /* GradientLayerAnimator.swift in Sources */,
+				3AB17FB01E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift in Sources */,
 				3A32DD121DA0309100CD2669 /* PhotoListController.swift in Sources */,
 				3A32A6BC1DA6069900AEE45F /* Location.swift in Sources */,
 				3A32A6C41DA95BE800AEE45F /* PhotoSortListController.swift in Sources */,
@@ -380,6 +394,8 @@
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,
 				3A7C7FB91DEE27D0008608D1 /* FaceSnapsTabController.swift in Sources */,
 				3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */,
+				3AB17FAE1E0B6441005E8739 /* UITextField+Blank.swift in Sources */,
+				3AB17FAA1E0A4815005E8739 /* UIColor.swift in Sources */,
 				3AB17FA01E02329F005E8739 /* LoginViews.swift in Sources */,
 				3A32A6B71DA6060A00AEE45F /* Photo.swift in Sources */,
 				CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */,

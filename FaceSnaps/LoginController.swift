@@ -18,12 +18,10 @@ class LoginViewController: UIViewController {
         return GradientLayerAnimator(layer: self.gradient)
     }()
 
-
     lazy var loginStackView: LoginStackView = {
         return LoginStackView(parentView: self)
     }()
 
-    
     lazy var facebookLoginStackView: FacebookLoginStackView = {
         return FacebookLoginStackView(verticalSpacing: self.verticalSpacing)
     }()
@@ -46,13 +44,13 @@ class LoginViewController: UIViewController {
     
     private var fbLoginStackViewTopConstraint: NSLayoutConstraint!
     
-    // Add animation to gradient
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        animator.animateGradient()
+    // MARK: White status bar text
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        get {
+            return UIStatusBarStyle.lightContent
+        }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         super.hideKeyboardWhenTappedAround()
@@ -61,7 +59,7 @@ class LoginViewController: UIViewController {
                 
         self.view.layer.addSublayer(gradient)
         
-        configureTapRecognizer()
+        configureTapRecognizers()
         
         addKeyboardObservers(showSelector: #selector(LoginViewController.keyboardWillShow(sender:)), hideSelector: #selector(LoginViewController.keyboardWillHide(sender:)))
         
@@ -69,6 +67,13 @@ class LoginViewController: UIViewController {
         fbLoginStackViewTopConstraint = NSLayoutConstraint(item: facebookLoginStackView, attribute: .top, relatedBy: .equal, toItem: loginStackView, attribute: .bottom, multiplier: 1.0, constant: verticalSpacing)
         
         loginStackView.setLoginButtonTarget(target: self, action: #selector(LoginViewController.loginButtonPressed(sender:)))
+    }
+    
+    // MARK: Add animation to gradient
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        animator.animateGradient()
     }
     
     override func viewWillLayoutSubviews() {
@@ -80,11 +85,11 @@ class LoginViewController: UIViewController {
         facebookLoginStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            loginStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 35),
+            loginStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 36),
             loginStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 64),
-            loginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -35),
-            facebookLoginStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 35),
-            facebookLoginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -35),
+            loginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -36),
+            facebookLoginStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 36),
+            facebookLoginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -36),
             fbLoginStackViewTopConstraint,
             signUpView.leftAnchor.constraint(equalTo: view.leftAnchor),
             signUpView.rightAnchor.constraint(equalTo: view.rightAnchor),
@@ -96,7 +101,7 @@ class LoginViewController: UIViewController {
         removeKeyboardObservers()
     }
     
-    func configureTapRecognizer() {
+    func configureTapRecognizers() {
         loginStackView.getHelpLabel.addGestureRecognizer(getHelpTap)
         signUpView.interactableLabel.addGestureRecognizer(signUpTap)
     }
@@ -112,16 +117,18 @@ class LoginViewController: UIViewController {
         
         if tapGesture == getHelpTap {
             label = loginStackView.getHelpLabel
+            if tapGesture.didTapAttributedTextInLabel(label: label, inRange: label.boldRange) {
+                let vc = SignInHelpController()
+                navigationController?.pushViewController(vc, animated: true)
+            }
         } else if tapGesture == signUpTap {
             label = signUpView.interactableLabel
-        }
-        
-        let didTapLink = tapGesture.didTapAttributedTextInLabel(label: label, inRange: label.boldRange)
-        
-        if didTapLink {
-            print("Tapped!")
+            if tapGesture.didTapAttributedTextInLabel(label: label, inRange: label.boldRange) {
+                // TODO: Present Sign Up VC
+            }
         }
     }
+    
 
     // MARK: - Keyboard Notifications
     func keyboardWillShow(sender: NSNotification) {

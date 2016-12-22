@@ -112,11 +112,11 @@ class LoginStackView: UIStackView {
     }
     
     var usernameEmpty: Bool {
-        return textFieldEmpty(textField: usernameTextField)
+        return usernameTextField.isBlank()
     }
     
     var passwordEmpty: Bool  {
-        return textFieldEmpty(textField: passwordTextField)
+        return passwordTextField.isBlank()
     }
     
     func setLoginButton(enabled: Bool) {
@@ -125,13 +125,6 @@ class LoginStackView: UIStackView {
     
     func setLoginButtonTarget(target: Any, action: Selector) {
         loginButton.addTarget(target, action: action, for: .touchUpInside)
-    }
-    
-    private func textFieldEmpty(textField: UITextField) -> Bool {
-        guard let value = textField.text, !value.isEmpty else {
-            return true
-        }
-        return false
     }
     
 }
@@ -143,7 +136,6 @@ class LoginBottomView: UIView {
     
     var labelType: InteractableLabelType!
     
-    
     lazy var interactableLabel: InteractableLabel = {
         let label = InteractableLabel(type: self.labelType)
         
@@ -152,7 +144,6 @@ class LoginBottomView: UIView {
         return label
     }()
     
-
     convenience init(labelType: InteractableLabelType) {
         self.init(frame: .zero)
         
@@ -169,7 +160,7 @@ class LoginBottomView: UIView {
 
         // Constraints
         NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 56),
+            self.heightAnchor.constraint(equalToConstant: 48),
             interactableLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             interactableLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
@@ -184,8 +175,6 @@ class LoginBottomView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-
 }
 
 

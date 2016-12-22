@@ -15,13 +15,12 @@ class LoginTextField: UITextField {
     
     convenience init(text: String) {
         self.init(frame: .zero)
-        let extraLightGray = UIColor(white: 245/255, alpha: 0.8)
         // Set white placeholder
-        self.attributedPlaceholder = NSAttributedString(string: text, attributes: [NSForegroundColorAttributeName: extraLightGray])
+        self.attributedPlaceholder = NSAttributedString(string: text, attributes: [NSForegroundColorAttributeName: UIColor.extraLightGray])
         self.textColor = .white
         self.font = .systemFont(ofSize: 14)
         
-        self.backgroundColor = UIColor.white.withAlphaComponent(0.08)
+        self.backgroundColor = UIColor.superLightGray
         self.layer.cornerRadius = 4.0
         self.clearButtonMode = UITextFieldViewMode.whileEditing
     }
