@@ -21,6 +21,19 @@ class LoginViewController: UIViewController {
     lazy var loginStackView: LoginStackView = {
         return LoginStackView(parentView: self)
     }()
+    
+    lazy var loginStackViewTopDistance: CGFloat = {
+        switch UIDevice.current.deviceType {
+        case .iPhone35in:
+            return 48
+        case .iPhone40in:
+            return 64
+        case .iPhone47in, .iPhone55in:
+            return 100
+        default: break
+        }
+        return 64
+    }()
 
     lazy var facebookLoginStackView: FacebookLoginStackView = {
         return FacebookLoginStackView(verticalSpacing: self.verticalSpacing)
@@ -86,7 +99,7 @@ class LoginViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             loginStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 36),
-            loginStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 64),
+            loginStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: loginStackViewTopDistance),
             loginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -36),
             facebookLoginStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 36),
             facebookLoginStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -36),

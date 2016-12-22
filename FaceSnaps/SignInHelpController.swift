@@ -145,7 +145,6 @@ class SignInHelpController: UIViewController {
     // Add animation to gradient
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(UIDevice.current.modelName)
         animator.animateGradient()
     }
     
