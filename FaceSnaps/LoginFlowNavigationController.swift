@@ -13,6 +13,12 @@ class LoginFlowNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBarHidden(true, animated: false)
+        
+        navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationBar.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
+        navigationBar.isTranslucent = true
+        navigationBar.shadowImage = UIImage()
+        navigationBar.tintColor = .white
     }
     
 }

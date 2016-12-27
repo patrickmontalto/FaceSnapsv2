@@ -1,75 +1,35 @@
 //
-//  FacebookLoginViews.swift
+//  SignUpViews.swift
 //  FaceSnaps
 //
-//  Created by Patrick Montalto on 12/14/16.
+//  Created by Patrick Montalto on 12/23/16.
 //  Copyright © 2016 Patrick Montalto. All rights reserved.
 //
 
 import UIKit
 
-// Facebook login button with left-aligned facebook logo
-class FacebookLoginButton: UIButton {
+class SignUpStackView: UIStackView {
     
-    convenience init(text: String) {
-        self.init(frame: .zero)
+    lazy var facebookSignUpButton: FacebookLoginButton = {
+        return FacebookLoginButton(text: "Sign Up With Facebook")
+    }()
+    
+    lazy var signUpWithEmail: UIButton = {
+        let button = UIButton()
         
-        self.setTitle(text, for: .normal)
-        self.titleLabel?.font = .boldSystemFont(ofSize: 14.0)
-        self.setTitleColor(.white, for: .normal)
-        self.setTitleColor(.extraLightGray, for: .highlighted)
+        button.setTitle("Sign Up With Email", for: .normal)
+        button.setTitleColor(.extraLightGray, for: .highlighted)
         
-        let fbLogo = UIImage(named: "facebook-white")!
+        button.titleLabel?.font = .boldSystemFont(ofSize: 14.0)
         
-        self.setImage(fbLogo, for: .normal)
-        self.titleEdgeInsets = UIEdgeInsetsMake(0, 8, 0, -8)
-        self.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 8)
-        self.sizeToFit()
-        
-        self.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-}
-
-// UIView container for facebook login button (used to center button)
-
-class FacebookLoginView: UIView {
-    
-    var facebookLoginButton: FacebookLoginButton
-    
-    override init(frame: CGRect) {
-        facebookLoginButton = FacebookLoginButton(text: "Log In With Facebook")
-        
-        super.init(frame: frame)
-        
-        self.addSubview(facebookLoginButton)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-
-// Stackview with divider, or label, and facebook login button (within a view)
-class FacebookLoginStackView: UIStackView {
-    
-    var loginView: FacebookLoginView
+        return button
+    }()
     
     lazy var dividerWidth: CGFloat = {
         var stackViewWidth = UIScreen.main.bounds.width - 70
         var spacing: CGFloat = 48
         
         return (stackViewWidth - 2*(spacing)) / 2
-        
     }()
     
     lazy var lineViewLeft: UILineView = {
@@ -93,7 +53,6 @@ class FacebookLoginStackView: UIStackView {
         return label
     }()
     
-    
     lazy var dividerView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -113,14 +72,12 @@ class FacebookLoginStackView: UIStackView {
         
         self.axis = .vertical
         self.spacing = verticalSpacing
+        self.addArrangedSubview(facebookSignUpButton)
         self.addArrangedSubview(dividerView)
-        self.addArrangedSubview(loginView)
+        self.addArrangedSubview(signUpWithEmail)
         
         // Constraints
         NSLayoutConstraint.activate([
-            loginView.heightAnchor.constraint(equalToConstant: 30),
-            loginView.facebookLoginButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            loginView.facebookLoginButton.centerYAnchor.constraint(equalTo: loginView.centerYAnchor),
             lineViewLeft.heightAnchor.constraint(equalToConstant: 1),
             lineViewLeft.widthAnchor.constraint(equalToConstant: dividerWidth),
             lineViewRight.heightAnchor.constraint(equalToConstant: 1),
@@ -129,7 +86,6 @@ class FacebookLoginStackView: UIStackView {
     }
     
     override init(frame: CGRect) {
-        loginView = FacebookLoginView(frame: .zero)
         
         super.init(frame: frame)
     }
@@ -138,12 +94,13 @@ class FacebookLoginStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setTargetForFacebookButton(target: Any?, action: Selector) {
+        facebookSignUpButton.addTarget(target, action: action, for: .touchUpInside)
+    }
+    
+    func setTargetForEmailSignUp(target: Any?, action: Selector) {
+        signUpWithEmail.addTarget(target, action: action, for: .touchUpInside)
+    }
+    
+    
 }
-
-
-
-
-
-
-
-

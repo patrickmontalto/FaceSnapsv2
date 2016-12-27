@@ -66,6 +66,8 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = ""
+        
         super.hideKeyboardWhenTappedAround()
         self.loginStackView.usernameTextField.addTarget(self, action: #selector(LoginViewController.textFieldEmptyCheck(sender:)), for: .editingChanged)
         self.loginStackView.passwordTextField.addTarget(self, action: #selector(LoginViewController.textFieldEmptyCheck(sender:)), for: .editingChanged)
@@ -85,11 +87,12 @@ class LoginViewController: UIViewController {
     // MARK: Add animation to gradient
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         animator.animateGradient()
     }
     
     override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
         view.addSubview(loginStackView)
         view.addSubview(facebookLoginStackView)
         view.addSubview(signUpView)
@@ -121,7 +124,7 @@ class LoginViewController: UIViewController {
     
     // TODO: Configure login button pressed
     func loginButtonPressed(sender: UIButton) {
-        
+        print("Log in pressed!")
     }
     
     // TODO: Present view controllers for each action tapped
@@ -138,6 +141,8 @@ class LoginViewController: UIViewController {
             label = signUpView.interactableLabel
             if tapGesture.didTapAttributedTextInLabel(label: label, inRange: label.boldRange) {
                 // TODO: Present Sign Up VC
+                let vc = SignUpController()
+                navigationController?.pushViewController(vc, animated: true)
             }
         }
     }
