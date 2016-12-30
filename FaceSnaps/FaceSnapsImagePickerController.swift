@@ -20,7 +20,7 @@ class FaceSnapsImagePickerController: UIViewController {
         
         let navItem = UINavigationItem(title: "Photo")
         // TODO: Add cancel action (go back)
-        let cancelBarButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+        let cancelBarButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(FaceSnapsImagePickerController.dismissImagePicker))
         cancelBarButton.tintColor = .black
         
         navItem.leftBarButtonItem = cancelBarButton
@@ -44,18 +44,31 @@ class FaceSnapsImagePickerController: UIViewController {
         return imgView
     }()
     
+    // MARK: Bottom View
+    lazy var bottomView: UIView = {
+        let view = UIView()
+        view.addSubview(self.takePhotoButton)
+        view.backgroundColor = .backgroundGray
+        return view
+    }()
+    
     // MARK: Take Photo button
     lazy var takePhotoButton: UIButton = {
         let button = UIButton()
-        
+        let shutter = UIImage(named: "shutter_button")!
+        button.setImage(shutter, for: .normal)
+
+        button.translatesAutoresizingMaskIntoConstraints = false
+
         return button
     }()
     
     // MARK: Flip camera button
     lazy var flipCameraButton: UIButton = {
         let button = UIButton()
-        
-        button.setTitle("Flip Camera", for: .normal)
+        let flip = UIImage(named: "flip")!
+        button.setImage(flip, for: .normal)
+        button.showsTouchWhenHighlighted = true
         button.addTarget(self, action: #selector(FaceSnapsImagePickerController.flipCameraPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -67,8 +80,7 @@ class FaceSnapsImagePickerController: UIViewController {
         let flashOff = UIImage(named: "flash_off")!
         button.setImage(flashOff, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
-//        button.setImage(image: flashOff, inFrame: CGRect(x: 0, y: 0, width: 32, height: 32), forState: .normal)
-        
+        button.showsTouchWhenHighlighted = true
         button.addTarget(self, action: #selector(FaceSnapsImagePickerController.toggleFlashPressed(sender:)), for: .touchUpInside)
         
         return button
@@ -138,6 +150,7 @@ class FaceSnapsImagePickerController: UIViewController {
     
     func takePhoto(sender: UIButton) {
         // TODO: Implement
+        print("Taking photo...")
     }
     
     override func viewDidLoad() {
@@ -161,11 +174,13 @@ class FaceSnapsImagePickerController: UIViewController {
         view.addSubview(frameForCapture)
         view.addSubview(flipCameraButton)
         view.addSubview(toggleFlashModesButton)
+        view.addSubview(bottomView)
         
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         frameForCapture.translatesAutoresizingMaskIntoConstraints = false
         flipCameraButton.translatesAutoresizingMaskIntoConstraints = false
         toggleFlashModesButton.translatesAutoresizingMaskIntoConstraints = false
+        bottomView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             navigationBar.topAnchor.constraint(equalTo: view.topAnchor),
@@ -179,12 +194,19 @@ class FaceSnapsImagePickerController: UIViewController {
             frameForCapture.rightAnchor.constraint(equalTo: view.rightAnchor),
             frameForCapture.heightAnchor.constraint(equalTo: frameForCapture.widthAnchor, multiplier: 0.890667),
             
-            flipCameraButton.bottomAnchor.constraint(equalTo: frameForCapture.bottomAnchor, constant: -8),
-            flipCameraButton.leftAnchor.constraint(equalTo: frameForCapture.leftAnchor, constant: 8),
+            flipCameraButton.bottomAnchor.constraint(equalTo: frameForCapture.bottomAnchor, constant: -12),
+            flipCameraButton.leftAnchor.constraint(equalTo: frameForCapture.leftAnchor, constant: 12),
             
-            toggleFlashModesButton.rightAnchor.constraint(equalTo: frameForCapture.rightAnchor, constant: -8),
-            toggleFlashModesButton.bottomAnchor.constraint(equalTo: frameForCapture.bottomAnchor, constant: -8),
+            toggleFlashModesButton.rightAnchor.constraint(equalTo: frameForCapture.rightAnchor, constant: -12),
+            toggleFlashModesButton.bottomAnchor.constraint(equalTo: frameForCapture.bottomAnchor, constant: -12),
             toggleFlashModesButton.widthAnchor.constraint(equalToConstant: 32),
+            
+            bottomView.topAnchor.constraint(equalTo: frameForCapture.bottomAnchor),
+            bottomView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            bottomView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            takePhotoButton.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor),
+            takePhotoButton.centerYAnchor.constraint(equalTo: bottomView.centerYAnchor),
         ])
         
         
@@ -296,6 +318,11 @@ class FaceSnapsImagePickerController: UIViewController {
         }
         
         toggleFlashModesButton.setImage(flashModeImage, for: .normal)
+    }
+    
+    // MARK: Dismiss ImagePicker
+    func dismissImagePicker() {
+        dismiss(animated: true, completion: nil)
     }
     
 }
