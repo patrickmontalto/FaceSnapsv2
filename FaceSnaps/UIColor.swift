@@ -20,4 +20,10 @@ extension UIColor {
             return UIColor.white.withAlphaComponent(0.1)
         }
     }
+    
+    open class var buttonBlue: UIColor {
+        get {
+            return UIColor(red: 77/255, green: 161/255, blue: 238/255, alpha: 1.0)
+        }
+    }
 }

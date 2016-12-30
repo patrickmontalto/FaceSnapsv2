@@ -35,6 +35,8 @@
 		3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */; };
 		3A7C7FB71DEE2737008608D1 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C7FB61DEE2737008608D1 /* HomeController.swift */; };
 		3A7C7FB91DEE27D0008608D1 /* FaceSnapsTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */; };
+		3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C1DE71E12FF370095CE32 /* UIButton+setBackgroundColor.swift */; };
+		3A8C1DEA1E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C1DE91E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift */; };
 		3A9FA6181DA17FF800FDFE63 /* FilteredImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */; };
 		3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */; };
 		3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */; };
@@ -46,6 +48,7 @@
 		3AB17FB01E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FAF1E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift */; };
 		3AB17FB21E0B753D005E8739 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FB11E0B753D005E8739 /* SignUpController.swift */; };
 		3AB17FB61E0CEA9C005E8739 /* SignUpViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FB51E0CEA9C005E8739 /* SignUpViews.swift */; };
+		3AB17FB81E12F879005E8739 /* EmailSignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FB71E12F879005E8739 /* EmailSignUpController.swift */; };
 		3ABF878E1E01EB0500388866 /* SignInHelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878D1E01EB0500388866 /* SignInHelpController.swift */; };
 		3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */; };
 		63326B2C9953F92A38E4C7AE /* Pods_FaceSnaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */; };
@@ -87,6 +90,8 @@
 		3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoFilterController.swift; sourceTree = "<group>"; };
 		3A7C7FB61DEE2737008608D1 /* HomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsTabController.swift; sourceTree = "<group>"; };
+		3A8C1DE71E12FF370095CE32 /* UIButton+setBackgroundColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+setBackgroundColor.swift"; sourceTree = "<group>"; };
+		3A8C1DE91E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignUpControllerWithAccount.swift; sourceTree = "<group>"; };
 		3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageBuilder.swift; sourceTree = "<group>"; };
 		3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageCell.swift; sourceTree = "<group>"; };
 		3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookLoginViews.swift; sourceTree = "<group>"; };
@@ -98,6 +103,7 @@
 		3AB17FAF1E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+CurrentDevice.swift"; sourceTree = "<group>"; };
 		3AB17FB11E0B753D005E8739 /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		3AB17FB51E0CEA9C005E8739 /* SignUpViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViews.swift; sourceTree = "<group>"; };
+		3AB17FB71E12F879005E8739 /* EmailSignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignUpController.swift; sourceTree = "<group>"; };
 		3ABF878D1E01EB0500388866 /* SignInHelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInHelpController.swift; sourceTree = "<group>"; };
 		3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsGradient.swift; sourceTree = "<group>"; };
 		8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceSnaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,6 +189,8 @@
 				3ABF878D1E01EB0500388866 /* SignInHelpController.swift */,
 				3AB17FAB1E0B2080005E8739 /* LoginFlowNavigationController.swift */,
 				3AB17FB11E0B753D005E8739 /* SignUpController.swift */,
+				3AB17FB71E12F879005E8739 /* EmailSignUpController.swift */,
+				3A8C1DE91E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -235,6 +243,7 @@
 				3AB17FA91E0A4815005E8739 /* UIColor.swift */,
 				3AB17FAD1E0B6441005E8739 /* UITextField+Blank.swift */,
 				3AB17FAF1E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift */,
+				3A8C1DE71E12FF370095CE32 /* UIButton+setBackgroundColor.swift */,
 			);
 			name = Convenience;
 			sourceTree = "<group>";
@@ -284,7 +293,7 @@
 					3A32DD0B1DA0309100CD2669 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = D5L2TLU9VB;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -396,6 +405,7 @@
 				3A32A6BC1DA6069900AEE45F /* Location.swift in Sources */,
 				3AB17FB21E0B753D005E8739 /* SignUpController.swift in Sources */,
 				3A32A6C41DA95BE800AEE45F /* PhotoSortListController.swift in Sources */,
+				3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */,
 				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,
@@ -403,6 +413,7 @@
 				3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */,
 				3AB17FB61E0CEA9C005E8739 /* SignUpViews.swift in Sources */,
 				3AB17FAE1E0B6441005E8739 /* UITextField+Blank.swift in Sources */,
+				3AB17FB81E12F879005E8739 /* EmailSignUpController.swift in Sources */,
 				3AB17FAA1E0A4815005E8739 /* UIColor.swift in Sources */,
 				3AB17FA01E02329F005E8739 /* LoginViews.swift in Sources */,
 				3A32A6B71DA6060A00AEE45F /* Photo.swift in Sources */,
@@ -413,6 +424,7 @@
 				3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */,
 				3A32A6C01DA94BD900AEE45F /* PhotoFetchedResultsController.swift in Sources */,
 				3A32A6AE1DA2E5E700AEE45F /* PhotoMetadataController.swift in Sources */,
+				3A8C1DEA1E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift in Sources */,
 				3A32DD101DA0309100CD2669 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -534,6 +546,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.patrickm.FaceSnapsv2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "9f115ded-2e09-4e95-b7ee-ef9049e6fe7d";
+				PROVISIONING_PROFILE_SPECIFIER = FaceSnapsV2;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -548,6 +562,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.patrickm.FaceSnapsv2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "9f115ded-2e09-4e95-b7ee-ef9049e6fe7d";
+				PROVISIONING_PROFILE_SPECIFIER = FaceSnapsV2;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

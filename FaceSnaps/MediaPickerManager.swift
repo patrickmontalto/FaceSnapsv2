@@ -31,22 +31,43 @@ class MediaPickerManager: NSObject {
         super.init()
         
         imagePickerController.delegate = self
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            imagePickerController.sourceType = .camera
-            imagePickerController.cameraDevice = .front
-        } else {
-            imagePickerController.sourceType = .photoLibrary
-        }
+        
         imagePickerController.mediaTypes = [kUTTypeImage as String]
         
-        // Edit image to square aspect ratio
-        imagePickerController.allowsEditing = true
-        
+//        // Edit image to square aspect ratio
+//        imagePickerController.allowsEditing = true
+//        
         // Add observer for Camera Device Orientation
         NotificationCenter.default.addObserver(self, selector: #selector(MediaPickerManager.cameraChanged(notification:)), name: .AVCaptureSessionDidStartRunning, object: nil)
     }
     
-    func presentImagePickerController(animated: Bool) {
+    // Present the Image Picker Controller (attached to the MediaPickerManager) on the presenting View Controller.
+    func presentImagePickerController(animated: Bool, withSourceType sourceType: UIImagePickerControllerSourceType) {
+        
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            imagePickerController.sourceType = .photoLibrary
+        } else {
+            imagePickerController.sourceType = sourceType
+        }
+        
+        if sourceType == .camera {
+            imagePickerController.cameraDevice = .front
+            
+            // MARK: Camera Overlay
+            var f: CGRect = imagePickerController.view.bounds
+            f.size.height -= imagePickerController.navigationBar.bounds.size.height
+            let barHeight = (f.size.height - f.size.width) / 2
+            UIGraphicsBeginImageContext(f.size)
+            UIColor.white.withAlphaComponent(0.5).set()
+            UIRectFillUsingBlendMode(CGRect(x: 0, y: 0, width: f.size.width, height: barHeight), .normal)
+            UIRectFillUsingBlendMode(CGRect(x: 0, y: f.size.height - barHeight, width: f.size.width, height: barHeight), .normal)
+            let imageOverlay = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            let overlayIV = UIImageView(frame: f)
+            overlayIV.image = imageOverlay
+            imagePickerController.cameraOverlayView?.addSubview(overlayIV)
+        }
         presentingViewController.present(imagePickerController, animated: animated
             , completion: nil)
     }

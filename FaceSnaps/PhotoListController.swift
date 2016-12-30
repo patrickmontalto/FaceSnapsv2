@@ -113,7 +113,7 @@ class PhotoListController: UIViewController {
     // MARK: - Image Picker Controller
 
     @objc private func presentImagePickerController() {
-        mediaPickerManager.presentImagePickerController(animated: true)
+        mediaPickerManager.presentImagePickerController(animated: true, withSourceType: .camera)
     }
 
 

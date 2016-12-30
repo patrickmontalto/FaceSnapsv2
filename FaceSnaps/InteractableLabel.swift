@@ -93,6 +93,21 @@ class InteractableLabel: UILabel {
         super.init(frame: frame)
     }
     
+    func setTextColors(nonBoldColor: UIColor, boldColor: UIColor) {
+        let attributes = [
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12.0),
+            NSForegroundColorAttributeName: boldColor
+        ]
+        
+        let nonAttributes = [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 12.0),
+            NSForegroundColorAttributeName: nonBoldColor
+        ]
+        
+        attributedText = text?.NSStringWithAttributes(attributes: attributes, nonAttributes: nonAttributes, nonAttrRange: nonBoldRange)
+
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -144,7 +144,7 @@ class LoginBottomView: UIView {
         return label
     }()
     
-    convenience init(labelType: InteractableLabelType) {
+    convenience init(labelType: InteractableLabelType, topBorderColor: UIColor?) {
         self.init(frame: .zero)
         
         self.labelType = labelType
@@ -153,8 +153,9 @@ class LoginBottomView: UIView {
         layer.backgroundColor = UIColor.white.withAlphaComponent(0.08).cgColor
         
         let topBorder = CALayer()
-        topBorder.backgroundColor = UIColor.white.withAlphaComponent(0.2).cgColor
-        topBorder.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 1.0)
+        let borderColor = topBorderColor?.cgColor ?? UIColor.white.withAlphaComponent(0.2).cgColor
+        topBorder.backgroundColor = borderColor
+        topBorder.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0.5)
         layer.addSublayer(topBorder)
         translatesAutoresizingMaskIntoConstraints = false
 

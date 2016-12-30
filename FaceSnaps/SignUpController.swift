@@ -87,7 +87,7 @@ class SignUpController: UIViewController {
 
     // Already have an account? Sign In.
     lazy var signInView: LoginBottomView = {
-        return LoginBottomView(labelType: .signIn)
+        return LoginBottomView(labelType: .signIn, topBorderColor: nil)
     }()
     
     override func viewDidLoad() {
@@ -166,6 +166,8 @@ class SignUpController: UIViewController {
     
     // TODO: Sign up with email tapped (EmailSignUpController)
     func signUpWithEmailTapped(sender: UIButton) {
-        print("Sign up with email!")
+        let vc = EmailSignUpController()
+        vc.view.backgroundColor = .white
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

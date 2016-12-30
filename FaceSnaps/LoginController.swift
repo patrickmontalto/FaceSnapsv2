@@ -40,7 +40,7 @@ class LoginViewController: UIViewController {
     }()
     
     lazy var signUpView: LoginBottomView = {
-        return LoginBottomView(labelType: .signUp)
+        return LoginBottomView(labelType: .signUp, topBorderColor: nil)
     }()
     
     lazy var verticalSpacing: CGFloat = {
@@ -172,9 +172,9 @@ extension LoginViewController: UITextFieldDelegate {
         if textField == loginStackView.usernameTextField {
             loginStackView.passwordTextField.becomeFirstResponder()
         } else if textField == loginStackView.passwordTextField {
+            view.endEditing(true)
             loginStackView.loginButton.sendActions(for: .touchUpInside)
         }
-        // view.endEditing(true)
         return false
     }
     

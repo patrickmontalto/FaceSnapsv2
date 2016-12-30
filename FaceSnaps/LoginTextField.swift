@@ -23,6 +23,8 @@ class LoginTextField: UITextField {
         self.backgroundColor = UIColor.superLightGray
         self.layer.cornerRadius = 4.0
         self.clearButtonMode = UITextFieldViewMode.whileEditing
+        self.autocapitalizationType = .none
+        
     }
     
     override init(frame: CGRect) {

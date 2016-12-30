@@ -122,7 +122,7 @@ class SignInHelpController: UIViewController {
     }()
     // Back to Log In Button view
     lazy var backToLogInView: LoginBottomView = {
-        return LoginBottomView(labelType: .goBack)
+        return LoginBottomView(labelType: .goBack, topBorderColor: nil)
     }()
     
     // Hide status bar
