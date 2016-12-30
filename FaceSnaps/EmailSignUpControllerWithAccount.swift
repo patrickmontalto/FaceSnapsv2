@@ -126,8 +126,10 @@ class EmailSignUpControllerWithAccount: UIViewController {
         })
         
         let takePhoto = UIAlertAction(title: "Take Photo", style: .default, handler: { (action) in
+            let vc = FaceSnapsImagePickerController()
+            self.present(vc, animated: true, completion: nil)
             // Present media picker manager with camera
-            self.mediaPickerManager.presentImagePickerController(animated: true, withSourceType: .camera)
+//            self.mediaPickerManager.presentImagePickerController(animated: true, withSourceType: .camera)
         })
         
         let chooseFromLibrary = UIAlertAction(title: "Choose from Library", style: .default, handler: { (action) in
@@ -141,6 +143,7 @@ class EmailSignUpControllerWithAccount: UIViewController {
         
         return controller
     }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
