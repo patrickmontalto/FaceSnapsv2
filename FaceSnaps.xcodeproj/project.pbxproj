@@ -55,6 +55,7 @@
 		3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */; };
 		63326B2C9953F92A38E4C7AE /* Pods_FaceSnaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */; };
 		CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */; };
+		CDD5D6021E173689007364B4 /* CameraFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD5D6011E173689007364B4 /* CameraFocusView.swift */; };
 		CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */; };
 		CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */; };
 		CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */; };
@@ -113,6 +114,7 @@
 		8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceSnaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DFA07437B7867F08D307F4 /* Pods-FaceSnaps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceSnaps.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FaceSnaps/Pods-FaceSnaps.debug.xcconfig"; sourceTree = "<group>"; };
 		CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellAnimator.swift; sourceTree = "<group>"; };
+		CDD5D6011E173689007364B4 /* CameraFocusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFocusView.swift; sourceTree = "<group>"; };
 		CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDeletionManager.swift; sourceTree = "<group>"; };
 		CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+FilterDuplicates.swift"; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 				3AB17F9F1E02329F005E8739 /* LoginViews.swift */,
 				3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */,
 				3AB17FB51E0CEA9C005E8739 /* SignUpViews.swift */,
+				CDD5D6011E173689007364B4 /* CameraFocusView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				3A32A6BC1DA6069900AEE45F /* Location.swift in Sources */,
 				3AB17FB21E0B753D005E8739 /* SignUpController.swift in Sources */,
 				3A32A6C41DA95BE800AEE45F /* PhotoSortListController.swift in Sources */,
+				CDD5D6021E173689007364B4 /* CameraFocusView.swift in Sources */,
 				3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */,
 				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
