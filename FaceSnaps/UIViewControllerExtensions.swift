@@ -51,4 +51,13 @@ extension UIViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: self.view.window)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
     }
+    
+    // MARK: Detect device orientation
+    func addDeviceOrientationObserver(selector: Selector) {
+        NotificationCenter.default.addObserver(self, selector: selector, name: NSNotification.Name.UIDeviceOrientationDidChange, object: UIDevice.current)
+    }
+
+    func removeDeviceOrientationObserver() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: UIDevice.current)
+    }
 }

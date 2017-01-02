@@ -11,7 +11,7 @@ import AVFoundation
 
 class FaceSnapsImagePickerController: UIViewController {
     
-    weak var delegate: FaceSnapsImagePickerController?
+    var delegate: FaceSnapsImagePickerControllerDelegate?
     
     // MARK: Top Navigation / Title bar
     lazy var navigationBar: UINavigationBar = {
@@ -37,11 +37,13 @@ class FaceSnapsImagePickerController: UIViewController {
         return view
     }()
     
-    // MARK: Captured Image (for test)
-    lazy var imageView: UIImageView = {
-        let imgView = UIImageView()
-        
-        return imgView
+    // MARK: Focus View (tap to focus)
+    var focusView: CameraFocusView?
+    
+    // MARK: Gesture Recognizer for Focusing
+    lazy var focusGesture: UITapGestureRecognizer = {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(tapToFocus(gesture:)))
+        return gesture
     }()
     
     // MARK: Bottom View
@@ -59,7 +61,7 @@ class FaceSnapsImagePickerController: UIViewController {
         button.setImage(shutter, for: .normal)
 
         button.translatesAutoresizingMaskIntoConstraints = false
-
+        button.addTarget(self, action: #selector(FaceSnapsImagePickerController.takePhoto(sender:)), for: .touchUpInside)
         return button
     }()
     
@@ -148,9 +150,36 @@ class FaceSnapsImagePickerController: UIViewController {
         return true
     }
     
+    // Current orientation
+    var orientation = UIDevice.current.orientation
+    
     func takePhoto(sender: UIButton) {
         // TODO: Implement
-        print("Taking photo...")
+        var videoConnection: AVCaptureConnection?
+        
+        for connection in stillImageOutput.connections as! [AVCaptureConnection] {
+            for port in connection.inputPorts as! [AVCaptureInputPort] {
+                if port.mediaType == AVMediaTypeVideo {
+                    videoConnection = connection
+                    break
+                }
+            }
+            if (videoConnection != nil) {
+                break
+            }
+        }
+        
+        stillImageOutput.captureStillImageAsynchronously(from: videoConnection) { (imageDataSampleBuffer, error) in
+            if let imageDataSampleBuffer = imageDataSampleBuffer {
+                if let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer) {
+                    let image = UIImage(data: imageData)!
+                    // dismiss controller and set image as cropped profile image of add photo button on EmailSignUpControllerWithAccount
+                    let croppedImage = ImageCropHelper.cropToPreviewLayer(previewLayer: self.previewLayer, originalImage: image).circle!
+                    self.delegate?.imagePickerController(self, didFinishPickingImage: croppedImage)
+                    self.dismissImagePicker()
+                }
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -158,12 +187,13 @@ class FaceSnapsImagePickerController: UIViewController {
         view.backgroundColor = .white
         title = "Photo"
         
-        takePhotoButton.addTarget(self, action: #selector(FaceSnapsImagePickerController.takePhoto(sender:)), for: .touchUpInside)
+        view.addGestureRecognizer(focusGesture)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        addDeviceOrientationObserver(selector: #selector(deviceDidRotate(notification:)))
         session.startRunning()
     }
     
@@ -208,13 +238,15 @@ class FaceSnapsImagePickerController: UIViewController {
             takePhotoButton.centerXAnchor.constraint(equalTo: bottomView.centerXAnchor),
             takePhotoButton.centerYAnchor.constraint(equalTo: bottomView.centerYAnchor),
         ])
-        
-        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setFrameForCapture()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        removeDeviceOrientationObserver()
     }
     
     // MARK: Flip the camera (to rear or back to front) 
@@ -226,12 +258,14 @@ class FaceSnapsImagePickerController: UIViewController {
         let position = (session.inputs!.first! as! AVCaptureDeviceInput).device.position
         var newPosition: AVCaptureDevicePosition
         
+        session.removeOutput(stillImageOutput)
+        
         // Create a new capture sessiojn
         session = AVCaptureSession()
         // Set Capture Settings
         session.sessionPreset = AVCaptureSessionPresetPhoto
         
-        // Determine which will ne the new Position
+        // Determine which will be the new Position
         if position == AVCaptureDevicePosition.front {
             newPosition = .back
         } else {
@@ -257,6 +291,14 @@ class FaceSnapsImagePickerController: UIViewController {
             return
         }
         
+        
+        // TODO: Have to create a new object in memory here otherwise it will crash when we try to assign it to the new session. Need to update to iOS 10 camera API
+        stillImageOutput = AVCaptureStillImageOutput()
+        stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+        
+        // Add stillImageOutput
+        session.addOutput(self.stillImageOutput)
+
         // Reload the previewLayer with the new session
         reloadPreviewLayer()
         
@@ -325,11 +367,109 @@ class FaceSnapsImagePickerController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    // MARK: Tap to focus
+    func tapToFocus(gesture: UITapGestureRecognizer) {
+        let touchPoint = gesture.location(in: frameForCapture)
+
+        if (focusView != nil) {
+            focusView?.updatePoint(touchPoint)
+        } else {
+            focusView = CameraFocusView(touchPoint: touchPoint)
+            frameForCapture.addSubview(focusView!)
+            focusView!.setNeedsDisplay()
+        }
+        
+        focusView?.animateFocusingAction()
+        
+        let convertedPoint = previewLayer.captureDevicePointOfInterest(for: touchPoint)
+
+        do {
+            try inputDevice.lockForConfiguration()
+            
+            /*
+             Setting (focus/exposure)PointOfInterest alone does not initiate a (focus/exposure) operation.
+             Call set(Focus/Exposure)Mode() to apply the new point of interest.
+             */
+            if inputDevice.isFocusPointOfInterestSupported && inputDevice.isFocusModeSupported(.autoFocus) {
+                inputDevice.focusPointOfInterest = convertedPoint
+                inputDevice.focusMode = .autoFocus
+            }
+            
+            if inputDevice.isExposurePointOfInterestSupported && inputDevice.isExposureModeSupported(.autoExpose) {
+                inputDevice.exposurePointOfInterest = convertedPoint
+                inputDevice.exposureMode = .autoExpose
+            }
+            
+            inputDevice.isSubjectAreaChangeMonitoringEnabled = true
+            inputDevice.unlockForConfiguration()
+        } catch {
+            print("Could not lock device for configuration: \(error)")
+        }
+    }
+    
+    // MARK: Rotate flip and flash icons when device rotates
+    // TODO: Figure out why rotation doesn't match up to expected results
+    func deviceDidRotate(notification: NSNotification) {
+//        let currentOrientation = UIDevice.current.orientation
+//        
+//        switch (orientation, UIDevice.current.orientation) {
+//        case (UIDeviceOrientation.portrait, .landscapeLeft):
+//            // Rotate 90 CCW
+//            rotateCameraControls(angle: CGFloat.pi / 2.0)
+//        case (UIDeviceOrientation.portrait, .landscapeRight):
+//            // Rotate 90 CW
+//            rotateCameraControls(angle: -CGFloat.pi / 2.0)
+//        case (UIDeviceOrientation.portrait, .portraitUpsideDown):
+//            // Rotate 180 CW
+//            rotateCameraControls(angle: -CGFloat.pi)
+//        case (UIDeviceOrientation.landscapeRight, .portrait):
+//            // Rotate 90 CCW
+//            rotateCameraControls(angle: CGFloat.pi / 2.0)
+//        case (UIDeviceOrientation.landscapeRight, .landscapeLeft):
+//            // Rotate 180 CCW
+//            rotateCameraControls(angle: CGFloat.pi)
+//        case (UIDeviceOrientation.landscapeRight, .portraitUpsideDown):
+//            //Rotate 90 CW
+//            rotateCameraControls(angle: -CGFloat.pi / 2.0)
+//        case (UIDeviceOrientation.landscapeLeft, .portrait):
+//            // 90 CW
+//            let angle = -CGFloat.pi / 2
+//            rotateCameraControls(angle: angle)
+//        case (UIDeviceOrientation.landscapeLeft, .landscapeRight):
+//            // 180 CW
+//            rotateCameraControls(angle: CGFloat.pi)
+//        case (UIDeviceOrientation.landscapeLeft, .portraitUpsideDown):
+//            // 90 CCW
+//            rotateCameraControls(angle: CGFloat.pi / 2.0)
+//        case (UIDeviceOrientation.portraitUpsideDown, .landscapeLeft):
+//            // 90 CCW
+//            rotateCameraControls(angle: CGFloat.pi / 2.0)
+//        case (UIDeviceOrientation.portraitUpsideDown, .portrait):
+//            // 180 CCW
+//            rotateCameraControls(angle: CGFloat.pi)
+//        case (UIDeviceOrientation.portraitUpsideDown, .landscapeRight):
+//            // 90 CW
+//            rotateCameraControls(angle: -CGFloat.pi / 2.0)
+//        default:
+//            break
+//        }
+//        
+//        orientation = currentOrientation
+    }
+
+    private func rotateCameraControls(angle: CGFloat) {
+        UIView.animate(withDuration: 0.5) { 
+            self.flipCameraButton.transform = CGAffineTransform(rotationAngle: angle)
+            self.toggleFlashModesButton.transform = CGAffineTransform(rotationAngle: angle)
+        }
+    }
 }
 
 // MARK: FaceSnapsImagePickerControllerDelegate
-protocol FaceSnapsImagePickerControllerDelegate {
-    func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
+@objc protocol FaceSnapsImagePickerControllerDelegate: class {
+    func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingImage image: UIImage)
+    
+    @objc optional func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
 }
 
 

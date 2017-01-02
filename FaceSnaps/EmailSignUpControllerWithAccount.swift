@@ -19,6 +19,8 @@ class EmailSignUpControllerWithAccount: UIViewController {
         
         button.setImage(image, for: .normal)
         button.setImage(imageHighlighted, for: .highlighted)
+
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -106,7 +108,7 @@ class EmailSignUpControllerWithAccount: UIViewController {
     
     lazy var mediaPickerManager: MediaPickerManager = {
         let manager = MediaPickerManager(presentingViewController: self)
-        manager.delegate = self
+//        manager.delegate = self
         
         return manager
     }()
@@ -127,6 +129,7 @@ class EmailSignUpControllerWithAccount: UIViewController {
         
         let takePhoto = UIAlertAction(title: "Take Photo", style: .default, handler: { (action) in
             let vc = FaceSnapsImagePickerController()
+            vc.delegate = self
             self.present(vc, animated: true, completion: nil)
             // Present media picker manager with camera
 //            self.mediaPickerManager.presentImagePickerController(animated: true, withSourceType: .camera)
@@ -168,6 +171,8 @@ class EmailSignUpControllerWithAccount: UIViewController {
         accountSignUpStackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
+                addPhotoButton.heightAnchor.constraint(equalToConstant: 84),
+                addPhotoButton.widthAnchor.constraint(equalToConstant: 84),
                 accountSignUpStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 36),
                 accountSignUpStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 56),
                 accountSignUpStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -36),
@@ -241,11 +246,16 @@ extension EmailSignUpControllerWithAccount: UITextFieldDelegate {
     }
 }
 
-// MARK: MediaPickerManagerDelegate
 
-extension EmailSignUpControllerWithAccount: MediaPickerManagerDelegate {
-    func mediaPickerManager(manager: MediaPickerManager, didFinishPickingImage image: UIImage) {
+// MARK: FaceSnapsImagePickerControllerDelegate
+extension EmailSignUpControllerWithAccount: FaceSnapsImagePickerControllerDelegate {
+    func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingImage image: UIImage) {
         addPhotoButton.setImage(image, for: .normal)
         addPhotoButton.setImage(image, for: .highlighted)
     }
+//    func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+//        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+//        addPhotoButton.setImage(image, for: .normal)
+//        addPhotoButton.setImage(image, for: .highlighted)
+//    }
 }
