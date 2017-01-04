@@ -31,13 +31,13 @@ extension FaceSnapsClient {
                 static let getCurrentUser = "/users/self"
                 // Get information about a user
                 static let getUser = "/users/"
-                // Get most recent media of the current user (*paginated)
-                static let getCurrentUserMedia = "/users/self/media/recent"
-                // Get most recently liked media by the current user (*paginated)
-                static let getCurrentUserLikedMedia = "/users/self/media/liked"
-                // Get most recent media of a user (*paginated)
+                // Get most recent posts of the current user (*paginated)
+                static let getCurrentUserMedia = "/users/self/posts/recent"
+                // Get most recently liked posts by the current user (*paginated)
+                static let getCurrentUserLikedMedia = "/users/self/posts/liked"
+                // Get most recent posts of a user (*paginated)
                 static func getUserMedia(userId: Int) -> String {
-                    return "users/\(userId)/media/recent"
+                    return "users/\(userId)/posts/recent"
                 }
                 // Search for a user by name (*paginated)
                 static let getUsersQuery = "/users/search"
