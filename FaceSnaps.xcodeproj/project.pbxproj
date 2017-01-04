@@ -41,6 +41,9 @@
 		3A9D882A1E163F4600FB928D /* UIButton+setImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D88291E163F4600FB928D /* UIButton+setImage.swift */; };
 		3A9D882C1E199C6100FB928D /* ImageCropHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */; };
 		3A9D882E1E199F6C00FB928D /* UIImage+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D882D1E199F6C00FB928D /* UIImage+Circle.swift */; };
+		3A9D88311E1A175900FB928D /* FaceSnapsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D88301E1A175900FB928D /* FaceSnapsDataSource.swift */; };
+		3A9D88341E1A184A00FB928D /* FaceSnapsClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D88331E1A184A00FB928D /* FaceSnapsClient.swift */; };
+		3A9D88361E1A185B00FB928D /* FaceSnapsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D88351E1A185B00FB928D /* FaceSnapsConstants.swift */; };
 		3A9FA6181DA17FF800FDFE63 /* FilteredImageBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */; };
 		3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */; };
 		3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */; };
@@ -101,6 +104,9 @@
 		3A9D88291E163F4600FB928D /* UIButton+setImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+setImage.swift"; sourceTree = "<group>"; };
 		3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCropHelper.swift; sourceTree = "<group>"; };
 		3A9D882D1E199F6C00FB928D /* UIImage+Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Circle.swift"; sourceTree = "<group>"; };
+		3A9D88301E1A175900FB928D /* FaceSnapsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsDataSource.swift; sourceTree = "<group>"; };
+		3A9D88331E1A184A00FB928D /* FaceSnapsClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsClient.swift; sourceTree = "<group>"; };
+		3A9D88351E1A185B00FB928D /* FaceSnapsConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsConstants.swift; sourceTree = "<group>"; };
 		3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageBuilder.swift; sourceTree = "<group>"; };
 		3A9FA6191DA29BE800FDFE63 /* FilteredImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageCell.swift; sourceTree = "<group>"; };
 		3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookLoginViews.swift; sourceTree = "<group>"; };
@@ -158,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				3A32DD0F1DA0309100CD2669 /* AppDelegate.swift */,
+				3A9D882F1E1A16A300FB928D /* Client */,
 				3A32DD261DA16BF200CD2669 /* Model */,
 				3A32DD251DA16BEA00CD2669 /* View */,
 				3A32DD241DA16BE200CD2669 /* Controller */,
@@ -237,6 +244,24 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		3A9D882F1E1A16A300FB928D /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				3A9D88321E1A17D400FB928D /* FaceSnapsAPI */,
+				3A9D88301E1A175900FB928D /* FaceSnapsDataSource.swift */,
+			);
+			name = Client;
+			sourceTree = "<group>";
+		};
+		3A9D88321E1A17D400FB928D /* FaceSnapsAPI */ = {
+			isa = PBXGroup;
+			children = (
+				3A9D88331E1A184A00FB928D /* FaceSnapsClient.swift */,
+				3A9D88351E1A185B00FB928D /* FaceSnapsConstants.swift */,
+			);
+			name = FaceSnapsAPI;
+			sourceTree = "<group>";
+		};
 		A6B89373F5758EB91CA1EF8E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -308,6 +333,7 @@
 					3A32DD0B1DA0309100CD2669 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = D5L2TLU9VB;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -405,6 +431,7 @@
 				3A32A6B51DA5F2A600AEE45F /* FaceSnap.xcdatamodeld in Sources */,
 				3ABF878E1E01EB0500388866 /* SignInHelpController.swift in Sources */,
 				3A9FA6181DA17FF800FDFE63 /* FilteredImageBuilder.swift in Sources */,
+				3A9D88341E1A184A00FB928D /* FaceSnapsClient.swift in Sources */,
 				3A17EA4A1DF7EC0100031834 /* AttributedString.swift in Sources */,
 				CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */,
 				3A32A6C21DA94D8F00AEE45F /* PhotoCell.swift in Sources */,
@@ -440,6 +467,8 @@
 				3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */,
 				3A7C7FB71DEE2737008608D1 /* HomeController.swift in Sources */,
 				3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */,
+				3A9D88361E1A185B00FB928D /* FaceSnapsConstants.swift in Sources */,
+				3A9D88311E1A175900FB928D /* FaceSnapsDataSource.swift in Sources */,
 				3A32A6C01DA94BD900AEE45F /* PhotoFetchedResultsController.swift in Sources */,
 				3A32A6AE1DA2E5E700AEE45F /* PhotoMetadataController.swift in Sources */,
 				3A8C1DEA1E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift in Sources */,
