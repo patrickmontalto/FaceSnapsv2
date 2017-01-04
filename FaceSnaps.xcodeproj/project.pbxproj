@@ -64,6 +64,8 @@
 		CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */; };
 		CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */; };
 		CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */; };
+		D2318A901E1D621D00E0347F /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2318A8F1E1D621D00E0347F /* APIConstants.swift */; };
+		D2318A921E1D623D00E0347F /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2318A911E1D623D00E0347F /* APIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -128,6 +130,8 @@
 		CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDeletionManager.swift; sourceTree = "<group>"; };
 		CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+FilterDuplicates.swift"; sourceTree = "<group>"; };
+		D2318A8F1E1D621D00E0347F /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		D2318A911E1D623D00E0347F /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +253,8 @@
 			children = (
 				3A9D88321E1A17D400FB928D /* FaceSnapsAPI */,
 				3A9D88301E1A175900FB928D /* FaceSnapsDataSource.swift */,
+				D2318A911E1D623D00E0347F /* APIClient.swift */,
+				D2318A8F1E1D621D00E0347F /* APIConstants.swift */,
 			);
 			name = Client;
 			sourceTree = "<group>";
@@ -422,6 +428,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A32A6C81DA9845500AEE45F /* SortItemSelector.swift in Sources */,
+				D2318A901E1D621D00E0347F /* APIConstants.swift in Sources */,
 				3AB17FA41E04FEE9005E8739 /* InteractableLabel.swift in Sources */,
 				3A32A6B91DA6067E00AEE45F /* Tag.swift in Sources */,
 				3A32A6BE1DA94AAA00AEE45F /* PhotoDataSource.swift in Sources */,
@@ -463,6 +470,7 @@
 				3A32A6B71DA6060A00AEE45F /* Photo.swift in Sources */,
 				CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */,
 				3A9D882A1E163F4600FB928D /* UIButton+setImage.swift in Sources */,
+				D2318A921E1D623D00E0347F /* APIClient.swift in Sources */,
 				3A17EA4E1DFF57A000031834 /* UIView+Resize.swift in Sources */,
 				3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */,
 				3A7C7FB71DEE2737008608D1 /* HomeController.swift in Sources */,
