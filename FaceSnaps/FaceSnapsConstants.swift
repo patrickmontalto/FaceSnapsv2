@@ -19,8 +19,8 @@ extension FaceSnapsClient {
     
     enum Constant {
         static let ApiScheme = "http"
-        static let ApiHost = FaceSnapsClient.ApplicationEnvironment == .production ? "TBD" : "67.81.24.198"
-        static let ApiPort: NSNumber? = FaceSnapsClient.ApplicationEnvironment == .production ? nil : 81
+        static let ApiHost = FaceSnapsClient.ApplicationEnvironment == .production ? "TBD" : "localhost"//"67.81.24.198"
+        static let ApiPort: NSNumber? = FaceSnapsClient.ApplicationEnvironment == .production ? nil : 3000//81
         static let ApiPath = ""
         static let ApiKey = ""
         static let ClientType = APIConstants.Client.facesnaps
@@ -28,6 +28,13 @@ extension FaceSnapsClient {
         // MARK: - API Methods
         enum APIMethod {
             enum UserEndpoint {
+                // Sign up new user
+                static let signUpUser = "/users"
+                // Sign in with username and password
+                static let signInUser = "/users/sign_in"
+                // Sign out the user
+                static let signOutUser = "/users/sign_out"
+                // Get current user
                 static let getCurrentUser = "/users/self"
                 // Get information about a user
                 static let getUser = "/users/"

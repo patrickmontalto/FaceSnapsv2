@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 
 // MARK: - Face Snaps Client: NSObject
 
@@ -21,6 +22,15 @@ class FaceSnapsClient: NSObject {
     private override init() {}
     
     // MARK: Sign in as a user
+    func signInUser(email: String, password: String, completionHandler: (_ success: Bool, _ errorString: String?) -> Void) {
+        let signInEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signInUser)
+        let params = ["session":["email": email, "password": password]]
+        Alamofire.request(signInEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
+            print(response.result)
+        }
+
+
+    }
     
     // MARK: Sign up as a new user
     
@@ -42,4 +52,8 @@ class FaceSnapsClient: NSObject {
     
     // MARK: Get a list of comments on a post (*paginated in reverse)
     
+    // MARK: Build URL
+    private func urlString(forEndpoint endpoint: String) -> String {
+        return APIClient.buildURLString(scheme: Constant.ApiScheme, host: Constant.ApiHost, port: Constant.ApiPort, clientType: .facesnaps, endpoint: endpoint)
+    }
 }
