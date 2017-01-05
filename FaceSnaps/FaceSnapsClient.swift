@@ -26,9 +26,9 @@ class FaceSnapsClient: NSObject {
         let signInEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signInUser)
         let params = ["session":["email": email, "password": password]]
         Alamofire.request(signInEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseString { (response) in
+            // TODO: Store auth key in FaceSnapsStoragebox
             print(response)
         }
-
 
     }
     
