@@ -7,4 +7,5 @@ target 'FaceSnaps' do
 
   # Pods for FaceSnaps
   pod 'Alamofire', '~> 4.0'
+  pod 'Strongbox'
 end

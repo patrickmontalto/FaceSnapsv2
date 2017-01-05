@@ -125,6 +125,11 @@ class LoginViewController: UIViewController {
     // TODO: Configure login button pressed
     func loginButtonPressed(sender: UIButton) {
         print("Log in pressed!")
+        let username = loginStackView.usernameTextField.text!
+        let password = loginStackView.passwordTextField.text!
+        FaceSnapsClient.sharedInstance.signInUser(email: username, password: password) { (success, errorString) -> Void in
+            
+        }
     }
     
     // TODO: Present view controllers for each action tapped

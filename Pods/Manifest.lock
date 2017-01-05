@@ -1,12 +1,15 @@
 PODS:
   - Alamofire (4.2.0)
+  - Strongbox (0.3.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
+  - Strongbox
 
 SPEC CHECKSUMS:
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  Strongbox: a35d6dc8967f00563df3a3cd3ab4ef401a63b133
 
-PODFILE CHECKSUM: fbf9591dafebd398333a6b0d2a888be1d089a3af
+PODFILE CHECKSUM: 5b07510a4796b8251067138119a3adeb40232a06
 
 COCOAPODS: 1.1.1

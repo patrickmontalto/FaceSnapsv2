@@ -31,9 +31,11 @@ extension FaceSnapsClient {
                 // Sign up new user
                 static let signUpUser = "/users"
                 // Sign in with username and password
-                static let signInUser = "/users/sign_in"
+                static let signInUser = "/sessions"
                 // Sign out the user
-                static let signOutUser = "/users/sign_out"
+                static func signOutUser(auth_token: String) -> String {
+                    return "/sessions/\(auth_token)"
+                }
                 // Get current user
                 static let getCurrentUser = "/users/self"
                 // Get information about a user

@@ -25,8 +25,8 @@ class FaceSnapsClient: NSObject {
     func signInUser(email: String, password: String, completionHandler: (_ success: Bool, _ errorString: String?) -> Void) {
         let signInEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signInUser)
         let params = ["session":["email": email, "password": password]]
-        Alamofire.request(signInEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
-            print(response.result)
+        Alamofire.request(signInEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseString { (response) in
+            print(response)
         }
 
 
