@@ -22,43 +22,96 @@ class FaceSnapsClient: NSObject {
     private override init() {}
     
     // MARK: Sign in as a user
-    func signInUser(email: String, password: String, completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
+    func signInUser(credential: String, password: String, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void) {
+        // Build URL
         let signInEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signInUser)
-        let params = ["session":["email": email, "password": password]]
+        // Build params
+        let params = ["session":["credential": credential, "password": password]]
+        // Make request
         Alamofire.request(signInEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
-            // TODO: Store auth key in FaceSnapsStoragebox
             // GUARD: Was there an error?
             guard response.result.error == nil else {
                 print("Error calling GET on sign in")
-                completionHandler(false, response.result.error!.localizedDescription)
+                completionHandler(false, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
                 return
             }
             // GUARD: Do we have a json response?
             guard let json = response.result.value as? [String: Any] else {
                 let errorString = "Unable to get results as JSON from API"
-                completionHandler(false, errorString)
+                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
                 return
             }
             // GUARD: Get and print the auth_token
             guard let user = json["user"] as? [String: Any], let auth_token = user["auth_token"] as? String else {
-                let errorString = "Could not get user or auth_token from json response"
-                completionHandler(false, errorString)
+                guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String], let _ = errorResponse[Constant.JSONResponseKey.Error.title], let _ = errorResponse[Constant.JSONResponseKey.Error.message] else {
+                    let errorString = "An error occurred parsing errors JSON"
+                    completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
+                    return
+                }
+                completionHandler(false, errorResponse)
                 return
             }
+            
             // TODO: Debugging
             print("the auth token is " + auth_token)
             
             // Store the auth token
             if FaceSnapsStrongbox.sharedInstance.archive(auth_token, key: .authToken) {
+                // TODO: Post notification for userSignedIn?
                 completionHandler(true, nil)
             } else {
-                completionHandler(false, "Error saving auth_token to strongbox")
+                completionHandler(false, [Constant.ErrorResponseKey.title: "Error saving auth_token to strongbox"])
             }
         }
 
     }
     
     // MARK: Sign up as a new user
+    func signUpUser(username: String, email: String, fullName: String, password: String, completionHandler: @escaping (_ success: Bool) -> Void, errors: [String: String]? ) {
+        // Build URL
+        let signUpEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signUpUser)
+        // Build params
+        let params = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password]]
+        // Make request
+        Alamofire.request(signUpEndpoint, method: .post, parameters: params, encoding: .default, headers: nil).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling POST on sign up")
+                completionHandler(false, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+                return
+            }
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                return
+            }
+            // GUARD: Get and print the auth_token
+            guard let user = json["user"] as? [String: Any], let auth_token = user["auth_token"] as? String else {
+                guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String], let _ = errorResponse[Constant.JSONResponseKey.Error.title], let _ = errorResponse[Constant.JSONResponseKey.Error.message] else {
+                    let errorString = "An error occurred parsing errors JSON"
+                    completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
+                    return
+                }
+                completionHandler(false, errorResponse)
+                return
+            }
+            
+            // TODO: Debugging
+            print("the auth token is " + auth_token)
+            
+            // Store the auth token
+            if FaceSnapsStrongbox.sharedInstance.archive(auth_token, key: .authToken) {
+                // TODO: Post notification for userSignedIn?
+                completionHandler(true, nil)
+            } else {
+                completionHandler(false, [Constant.ErrorResponseKey.title: "Error saving auth_token to strongbox"])
+            }
+            
+        }
+        
+    }
     
     // MARK: Get latest news feed for the user
     

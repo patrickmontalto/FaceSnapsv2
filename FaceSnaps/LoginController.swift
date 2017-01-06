@@ -125,16 +125,31 @@ class LoginViewController: UIViewController {
     // TODO: Configure login button pressed
     func loginButtonPressed(sender: UIButton) {
         // TODO: Spinner on log in button
+        loginStackView.animateLoginButton(true)
         guard let username = loginStackView.usernameTextField.text, let password = loginStackView.passwordTextField.text else { return }
-        FaceSnapsClient.sharedInstance.signInUser(email: username, password: password) { (success, errorString) -> Void in
+        FaceSnapsClient.sharedInstance.signInUser(credential: username, password: password) { (success, errors) -> Void in
+            // stop animating the indicator view
+            self.loginStackView.animateLoginButton(false)
+            
             if success {
-                // Stop spinner on log in button
-                // TODO: if success, then display home controller with a spinner in the middle 
-                // make request to user feed
+                // TODO: make request to user feed
+                // TODO: Transition to home controller
+    
                 print("Successfully logged in!")
             } else {
-                // UIAlert: "Incorrect password for USERNAME" "The password you entered is incorrect. Please try again." -> with Try Again button
-                print(errorString!)
+                // Create action
+                let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
+
+                guard let errors = errors, let title = errors[FaceSnapsClient.Constant.ErrorResponseKey.title] else {
+                    self.displayAlert(withMessage: "", title: "An unspecified error ocurred.", actions: [action])
+                    return
+                }
+
+                let message = errors[FaceSnapsClient.Constant.ErrorResponseKey.message] ?? ""
+                
+                self.displayAlert(withMessage: message, title: title, actions: [action])
+                
+                print(title)
             }
         }
     }
@@ -172,11 +187,10 @@ class LoginViewController: UIViewController {
         facebookLoginStackView.spacing = 24
         view.layoutSubviews()
     }
-    
-    
+
 }
 
-// UITextFieldDelegate
+// MARK: - UITextFieldDelegate
 extension LoginViewController: UITextFieldDelegate {
     
     // Return key to dismiss keyboarrd

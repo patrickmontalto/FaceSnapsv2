@@ -42,6 +42,13 @@ class LoginStackView: UIStackView {
         return textField
     }()
     
+    lazy var loginButtonActivityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
     lazy var loginButton: UIButton = {
         let button = UIButton()
         button.setTitle("Login", for: .normal)
@@ -52,6 +59,9 @@ class LoginStackView: UIStackView {
         button.setTitleColor(.lightGray, for: .disabled)
         button.layer.cornerRadius = 4.0
         button.isEnabled = false
+        
+        // Add indicator
+        button.addSubview(self.loginButtonActivityIndicator)
         
         return button
     }()
@@ -99,6 +109,10 @@ class LoginStackView: UIStackView {
             getHelpView.leftAnchor.constraint(equalTo: self.leftAnchor),
             getHelpView.rightAnchor.constraint(equalTo: self.rightAnchor),
             getHelpView.heightAnchor.constraint(equalToConstant: 20),
+            loginButtonActivityIndicator.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor),
+            loginButtonActivityIndicator.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor),
+            loginButtonActivityIndicator.heightAnchor.constraint(equalToConstant: 20),
+            loginButtonActivityIndicator.widthAnchor.constraint(equalToConstant: 20),
         ])
     }
     
@@ -125,6 +139,18 @@ class LoginStackView: UIStackView {
     
     func setLoginButtonTarget(target: Any, action: Selector) {
         loginButton.addTarget(target, action: action, for: .touchUpInside)
+    }
+    
+    func animateLoginButton(_ enabled: Bool) {
+        if enabled {
+            // TODO: hide text
+            loginButton.setTitle("", for: .normal)
+            loginButtonActivityIndicator.startAnimating()
+        } else {
+            // TODO: Show text
+            loginButton.setTitle("Login", for: .normal)
+            loginButtonActivityIndicator.stopAnimating()
+        }
     }
     
 }
