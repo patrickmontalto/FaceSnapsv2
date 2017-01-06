@@ -124,11 +124,18 @@ class LoginViewController: UIViewController {
     
     // TODO: Configure login button pressed
     func loginButtonPressed(sender: UIButton) {
-        print("Log in pressed!")
-        let username = loginStackView.usernameTextField.text!
-        let password = loginStackView.passwordTextField.text!
+        // TODO: Spinner on log in button
+        guard let username = loginStackView.usernameTextField.text, let password = loginStackView.passwordTextField.text else { return }
         FaceSnapsClient.sharedInstance.signInUser(email: username, password: password) { (success, errorString) -> Void in
-            
+            if success {
+                // Stop spinner on log in button
+                // TODO: if success, then display home controller with a spinner in the middle 
+                // make request to user feed
+                print("Successfully logged in!")
+            } else {
+                // UIAlert: "Incorrect password for USERNAME" "The password you entered is incorrect. Please try again." -> with Try Again button
+                print(errorString!)
+            }
         }
     }
     

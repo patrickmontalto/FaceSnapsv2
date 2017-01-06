@@ -19,8 +19,8 @@ extension FaceSnapsClient {
     
     enum Constant {
         static let ApiScheme = "http"
-        static let ApiHost = FaceSnapsClient.ApplicationEnvironment == .production ? "TBD" : "localhost"//"67.81.24.198"
-        static let ApiPort: NSNumber? = FaceSnapsClient.ApplicationEnvironment == .production ? nil : 3000//81
+        static let ApiHost = FaceSnapsClient.ApplicationEnvironment == .production ? "TBD" : "67.81.24.198"
+        static let ApiPort: NSNumber? = FaceSnapsClient.ApplicationEnvironment == .production ? nil : 81
         static let ApiPath = ""
         static let ApiKey = ""
         static let ClientType = APIConstants.Client.facesnaps

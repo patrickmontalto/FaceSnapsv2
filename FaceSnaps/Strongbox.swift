@@ -11,7 +11,27 @@ import Security
 import Strongbox
 
 class FaceSnapsStrongbox {
-    static let sharedInstance: Strongbox = Strongbox()
+    static let sharedInstance = FaceSnapsStrongbox()
+    
+    private let strongBox = Strongbox()
     
     private init() {}
+    
+    func archive(_ object: Any?, key: Constants.Keys) -> Bool {
+        let keyString = key.rawValue
+        return strongBox.archive(object, key: keyString)
+    }
+    
+    func unarchive(objectForKey key: Constants.Keys) -> Any? {
+        let keyString = key.rawValue
+        return strongBox.unarchive(objectForKey: keyString)
+    }
+    
+    // MARK: - Constants for Strongbox
+    enum Constants {
+        enum Keys:String {
+            case authToken, username, fullName
+        }
+    }
 }
+

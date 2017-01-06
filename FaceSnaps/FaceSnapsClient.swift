@@ -22,12 +22,38 @@ class FaceSnapsClient: NSObject {
     private override init() {}
     
     // MARK: Sign in as a user
-    func signInUser(email: String, password: String, completionHandler: (_ success: Bool, _ errorString: String?) -> Void) {
+    func signInUser(email: String, password: String, completionHandler: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         let signInEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signInUser)
         let params = ["session":["email": email, "password": password]]
-        Alamofire.request(signInEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseString { (response) in
+        Alamofire.request(signInEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             // TODO: Store auth key in FaceSnapsStoragebox
-            print(response)
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling GET on sign in")
+                completionHandler(false, response.result.error!.localizedDescription)
+                return
+            }
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(false, errorString)
+                return
+            }
+            // GUARD: Get and print the auth_token
+            guard let user = json["user"] as? [String: Any], let auth_token = user["auth_token"] as? String else {
+                let errorString = "Could not get user or auth_token from json response"
+                completionHandler(false, errorString)
+                return
+            }
+            // TODO: Debugging
+            print("the auth token is " + auth_token)
+            
+            // Store the auth token
+            if FaceSnapsStrongbox.sharedInstance.archive(auth_token, key: .authToken) {
+                completionHandler(true, nil)
+            } else {
+                completionHandler(false, "Error saving auth_token to strongbox")
+            }
         }
 
     }
