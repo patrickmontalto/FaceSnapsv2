@@ -37,6 +37,8 @@ extension FaceSnapsClient {
             enum UserEndpoint {
                 // Sign up new user
                 static let signUpUser = "/users/sign_up"
+                // Check if a username is available
+                static let checkAvailability = "/users/sign_up/check_availability"
                 // Sign in with username and password
                 static let signInUser = "/sessions"
                 // Sign out the user
@@ -102,6 +104,7 @@ extension FaceSnapsClient {
                 static let username = "username"
                 static let email = "email"
                 static let authToken = "auth_token"
+                static let available = "available"
             }
             // MARK: - Relationship Data
             

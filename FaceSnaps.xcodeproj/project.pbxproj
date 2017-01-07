@@ -37,6 +37,7 @@
 		3A7C7FB91DEE27D0008608D1 /* FaceSnapsTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */; };
 		3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C1DE71E12FF370095CE32 /* UIButton+setBackgroundColor.swift */; };
 		3A8C1DEA1E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C1DE91E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift */; };
+		3A9A3B9F1E20B929008A1334 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3B9E1E20B929008A1334 /* Formatter.swift */; };
 		3A9D88281E16014100FB928D /* FaceSnapsImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */; };
 		3A9D882A1E163F4600FB928D /* UIButton+setImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D88291E163F4600FB928D /* UIButton+setImage.swift */; };
 		3A9D882C1E199C6100FB928D /* ImageCropHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */; };
@@ -104,6 +105,7 @@
 		3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsTabController.swift; sourceTree = "<group>"; };
 		3A8C1DE71E12FF370095CE32 /* UIButton+setBackgroundColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+setBackgroundColor.swift"; sourceTree = "<group>"; };
 		3A8C1DE91E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignUpControllerWithAccount.swift; sourceTree = "<group>"; };
+		3A9A3B9E1E20B929008A1334 /* Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsImagePickerController.swift; sourceTree = "<group>"; };
 		3A9D88291E163F4600FB928D /* UIButton+setImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+setImage.swift"; sourceTree = "<group>"; };
 		3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCropHelper.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				3A8C1DE71E12FF370095CE32 /* UIButton+setBackgroundColor.swift */,
 				3A9D88291E163F4600FB928D /* UIButton+setImage.swift */,
 				3A9D882D1E199F6C00FB928D /* UIImage+Circle.swift */,
+				3A9A3B9E1E20B929008A1334 /* Formatter.swift */,
 			);
 			name = Convenience;
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 				CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */,
 				3A32A6C21DA94D8F00AEE45F /* PhotoCell.swift in Sources */,
 				3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */,
+				3A9A3B9F1E20B929008A1334 /* Formatter.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
 				3A17EA501DFF644C00031834 /* LineView.swift in Sources */,
 				3AB17FAC1E0B2080005E8739 /* LoginFlowNavigationController.swift in Sources */,

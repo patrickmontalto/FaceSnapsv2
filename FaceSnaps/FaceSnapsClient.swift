@@ -67,13 +67,13 @@ class FaceSnapsClient: NSObject {
     }
     
     // MARK: Sign up as a new user
-    func signUpUser(username: String, email: String, fullName: String, password: String, completionHandler: @escaping (_ success: Bool) -> Void, errors: [String: String]? ) {
+    func signUpUser(username: String, email: String, fullName: String, password: String, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void ) {
         // Build URL
         let signUpEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signUpUser)
         // Build params
         let params = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password]]
         // Make request
-        Alamofire.request(signUpEndpoint, method: .post, parameters: params, encoding: .default, headers: nil).responseJSON { (response) in
+        Alamofire.request(signUpEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
@@ -112,7 +112,38 @@ class FaceSnapsClient: NSObject {
         }
         
     }
-    
+    // MARK: Check if username/email is available
+    func checkAvailability(forUserCredential userCredential: String, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void ) {
+        // Build URL
+        let checkEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.checkAvailability)
+        // Build params
+        let params = ["user_credential": userCredential]
+        // Make request
+        Alamofire.request(checkEndpoint, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling GET on check availability")
+                completionHandler(false, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+                return
+            }
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                return
+            }
+            
+            // GUARD: Get and return whether or not it is available
+            guard let available = json[Constant.JSONResponseKey.User.available] as? Bool else {
+                let errorString = "Invalid JSON response: missing key"
+                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                return
+            }
+            
+            completionHandler(available, nil)
+        }
+
+    }
     // MARK: Get latest news feed for the user
     
     // MARK: Get information about the owner of the access token (user)

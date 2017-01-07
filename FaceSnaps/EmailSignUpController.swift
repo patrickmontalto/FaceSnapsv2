@@ -128,30 +128,39 @@ class EmailSignUpController: UIViewController {
     
     // MARK: Submit email to sign up
     func nextButtonTapped(sender: UIButton) {
+        // Make sure email is filled in
         guard let email = emailTextField.text else {
             return
         }
         
-        // TODO: Check if email is taken yet
-        if emailAvailable(email: email) {
-            // Present EmailSignUpControllerWithAccount
-            let vc = EmailSignUpControllerWithAccount()
-            vc.email = email
-            vc.view.backgroundColor = .white
-            navigationController?.pushViewController(vc, animated: true)
-        } else {
-            // TODO: Red dropdown saying Email already taken. OR Please enter a valid email.
-        }
-        // If not, proceed to Full Name and Password and photo screen
-        // Then proceed to Username screen
-        // Then find Facebook Friends?
-        // Search Contacts (skipping)
+        // Create action for failure cases
+        let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
         
-    }
-    
-    // TODO: Check email registration via API - move this later
-    func emailAvailable(email: String) -> Bool {
-        return true
+        // Check if email is valid
+        guard Formatter.isValidEmail(email) else {
+            displayAlert(withMessage: "Invalid email", title: "Please enter a valid email.", actions: [action])
+            return
+        }
+        
+        // TODO: Check if email is taken yet
+        FaceSnapsClient.sharedInstance.checkAvailability(forUserCredential: email) { (available, errors) in
+            if available {
+                // Present EmailSignUpControllerWithAccount
+                let vc = EmailSignUpControllerWithAccount()
+                vc.email = email
+                vc.view.backgroundColor = .white
+                DispatchQueue.main.async {
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            } else {
+                if errors == nil {
+                    // TODO: Red dropdown saying Email already taken. OR Please enter a valid email.
+                    self.displayAlert(withMessage: "Email already taken.", title: "Please enter another email.", actions: [action])
+                } else {
+                    print(errors!["title"]!)
+                }
+            }
+        }
     }
     
 }
