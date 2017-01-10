@@ -6,6 +6,7 @@
 //  Copyright © 2017 Patrick Montalto. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 class UsernameSignUpController: UIViewController {
@@ -143,6 +144,11 @@ class UsernameSignUpController: UIViewController {
         // TODO: Check if username is allowed (separate network request)
         // Submit to API : username, password, full name, image data
         // if success, show home screen
+        if let profileImage = profileImage, let base64String = ImageCoder.encodeToBase64(image: profileImage) {
+            // Add base64 image string to params and make request
+        } else {
+            // Make request without image string
+        }
     }
     
     // MARK: - Sign In tapped

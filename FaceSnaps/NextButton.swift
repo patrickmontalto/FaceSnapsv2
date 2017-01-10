@@ -10,6 +10,13 @@ import UIKit
 
 class NextButton: UIButton {
     
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
@@ -22,6 +29,24 @@ class NextButton: UIButton {
         self.layer.masksToBounds = true
         
         self.isEnabled = false
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        ])
+    }
+    
+    // TODO: Repeat code from LoginViews.swift
+    func animateLoading(_ enabled: Bool) {
+        if enabled {
+            // TODO: hide text
+            self.setTitle("", for: .normal)
+            activityIndicator.startAnimating()
+        } else {
+            // TODO: Show text
+            self.setTitle("Next", for: .normal)
+            activityIndicator.stopAnimating()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

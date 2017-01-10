@@ -67,11 +67,14 @@ class FaceSnapsClient: NSObject {
     }
     
     // MARK: Sign up as a new user
-    func signUpUser(username: String, email: String, fullName: String, password: String, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void ) {
+    func signUpUser(username: String, email: String, fullName: String, password: String, profileImage: String?, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void ) {
         // Build URL
         let signUpEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signUpUser)
         // Build params
-        let params = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password]]
+        var params = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password]]
+        if let profileImage = profileImage {
+            var params = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password, "photo": "data:image/png;base64,\(profileImage)"]]
+        }
         // Make request
         Alamofire.request(signUpEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             
