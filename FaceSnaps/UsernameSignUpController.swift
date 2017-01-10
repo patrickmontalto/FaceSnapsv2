@@ -40,22 +40,14 @@ class UsernameSignUpController: UIViewController {
         return recognizer
     }()
     
-    // TODO: When text entry stops, query API to see if available
-    // TODO: Put checkmark in TF when available
-    // TODO: Put reload button to randomly generate a new username (fullname + 4 random numbers)
     lazy var usernameTextField: UsernameTextField = {
-        let text = "Username"
-        let textField = UsernameTextField(text: text)
+        let textField = UsernameTextField()
         
         textField.delegate = self
         
         // Add gesture to textField refresh image
         textField.refreshImageView.addGestureRecognizer(self.suggestUsernameTapGesture)
         textField.refreshImageView.isUserInteractionEnabled = true
-        
-        // TODO: Once text entry stops, make call to server checking if username is available
-        // if it is available, put gray checkmark
-        // if not, put (x)
         
         return textField
     }()
@@ -80,7 +72,6 @@ class UsernameSignUpController: UIViewController {
         stackView.addArrangedSubview(self.usernameTextField)
         stackView.addArrangedSubview(self.nextButton)
         
-        // TODO: As typing, replace spaces with underscores
         return stackView
     }()
     
@@ -92,7 +83,14 @@ class UsernameSignUpController: UIViewController {
         return view
     }()
     
-    // TODO: Add target to button submit to API and sign in
+    // MARK: Timer for editing text checking availability of username
+    var timer: Timer? {
+        didSet {
+            // When timer is set, reset usernameTextField UI
+            usernameTextField.availabilityImageView.isHidden = true
+            usernameTextField.refreshImageView.isHidden = false
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,6 +100,7 @@ class UsernameSignUpController: UIViewController {
         
         // Add target action for usernameTextField
         usernameTextField.addTarget(self, action: #selector(textFieldEmptyCheck(sender:)), for: .editingChanged)
+        usernameTextField.addTarget(self, action: #selector(triggerUsernameTextFieldTimer), for: .editingChanged)
         
         // Add target action for next button
         nextButton.addTarget(self, action: #selector(nextButtonTapped(sender:)), for: .touchUpInside)
@@ -141,7 +140,7 @@ class UsernameSignUpController: UIViewController {
     
     // MARK: - Submit username to complete sign up
     func nextButtonTapped(sender: UIButton) {
-        // TODO: Check if username is allowed
+        // TODO: Check if username is allowed (separate network request)
         // Submit to API : username, password, full name, image data
         // if success, show home screen
     }
@@ -161,12 +160,23 @@ class UsernameSignUpController: UIViewController {
     
 }
 
-// MARK: UITextFieldDelegate
+// MARK: - UITextFieldDelegate
 extension UsernameSignUpController: UITextFieldDelegate {
     
+    // MARK: Hide availability image view
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard textField is UsernameTextField else { return }
+        (textField as! UsernameTextField).availabilityImageView.isHidden = true
+    }
+    // MARK: Check if username is available
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // Invalidate the timer if it is running
+        timer?.invalidate()
+        checkUsernameAvailability()
+    }
+
+    // MARK: Substitute underscores for spaces and disallow tabs
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // TODO: Have a timer for 2 seconds, if it reaches 2 seconds, run through textfieldDidEndEditing
-        // if the textfield does end editing prior to the 2 second mark, invalidate timer.
         guard let text = textField.text else { return true }
 
         let newLength = text.characters.count + string.characters.count - range.length
@@ -174,35 +184,53 @@ extension UsernameSignUpController: UITextFieldDelegate {
         if string == " " {
             textField.text! = (text + string).replacingOccurrences(of: " ", with: "_")
             return false
+        } else if string == "\t" {
+            textField.text! = text
+            return false
         }
         return true
     }
     
-    // TODO: Check protocol default implementation
-    // When editing ends, check with backend to see if username is available.
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        // Make a request with the usernameTextField.text
-        // Check if that response is already cached
-        // Otherwise, proceed to network request
-        // Put spinner inside usernameTextField
-        // make request
-        // remove spinner
-        // Place either a checkbox or cross
-    }
-    
-    // Return key to dismiss keyboarrd
+    // MARK: Return key to dismiss keyboarrd
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         nextButton.sendActions(for: .touchUpInside)
         view.endEditing(true)
         return false
     }
     
-    // Disable/enable login button if text fields are empty/filled in
+    // MARK: Disable/enable login button if text fields are empty/filled in
     func textFieldEmptyCheck(sender: UITextField) {
         if usernameTextField.isBlank() {
             nextButton.isEnabled = false
         } else {
             nextButton.isEnabled = true
         }
+    }
+    
+    // MARK: Begin timer when textfield changes
+    func triggerUsernameTextFieldTimer() {
+        timer?.invalidate()
+        // TODO: Have a timer for 2 seconds, if it reaches 2 seconds, run through textfieldDidEndEditing
+        timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(checkUsernameAvailability), userInfo: nil, repeats: false)
+    }
+    
+    // MARK: Make API call to see if username is available. Update UI Accordingly
+    func checkUsernameAvailability() {
+        // Check if the textField is blank
+        guard usernameTextField.isBlank() == false else { return }
+        
+        let username = usernameTextField.text!
+        usernameTextField.setSubviewLoadingState()
+        // Make call to network checking if username is available
+        FaceSnapsClient.sharedInstance.checkAvailability(forUserCredential: username) { (available, errors) in
+            if errors != nil {
+                print(errors!["title"]!)
+            } else {
+                DispatchQueue.main.async {
+                    self.usernameTextField.toggleSubviewState(forResponse: available)
+                }
+            }
+        }
+
     }
 }

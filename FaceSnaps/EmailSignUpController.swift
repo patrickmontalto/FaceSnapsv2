@@ -131,7 +131,7 @@ class EmailSignUpController: UIViewController {
             return
         }
         
-        // TODO: Check if email is taken yet
+        // Check if email is taken yet
         FaceSnapsClient.sharedInstance.checkAvailability(forUserCredential: email) { (available, errors) in
             if available {
                 // Present EmailSignUpControllerWithAccount
@@ -143,7 +143,6 @@ class EmailSignUpController: UIViewController {
                 }
             } else {
                 if errors == nil {
-                    // TODO: Red dropdown saying Email already taken. OR Please enter a valid email.
                     self.displayAlert(withMessage: "Email already taken.", title: "Please enter another email.", actions: [action])
                 } else {
                     print(errors!["title"]!)
