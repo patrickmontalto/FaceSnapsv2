@@ -68,20 +68,8 @@ class EmailSignUpControllerWithAccount: UIViewController {
 
     }()
     
-    // TODO: Repeat code from EmailSignUpController
-    lazy var nextButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 4
-        button.setTitle("Next", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14.0)
-        button.setBackgroundColor(color: UIColor(red: 157/255, green: 204/255, blue: 245/255, alpha: 1.0), forUIControlState: .disabled)
-        button.setBackgroundColor(color: UIColor(red: 62/255, green: 153/255, blue: 237/255, alpha: 1.0), forUIControlState: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.masksToBounds = true
-        
-        button.isEnabled = false
-        
-        return button
+    lazy var nextButton: NextButton = {
+        return NextButton(frame: .zero)
     }()
     
     lazy var accountSignUpStackView: UIStackView = {
@@ -198,7 +186,7 @@ class EmailSignUpControllerWithAccount: UIViewController {
         let label = signInView.interactableLabel
         if tapGesture.didTapAttributedTextInLabel(label: label, inRange: label.boldRange) {
             // Go back
-            self.navigationController?.popToRootViewController(animated: true)
+            _ = self.navigationController?.popToRootViewController(animated: true)
         }
     }
     
@@ -207,6 +195,14 @@ class EmailSignUpControllerWithAccount: UIViewController {
         guard let fullName = fullNameTextField.text, let password = passwordTextField.text else {
             return
         }
+        
+        let vc = UsernameSignUpController()
+        vc.fullName = fullName
+        vc.password = password
+        vc.profileImage = addPhotoButton.imageView?.image
+        vc.view.backgroundColor = .white
+        
+        navigationController?.pushViewController(vc, animated: true)
         
 //        if validCredentials(fullName: fullName, password: password) {
 //            let vc = EmailSignUpControllerWithUsername()

@@ -156,7 +156,7 @@ class SignUpController: UIViewController {
         let label = signInView.interactableLabel
         if tapGesture.didTapAttributedTextInLabel(label: label, inRange: label.boldRange) {
             // Go back
-            self.navigationController?.popToRootViewController(animated: true)
+            _ = self.navigationController?.popToRootViewController(animated: true)
         }
     }
     // TODO: Login / Sign up with Facebook

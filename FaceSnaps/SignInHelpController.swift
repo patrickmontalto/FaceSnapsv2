@@ -194,7 +194,7 @@ class SignInHelpController: UIViewController {
         let label = backToLogInView.interactableLabel
         if tapGesture.didTapAttributedTextInLabel(label: label, inRange: label.boldRange) {
             // GO BACK
-            self.navigationController?.popToRootViewController(animated: true)
+            _ = self.navigationController?.popToRootViewController(animated: true)
         }
     }
     

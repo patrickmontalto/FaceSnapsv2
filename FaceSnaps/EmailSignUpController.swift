@@ -41,19 +41,8 @@ class EmailSignUpController: UIViewController {
         return textField
     }()
     
-    lazy var nextButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 4
-        button.setTitle("Next", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14.0)
-        button.setBackgroundColor(color: UIColor(red: 157/255, green: 204/255, blue: 245/255, alpha: 1.0), forUIControlState: .disabled)
-        button.setBackgroundColor(color: UIColor(red: 62/255, green: 153/255, blue: 237/255, alpha: 1.0), forUIControlState: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.masksToBounds = true
-        
-        button.isEnabled = false
-        
-        return button
+    lazy var nextButton: NextButton = {
+        return NextButton(frame: .zero)
     }()
     
     lazy var signUpStackView: UIStackView = {
@@ -122,7 +111,7 @@ class EmailSignUpController: UIViewController {
         let label = signInView.interactableLabel
         if tapGesture.didTapAttributedTextInLabel(label: label, inRange: label.boldRange) {
             // Go back
-            self.navigationController?.popToRootViewController(animated: true)
+            _ = self.navigationController?.popToRootViewController(animated: true)
         }
     }
     
