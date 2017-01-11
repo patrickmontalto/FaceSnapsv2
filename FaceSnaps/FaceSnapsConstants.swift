@@ -24,6 +24,7 @@ extension FaceSnapsClient {
         static let ApiPath = ""
         static let ApiKey = ""
         static let ClientType = APIConstants.Client.facesnaps
+        static let AuthorizationHeader = [APIConstants.HTTPHeaderKey.authorization: ]
         
         enum ErrorResponseKey {
             static let error = "error"
@@ -45,6 +46,8 @@ extension FaceSnapsClient {
                 static func signOutUser(auth_token: String) -> String {
                     return "/sessions/\(auth_token)"
                 }
+                // Get current user's feed
+                static let getUserFeed = "/users/self/feed"
                 // Get current user
                 static let getCurrentUser = "/users/self"
                 // Get information about a user

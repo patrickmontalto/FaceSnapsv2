@@ -78,8 +78,8 @@ class FaceSnapsClient: NSObject {
         
         // Make headers
         let headers: HTTPHeaders = [
-            "Content-Type": "application/json",
-            "Accept": "application/json"
+            APIConstants.HTTPHeaderKey.contentType: "application/json",
+            APIConstants.HTTPHeaderKey.accept: "application/json"
         ]
         // Make request
         Alamofire.request(signUpEndpoint, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
@@ -154,7 +154,18 @@ class FaceSnapsClient: NSObject {
         }
 
     }
-    // MARK: Get latest news feed for the user
+    // MARK: Get latest feed for the user
+    func getUserFeed(completionHandler: @escaping (_ success: Bool, _ errors: [String:String]?) -> Void) {
+        // Build URL
+        let userFeedEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeed)
+        // Make request
+        Alamofire.request(userFeedEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: <#T##HTTPHeaders?#>) { (response) in
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling GET on user feed")
+            }
+        }
+    }
     
     // MARK: Get information about the owner of the access token (user)
     

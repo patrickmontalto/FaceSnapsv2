@@ -24,10 +24,10 @@ struct APIConstants {
     }
     
     // MARK: - HTTP Header Keys
-    enum HTTPHeaderKey:String {
-        case contentType = "Content-Type"
-        case accept = "Accept"
-        case authorization = "Authorization"
+    enum HTTPHeaderKey {
+        static let contentType = "Content-Type"
+        static let accept = "Accept"
+        static let authorization = "Authorization"
     }
     
     // MARK: HTTP Header Values
