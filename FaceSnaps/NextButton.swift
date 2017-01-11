@@ -30,6 +30,8 @@ class NextButton: UIButton {
         
         self.isEnabled = false
         
+        self.addSubview(activityIndicator)
+        
         NSLayoutConstraint.activate([
             activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor)

@@ -196,25 +196,15 @@ class EmailSignUpControllerWithAccount: UIViewController {
             return
         }
         
+        // TODO: Proto User struct?
         let vc = UsernameSignUpController()
         vc.fullName = fullName
         vc.password = password
+        vc.email = email
         vc.profileImage = addPhotoButton.imageView?.image
         vc.view.backgroundColor = .white
         
         navigationController?.pushViewController(vc, animated: true)
-        
-//        if validCredentials(fullName: fullName, password: password) {
-//            let vc = EmailSignUpControllerWithUsername()
-//            vc.fullName = fullName
-//            vc.password = password
-//            navigationController?.pushViewController(vc, animated: true)
-//        } else {
-//            // TODO: Red dropdown saying invalid full name or password
-//        }
-        // Then find Facebook Friends?
-        // Search Contacts (skipping)
-        
     }
     
 }

@@ -148,8 +148,6 @@ class LoginViewController: UIViewController {
                 let message = errors[FaceSnapsClient.Constant.ErrorResponseKey.message] ?? ""
                 
                 self.displayAlert(withMessage: message, title: title, actions: [action])
-                
-                print(title)
             }
         }
     }

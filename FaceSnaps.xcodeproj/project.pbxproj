@@ -71,6 +71,7 @@
 		D2318A901E1D621D00E0347F /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2318A8F1E1D621D00E0347F /* APIConstants.swift */; };
 		D2318A921E1D623D00E0347F /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2318A911E1D623D00E0347F /* APIClient.swift */; };
 		D267035B1E256BE0001C06BE /* ImageCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267035A1E256BE0001C06BE /* ImageCoder.swift */; };
+		D267035D1E269C9D001C06BE /* URL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267035C1E269C9D001C06BE /* URL+Parameters.swift */; };
 		D2DEE0051E1EF4D4004BCEF7 /* Strongbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */; };
 		D2DEE0081E204899004BCEF7 /* UsernameSignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */; };
 /* End PBXBuildFile section */
@@ -144,6 +145,7 @@
 		D2318A8F1E1D621D00E0347F /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		D2318A911E1D623D00E0347F /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		D267035A1E256BE0001C06BE /* ImageCoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCoder.swift; sourceTree = "<group>"; };
+		D267035C1E269C9D001C06BE /* URL+Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Parameters.swift"; sourceTree = "<group>"; };
 		D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strongbox.swift; sourceTree = "<group>"; };
 		D2DEE0061E201E87004BCEF7 /* FaceSnaps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FaceSnaps.entitlements; sourceTree = "<group>"; };
 		D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameSignUpController.swift; sourceTree = "<group>"; };
@@ -313,6 +315,7 @@
 				3A9D88291E163F4600FB928D /* UIButton+setImage.swift */,
 				3A9D882D1E199F6C00FB928D /* UIImage+Circle.swift */,
 				3A9A3B9E1E20B929008A1334 /* Formatter.swift */,
+				D267035C1E269C9D001C06BE /* URL+Parameters.swift */,
 			);
 			name = Convenience;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 				CDD5D6021E173689007364B4 /* CameraFocusView.swift in Sources */,
 				3A9A3BA11E219138008A1334 /* NextButton.swift in Sources */,
 				3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */,
+				D267035D1E269C9D001C06BE /* URL+Parameters.swift in Sources */,
 				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,

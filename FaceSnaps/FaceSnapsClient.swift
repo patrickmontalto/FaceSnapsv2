@@ -71,12 +71,18 @@ class FaceSnapsClient: NSObject {
         // Build URL
         let signUpEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signUpUser)
         // Build params
-        var params = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password]]
+        var params: [String: Any] = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password]]
         if let profileImage = profileImage {
-            var params = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password, "photo": "data:image/png;base64,\(profileImage)"]]
+             params = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password], "photo": "data:image/jpeg;base64,\(profileImage)"]
         }
+        
+        // Make headers
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        ]
         // Make request
-        Alamofire.request(signUpEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
+        Alamofire.request(signUpEndpoint, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
@@ -90,6 +96,7 @@ class FaceSnapsClient: NSObject {
                 completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
                 return
             }
+
             // GUARD: Get and print the auth_token
             guard let user = json["user"] as? [String: Any], let auth_token = user["auth_token"] as? String else {
                 guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String], let _ = errorResponse[Constant.JSONResponseKey.Error.title], let _ = errorResponse[Constant.JSONResponseKey.Error.message] else {

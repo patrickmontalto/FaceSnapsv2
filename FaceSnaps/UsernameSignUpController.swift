@@ -141,14 +141,43 @@ class UsernameSignUpController: UIViewController {
     
     // MARK: - Submit username to complete sign up
     func nextButtonTapped(sender: UIButton) {
-        // TODO: Check if username is allowed (separate network request)
-        // Submit to API : username, password, full name, image data
-        // if success, show home screen
-        if let profileImage = profileImage, let base64String = ImageCoder.encodeToBase64(image: profileImage) {
-            // Add base64 image string to params and make request
-        } else {
-            // Make request without image string
+        // GUARD: Username allowed?
+        guard let username = usernameTextField.text else {
+            return
         }
+        // TODO: Check if username is allowed (separate network request)
+
+        // Create base64 string
+        let base64String = ImageCoder.encodeToBase64(image: profileImage!)
+        
+        // Start the activity indicator on the button
+        nextButton.animateLoading(true)
+        
+        FaceSnapsClient.sharedInstance.signUpUser(username: username, email: email, fullName: fullName, password: password, profileImage: base64String) { (success, errors) -> Void in
+            // Stop the activity indicator on the button
+            self.nextButton.animateLoading(false)
+            if success {
+                // switch navigation controllers to MainApplicationController
+                // ActivityIndicator on home screen
+                // Make request to user feed
+                // once request finishes, stop activity indicator
+                // Present data on home screen (feed screen)
+                print("Signed up!")
+            } else {
+                // Create action
+                let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
+                
+                guard let errors = errors, let title = errors[FaceSnapsClient.Constant.ErrorResponseKey.title] else {
+                    self.displayAlert(withMessage: "", title: "An unspecified error ocurred.", actions: [action])
+                    return
+                }
+                let message = errors[FaceSnapsClient.Constant.ErrorResponseKey.message] ?? ""
+                
+                self.displayAlert(withMessage: message, title: title, actions: [action])
+                
+            }
+        }
+
     }
     
     // MARK: - Sign In tapped
