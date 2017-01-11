@@ -34,7 +34,6 @@
 		3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32DD211DA1628800CD2669 /* MediaPickerManager.swift */; };
 		3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */; };
 		3A7C7FB71DEE2737008608D1 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C7FB61DEE2737008608D1 /* HomeController.swift */; };
-		3A7C7FB91DEE27D0008608D1 /* FaceSnapsTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */; };
 		3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C1DE71E12FF370095CE32 /* UIButton+setBackgroundColor.swift */; };
 		3A8C1DEA1E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C1DE91E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift */; };
 		3A9A3B9F1E20B929008A1334 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3B9E1E20B929008A1334 /* Formatter.swift */; };
@@ -72,8 +71,10 @@
 		D2318A921E1D623D00E0347F /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2318A911E1D623D00E0347F /* APIClient.swift */; };
 		D267035B1E256BE0001C06BE /* ImageCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267035A1E256BE0001C06BE /* ImageCoder.swift */; };
 		D267035D1E269C9D001C06BE /* URL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267035C1E269C9D001C06BE /* URL+Parameters.swift */; };
-		D267035F1E26AB35001C06BE /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267035E1E26AB35001C06BE /* AppNavigationController.swift */; };
 		D26703611E26AFFD001C06BE /* AppTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26703601E26AFFD001C06BE /* AppTabBarController.swift */; };
+		D26703631E26D1B1001C06BE /* ProfileNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26703621E26D1B1001C06BE /* ProfileNavigationController.swift */; };
+		D26703661E26D2B8001C06BE /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26703651E26D2B8001C06BE /* ProfileController.swift */; };
+		D26703691E26D8E1001C06BE /* HomeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26703681E26D8E1001C06BE /* HomeNavigationController.swift */; };
 		D2DEE0051E1EF4D4004BCEF7 /* Strongbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */; };
 		D2DEE0081E204899004BCEF7 /* UsernameSignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */; };
 /* End PBXBuildFile section */
@@ -109,7 +110,6 @@
 		3A32DD211DA1628800CD2669 /* MediaPickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerManager.swift; sourceTree = "<group>"; };
 		3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoFilterController.swift; sourceTree = "<group>"; };
 		3A7C7FB61DEE2737008608D1 /* HomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
-		3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsTabController.swift; sourceTree = "<group>"; };
 		3A8C1DE71E12FF370095CE32 /* UIButton+setBackgroundColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+setBackgroundColor.swift"; sourceTree = "<group>"; };
 		3A8C1DE91E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignUpControllerWithAccount.swift; sourceTree = "<group>"; };
 		3A9A3B9E1E20B929008A1334 /* Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
@@ -148,8 +148,10 @@
 		D2318A911E1D623D00E0347F /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		D267035A1E256BE0001C06BE /* ImageCoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCoder.swift; sourceTree = "<group>"; };
 		D267035C1E269C9D001C06BE /* URL+Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Parameters.swift"; sourceTree = "<group>"; };
-		D267035E1E26AB35001C06BE /* AppNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
 		D26703601E26AFFD001C06BE /* AppTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTabBarController.swift; sourceTree = "<group>"; };
+		D26703621E26D1B1001C06BE /* ProfileNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileNavigationController.swift; sourceTree = "<group>"; };
+		D26703651E26D2B8001C06BE /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		D26703681E26D8E1001C06BE /* HomeNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeNavigationController.swift; sourceTree = "<group>"; };
 		D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strongbox.swift; sourceTree = "<group>"; };
 		D2DEE0061E201E87004BCEF7 /* FaceSnaps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FaceSnaps.entitlements; sourceTree = "<group>"; };
 		D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameSignUpController.swift; sourceTree = "<group>"; };
@@ -230,18 +232,11 @@
 				3A32A6B11DA5F21C00AEE45F /* CoreDataController.swift */,
 				3A32A6BF1DA94BD900AEE45F /* PhotoFetchedResultsController.swift */,
 				3A32A6C31DA95BE800AEE45F /* PhotoSortListController.swift */,
-				3A7C7FB61DEE2737008608D1 /* HomeController.swift */,
-				3A7C7FB81DEE27D0008608D1 /* FaceSnapsTabController.swift */,
-				3A0805E61DEE2D01002DB0DF /* LoginController.swift */,
-				3ABF878D1E01EB0500388866 /* SignInHelpController.swift */,
-				3AB17FAB1E0B2080005E8739 /* LoginFlowNavigationController.swift */,
-				3AB17FB11E0B753D005E8739 /* SignUpController.swift */,
-				3AB17FB71E12F879005E8739 /* EmailSignUpController.swift */,
-				3A8C1DE91E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift */,
-				3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */,
-				D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */,
-				D267035E1E26AB35001C06BE /* AppNavigationController.swift */,
 				D26703601E26AFFD001C06BE /* AppTabBarController.swift */,
+				D267036A1E26D8F0001C06BE /* Home */,
+				D26703641E26D1FF001C06BE /* Log In / Sign Up */,
+				3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */,
+				D26703671E26D34D001C06BE /* Profile */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -333,6 +328,38 @@
 				39E323E2EB82704E9F8D43DC /* Pods-FaceSnaps.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D26703641E26D1FF001C06BE /* Log In / Sign Up */ = {
+			isa = PBXGroup;
+			children = (
+				3AB17FAB1E0B2080005E8739 /* LoginFlowNavigationController.swift */,
+				3A0805E61DEE2D01002DB0DF /* LoginController.swift */,
+				3ABF878D1E01EB0500388866 /* SignInHelpController.swift */,
+				3AB17FB11E0B753D005E8739 /* SignUpController.swift */,
+				3AB17FB71E12F879005E8739 /* EmailSignUpController.swift */,
+				3A8C1DE91E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift */,
+				D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */,
+			);
+			name = "Log In / Sign Up";
+			sourceTree = "<group>";
+		};
+		D26703671E26D34D001C06BE /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				D26703621E26D1B1001C06BE /* ProfileNavigationController.swift */,
+				D26703651E26D2B8001C06BE /* ProfileController.swift */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		D267036A1E26D8F0001C06BE /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				D26703681E26D8E1001C06BE /* HomeNavigationController.swift */,
+				3A7C7FB61DEE2737008608D1 /* HomeController.swift */,
+			);
+			name = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -483,12 +510,12 @@
 				3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */,
 				3A9A3B9F1E20B929008A1334 /* Formatter.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
+				D26703631E26D1B1001C06BE /* ProfileNavigationController.swift in Sources */,
 				3A17EA501DFF644C00031834 /* LineView.swift in Sources */,
 				3AB17FAC1E0B2080005E8739 /* LoginFlowNavigationController.swift in Sources */,
 				3A17EA4C1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift in Sources */,
 				3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */,
 				3A0805EB1DEF6CFE002DB0DF /* GradientLayerAnimator.swift in Sources */,
-				D267035F1E26AB35001C06BE /* AppNavigationController.swift in Sources */,
 				3AB17FB01E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift in Sources */,
 				3A32DD121DA0309100CD2669 /* PhotoListController.swift in Sources */,
 				3A32A6BC1DA6069900AEE45F /* Location.swift in Sources */,
@@ -496,6 +523,7 @@
 				3AB17FB21E0B753D005E8739 /* SignUpController.swift in Sources */,
 				3A32A6C41DA95BE800AEE45F /* PhotoSortListController.swift in Sources */,
 				CDD5D6021E173689007364B4 /* CameraFocusView.swift in Sources */,
+				D26703661E26D2B8001C06BE /* ProfileController.swift in Sources */,
 				3A9A3BA11E219138008A1334 /* NextButton.swift in Sources */,
 				3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */,
 				D267035D1E269C9D001C06BE /* URL+Parameters.swift in Sources */,
@@ -503,8 +531,8 @@
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,
 				D267035B1E256BE0001C06BE /* ImageCoder.swift in Sources */,
-				3A7C7FB91DEE27D0008608D1 /* FaceSnapsTabController.swift in Sources */,
 				3A9D882E1E199F6C00FB928D /* UIImage+Circle.swift in Sources */,
+				D26703691E26D8E1001C06BE /* HomeNavigationController.swift in Sources */,
 				3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */,
 				3AB17FB61E0CEA9C005E8739 /* SignUpViews.swift in Sources */,
 				3AB17FAE1E0B6441005E8739 /* UITextField+Blank.swift in Sources */,

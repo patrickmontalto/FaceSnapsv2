@@ -134,7 +134,8 @@ class LoginViewController: UIViewController {
             if success {
                 // TODO: make request to user feed
                 // TODO: Transition to home controller
-    
+                let appTabBarController = AppTabBarController()
+                self.present(appTabBarController, animated: true, completion: nil)
                 print("Successfully logged in!")
             } else {
                 // Create action
