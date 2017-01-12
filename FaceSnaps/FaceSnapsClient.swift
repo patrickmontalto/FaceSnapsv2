@@ -175,7 +175,7 @@ class FaceSnapsClient: NSObject {
             }
             
             // GUARD: Is there a posts array?
-            guard let postsJSON = json[Constant.JSONResponseKey.Post.posts] as? [Any] else {
+            guard let postsJSON = json[Constant.JSONResponseKey.Post.posts] as? [[String:Any]] else {
                 let errorString = "Invalid JSON response: missing posts key"
                 completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
                 return
@@ -186,6 +186,19 @@ class FaceSnapsClient: NSObject {
             // Or set as an object inside of the DataManager (lastFeed) and cache it? ??
             completionHandler(true, nil)
 
+        }
+    }
+    
+    private func parse(postsArray: [[String:Any]]) {
+        // TODO: Create an array of posts and call it 
+        for post in postsArray {
+            // GUARD: Does the post have a user?
+            
+            // GUARD: Does the post have a photo in base64? 
+            
+            // GUARD: Does the post have a caption?
+            
+            // TODO: Store post as a Post object and cache it somehow?
         }
     }
     
