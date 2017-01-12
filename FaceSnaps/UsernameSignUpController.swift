@@ -153,15 +153,13 @@ class UsernameSignUpController: UIViewController {
         // Start the activity indicator on the button
         nextButton.animateLoading(true)
         
+        // TODO: Complete sign up
         FaceSnapsClient.sharedInstance.signUpUser(username: username, email: email, fullName: fullName, password: password, profileImage: base64String) { (success, errors) -> Void in
             // Stop the activity indicator on the button
             self.nextButton.animateLoading(false)
             if success {
-                // switch navigation controllers to MainApplicationController
-                // ActivityIndicator on home screen
-                // Make request to user feed
-                // once request finishes, stop activity indicator
-                // Present data on home screen (feed screen)
+                let appTabBarController = AppTabBarController()
+                self.present(appTabBarController, animated: true, completion: nil)
                 print("Signed up!")
             } else {
                 // Create action
@@ -174,10 +172,8 @@ class UsernameSignUpController: UIViewController {
                 let message = errors[FaceSnapsClient.Constant.ErrorResponseKey.message] ?? ""
                 
                 self.displayAlert(withMessage: message, title: title, actions: [action])
-                
             }
         }
-
     }
     
     // MARK: - Sign In tapped

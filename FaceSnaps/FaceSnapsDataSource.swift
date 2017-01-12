@@ -11,6 +11,11 @@ import Foundation
 class FaceSnapsDataSource {
     
     // MARK: Properties
+    var authToken: String? {
+        get {
+            return FaceSnapsStrongbox.sharedInstance.unarchive(objectForKey: .authToken) as? String
+        }
+    }
     
     // Shared model
     

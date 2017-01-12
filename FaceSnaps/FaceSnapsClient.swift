@@ -159,11 +159,33 @@ class FaceSnapsClient: NSObject {
         // Build URL
         let userFeedEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeed)
         // Make request
-        Alamofire.request(userFeedEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: <#T##HTTPHeaders?#>) { (response) in
+        Alamofire.request(userFeedEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
             // GUARD: Was there an error?
             guard response.result.error == nil else {
                 print("Error calling GET on user feed")
+                completionHandler(false, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+                return
             }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                return
+            }
+            
+            // GUARD: Is there a posts array?
+            guard let postsJSON = json[Constant.JSONResponseKey.Post.posts] as? [Any] else {
+                let errorString = "Invalid JSON response: missing posts key"
+                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                return
+            }
+            
+            // Parse postsJSON 
+            // TODO: Store as an array of dictionaries and return via completion handler?
+            // Or set as an object inside of the DataManager (lastFeed) and cache it? ??
+            completionHandler(true, nil)
+
         }
     }
     

@@ -233,9 +233,9 @@
 				3A32A6BF1DA94BD900AEE45F /* PhotoFetchedResultsController.swift */,
 				3A32A6C31DA95BE800AEE45F /* PhotoSortListController.swift */,
 				D26703601E26AFFD001C06BE /* AppTabBarController.swift */,
+				3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */,
 				D267036A1E26D8F0001C06BE /* Home */,
 				D26703641E26D1FF001C06BE /* Log In / Sign Up */,
-				3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */,
 				D26703671E26D34D001C06BE /* Profile */,
 			);
 			name = Controller;

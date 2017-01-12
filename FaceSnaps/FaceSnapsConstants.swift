@@ -24,7 +24,7 @@ extension FaceSnapsClient {
         static let ApiPath = ""
         static let ApiKey = ""
         static let ClientType = APIConstants.Client.facesnaps
-        static let AuthorizationHeader = [APIConstants.HTTPHeaderKey.authorization: ]
+        static let AuthorizationHeader = [APIConstants.HTTPHeaderKey.authorization: FaceSnapsDataSource.sharedInstance.authToken!]
         
         enum ErrorResponseKey {
             static let error = "error"
@@ -112,10 +112,19 @@ extension FaceSnapsClient {
             // MARK: - Relationship Data
             
             // MARK: - Post data
+            enum Post {
+                static let posts = "posts"
+                static let photo = "photo"
+                static let base64Image = "base64_image"
+            }
             
             // MARK: - Comments Data
             
             // MARK: - Tags Data
+            enum Tag {
+                static let id = "id"
+                static let name = "name"
+            }
             
             // MARK: - Locations Data
             
