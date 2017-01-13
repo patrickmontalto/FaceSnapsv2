@@ -124,6 +124,7 @@ class LoginViewController: UIViewController {
     
     // TODO: Configure login button pressed
     func loginButtonPressed(sender: UIButton) {
+        view.endEditing(true)
         // TODO: Spinner on log in button
         loginStackView.animateLoginButton(true)
         guard let username = loginStackView.usernameTextField.text, let password = loginStackView.passwordTextField.text else { return }

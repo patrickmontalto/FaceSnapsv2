@@ -14,6 +14,7 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         super.viewDidLoad()
         
         self.delegate = self
+        UITabBar.appearance().tintColor = .black
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -24,24 +25,43 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         let homeImage = UIImage(named: "ios-home-outline")!
         let homeImageSelected = UIImage(named: "ios-home")!
         let homeTabBarItem = UITabBarItem(title: nil, image: homeImage, selectedImage: homeImageSelected)
-        
+        homeTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         homeTab.tabBarItem = homeTabBarItem
+        
         // Search view controller
+        let searchTab = SearchNavigationController()
+        let searchImage = UIImage(named: "ios-search")!
+        let searchImageSelected = UIImage(named: "ios-search-strong")!
+        let searchTabBarItem = UITabBarItem(title: nil, image: searchImage, selectedImage: searchImageSelected)
+        searchTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        searchTab.tabBarItem = searchTabBarItem
         
         // Camera view controller
+        let cameraTab = CameraTabBarController()
+        let cameraImage = UIImage(named: "camera-launch")!
+        let cameraImageSelected = UIImage(named: "camera-selected")!
+        let cameraTabBarItem = UITabBarItem(title: nil, image: cameraImage, selectedImage: cameraImageSelected)
+        cameraTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        cameraTab.tabBarItem = cameraTabBarItem
         
         // Likes view controller
+        let likesTab = LikesNavigationController()
+        let likeImage = UIImage(named: "ios-heart-outline")!
+        let likeImageSelected = UIImage(named: "ios-heart")!
+        let likesTabBarItem = UITabBarItem(title: nil, image: likeImage, selectedImage: likeImageSelected)
+        likesTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        likesTab.tabBarItem = likesTabBarItem
         
         // Profile view controller
         let profileTab = ProfileNavigationController()
         let profileImage = UIImage(named: "ios-person-outline")
         let profileImageSelected = UIImage(named: "ios-person")
-        let profileTabBarItem = UITabBarItem(title: "Profile", image: profileImage, selectedImage: profileImageSelected)
-        
+        let profileTabBarItem = UITabBarItem(title: nil, image: profileImage, selectedImage: profileImageSelected)
+        profileTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         profileTab.tabBarItem = profileTabBarItem
         
         // Set VCs
-        self.viewControllers = [homeTab, profileTab]
+        self.viewControllers = [homeTab, searchTab, cameraTab, likesTab, profileTab]
     }
     
     // MARK: - UITabBarControllerDelegate 
@@ -49,4 +69,5 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         // Selected view controller
         print("selected \(viewController)")
     }
+    
 }

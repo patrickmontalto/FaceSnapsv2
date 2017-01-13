@@ -16,7 +16,7 @@ class HomeNavigationController: UINavigationController {
         
         // Set FaceSnaps logo in center
         // TODO: Set this as black logo instead of white
-        let image = UIImage(named: "facesnaps-logo")!
+        let image = UIImage(named: "facesnaps-black-nav")!
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 108, height: 30))
         imageView.center.x = view.center.x
         imageView.center.y = navigationBar.center.y + 18
@@ -24,16 +24,7 @@ class HomeNavigationController: UINavigationController {
         imageView.image = image
         view.addSubview(imageView)
         
-        // TODO: Make camera outline image
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Camera", style: .plain, target: #selector(launchCamera), action: nil)
-        
-        // TODO: Paper airplaine image
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Msg", style: .plain, target: #selector(presentMessages), action: nil)
-    }
-    
-    // TODO: Go to camera
-    func launchCamera() {
-        
+        self.navigationBar.tintColor = .black
     }
     
     // TODO: Go to messages inbox

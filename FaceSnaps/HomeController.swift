@@ -20,10 +20,18 @@ class HomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeFeed()
+        
+        // Make camera outline image
+        let cameraImage = UIImage(named: "camera")!
+        let cameraItem = UIBarButtonItem(image: cameraImage, style: .plain, target: #selector(launchCamera), action: nil)
+        self.navigationItem.setLeftBarButton(cameraItem, animated: false)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -35,6 +43,10 @@ class HomeController: UIViewController {
                 initLoadFeedIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 initLoadFeedIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+    }
+    
+    func launchCamera() {
+        
     }
     
     private func initializeFeed() {

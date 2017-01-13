@@ -40,6 +40,11 @@
 		3A9A3BA11E219138008A1334 /* NextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3BA01E219138008A1334 /* NextButton.swift */; };
 		3A9A3BA31E219A5C008A1334 /* UsernameGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3BA21E219A5C008A1334 /* UsernameGenerator.swift */; };
 		3A9A3BA51E2416E6008A1334 /* UsernameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3BA41E2416E6008A1334 /* UsernameTextField.swift */; };
+		3A9A3BAA1E285E48008A1334 /* SearchNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3BA91E285E48008A1334 /* SearchNavigationController.swift */; };
+		3A9A3BAC1E285E72008A1334 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3BAB1E285E72008A1334 /* SearchController.swift */; };
+		3A9A3BAE1E285F63008A1334 /* LikesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3BAD1E285F63008A1334 /* LikesNavigationController.swift */; };
+		3A9A3BB01E285F83008A1334 /* LikesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3BAF1E285F83008A1334 /* LikesController.swift */; };
+		3A9A3BB21E285FA3008A1334 /* CameraTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A3BB11E285FA3008A1334 /* CameraTabBarController.swift */; };
 		3A9D88281E16014100FB928D /* FaceSnapsImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */; };
 		3A9D882A1E163F4600FB928D /* UIButton+setImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D88291E163F4600FB928D /* UIButton+setImage.swift */; };
 		3A9D882C1E199C6100FB928D /* ImageCropHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */; };
@@ -116,6 +121,11 @@
 		3A9A3BA01E219138008A1334 /* NextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextButton.swift; sourceTree = "<group>"; };
 		3A9A3BA21E219A5C008A1334 /* UsernameGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameGenerator.swift; sourceTree = "<group>"; };
 		3A9A3BA41E2416E6008A1334 /* UsernameTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameTextField.swift; sourceTree = "<group>"; };
+		3A9A3BA91E285E48008A1334 /* SearchNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchNavigationController.swift; sourceTree = "<group>"; };
+		3A9A3BAB1E285E72008A1334 /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		3A9A3BAD1E285F63008A1334 /* LikesNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesNavigationController.swift; sourceTree = "<group>"; };
+		3A9A3BAF1E285F83008A1334 /* LikesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesController.swift; sourceTree = "<group>"; };
+		3A9A3BB11E285FA3008A1334 /* CameraTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraTabBarController.swift; sourceTree = "<group>"; };
 		3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsImagePickerController.swift; sourceTree = "<group>"; };
 		3A9D88291E163F4600FB928D /* UIButton+setImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+setImage.swift"; sourceTree = "<group>"; };
 		3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCropHelper.swift; sourceTree = "<group>"; };
@@ -234,8 +244,11 @@
 				3A32A6C31DA95BE800AEE45F /* PhotoSortListController.swift */,
 				D26703601E26AFFD001C06BE /* AppTabBarController.swift */,
 				3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */,
-				D267036A1E26D8F0001C06BE /* Home */,
 				D26703641E26D1FF001C06BE /* Log In / Sign Up */,
+				D267036A1E26D8F0001C06BE /* Home */,
+				3A9A3BA61E285DAC008A1334 /* Search */,
+				3A9A3BA71E285DC2008A1334 /* Camera */,
+				3A9A3BA81E285DCB008A1334 /* Likes */,
 				D26703671E26D34D001C06BE /* Profile */,
 			);
 			name = Controller;
@@ -271,6 +284,32 @@
 				3A32A6C51DA97A8E00AEE45F /* SortableDataSource.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		3A9A3BA61E285DAC008A1334 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				3A9A3BA91E285E48008A1334 /* SearchNavigationController.swift */,
+				3A9A3BAB1E285E72008A1334 /* SearchController.swift */,
+			);
+			name = Search;
+			sourceTree = "<group>";
+		};
+		3A9A3BA71E285DC2008A1334 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				3A9A3BB11E285FA3008A1334 /* CameraTabBarController.swift */,
+			);
+			name = Camera;
+			sourceTree = "<group>";
+		};
+		3A9A3BA81E285DCB008A1334 /* Likes */ = {
+			isa = PBXGroup;
+			children = (
+				3A9A3BAD1E285F63008A1334 /* LikesNavigationController.swift */,
+				3A9A3BAF1E285F83008A1334 /* LikesController.swift */,
+			);
+			name = Likes;
 			sourceTree = "<group>";
 		};
 		3A9D882F1E1A16A300FB928D /* Client */ = {
@@ -495,6 +534,7 @@
 				D2318A901E1D621D00E0347F /* APIConstants.swift in Sources */,
 				3AB17FA41E04FEE9005E8739 /* InteractableLabel.swift in Sources */,
 				3A32A6B91DA6067E00AEE45F /* Tag.swift in Sources */,
+				3A9A3BAE1E285F63008A1334 /* LikesNavigationController.swift in Sources */,
 				3A32A6BE1DA94AAA00AEE45F /* PhotoDataSource.swift in Sources */,
 				3A0805E71DEE2D01002DB0DF /* LoginController.swift in Sources */,
 				3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */,
@@ -507,12 +547,14 @@
 				CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */,
 				3A9A3BA31E219A5C008A1334 /* UsernameGenerator.swift in Sources */,
 				3A32A6C21DA94D8F00AEE45F /* PhotoCell.swift in Sources */,
+				3A9A3BAC1E285E72008A1334 /* SearchController.swift in Sources */,
 				3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */,
 				3A9A3B9F1E20B929008A1334 /* Formatter.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
 				D26703631E26D1B1001C06BE /* ProfileNavigationController.swift in Sources */,
 				3A17EA501DFF644C00031834 /* LineView.swift in Sources */,
 				3AB17FAC1E0B2080005E8739 /* LoginFlowNavigationController.swift in Sources */,
+				3A9A3BAA1E285E48008A1334 /* SearchNavigationController.swift in Sources */,
 				3A17EA4C1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift in Sources */,
 				3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */,
 				3A0805EB1DEF6CFE002DB0DF /* GradientLayerAnimator.swift in Sources */,
@@ -528,9 +570,11 @@
 				3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */,
 				D267035D1E269C9D001C06BE /* URL+Parameters.swift in Sources */,
 				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,
+				3A9A3BB21E285FA3008A1334 /* CameraTabBarController.swift in Sources */,
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,
 				D267035B1E256BE0001C06BE /* ImageCoder.swift in Sources */,
+				3A9A3BB01E285F83008A1334 /* LikesController.swift in Sources */,
 				3A9D882E1E199F6C00FB928D /* UIImage+Circle.swift in Sources */,
 				D26703691E26D8E1001C06BE /* HomeNavigationController.swift in Sources */,
 				3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */,
