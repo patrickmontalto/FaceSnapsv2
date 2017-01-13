@@ -8,4 +8,5 @@ target 'FaceSnaps' do
   # Pods for FaceSnaps
   pod 'Alamofire', '~> 4.0'
   pod 'Strongbox'
+  pod 'IGListKit', '~> 2.0.0'
 end
