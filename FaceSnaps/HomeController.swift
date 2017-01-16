@@ -18,9 +18,19 @@ class HomeController: UIViewController {
         return view
     }()
     
+    lazy var adapter: IGListAdapter = {
+        return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
+    }()
+    let data = "Maecenas faucibus mollis interdum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.".components(separatedBy: " ")
+    let collectionView = IGListCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeFeed()
+        
+        view.addSubview(collectionView)
+        adapter.collectionView = collectionView
+        adapter.dataSource = self
         
         // Make camera outline image
         let cameraImage = UIImage(named: "camera")!
@@ -46,6 +56,11 @@ class HomeController: UIViewController {
         ])
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.frame = view.bounds
+    }
+    
     func launchCamera() {
         
     }
@@ -64,5 +79,21 @@ class HomeController: UIViewController {
                 print("Couldn't get feed")
             }
         }
+    }
+}
+
+// MARK: IGListAdapter
+
+extension HomeController: IGListAdapterDataSource {
+    func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
+        return data as [IGListDiffable]
+    }
+    
+    func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
+        return LabelSectionController()
+    }
+    
+    func emptyView(for listAdapter: IGListAdapter) -> UIView? {
+        return nil
     }
 }

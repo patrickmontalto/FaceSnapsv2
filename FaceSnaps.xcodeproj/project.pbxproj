@@ -80,8 +80,16 @@
 		D26703631E26D1B1001C06BE /* ProfileNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26703621E26D1B1001C06BE /* ProfileNavigationController.swift */; };
 		D26703661E26D2B8001C06BE /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26703651E26D2B8001C06BE /* ProfileController.swift */; };
 		D26703691E26D8E1001C06BE /* HomeNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26703681E26D8E1001C06BE /* HomeNavigationController.swift */; };
+		D267036C1E2D448F001C06BE /* LabelSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267036B1E2D448F001C06BE /* LabelSectionController.swift */; };
+		D26703701E2D45B2001C06BE /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267036F1E2D45B2001C06BE /* LabelCell.swift */; };
 		D2DEE0051E1EF4D4004BCEF7 /* Strongbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */; };
 		D2DEE0081E204899004BCEF7 /* UsernameSignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */; };
+		D2F8D2EC1E2D615400723204 /* UserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F8D2EB1E2D615400723204 /* UserHeaderView.swift */; };
+		D2F8D2EE1E2D617C00723204 /* UserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2F8D2ED1E2D617C00723204 /* UserHeaderView.xib */; };
+		D2F8D2F01E2D630800723204 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F8D2EF1E2D630800723204 /* ImageCell.swift */; };
+		D2F8D2F21E2D63D600723204 /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F8D2F11E2D63D600723204 /* FeedItem.swift */; };
+		D2F8D2F41E2D644600723204 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F8D2F31E2D644600723204 /* Comment.swift */; };
+		D2F8D2F61E2D644C00723204 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F8D2F51E2D644C00723204 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -162,9 +170,17 @@
 		D26703621E26D1B1001C06BE /* ProfileNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileNavigationController.swift; sourceTree = "<group>"; };
 		D26703651E26D2B8001C06BE /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		D26703681E26D8E1001C06BE /* HomeNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeNavigationController.swift; sourceTree = "<group>"; };
+		D267036B1E2D448F001C06BE /* LabelSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelSectionController.swift; sourceTree = "<group>"; };
+		D267036F1E2D45B2001C06BE /* LabelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strongbox.swift; sourceTree = "<group>"; };
 		D2DEE0061E201E87004BCEF7 /* FaceSnaps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FaceSnaps.entitlements; sourceTree = "<group>"; };
 		D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameSignUpController.swift; sourceTree = "<group>"; };
+		D2F8D2EB1E2D615400723204 /* UserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserHeaderView.swift; sourceTree = "<group>"; };
+		D2F8D2ED1E2D617C00723204 /* UserHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeaderView.xib; sourceTree = "<group>"; };
+		D2F8D2EF1E2D630800723204 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		D2F8D2F11E2D63D600723204 /* FeedItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
+		D2F8D2F31E2D644600723204 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		D2F8D2F51E2D644C00723204 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -282,6 +298,9 @@
 				3A32A6BB1DA6069900AEE45F /* Location.swift */,
 				3A32A6BD1DA94AAA00AEE45F /* PhotoDataSource.swift */,
 				3A32A6C51DA97A8E00AEE45F /* SortableDataSource.swift */,
+				D2F8D2F11E2D63D600723204 /* FeedItem.swift */,
+				D2F8D2F51E2D644C00723204 /* User.swift */,
+				D2F8D2F31E2D644600723204 /* Comment.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -397,6 +416,11 @@
 			children = (
 				D26703681E26D8E1001C06BE /* HomeNavigationController.swift */,
 				3A7C7FB61DEE2737008608D1 /* HomeController.swift */,
+				D267036B1E2D448F001C06BE /* LabelSectionController.swift */,
+				D267036F1E2D45B2001C06BE /* LabelCell.swift */,
+				D2F8D2EB1E2D615400723204 /* UserHeaderView.swift */,
+				D2F8D2ED1E2D617C00723204 /* UserHeaderView.xib */,
+				D2F8D2EF1E2D630800723204 /* ImageCell.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -470,6 +494,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2F8D2EE1E2D617C00723204 /* UserHeaderView.xib in Resources */,
 				3A32DD1A1DA0309100CD2669 /* LaunchScreen.storyboard in Resources */,
 				3A32DD171DA0309100CD2669 /* Assets.xcassets in Resources */,
 			);
@@ -531,8 +556,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A32A6C81DA9845500AEE45F /* SortItemSelector.swift in Sources */,
+				D267036C1E2D448F001C06BE /* LabelSectionController.swift in Sources */,
 				D2318A901E1D621D00E0347F /* APIConstants.swift in Sources */,
 				3AB17FA41E04FEE9005E8739 /* InteractableLabel.swift in Sources */,
+				D2F8D2EC1E2D615400723204 /* UserHeaderView.swift in Sources */,
 				3A32A6B91DA6067E00AEE45F /* Tag.swift in Sources */,
 				3A9A3BAE1E285F63008A1334 /* LikesNavigationController.swift in Sources */,
 				3A32A6BE1DA94AAA00AEE45F /* PhotoDataSource.swift in Sources */,
@@ -569,6 +596,8 @@
 				3A9A3BA11E219138008A1334 /* NextButton.swift in Sources */,
 				3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */,
 				D267035D1E269C9D001C06BE /* URL+Parameters.swift in Sources */,
+				D2F8D2F61E2D644C00723204 /* User.swift in Sources */,
+				D2F8D2F01E2D630800723204 /* ImageCell.swift in Sources */,
 				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,
 				3A9A3BB21E285FA3008A1334 /* CameraTabBarController.swift in Sources */,
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
@@ -595,9 +624,12 @@
 				3A9D88361E1A185B00FB928D /* FaceSnapsConstants.swift in Sources */,
 				3A9A3BA51E2416E6008A1334 /* UsernameTextField.swift in Sources */,
 				D2DEE0051E1EF4D4004BCEF7 /* Strongbox.swift in Sources */,
+				D2F8D2F21E2D63D600723204 /* FeedItem.swift in Sources */,
 				3A9D88311E1A175900FB928D /* FaceSnapsDataSource.swift in Sources */,
 				3A32A6C01DA94BD900AEE45F /* PhotoFetchedResultsController.swift in Sources */,
+				D26703701E2D45B2001C06BE /* LabelCell.swift in Sources */,
 				3A32A6AE1DA2E5E700AEE45F /* PhotoMetadataController.swift in Sources */,
+				D2F8D2F41E2D644600723204 /* Comment.swift in Sources */,
 				3A8C1DEA1E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift in Sources */,
 				3A9D882C1E199C6100FB928D /* ImageCropHelper.swift in Sources */,
 				3A32DD101DA0309100CD2669 /* AppDelegate.swift in Sources */,
