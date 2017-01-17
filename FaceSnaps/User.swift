@@ -14,11 +14,13 @@ class User: IGListDiffable {
     let name: String
     let userName: String
     let photo: UIImage?
+    let authToken: String
     
-    init(pk: Int, name: String, userName: String, photoURLString: String?) {
+    init(pk: Int, name: String, userName: String, photoURLString: String?, authToken: String) {
         self.pk = pk
         self.name = name
         self.userName = userName
+        self.authToken = authToken
         
         guard let photoURLString = photoURLString, let photoURL = URL(string: photoURLString) else {
             self.photo = nil

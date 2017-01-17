@@ -42,7 +42,7 @@ class FaceSnapsClient: NSObject {
                 return
             }
             // GUARD: Get and print the auth_token
-            guard let user = json["user"] as? [String: Any], let auth_token = user["auth_token"] as? String else {
+            guard let user = json["user"] as? [String: Any], let authToken = user[Constant.JSONResponseKey.User.authToken] as? String else {
                 guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String], let _ = errorResponse[Constant.JSONResponseKey.Error.title], let _ = errorResponse[Constant.JSONResponseKey.Error.message] else {
                     let errorString = "An error occurred parsing errors JSON"
                     completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
@@ -52,15 +52,31 @@ class FaceSnapsClient: NSObject {
                 return
             }
             
-            // TODO: Debugging
-            print("the auth token is " + auth_token)
+            // GUARD: Is there a username and full name?
+            guard let pk = user[Constant.JSONResponseKey.User.id] as? Int, let fullName = user[Constant.JSONResponseKey.User.fullName] as? String, let userName = user[Constant.JSONResponseKey.User.username] as? String else {
+                let errorString = "Invalid JSON response: missing key"
+                completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
+                return
+            }
             
-            // Store the auth token
-            if FaceSnapsStrongbox.sharedInstance.archive(auth_token, key: .authToken) {
-                // TODO: Post notification for userSignedIn?
+            // TODO: Debugging
+            print("the auth token is " + authToken)
+            print("The full name is " + fullName)
+            print("The username is " + userName)
+            
+            var photoURLstring: String? = nil
+            
+            if let photoPath = user[Constant.JSONResponseKey.User.photoPath] as? String {
+                photoURLstring = self.urlString(forPhotoPath: photoPath)
+            }
+            
+            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken)
+            
+            // Store the user object
+            if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
                 completionHandler(true, nil)
             } else {
-                completionHandler(false, [Constant.ErrorResponseKey.title: "Error saving auth_token to strongbox"])
+                completionHandler(false, [Constant.ErrorResponseKey.title: "Error saving user to strongbox"])
             }
         }
 
@@ -98,7 +114,7 @@ class FaceSnapsClient: NSObject {
             }
 
             // GUARD: Get and print the auth_token
-            guard let user = json["user"] as? [String: Any], let auth_token = user["auth_token"] as? String else {
+            guard let user = json["user"] as? [String: Any], let authToken = user[Constant.JSONResponseKey.User.authToken] as? String else {
                 guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String], let _ = errorResponse[Constant.JSONResponseKey.Error.title], let _ = errorResponse[Constant.JSONResponseKey.Error.message] else {
                     let errorString = "An error occurred parsing errors JSON"
                     completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
@@ -108,19 +124,33 @@ class FaceSnapsClient: NSObject {
                 return
             }
             
-            // TODO: Debugging
-            print("the auth token is " + auth_token)
-            
-            // Store the auth token
-            if FaceSnapsStrongbox.sharedInstance.archive(auth_token, key: .authToken) {
-                // TODO: Post notification for userSignedIn?
-                completionHandler(true, nil)
-            } else {
-                completionHandler(false, [Constant.ErrorResponseKey.title: "Error saving auth_token to strongbox"])
+            // GUARD: Is there a username and full name?
+            guard let pk = user[Constant.JSONResponseKey.User.id] as? Int, let fullName = user[Constant.JSONResponseKey.User.fullName] as? String, let userName = user[Constant.JSONResponseKey.User.username] as? String else {
+                let errorString = "Invalid JSON response: missing key"
+                completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
+                return
             }
             
+            // TODO: Debugging
+            print("the auth token is " + authToken)
+            print("The full name is " + fullName)
+            print("The username is " + userName)
+            
+            var photoURLstring: String? = nil
+            
+            if let photoPath = user[Constant.JSONResponseKey.User.photoPath] as? String {
+                photoURLstring = self.urlString(forPhotoPath: photoPath)
+            }
+            
+            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken)
+            
+            // Store the user object
+            if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
+                completionHandler(true, nil)
+            } else {
+                completionHandler(false, [Constant.ErrorResponseKey.title: "Error saving user to strongbox"])
+            }
         }
-        
     }
     // MARK: Check if username/email is available
     func checkAvailability(forUserCredential userCredential: String, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void ) {
@@ -182,24 +212,92 @@ class FaceSnapsClient: NSObject {
             }
             
             // Parse postsJSON 
-            // TODO: Store as an array of dictionaries and return via completion handler?
-            // Or set as an object inside of the DataManager (lastFeed) and cache it? ??
-            completionHandler(true, nil)
-
+            if let latestFeed = self.parse(postsArray: postsJSON) {
+                FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: latestFeed)
+                completionHandler(true, nil)
+            } else {
+                completionHandler(false, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
+            }
         }
     }
     
-    private func parse(postsArray: [[String:Any]]) {
-        // TODO: Create an array of posts and call it 
-        for post in postsArray {
-            // GUARD: Does the post have a user?
-            
-            // GUARD: Does the post have a photo in base64? 
-            
-            // GUARD: Does the post have a caption?
-            
-            // TODO: Store post as a Post object and cache it somehow?
+    // MARK: - Parse Methods
+    
+    private func parse(userDictionary: [String: Any]) -> User? {
+        // GUARD: Get and print the auth_token
+        guard let authToken = userDictionary[Constant.JSONResponseKey.User.authToken] as? String else {
+            return nil
         }
+        
+        // GUARD: Is there a username and full name?
+        guard let pk = userDictionary[Constant.JSONResponseKey.User.id] as? Int, let fullName = userDictionary[Constant.JSONResponseKey.User.fullName] as? String, let userName = userDictionary[Constant.JSONResponseKey.User.username] as? String else {
+            return nil
+        }
+    
+        var photoURLstring: String? = nil
+        
+        if let photoPath = userDictionary[Constant.JSONResponseKey.User.photoPath] as? String {
+            photoURLstring = self.urlString(forPhotoPath: photoPath)
+        }
+    
+        return User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken)
+    }
+    
+    // TODO: Parse Comments Array
+    private func parse(commentsArray: [[String:Any]]) -> [Comment]? {
+        // GUARD: Does the comment have a user?
+        
+        return nil
+        
+    }
+    
+    private func parse(postsArray: [[String:Any]]) -> [FeedItem]? {
+        var feedItems: [FeedItem]? = []
+        
+        for post in postsArray {
+            // GUARD: Does the post have an ID?
+            guard let pk = post[Constant.JSONResponseKey.Post.id] as? Int else {
+                continue
+            }
+            // GUARD: Does the post have a user?
+            guard let userDictionary = post[Constant.JSONResponseKey.Post.user] as? [String: Any] else {
+                continue
+            }
+            
+            // Parse user
+            guard let user = parse(userDictionary: userDictionary) else {
+                continue
+            }
+            
+            // GUARD: Does the post have a photo path?
+            guard let photoPath = post[Constant.JSONResponseKey.Post.photoPath] as? String else {
+                continue
+            }
+            
+            let photoURLstring = self.urlString(forPhotoPath: photoPath)
+
+
+            // GUARD: Does the post have a caption?
+            guard let caption = post[Constant.JSONResponseKey.Post.caption] as? String else {
+                continue
+            }
+            
+            // Handle comments
+            var comments = [Comment]()
+            
+            if let commentsArray = post[Constant.JSONResponseKey.Post.comments] as? [[String:Any]] {
+                if let parsedComments = parse(commentsArray: commentsArray) {
+                    comments = parsedComments
+                }
+            }
+            
+            // TODO: Store post as a Post object and cache it. Can use Realm or Core Data for object mapping
+            let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring)
+            
+            feedItems?.append(post)
+        }
+        
+        return feedItems
     }
     
     // MARK: Get information about the owner of the access token (user)
@@ -221,5 +319,10 @@ class FaceSnapsClient: NSObject {
     // MARK: Build URL
     private func urlString(forEndpoint endpoint: String) -> String {
         return APIClient.buildURLString(scheme: Constant.ApiScheme, host: Constant.ApiHost, port: Constant.ApiPort, clientType: .facesnaps, endpoint: endpoint)
+    }
+    
+    // MARK: Build Photo URL
+    private func urlString(forPhotoPath photoPath: String) -> String {
+        return APIClient.buildURLString(scheme: Constant.ApiScheme, host: Constant.ApiHost, port: Constant.ApiPort, clientType: .facesnaps, endpoint: photoPath)
     }
 }

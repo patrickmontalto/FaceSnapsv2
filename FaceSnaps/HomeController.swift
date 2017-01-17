@@ -90,7 +90,7 @@ extension HomeController: IGListAdapterDataSource {
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return LabelSectionController()
+        return FeedItemSectionController()
     }
     
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {

@@ -30,7 +30,7 @@ class FaceSnapsStrongbox {
     // MARK: - Constants for Strongbox
     enum Constants {
         enum Keys:String {
-            case authToken, username, fullName
+            case currentUser, authToken, username, fullName, latestFeed
         }
     }
 }

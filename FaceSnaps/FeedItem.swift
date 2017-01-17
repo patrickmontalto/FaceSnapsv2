@@ -12,12 +12,14 @@ final class FeedItem: IGListDiffable {
     
     let pk: Int
     let user: User
+    let caption: String
     let comments: [Comment]
     let photo: UIImage
     
-    init(pk: Int, user: User, comments: [Comment], photoURLString: String) {
+    init(pk: Int, user: User, caption: String, comments: [Comment], photoURLString: String) {
         self.pk = pk
         self.user = user
+        self.caption = caption
         self.comments = comments
         
         guard let photoURL = URL(string: photoURLString) else {

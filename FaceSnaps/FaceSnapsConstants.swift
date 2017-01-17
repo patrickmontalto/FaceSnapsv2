@@ -13,7 +13,7 @@ extension FaceSnapsClient {
     enum Environment {
         case production, development
     }
-    
+
     // MARK: - Set Application Environment
     static let ApplicationEnvironment: Environment = .development
     
@@ -31,7 +31,6 @@ extension FaceSnapsClient {
             static let title = "title"
             static let message = "message"
         }
-        
         
         // MARK: - API Methods
         enum APIMethod {
@@ -105,17 +104,25 @@ extension FaceSnapsClient {
                 static let user = "user"
                 static let id = "id"
                 static let username = "username"
+                static let fullName = "full_name"
                 static let email = "email"
                 static let authToken = "auth_token"
                 static let available = "available"
+                static let photoPath = "photo_path"
             }
             // MARK: - Relationship Data
             
             // MARK: - Post data
             enum Post {
+                static let id = "id"
+                static let user = "user"
+                static let caption = "caption"
                 static let posts = "posts"
                 static let photo = "photo"
                 static let base64Image = "base64_image"
+                static let photoPath = "photo_path"
+                static let comments = "comments"
+
             }
             
             // MARK: - Comments Data
