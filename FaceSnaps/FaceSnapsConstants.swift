@@ -126,6 +126,11 @@ extension FaceSnapsClient {
             }
             
             // MARK: - Comments Data
+            enum Comment {
+                static let id = "id"
+                static let user = "user"
+                static let text = "text"
+            }
             
             // MARK: - Tags Data
             enum Tag {

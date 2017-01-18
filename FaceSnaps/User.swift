@@ -7,31 +7,38 @@
 //
 
 import IGListKit
+import RealmSwift
 
-class User: IGListDiffable {
+class User: Object, IGListDiffable {
     
-    let pk: Int
-    let name: String
-    let userName: String
-    let photo: UIImage?
-    let authToken: String
+    dynamic var pk: Int = 0
+    dynamic var name: String = ""
+    dynamic var userName: String = ""
+    dynamic var photoData: Data = Data()
+    dynamic var authToken: String = ""
+    // TODO: Posts property?
     
-    init(pk: Int, name: String, userName: String, photoURLString: String?, authToken: String) {
+    convenience init(pk: Int, name: String, userName: String, photoURLString: String?, authToken: String) {
+        self.init()
+        
         self.pk = pk
         self.name = name
         self.userName = userName
         self.authToken = authToken
         
         guard let photoURLString = photoURLString, let photoURL = URL(string: photoURLString) else {
-            self.photo = nil
             return
         }
         
         do {
             let data = try Data(contentsOf: photoURL)
-            self.photo = UIImage(data: data)!
-        } catch {
-            self.photo = nil
+            self.photoData = data
+        } catch {}
+    }
+    
+    var photo: UIImage? {
+        get {
+            return UIImage(data: self.photoData)
         }
     }
     

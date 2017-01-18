@@ -8,6 +8,8 @@
 
 import Foundation
 import Alamofire
+import RealmSwift
+
 
 // MARK: - Face Snaps Client: NSObject
 
@@ -213,6 +215,8 @@ class FaceSnapsClient: NSObject {
             
             // Parse postsJSON 
             if let latestFeed = self.parse(postsArray: postsJSON) {
+                // TODO: Save to realm if it is page 1 and return the feed object
+                // TODO: Otherwise, just return the feed object (page 2 or more)
                 FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: latestFeed)
                 completionHandler(true, nil)
             } else {
@@ -244,11 +248,37 @@ class FaceSnapsClient: NSObject {
     }
     
     // TODO: Parse Comments Array
-    private func parse(commentsArray: [[String:Any]]) -> [Comment]? {
+    private func parse(commentsArray: [[String:Any]]) -> List<Comment>? {
         // GUARD: Does the comment have a user?
+        var list = List<Comment>()
+    
+        for comment in commentsArray {
+            // GUARD: Does the comment have an ID?
+            guard let pk = comment[Constant.JSONResponseKey.Comment.id] as? Int else {
+                continue
+            }
+            
+            // GUARD: Does the comment have a user?
+            guard let userDictionary = comment[Constant.JSONResponseKey.Comment.user] as? [String: Any] else {
+                continue
+            }
+            
+            // Parse user
+            guard let user = parse(userDictionary: userDictionary) else {
+                continue
+            }
+            
+            // GUARD: Does the comment have text?
+            guard let text = comment[Constant.JSONResponseKey.Comment.text] as? String else {
+                continue
+            }
+            
+            let comment = Comment(pk: pk, author: user, text: text)
+            
+            list.append(comment)
+        }
         
-        return nil
-        
+        return list
     }
     
     private func parse(postsArray: [[String:Any]]) -> [FeedItem]? {
@@ -283,7 +313,7 @@ class FaceSnapsClient: NSObject {
             }
             
             // Handle comments
-            var comments = [Comment]()
+            var comments = List<Comment>()
             
             if let commentsArray = post[Constant.JSONResponseKey.Post.comments] as? [[String:Any]] {
                 if let parsedComments = parse(commentsArray: commentsArray) {

@@ -7,13 +7,20 @@
 //
 
 import Foundation
+import RealmSwift
 
-class Comment {
+class Comment: Object {
     
-    let author: User
-    let text: String
+    dynamic var pk: Int = 0
+    dynamic var author: User?
+    dynamic var text: String = ""
+    // TODO: Inverse relationship for post
+    // TODO: Inverse relationship for author?
     
-    init(author: User, text: String) {
+    convenience init(pk: Int, author: User, text: String) {
+        self.init()
+        
+        self.pk = pk
         self.author = author
         self.text = text
     }
