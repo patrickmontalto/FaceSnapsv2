@@ -217,7 +217,7 @@ class FaceSnapsClient: NSObject {
             if let latestFeed = self.parse(postsArray: postsJSON) {
                 // TODO: Save to realm if it is page 1 and return the feed object
                 // TODO: Otherwise, just return the feed object (page 2 or more)
-                FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: latestFeed)
+                _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: latestFeed)
                 completionHandler(true, nil)
             } else {
                 completionHandler(false, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
@@ -250,7 +250,7 @@ class FaceSnapsClient: NSObject {
     // TODO: Parse Comments Array
     private func parse(commentsArray: [[String:Any]]) -> List<Comment>? {
         // GUARD: Does the comment have a user?
-        var list = List<Comment>()
+        let list = List<Comment>()
     
         for comment in commentsArray {
             // GUARD: Does the comment have an ID?
@@ -281,8 +281,8 @@ class FaceSnapsClient: NSObject {
         return list
     }
     
-    private func parse(postsArray: [[String:Any]]) -> [FeedItem]? {
-        var feedItems: [FeedItem]? = []
+    private func parse(postsArray: [[String:Any]]) -> List<FeedItem>? {
+        let feedItems = List<FeedItem>()
         
         for post in postsArray {
             // GUARD: Does the post have an ID?
@@ -324,7 +324,7 @@ class FaceSnapsClient: NSObject {
             // TODO: Store post as a Post object and cache it. Can use Realm or Core Data for object mapping
             let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring)
             
-            feedItems?.append(post)
+            feedItems.append(post)
         }
         
         return feedItems

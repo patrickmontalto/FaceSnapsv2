@@ -8,6 +8,7 @@
 
 import UIKit
 import IGListKit
+import RealmSwift
 
 class HomeController: UIViewController {
     
@@ -21,7 +22,13 @@ class HomeController: UIViewController {
     lazy var adapter: IGListAdapter = {
         return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
     }()
-    let data = "Maecenas faucibus mollis interdum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.".components(separatedBy: " ")
+    var data = List<FeedItem> {
+        // TODO: Only returning page 1 for now. Needs to re-query to page 2 and so on
+        // TODO: Can't allow the data to have to be re-downloaded every time the page scrolls
+        let feed = try! FaceSnapsDataSource.sharedInstance.latestFeed
+        
+        return feed
+    }
     let collectionView = IGListCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     override func viewDidLoad() {
