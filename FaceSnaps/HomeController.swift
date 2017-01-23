@@ -22,20 +22,26 @@ class HomeController: UIViewController {
     lazy var adapter: IGListAdapter = {
         return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
     }()
-    var data = List<FeedItem> {
-        // TODO: Only returning page 1 for now. Needs to re-query to page 2 and so on
-        // TODO: Can't allow the data to have to be re-downloaded every time the page scrolls
-        let feed = try! FaceSnapsDataSource.sharedInstance.latestFeed
-        
-        return feed
+
+    var data: [FeedItem] {
+        get {
+            guard let latestFeed = FaceSnapsDataSource.sharedInstance.latestFeed else { return [] }
+            return Array(latestFeed)
+        }
     }
-    let collectionView = IGListCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    
+    lazy var collectionView: IGListCollectionView = {
+        let cv = IGListCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        return cv
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializeFeed()
+        //initializeFeed()
         
         view.addSubview(collectionView)
+        collectionView.backgroundColor = .black
         adapter.collectionView = collectionView
         adapter.dataSource = self
         
@@ -43,7 +49,7 @@ class HomeController: UIViewController {
         let cameraImage = UIImage(named: "camera")!
         let cameraItem = UIBarButtonItem(image: cameraImage, style: .plain, target: #selector(launchCamera), action: nil)
         self.navigationItem.setLeftBarButton(cameraItem, animated: false)
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,13 +65,16 @@ class HomeController: UIViewController {
         
         NSLayoutConstraint.activate([
                 initLoadFeedIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                initLoadFeedIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+                initLoadFeedIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                collectionView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+                collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
+                collectionView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor)
         ])
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        collectionView.frame = view.bounds
     }
     
     func launchCamera() {
@@ -93,7 +102,7 @@ class HomeController: UIViewController {
 
 extension HomeController: IGListAdapterDataSource {
     func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
-        return data as [IGListDiffable]
+        return data
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
