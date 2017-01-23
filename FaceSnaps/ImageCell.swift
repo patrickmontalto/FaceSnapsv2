@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import IGListKit
 
-class ImageCell: UICollectionViewCell {
+class ImageCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     fileprivate let imageView: UIImageView = {
         let view = UIImageView()
@@ -48,5 +49,13 @@ class ImageCell: UICollectionViewCell {
         } else {
             activityView.startAnimating()
         }
+    }
+    
+    func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
+        let cell = collectionContext.dequeueReusableCell(of: ImageCell.self, for: sectionController, at: index) as! ImageCell
+        
+        cell.setImage(image: feedItem.photo)
+        
+        return cell
     }
 }

@@ -1,18 +1,17 @@
 //
-//  LikesViewCell.swift
+//  CommentsViewCell.swift
 //  FaceSnaps
 //
-//  Created by Patrick on 1/17/17.
+//  Created by Patrick on 1/23/17.
 //  Copyright © 2017 Patrick Montalto. All rights reserved.
 //
 
 import UIKit
 import IGListKit
 
-class LikesViewCell: UICollectionViewCell, FeedItemSubSectionCell {
+class CommentsViewCell: UICollectionViewCell, FeedItemSubSectionCell {
     
-    
-    // TODO: Complete function
+    // TODO: Finish implementing
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
         return UICollectionViewCell()
     }

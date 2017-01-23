@@ -38,7 +38,7 @@ class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //initializeFeed()
+        initializeFeed()
         
         view.addSubview(collectionView)
         collectionView.backgroundColor = .black
@@ -91,6 +91,10 @@ class HomeController: UIViewController {
             
             if success {
                 print("Got user feed!")
+                self.adapter.reloadData(completion: { (completed) in
+                    print("completed reload")
+                    print(self.data)
+                })
             } else {
                 print("Couldn't get feed")
             }
@@ -98,7 +102,7 @@ class HomeController: UIViewController {
     }
 }
 
-// MARK: IGListAdapter
+// MARK: IGListAdapterDataSource
 
 extension HomeController: IGListAdapterDataSource {
     func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {

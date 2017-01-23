@@ -28,6 +28,23 @@ enum FeedItemSubsection: Int {
             return CGSize.zero
         }
     }
+    
+    func cellForSection() -> FeedItemSubSectionCell {
+        switch self {
+        case .header:
+            return UserHeaderView()
+        case .image:
+            return ImageCell()
+        case .controls:
+            return ControlsCell()
+        case .likes:
+            return LikesViewCell()
+        case .caption:
+            return CaptionCell()
+        case .comments:
+            return CommentsViewCell()
+        }
+    }
 }
 
 final class FeedItemSectionController: IGListSectionController, IGListSectionType {
@@ -41,7 +58,7 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
     
     // MARK: IGlistSectionType
     func numberOfItems() -> Int {
-        return 4 + min(feedItem.comments.count, 3)
+        return 5 + min(feedItem.comments.count, 3)
     }
     
     func sizeForItem(at index: Int) -> CGSize {
@@ -49,8 +66,9 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
     }
     
     func cellForItem(at index: Int) -> UICollectionViewCell {
-        let cell = collectionContext?.dequeueReusableCell(of: LabelCell.self, for: self, at: index) as! LabelCell
-        cell.label.text = feedItem.comments[index].text
+        guard let sectionType = FeedItemSubsection(rawValue: index) else { return UICollectionViewCell() }
+        let cell = sectionType.cellForSection().cell(forFeedItem: feedItem, withCollectionContext: collectionContext!, andSectionController: self, atIndex: index)
+        
         return cell
     }
     
