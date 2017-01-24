@@ -13,6 +13,8 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     // TODO: Complete implementation
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
-        return UICollectionViewCell()
+        let cell = collectionContext.dequeueReusableCell(of: UICollectionViewCell.self, for: sectionController, at: index)
+        
+        return cell
     }
 }
