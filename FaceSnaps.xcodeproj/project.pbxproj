@@ -428,11 +428,11 @@
 				D267036F1E2D45B2001C06BE /* LabelCell.swift */,
 				D2F8D2EB1E2D615400723204 /* UserHeaderView.swift */,
 				D2F8D2EF1E2D630800723204 /* ImageCell.swift */,
-				D2F8D2F71E2E64B900723204 /* LikesViewCell.swift */,
 				D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */,
-				D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */,
+				D2F8D2F71E2E64B900723204 /* LikesViewCell.swift */,
 				D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */,
 				D224C6601E36AEF100AA1DC6 /* CommentsViewCell.swift */,
+				D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";

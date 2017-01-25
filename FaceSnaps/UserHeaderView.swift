@@ -11,7 +11,13 @@ import IGListKit
 
 final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
     
-    fileprivate static let insets = UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 15)
+    //fileprivate static let insets = UIEdgeInsets(top: 8, left: 36, bottom: 8, right: 15)
+    
+    let userIcon: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
     
     let nameLabel: UILabel = {
         let label = UILabel()
@@ -23,6 +29,7 @@ final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        contentView.addSubview(userIcon)
         contentView.addSubview(nameLabel)
         contentView.backgroundColor = .white
     }
@@ -33,8 +40,21 @@ final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let bounds = contentView.bounds
-        nameLabel.frame = UIEdgeInsetsInsetRect(bounds, UserHeaderView.insets)
+        
+        userIcon.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        //let bounds = contentView.bounds
+        //nameLabel.frame = UIEdgeInsetsInsetRect(bounds, UserHeaderView.insets)
+        NSLayoutConstraint.activate([
+            userIcon.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8),
+            userIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            userIcon.heightAnchor.constraint(equalToConstant: 32.0),
+            userIcon.widthAnchor.constraint(equalToConstant: 32.0),
+            nameLabel.leftAnchor.constraint(equalTo: userIcon.rightAnchor, constant: 8),
+            nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            nameLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor)
+        ])
     }
     
     // TODO: Add locationLabel
@@ -44,7 +64,8 @@ final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
             let cell = collectionContext.dequeueReusableCell(of: UserHeaderView.self, for: sectionController, at: index) as! UserHeaderView
             
             cell.nameLabel.text = feedItem.user?.userName ?? ""
-            
+            cell.userIcon.image = feedItem.user?.photo?.circle ?? UIImage()
+        
             return cell
     }
 }

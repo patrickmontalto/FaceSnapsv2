@@ -51,9 +51,13 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
     
     var feedItem: FeedItem!
     
+    
     override init() {
         super.init()
         //supplementaryViewSource = self
+        // TODO: Insets for sections?
+        //inset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
+        
     }
     
     // MARK: IGlistSectionType

@@ -31,7 +31,11 @@ class HomeController: UIViewController {
     }
     
     lazy var collectionView: IGListCollectionView = {
-        let cv = IGListCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        // TODO: Why are there spaces between sections?
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.sectionInset = UIEdgeInsets.zero
+        
+        let cv = IGListCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         return cv
     }()
@@ -78,7 +82,6 @@ class HomeController: UIViewController {
     }
     
     func launchCamera() {
-        
     }
     
     private func initializeFeed() {
@@ -116,4 +119,9 @@ extension HomeController: IGListAdapterDataSource {
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {
         return nil
     }
+}
+
+// MARK: IGListCollectionViewFlowLayout
+extension HomeController {
+    
 }
