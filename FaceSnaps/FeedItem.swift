@@ -16,14 +16,16 @@ final class FeedItem: Object, IGListDiffable {
     dynamic var caption: String = ""
     var comments = List<Comment>()
     dynamic var photoData: Data = Data()
+    dynamic var liked: Bool = false
     
-    convenience init(pk: Int, user: User, caption: String, comments: List<Comment>, photoURLString: String) {
+    convenience init(pk: Int, user: User, caption: String, comments: List<Comment>, photoURLString: String, liked: Bool) {
         self.init()
         
         self.pk = pk
         self.user = user
         self.caption = caption
         self.comments = comments
+        self.liked = liked
         
         guard let photoURL = URL(string: photoURLString) else {
             return

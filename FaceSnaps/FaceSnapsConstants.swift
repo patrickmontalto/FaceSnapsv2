@@ -122,6 +122,7 @@ extension FaceSnapsClient {
                 static let base64Image = "base64_image"
                 static let photoPath = "photo_path"
                 static let comments = "comments"
+                static let likedByUser = "liked_by_user"
 
             }
             

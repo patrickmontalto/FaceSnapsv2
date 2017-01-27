@@ -10,6 +10,8 @@ import UIKit
 
 class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
     
+    fileprivate let imageSize = CGSize(width: 22.0, height: 22.0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,42 +24,42 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         
         // Home view controller
         let homeTab = HomeNavigationController()
-        let homeImage = UIImage(named: "ios-home-outline")!
-        let homeImageSelected = UIImage(named: "ios-home")!
+        let homeImage = UIImage(named: "ios-home-outline")?.with(size: imageSize)
+        let homeImageSelected = UIImage(named: "ios-home")?.with(size: imageSize)
         let homeTabBarItem = UITabBarItem(title: nil, image: homeImage, selectedImage: homeImageSelected)
-        homeTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        homeTabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         homeTab.tabBarItem = homeTabBarItem
         
         // Search view controller
         let searchTab = SearchNavigationController()
-        let searchImage = UIImage(named: "ios-search")!
-        let searchImageSelected = UIImage(named: "ios-search-strong")!
+        let searchImage = UIImage(named: "ios-search")?.with(size: imageSize)
+        let searchImageSelected = UIImage(named: "ios-search-strong")?.with(size: imageSize)
         let searchTabBarItem = UITabBarItem(title: nil, image: searchImage, selectedImage: searchImageSelected)
-        searchTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        searchTabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         searchTab.tabBarItem = searchTabBarItem
         
         // Camera view controller
         let cameraTab = CameraTabBarController()
-        let cameraImage = UIImage(named: "camera-launch")!
-        let cameraImageSelected = UIImage(named: "camera-selected")!
+        let cameraImage = UIImage(named: "camera-launch")?.with(size: imageSize)
+        let cameraImageSelected = UIImage(named: "camera-selected")?.with(size: imageSize)
         let cameraTabBarItem = UITabBarItem(title: nil, image: cameraImage, selectedImage: cameraImageSelected)
-        cameraTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        cameraTabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         cameraTab.tabBarItem = cameraTabBarItem
         
         // Likes view controller
         let likesTab = LikesNavigationController()
-        let likeImage = UIImage(named: "ios-heart-outline")!
-        let likeImageSelected = UIImage(named: "ios-heart")!
+        let likeImage = UIImage(named: "ios-heart-outline")?.with(size: CGSize(width: 22, height: 17))
+        let likeImageSelected = UIImage(named: "ios-heart")?.with(size: CGSize(width: 22, height: 17))
         let likesTabBarItem = UITabBarItem(title: nil, image: likeImage, selectedImage: likeImageSelected)
-        likesTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        likesTabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         likesTab.tabBarItem = likesTabBarItem
         
         // Profile view controller
         let profileTab = ProfileNavigationController()
-        let profileImage = UIImage(named: "ios-person-outline")
-        let profileImageSelected = UIImage(named: "ios-person")
+        let profileImage = UIImage(named: "person-outline")?.with(size: imageSize)
+        let profileImageSelected = UIImage(named: "person-selected")?.with(size: imageSize)
         let profileTabBarItem = UITabBarItem(title: nil, image: profileImage, selectedImage: profileImageSelected)
-        profileTabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+        profileTabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         profileTab.tabBarItem = profileTabBarItem
         
         // Set VCs

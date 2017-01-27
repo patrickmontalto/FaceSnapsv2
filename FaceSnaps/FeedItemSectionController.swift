@@ -15,11 +15,11 @@ enum FeedItemSubsection: Int {
     func sizeForItem(withCollectionContext collectionContext: IGListCollectionContext) -> CGSize {
         switch self {
         case .header:
-            return CGSize(width: collectionContext.containerSize.width, height: 55)
+            return CGSize(width: collectionContext.containerSize.width, height: 48)
         case .image:
             return CGSize(width: collectionContext.containerSize.width, height: collectionContext.containerSize.width)
         case .controls:
-            return CGSize(width: collectionContext.containerSize.width, height: 55)
+            return CGSize(width: collectionContext.containerSize.width, height: 46)
         case .likes:
             return CGSize(width: collectionContext.containerSize.width, height: 32)
         case .caption:
@@ -101,4 +101,19 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
 //        return CGSize(width: collectionContext!.containerSize.width, height: 40)
 //    }
 //    
+}
+
+// MARK: - ControlsCellDelegate
+extension FeedItemSectionController: ControlsCellDelegate {
+    func didPressCommentButton() {
+        //TODO:  Present the comments screen for the post
+    }
+    
+    func didPressLikeButton() {
+        // TODO: Configure
+        // Does the user currently like the post?
+        // What action needs to be taken.
+        // POST a like or an unlike on the current post as the current user
+        // Ensure that the correct heart icon is set and that the like count increases or decreases by 1
+    }
 }
