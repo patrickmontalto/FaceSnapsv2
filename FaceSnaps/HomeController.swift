@@ -46,6 +46,7 @@ class HomeController: UIViewController {
         
         view.addSubview(collectionView)
         collectionView.backgroundColor = .black
+        self.automaticallyAdjustsScrollViewInsets = false
         adapter.collectionView = collectionView
         adapter.dataSource = self
         

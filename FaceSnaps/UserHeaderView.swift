@@ -11,7 +11,7 @@ import IGListKit
 
 final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
     
-    //fileprivate static let insets = UIEdgeInsets(top: 8, left: 36, bottom: 8, right: 15)
+    static let height: CGFloat = 48
     
     let userIcon: UIImageView = {
         let imageView = UIImageView()
@@ -47,7 +47,7 @@ final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
         //let bounds = contentView.bounds
         //nameLabel.frame = UIEdgeInsetsInsetRect(bounds, UserHeaderView.insets)
         NSLayoutConstraint.activate([
-            userIcon.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8),
+            userIcon.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12),
             userIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             userIcon.heightAnchor.constraint(equalToConstant: 32.0),
             userIcon.widthAnchor.constraint(equalToConstant: 32.0),

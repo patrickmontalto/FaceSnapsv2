@@ -8,8 +8,12 @@
 
 import UIKit
 
-protocol ControlsCellDelegate {
-    func didPressLikeButton()
-    
-    func didPressCommentButton()
+enum FeedItemButtonType {
+    case Like
+    case Comment
+    case LikesCount
+}
+
+protocol FeedItemSectionDelegate {
+    func didPress(button: FeedItemButtonType)
 }

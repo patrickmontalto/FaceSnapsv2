@@ -15,13 +15,13 @@ enum FeedItemSubsection: Int {
     func sizeForItem(withCollectionContext collectionContext: IGListCollectionContext) -> CGSize {
         switch self {
         case .header:
-            return CGSize(width: collectionContext.containerSize.width, height: 48)
+            return CGSize(width: collectionContext.containerSize.width, height: UserHeaderView.height)
         case .image:
             return CGSize(width: collectionContext.containerSize.width, height: collectionContext.containerSize.width)
         case .controls:
-            return CGSize(width: collectionContext.containerSize.width, height: 46)
+            return CGSize(width: collectionContext.containerSize.width, height: ControlsCell.height)
         case .likes:
-            return CGSize(width: collectionContext.containerSize.width, height: 32)
+            return CGSize(width: collectionContext.containerSize.width, height: LikesViewCell.height)
         case .caption:
             return CGSize.zero
         case .comments:
@@ -104,7 +104,14 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
 }
 
 // MARK: - ControlsCellDelegate
-extension FeedItemSectionController: ControlsCellDelegate {
+extension FeedItemSectionController: FeedItemSectionDelegate {
+    
+    func didPress(button: FeedItemButtonType) {
+        // TODO: Switch on button type and do appropriate action
+        
+        
+    }
+    
     func didPressCommentButton() {
         //TODO:  Present the comments screen for the post
     }

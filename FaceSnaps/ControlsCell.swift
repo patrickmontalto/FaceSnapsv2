@@ -11,7 +11,9 @@ import IGListKit
 
 class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
     
-    var delegate: ControlsCellDelegate?
+    static let height: CGFloat = 46
+    
+    var delegate: FeedItemSectionDelegate?
     
     private lazy var likeButton: UIButton = {
         let btn = UIButton()
@@ -45,15 +47,15 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-                likeButton.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 15),
+                likeButton.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12),
                 likeButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
                 likeButton.heightAnchor.constraint(equalToConstant: 21),
                 likeButton.widthAnchor.constraint(equalToConstant: 24),
                 commentButton.leftAnchor.constraint(equalTo: likeButton.rightAnchor, constant: 18),
                 commentButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
                 divider.heightAnchor.constraint(equalToConstant: 0.5),
-                divider.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 15),
-                divider.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -15),
+                divider.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12),
+                divider.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12),
                 divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
@@ -61,11 +63,11 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
     // MARK: - Handling button presses
     
     func likeButtonPressed(sender: UIButton) {
-        delegate?.didPressLikeButton()
+        delegate?.didPress(button: .Like)
     }
     
     func commentButtonPressed(sender: UIButton) {
-        delegate?.didPressCommentButton()
+        delegate?.didPress(button: .Comment)
     }
     
     func setLikeButtonImage(liked: Bool) {

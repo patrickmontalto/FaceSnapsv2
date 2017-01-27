@@ -309,6 +309,13 @@ class FaceSnapsClient: NSObject {
                 continue
             }
             
+            // GUARD: Is there a likes array?
+            guard let likes = post[Constant.JSONResponseKey.Post.likes] as? [[String:AnyObject]] else {
+                continue
+            }
+            
+            let likesCount = likes.count
+            
             let photoURLstring = self.urlString(forPhotoPath: photoPath)
 
 
@@ -327,7 +334,7 @@ class FaceSnapsClient: NSObject {
             }
             
             // TODO: Store post as a Post object and cache it. Can use Realm or Core Data for object mapping
-            let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked)
+            let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked, likesCount: likesCount)
             
             feedItems.append(post)
         }
