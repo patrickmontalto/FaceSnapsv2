@@ -127,7 +127,7 @@ class LoginViewController: UIViewController {
         view.endEditing(true)
         // TODO: Spinner on log in button
         loginStackView.animateLoginButton(true)
-        guard let username = loginStackView.usernameTextField.text, let password = loginStackView.passwordTextField.text else { return }
+        guard let username = loginStackView.usernameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), let password = loginStackView.passwordTextField.text else { return }
         FaceSnapsClient.sharedInstance.signInUser(credential: username, password: password) { (success, errors) -> Void in
             // stop animating the indicator view
             self.loginStackView.animateLoginButton(false)

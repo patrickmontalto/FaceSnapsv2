@@ -12,23 +12,6 @@ import IGListKit
 enum FeedItemSubsection: Int {
     case header, image, controls, likes, caption, comments
     
-    func sizeForItem(withCollectionContext collectionContext: IGListCollectionContext) -> CGSize {
-        switch self {
-        case .header:
-            return CGSize(width: collectionContext.containerSize.width, height: UserHeaderView.height)
-        case .image:
-            return CGSize(width: collectionContext.containerSize.width, height: collectionContext.containerSize.width)
-        case .controls:
-            return CGSize(width: collectionContext.containerSize.width, height: ControlsCell.height)
-        case .likes:
-            return CGSize(width: collectionContext.containerSize.width, height: LikesViewCell.height)
-        case .caption:
-            return CGSize.zero
-        case .comments:
-            return CGSize.zero
-        }
-    }
-    
     func cellForSection() -> FeedItemSubSectionCell {
         switch self {
         case .header:
@@ -66,7 +49,23 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
     }
     
     func sizeForItem(at index: Int) -> CGSize {
-        return FeedItemSubsection(rawValue: index)!.sizeForItem(withCollectionContext: collectionContext!)
+        guard let item = FeedItemSubsection(rawValue: index) else { return CGSize.zero }
+        guard let collectionContext = collectionContext else { return CGSize.zero }
+        
+        switch item {
+        case .header:
+            return CGSize(width: collectionContext.containerSize.width, height: UserHeaderView.height)
+        case .image:
+            return CGSize(width: collectionContext.containerSize.width, height: collectionContext.containerSize.width)
+        case .controls:
+            return CGSize(width: collectionContext.containerSize.width, height: ControlsCell.height)
+        case .likes:
+            return CGSize(width: collectionContext.containerSize.width, height: LikesViewCell.height)
+        case .caption:
+            return CGSize(width: collectionContext.containerSize.width, height: CaptionCell.cellHeight(forFeedItem: feedItem))
+        case .comments:
+            return CGSize.zero
+        }
     }
     
     func cellForItem(at index: Int) -> UICollectionViewCell {
@@ -82,25 +81,6 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
     
     func didSelectItem(at index: Int) {}
     
-//    // MARK: IGListSupplementaryViewSource
-//    func supportedElementKinds() -> [String] {
-//        return [UICollectionElementKindSectionHeader]
-//    }
-//    
-//    func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
-//        let view = collectionContext?.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader,
-//                                                                       for: self,
-//                                                                       nibName: "UserHeaderView",
-//                                                                       bundle: nil,
-//                                                                       at: index) as! UserHeaderView
-//        view.nameLabel.text = feedItem.user.name
-//        return view
-//    }
-//    
-//    func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {
-//        return CGSize(width: collectionContext!.containerSize.width, height: 40)
-//    }
-//    
 }
 
 // MARK: - ControlsCellDelegate
@@ -110,6 +90,10 @@ extension FeedItemSectionController: FeedItemSectionDelegate {
         // TODO: Switch on button type and do appropriate action
         
         
+    }
+    
+    func didPressUserButton(forUser user: User) {
+        // Present user controller
     }
     
     func didPressCommentButton() {

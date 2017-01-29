@@ -24,13 +24,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window.backgroundColor = UIColor.white
         
-//        let tabController = FaceSnapsTabController()
-//        let navigationController = UINavigationController(rootViewController: tabController)
-//        
-//        window.rootViewController = navigationController
-        let loginController = LoginViewController()
-        let loginFlowNavController = LoginFlowNavigationController(rootViewController: loginController)
-        window.rootViewController = loginFlowNavController
+        if FaceSnapsDataSource.sharedInstance.signedIn {
+            let controller = AppTabBarController()
+            window.rootViewController = controller
+        } else {
+            let loginController = LoginViewController()
+            let loginFlowNavController = LoginFlowNavigationController(rootViewController: loginController)
+            window.rootViewController = loginFlowNavController
+        }
         
         // Tell the application that this window is the main window (key window)
         window.makeKeyAndVisible()

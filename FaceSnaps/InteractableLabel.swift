@@ -10,7 +10,7 @@ import UIKit
 
 
 enum InteractableLabelType {
-    case getHelp, signUp, signIn, goBack, none
+    case getHelp, signUp, signIn, goBack, comment, none
     
     func labelText() -> String {
         switch self {
@@ -80,6 +80,32 @@ class InteractableLabel: UILabel {
         ]
         
         attributedText = text.NSStringWithAttributes(attributes: attributes, nonAttributes: nonAttributes, nonAttrRange: nonBoldRange)
+        
+        sizeToFit()
+        isUserInteractionEnabled = true
+        translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    convenience init(type: InteractableLabelType, boldText: String, nonBoldText: String) {
+        self.init(frame: .zero)
+        
+        let text = boldText + "  " + nonBoldText
+        self.boldRange = NSMakeRange(0, boldText.characters.count)
+        self.nonBoldRange = NSMakeRange(boldText.characters.count, nonBoldText.characters.count + 2)
+        
+        let attributes = [
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14.0),
+            NSForegroundColorAttributeName: UIColor.black
+        ]
+        
+        let nonAttributes = [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 14.0),
+            NSForegroundColorAttributeName: UIColor.black
+        ]
+        
+        attributedText = text.NSStringWithAttributes(attributes: attributes, nonAttributes: nonAttributes, nonAttrRange: nonBoldRange)
+        
+        numberOfLines = 0
         
         sizeToFit()
         isUserInteractionEnabled = true

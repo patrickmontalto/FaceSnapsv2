@@ -188,6 +188,8 @@ class FaceSnapsClient: NSObject {
     }
     // MARK: Get latest feed for the user
     func getUserFeed(completionHandler: @escaping (_ success: Bool, _ errors: [String:String]?) -> Void) {
+        FaceSnapsDataSource.sharedInstance.deleteFeedItems()
+        
         // Build URL
         let userFeedEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeed)
         // Make request

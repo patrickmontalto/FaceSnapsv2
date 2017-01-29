@@ -37,6 +37,10 @@ class FaceSnapsDataSource {
         }
     }
     
+    var signedIn: Bool {
+        return !(currentUser == nil)
+    }
+    
     // Shared model
     
     private init() {}
@@ -77,5 +81,12 @@ class FaceSnapsDataSource {
             realm.deleteAll()
         }
     }
+    
+    func deleteFeedItems() {
+        try! realm.write {
+            realm.delete(realm.objects(FeedItem.self))
+        }
+    }
+
     
 }

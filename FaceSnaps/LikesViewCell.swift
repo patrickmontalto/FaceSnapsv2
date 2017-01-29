@@ -11,7 +11,7 @@ import IGListKit
 
 class LikesViewCell: UICollectionViewCell, FeedItemSubSectionCell {
     
-    static let height: CGFloat = 42
+    static let height: CGFloat = 32
     
     var delegate: FeedItemSectionDelegate?
     
@@ -50,8 +50,8 @@ class LikesViewCell: UICollectionViewCell, FeedItemSubSectionCell {
         likesCount.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-                likesCount.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 14),
-                likesCount.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            likesCount.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 14),
+            likesCount.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
 

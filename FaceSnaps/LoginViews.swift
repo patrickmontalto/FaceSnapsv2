@@ -29,6 +29,8 @@ class LoginStackView: UIStackView {
         let textField = LoginTextField(text: "Username")
         textField.delegate = self.parentView
         textField.returnKeyType = .next
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
         
         return textField
     }()

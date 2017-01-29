@@ -12,8 +12,11 @@ enum FeedItemButtonType {
     case Like
     case Comment
     case LikesCount
+    case AuthorName
 }
 
 protocol FeedItemSectionDelegate {
     func didPress(button: FeedItemButtonType)
+    
+    func didPressUserButton(forUser user: User)
 }
