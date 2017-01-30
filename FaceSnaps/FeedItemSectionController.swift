@@ -10,7 +10,7 @@ import UIKit
 import IGListKit
 
 enum FeedItemSubsection: Int {
-    case header, image, controls, likes, caption, comments
+    case header, image, controls, likes, caption, comment1, comment2, comment3
     
     func cellForSection() -> FeedItemSubSectionCell {
         switch self {
@@ -24,8 +24,19 @@ enum FeedItemSubsection: Int {
             return LikesViewCell()
         case .caption:
             return CaptionCell()
-        case .comments:
-            return CommentsViewCell()
+        case .comment1, .comment2, .comment3:
+            return CommentCell()
+        }
+    }
+    
+    static func commentIndex(_ feedItem: FeedItem) -> Int {
+        switch feedItem.comments.count {
+        case 1:
+            return 0
+        case 2:
+            return 1
+        default:
+            return 2
         }
     }
 }
@@ -37,10 +48,7 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
     
     override init() {
         super.init()
-        //supplementaryViewSource = self
-        // TODO: Insets for sections?
-        //inset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
-        
+        supplementaryViewSource = self
     }
     
     // MARK: IGlistSectionType
@@ -52,6 +60,9 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
         guard let item = FeedItemSubsection(rawValue: index) else { return CGSize.zero }
         guard let collectionContext = collectionContext else { return CGSize.zero }
         
+        let commentIndex = FeedItemSubsection.commentIndex(feedItem)
+        
+        // Need to get the
         switch item {
         case .header:
             return CGSize(width: collectionContext.containerSize.width, height: UserHeaderView.height)
@@ -63,8 +74,12 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
             return CGSize(width: collectionContext.containerSize.width, height: LikesViewCell.height)
         case .caption:
             return CGSize(width: collectionContext.containerSize.width, height: CaptionCell.cellHeight(forFeedItem: feedItem))
-        case .comments:
-            return CGSize.zero
+        case .comment1:
+            return CGSize(width: collectionContext.containerSize.width, height: CommentCell.cellHeight(forComment: feedItem.comments[commentIndex]))
+        case .comment2:
+            return CGSize(width: collectionContext.containerSize.width, height: CommentCell.cellHeight(forComment: feedItem.comments[commentIndex - 1]))
+        case .comment3:
+            return CGSize(width: collectionContext.containerSize.width, height: CommentCell.cellHeight(forComment: feedItem.comments[commentIndex - 2]))
         }
     }
     
@@ -107,4 +122,27 @@ extension FeedItemSectionController: FeedItemSectionDelegate {
         // POST a like or an unlike on the current post as the current user
         // Ensure that the correct heart icon is set and that the like count increases or decreases by 1
     }
+}
+
+// MARK: IGListSupplementaryViewSource
+extension FeedItemSectionController: IGListSupplementaryViewSource {
+    func supportedElementKinds() -> [String] {
+        return [UICollectionElementKindSectionFooter]
+    }
+    
+    func viewForSupplementaryElement(ofKind elementKind: String, at index: Int) -> UICollectionReusableView {
+        let view = collectionContext?.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter, for: self, nibName: "TimeView", bundle: nil, at: index) as! TimeView
+        
+        view.setTimeLabel(timeCreated: feedItem.datePosted)
+        
+        view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y, width: view.frame.width, height: 22)
+        
+        return view
+    }
+    
+    func sizeForSupplementaryView(ofKind elementKind: String, at index: Int) -> CGSize {
+        return CGSize(width: collectionContext!.containerSize.width, height: 22.0)
+    }
+    
+
 }

@@ -1,5 +1,5 @@
 //
-//  CaptionCell.swift
+//  CommentCell.swift
 //  FaceSnaps
 //
 //  Created by Patrick on 1/23/17.
@@ -9,12 +9,12 @@
 import UIKit
 import IGListKit
 
-class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
+class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
     
-    static func cellHeight(forFeedItem feedItem: FeedItem) -> CGFloat {
-        let author = feedItem.user!.userName
-        let caption = feedItem.caption
-        let labelHeight = TextSize.height(author + caption, width: UIScreen.main.bounds.width - 24, attributes: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14.0)])
+    static func cellHeight(forComment comment: Comment) -> CGFloat {
+        let author = comment.author!.userName
+        let text = comment.text
+        let labelHeight = TextSize.height(author + text, width: UIScreen.main.bounds.width - 24, attributes: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14.0)])
         
         return labelHeight + 8
     }
@@ -29,16 +29,16 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         return UITapGestureRecognizer(target: self, action: #selector(handleTapOnLabel(tapGesture:)))
     }()
     
-    func setContentLabel(_ feedItem: FeedItem) {
+    func setContentLabel(_ comment: Comment) {
         
         // Get author and caption strings
-        let author = feedItem.user!.userName
-        let caption = feedItem.caption
-    
+        let author = comment.author!.userName
+        let text = comment.text
+        
         // Set contentLabel to interactable label with author and caption
-        self.contentLabel = InteractableLabel(type: .comment, boldText: author, nonBoldText: caption)
-
-        self.contentLabel.numberOfLines = 5
+        self.contentLabel = InteractableLabel(type: .comment, boldText: author, nonBoldText: text)
+        
+        self.contentLabel.numberOfLines = 2
         
         self.contentLabel.addGestureRecognizer(self.authorTap)
     }
@@ -48,6 +48,7 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
             delegate?.didPress(button: .AuthorName)
         }
     }
+    
     
     override func layoutSubviews() {
         contentView.backgroundColor = .white
@@ -61,10 +62,10 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         NSLayoutConstraint.activate([
             contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            contentView.bottomAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
+            //            contentView.bottomAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
             contentView.heightAnchor.constraint(equalToConstant: frame.height),
             contentView.trailingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 12),
-        ])
+            ])
     }
     
     override func prepareForReuse() {
@@ -85,12 +86,27 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         layoutAttributes.frame = newFrame
         return layoutAttributes
     }
+
     
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
-        let cell = collectionContext.dequeueReusableCell(of: CaptionCell.self, for: sectionController, at: index) as! CaptionCell
+        let cell = collectionContext.dequeueReusableCell(of: CommentCell.self, for: sectionController, at: index) as! CommentCell
         
+        let commentIndex = FeedItemSubsection.commentIndex(feedItem)
         
-        cell.setContentLabel(feedItem)
+        var comment = Comment()
+        
+        switch index {
+        case 5:
+            comment = feedItem.comments[commentIndex]
+        case 6:
+            comment = feedItem.comments[commentIndex - 1]
+        case 7:
+            comment = feedItem.comments[commentIndex - 2]
+        default:
+            break
+        }
+        
+        cell.setContentLabel(comment)
         
         return cell
     }

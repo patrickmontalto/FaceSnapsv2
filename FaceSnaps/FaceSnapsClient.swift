@@ -316,6 +316,19 @@ class FaceSnapsClient: NSObject {
                 continue
             }
             
+            // GUARD: Is there a time created?
+            guard let createdAt = post[Constant.JSONResponseKey.Post.createdAt] as? String else {
+                continue
+            }
+            
+            let formatter = DateFormatter()
+            
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            
+            guard let datePosted = formatter.date(from: createdAt) else {
+                continue
+            }
+            
             let likesCount = likes.count
             
             let photoURLstring = self.urlString(forPhotoPath: photoPath)
@@ -336,7 +349,7 @@ class FaceSnapsClient: NSObject {
             }
             
             // TODO: Store post as a Post object and cache it. Can use Realm or Core Data for object mapping
-            let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked, likesCount: likesCount)
+            let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked, datePosted: datePosted, likesCount: likesCount)
             
             feedItems.append(post)
         }

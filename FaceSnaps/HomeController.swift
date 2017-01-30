@@ -34,7 +34,7 @@ class HomeController: UIViewController {
         // TODO: Why are there spaces between sections?
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.sectionInset = UIEdgeInsets.zero
-        
+
         let cv = IGListCollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         return cv

@@ -89,9 +89,9 @@ class InteractableLabel: UILabel {
     convenience init(type: InteractableLabelType, boldText: String, nonBoldText: String) {
         self.init(frame: .zero)
         
-        let text = boldText + "  " + nonBoldText
+        let text = boldText + " " + nonBoldText
         self.boldRange = NSMakeRange(0, boldText.characters.count)
-        self.nonBoldRange = NSMakeRange(boldText.characters.count, nonBoldText.characters.count + 2)
+        self.nonBoldRange = NSMakeRange(boldText.characters.count, nonBoldText.characters.count + 1)
         
         let attributes = [
             NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14.0),
