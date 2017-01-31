@@ -23,12 +23,11 @@ class HomeController: UIViewController {
         return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
     }()
 
-    var data: [FeedItem] {
-        get {
-            guard let latestFeed = FaceSnapsDataSource.sharedInstance.latestFeed else { return [] }
-            return Array(latestFeed)
-        }
-    }
+    lazy var data: [FeedItem] = Array(FaceSnapsDataSource.sharedInstance.latestFeed!)
+    var loading = false
+    let spinToken = "spinner"
+    var page = 1
+    
     
     lazy var collectionView: IGListCollectionView = {
         // TODO: Why are there spaces between sections?
@@ -45,16 +44,24 @@ class HomeController: UIViewController {
         initializeFeed()
         
         view.addSubview(collectionView)
-        collectionView.backgroundColor = .black
+        collectionView.backgroundColor = .white
         self.automaticallyAdjustsScrollViewInsets = false
         adapter.collectionView = collectionView
         adapter.dataSource = self
+        adapter.scrollViewDelegate = self
+        
+        // Add notification to scroll view to top when home is tapped
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .tappedHomeNotificationName, object: nil)
         
         // Make camera outline image
         let cameraImage = UIImage(named: "camera")!
         let cameraItem = UIBarButtonItem(image: cameraImage, style: .plain, target: #selector(launchCamera), action: nil)
         self.navigationItem.setLeftBarButton(cameraItem, animated: false)
         
+    }
+    
+    func scrollToTop() {
+        collectionView.setContentOffset(.zero, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,18 +96,38 @@ class HomeController: UIViewController {
         // Start animating
         initLoadFeedIndicator.startAnimating()
         
-        FaceSnapsClient.sharedInstance.getUserFeed { (success, errors) in
+        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 0) { (success, data, errors) in
+            DispatchQueue.main.async {
+                // Stop animating
+                self.initLoadFeedIndicator.stopAnimating()
+                
+                if success {
+                    print("Got user feed!")
+                    self.data = Array(FaceSnapsDataSource.sharedInstance.latestFeed!)
+                    self.adapter.reloadData(completion: { (completed) in
+                        print("completed reload")
+                        print(self.data)
+                    })
+                } else {
+                    print("Couldn't get feed")
+                }
+
+            }
+        }
+    }
+    
+    func loadNextPage(completionHandler: @escaping (_ success: Bool, _ data: [FeedItem]?) -> Void ) {
+        let nextPage = page + 1
+        FaceSnapsClient.sharedInstance.getUserFeed(atPage: nextPage) { (success, data, errors) in
             // Stop animating
             self.initLoadFeedIndicator.stopAnimating()
             
-            if success {
-                print("Got user feed!")
-                self.adapter.reloadData(completion: { (completed) in
-                    print("completed reload")
-                    print(self.data)
-                })
+            if let data = data, data.count != 0 {
+                print("Got next page at: \(self.page + 1)")
+                completionHandler(true, data)
+                self.page = nextPage
             } else {
-                print("Couldn't get feed")
+                completionHandler(false, data)
             }
         }
     }
@@ -110,11 +137,21 @@ class HomeController: UIViewController {
 
 extension HomeController: IGListAdapterDataSource {
     func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
-        return data
+        var objects = data as [IGListDiffable]
+        
+        if loading && !initLoadFeedIndicator.isAnimating {
+            objects.append(spinToken as IGListDiffable)
+        }
+    
+        return objects
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return FeedItemSectionController()
+        if let obj = object as? String, obj == spinToken {
+            return spinnerSectionController()
+        } else {
+            return FeedItemSectionController()
+        }
     }
     
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {
@@ -122,7 +159,28 @@ extension HomeController: IGListAdapterDataSource {
     }
 }
 
-// MARK: IGListCollectionViewFlowLayout
-extension HomeController {
-    
+// MARK: UIScrollViewDelegate
+extension HomeController: UIScrollViewDelegate {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+        if !loading && distance < 200 && !initLoadFeedIndicator.isAnimating {
+            loading = true
+            adapter.performUpdates(animated: true, completion: nil)
+            DispatchQueue.global(qos: .default).async {
+                // Load API data
+                self.loadNextPage(completionHandler: { (success, data) in
+                    // When complete:
+                    DispatchQueue.main.async {
+                        self.loading = false
+                        
+                        if let newData = data {
+                            self.data.append(contentsOf: newData)
+                            self.adapter.performUpdates(animated: true, completion: nil)
+                        }
+                    }
+                    
+                })
+            }
+        }
+    }
 }

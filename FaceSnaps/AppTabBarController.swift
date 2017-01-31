@@ -66,7 +66,17 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         self.viewControllers = [homeTab, searchTab, cameraTab, likesTab, profileTab]
     }
     
-    // MARK: - UITabBarControllerDelegate 
+
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        
+        // TODO: Make a function that takes the view controller, switches on the type, and returns the proper notification name
+        // Make a notificationName for each view controller
+        if viewController is HomeNavigationController && self.selectedIndex == 0 {
+            NotificationCenter.default.post(name: .tappedHomeNotificationName, object: nil)
+        }
+        return true
+    }
+    // MARK: - UITabBarControllerDelegate
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         // Selected view controller
         print("selected \(viewController)")

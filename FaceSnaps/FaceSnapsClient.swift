@@ -187,45 +187,59 @@ class FaceSnapsClient: NSObject {
 
     }
     // MARK: Get latest feed for the user
-    func getUserFeed(completionHandler: @escaping (_ success: Bool, _ errors: [String:String]?) -> Void) {
-        FaceSnapsDataSource.sharedInstance.deleteFeedItems()
+    func getUserFeed(atPage page: Int, completionHandler: @escaping (_ success: Bool, _ data: [FeedItem]?, _ errors: [String:String]?) -> Void) {
+        if page == 0 {
+            FaceSnapsDataSource.sharedInstance.deleteFeedItems()
+        }
         
         // Build URL
         let userFeedEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeed)
+    
+        let pageParam = ["page": page]
         // Make request
-        Alamofire.request(userFeedEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+        Alamofire.request(userFeedEndpoint, method: .get, parameters: pageParam, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
             // GUARD: Was there an error?
             guard response.result.error == nil else {
                 print("Error calling GET on user feed")
-                completionHandler(false, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+                completionHandler(false, nil, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
                 return
             }
             
             // GUARD: Do we have a json response?
             guard let json = response.result.value as? [String: Any] else {
                 let errorString = "Unable to get results as JSON from API"
-                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                completionHandler(false, nil, [Constant.ErrorResponseKey.title: errorString])
                 return
             }
             
             // GUARD: Is there a posts array?
             guard let postsJSON = json[Constant.JSONResponseKey.Post.posts] as? [[String:Any]] else {
                 let errorString = "Invalid JSON response: missing posts key"
-                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                completionHandler(false, nil, [Constant.ErrorResponseKey.title: errorString])
                 return
             }
             
-            // Parse postsJSON 
-            if let latestFeed = self.parse(postsArray: postsJSON) {
-                // TODO: Save to realm if it is page 1 and return the feed object
-                // TODO: Otherwise, just return the feed object (page 2 or more)
-                _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: latestFeed)
-                completionHandler(true, nil)
-            } else {
-                completionHandler(false, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
+            // Switch to background thread to parse
+            DispatchQueue.global(qos: .default).async {
+            
+                // Parse postsJSON
+                if let latestFeed = self.parse(postsArray: postsJSON) {
+                    // TODO: Save to realm if it is page 1 and return the feed object
+                    // TODO: Otherwise, just return the feed object (page 2 or more)
+                    if page == 0 {
+                        DispatchQueue.main.async {
+                            _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: latestFeed)
+                        }
+                    }
+                    completionHandler(true, Array(latestFeed), nil)
+                } else {
+                    completionHandler(false, nil, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
+                }
             }
         }
     }
+    
     
     // MARK: - Parse Methods
     

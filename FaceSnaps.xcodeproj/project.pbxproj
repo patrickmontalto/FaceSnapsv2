@@ -72,6 +72,8 @@
 		3AB17FB81E12F879005E8739 /* EmailSignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FB71E12F879005E8739 /* EmailSignUpController.swift */; };
 		3ABF878E1E01EB0500388866 /* SignInHelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878D1E01EB0500388866 /* SignInHelpController.swift */; };
 		3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */; };
+		3ADE2A641E41356500D1D4C6 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */; };
+		3ADE2A661E4151D900D1D4C6 /* Notification + Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */; };
 		63326B2C9953F92A38E4C7AE /* Pods_FaceSnaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */; };
 		CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */; };
 		CDD5D6021E173689007364B4 /* CameraFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD5D6011E173689007364B4 /* CameraFocusView.swift */; };
@@ -170,6 +172,8 @@
 		3AB17FB71E12F879005E8739 /* EmailSignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignUpController.swift; sourceTree = "<group>"; };
 		3ABF878D1E01EB0500388866 /* SignInHelpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInHelpController.swift; sourceTree = "<group>"; };
 		3ABF878F1E01EBFF00388866 /* FaceSnapsGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FaceSnapsGradient.swift; sourceTree = "<group>"; };
+		3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
+		3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification + Name.swift"; sourceTree = "<group>"; };
 		8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceSnaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DFA07437B7867F08D307F4 /* Pods-FaceSnaps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceSnaps.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FaceSnaps/Pods-FaceSnaps.debug.xcconfig"; sourceTree = "<group>"; };
 		CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellAnimator.swift; sourceTree = "<group>"; };
@@ -396,6 +400,7 @@
 				3A5714B21E397709003C7BC5 /* UIImage+Size.swift */,
 				3A74B8471E3D9DCE00408BBB /* TextSize.swift */,
 				3A74B8511E3E992200408BBB /* Time+Ago.swift */,
+				3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */,
 			);
 			name = Convenience;
 			sourceTree = "<group>";
@@ -448,6 +453,7 @@
 				3A5714B41E398030003C7BC5 /* ControlsCellDelegate.swift */,
 				3A74B84D1E3E97B700408BBB /* TimeView.swift */,
 				3A74B84E1E3E97B700408BBB /* TimeView.xib */,
+				3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -634,6 +640,7 @@
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,
 				D267035B1E256BE0001C06BE /* ImageCoder.swift in Sources */,
+				3ADE2A641E41356500D1D4C6 /* SpinnerCell.swift in Sources */,
 				3A9A3BB01E285F83008A1334 /* LikesController.swift in Sources */,
 				3A9D882E1E199F6C00FB928D /* UIImage+Circle.swift in Sources */,
 				D26703691E26D8E1001C06BE /* HomeNavigationController.swift in Sources */,
@@ -642,6 +649,7 @@
 				3A74B8481E3D9DCE00408BBB /* TextSize.swift in Sources */,
 				3AB17FAE1E0B6441005E8739 /* UITextField+Blank.swift in Sources */,
 				3AB17FB81E12F879005E8739 /* EmailSignUpController.swift in Sources */,
+				3ADE2A661E4151D900D1D4C6 /* Notification + Name.swift in Sources */,
 				D26703611E26AFFD001C06BE /* AppTabBarController.swift in Sources */,
 				3A5714B51E398030003C7BC5 /* ControlsCellDelegate.swift in Sources */,
 				3AB17FAA1E0A4815005E8739 /* UIColor.swift in Sources */,
