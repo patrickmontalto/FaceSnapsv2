@@ -66,12 +66,18 @@ final class FeedItem: Object, IGListDiffable {
             }
             // TODO: Old implementation of caching to documents dir
             if cache {
-                var path = FaceSnapsDataSource.sharedInstance.directoryPath() as NSString
-                path.appendingPathComponent("\(self.pk).jpg")
+                let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("\(self.pk).jpg")
+               // var path = FaceSnapsDataSource.sharedInstance.directoryPath() as NSString
+               // path.appendingPathComponent("\(self.pk).jpg")
 
-                
-                let success = FaceSnapsDataSource.sharedInstance.fileManager.createFile(atPath: path as String, contents: data, attributes: nil)
-                print(success)
+               // let imageData = UIImageJPEGRepresentation(image, 0.5)
+               // let success = FaceSnapsDataSource.sharedInstance.fileManager.createFile(atPath: path as String, contents: imageData, attributes: nil)
+               // print(success)
+                do {
+                    try data.write(to: fileURL, options: .atomic)
+                } catch {
+                    print(error)
+                }
             }
             completionHandler(image)
         }
