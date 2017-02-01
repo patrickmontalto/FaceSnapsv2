@@ -54,37 +54,6 @@ final class FeedItem: Object, IGListDiffable {
         }
     }
     
-    // Background request for UIImage from URL String
-    func photoFromURL(cache: Bool, completionHandler: @escaping (_ image: UIImage?) -> Void) {
-        let url = URL(string: photoURLString)!
-        let session = URLSession.shared
-        let request = URLRequest(url: url)
-        let dataTask = session.dataTask(with: request) { (data, response, error) in
-            guard let data = data, let image = UIImage(data: data) else {
-                completionHandler(nil)
-                return
-            }
-            // TODO: Old implementation of caching to documents dir
-            if cache {
-                let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("\(self.pk).jpg")
-               // var path = FaceSnapsDataSource.sharedInstance.directoryPath() as NSString
-               // path.appendingPathComponent("\(self.pk).jpg")
-
-               // let imageData = UIImageJPEGRepresentation(image, 0.5)
-               // let success = FaceSnapsDataSource.sharedInstance.fileManager.createFile(atPath: path as String, contents: imageData, attributes: nil)
-               // print(success)
-                do {
-                    try data.write(to: fileURL, options: .atomic)
-                } catch {
-                    print(error)
-                }
-            }
-            completionHandler(image)
-        }
-        
-        dataTask.resume()
-    }
-    
     // MARK: - IGListDiffable
     
     func diffIdentifier() -> NSObjectProtocol {

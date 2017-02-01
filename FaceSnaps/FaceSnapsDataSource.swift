@@ -89,6 +89,36 @@ class FaceSnapsDataSource {
             realm.delete(realm.objects(FeedItem.self))
         }
     }
+    
+    // Background request for UIImage from URL String
+    func photoFromURL(for feedItem: FeedItem, cache: Bool, completionHandler:
+        @escaping (_ image: UIImage?) -> Void) {
+        let photoURLString = feedItem.photoURLString
+        let url = URL(string: photoURLString)!
+        let session = URLSession.shared
+        let request = URLRequest(url: url)
+        let dataTask = session.dataTask(with: request) { (data, response, error) in
+            DispatchQueue.main.async {
+                
+                guard let data = data, let image = UIImage(data: data) else {
+                    completionHandler(nil)
+                    return
+                }
+                if cache {
+                    let fileURL = try! self.fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("\(feedItem.pk).jpg")
+                    do {
+                        try data.write(to: fileURL, options: .atomic)
+                    } catch {
+                        print(error)
+                    }
+                }
+                completionHandler(image)
+            }
+
+        }
+        
+        dataTask.resume()
+    }
 
     func directoryPath() -> String {
         return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]

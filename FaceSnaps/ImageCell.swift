@@ -64,13 +64,14 @@ class ImageCell: UICollectionViewCell, FeedItemSubSectionCell {
             let caching = index < 10
             // Begin background process to download image from URL
             // Cache if necessary
-            feedItem.photoFromURL(cache: caching, completionHandler: { (image) in
+            FaceSnapsDataSource.sharedInstance.photoFromURL(for: feedItem, cache: caching, completionHandler: { (image) in
                 DispatchQueue.main.async {
                     if let cellToUpdate = collectionContext.cellForItem(at: index, sectionController: sectionController) as? ImageCell {
                         cellToUpdate.setImage(image: image)
                     }
                 }
             })
+            
         }
         
         return cell
