@@ -39,6 +39,32 @@ class HomeController: UIViewController {
         return cv
     }()
     
+    private let refreshControl = UIRefreshControl()
+    
+//    lazy var refreshActivityIndicatorView :UIActivityIndicatorView = {
+//        let view = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+//        view.hidesWhenStopped = true
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//        
+//    }()
+    func refreshData(sender: UIRefreshControl) {
+        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (success, newFeedItems, errors) in
+            DispatchQueue.main.async {
+                if let newFeedItems = newFeedItems {
+                    self.data.insert(contentsOf: newFeedItems, at: 0)
+                }
+                
+                self.adapter.reloadData(completion: { (completed) in
+                    print("completed pull-to-fresh")
+                    print(self.data)
+                })
+                
+                self.refreshControl.endRefreshing()
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeFeed()
@@ -52,6 +78,9 @@ class HomeController: UIViewController {
         
         // Add notification to scroll view to top when home is tapped
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .tappedHomeNotificationName, object: nil)
+        
+        collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshData(sender:)), for: .valueChanged)
         
         // Make camera outline image
         let cameraImage = UIImage(named: "camera")!
