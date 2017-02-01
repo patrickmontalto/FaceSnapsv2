@@ -12,6 +12,8 @@ import RealmSwift
 
 class FaceSnapsDataSource {
     
+    let fileManager = FileManager.default
+    
     // MARK: Properties
     let realm = try! Realm()
     
@@ -32,8 +34,6 @@ class FaceSnapsDataSource {
     var latestFeed: Results<FeedItem>? {
         get {
             return realm.objects(FeedItem.self)
-            // TODO: Remove strongbox
-            //return FaceSnapsStrongbox.sharedInstance.unarchive(objectForKey: .latestFeed) as? [FeedItem]
         }
     }
     
@@ -65,6 +65,8 @@ class FaceSnapsDataSource {
     
     // TODO: Can we just write an entire array?
     func setLatestFeed(asFeed feed: List<FeedItem>) -> Bool {
+        deleteFeedItems()
+        
         do {
             try realm.write({
                 realm.add(feed)
@@ -88,5 +90,8 @@ class FaceSnapsDataSource {
         }
     }
 
+    func directoryPath() -> String {
+        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+    }
     
 }

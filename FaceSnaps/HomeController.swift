@@ -48,23 +48,7 @@ class HomeController: UIViewController {
 //        return view
 //        
 //    }()
-    func refreshData(sender: UIRefreshControl) {
-        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (success, newFeedItems, errors) in
-            DispatchQueue.main.async {
-                if let newFeedItems = newFeedItems {
-                    self.data.insert(contentsOf: newFeedItems, at: 0)
-                }
-                
-                self.adapter.reloadData(completion: { (completed) in
-                    print("completed pull-to-fresh")
-                    print(self.data)
-                })
-                
-                self.refreshControl.endRefreshing()
-            }
-        }
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeFeed()
@@ -125,15 +109,17 @@ class HomeController: UIViewController {
         // Start animating
         initLoadFeedIndicator.startAnimating()
         
-        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 0) { (success, data, errors) in
+        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (success, newData, errors) in
             DispatchQueue.main.async {
                 // Stop animating
                 self.initLoadFeedIndicator.stopAnimating()
                 
                 if success {
                     print("Got user feed!")
-                    self.data = Array(FaceSnapsDataSource.sharedInstance.latestFeed!)
+                    self.data = Array(newData!)
                     self.adapter.reloadData(completion: { (completed) in
+                        // TODO: Save to realm and delete old feed
+                        _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData!)
                         print("completed reload")
                         print(self.data)
                     })
@@ -145,7 +131,7 @@ class HomeController: UIViewController {
         }
     }
     
-    func loadNextPage(completionHandler: @escaping (_ success: Bool, _ data: [FeedItem]?) -> Void ) {
+    func loadNextPage(completionHandler: @escaping (_ success: Bool, _ data: List<FeedItem>?) -> Void ) {
         let nextPage = page + 1
         FaceSnapsClient.sharedInstance.getUserFeed(atPage: nextPage) { (success, data, errors) in
             // Stop animating
@@ -160,6 +146,34 @@ class HomeController: UIViewController {
             }
         }
     }
+    
+    func refreshData(sender: UIRefreshControl) {
+        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (success, newData, errors) in
+            DispatchQueue.main.async {
+                let lastFeed = FaceSnapsDataSource.sharedInstance.latestFeed
+                
+                var lastFeedArray = Array(lastFeed!)
+                var newFeedArray = Array(newData!)
+                
+                var newFeedItems = newFeedArray.removingObjectsInArray(array: lastFeedArray)
+                
+                // If there are new posts, append to data and save data to Realm
+                if newFeedItems.count > 0 {
+                    self.data.insert(contentsOf: newFeedItems, at: 0)
+                    FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData!)
+                }
+                
+                
+                self.adapter.reloadData(completion: { (completed) in
+                    print("completed pull-to-fresh")
+                    print(self.data)
+                })
+                
+                self.refreshControl.endRefreshing()
+            }
+        }
+    }
+    
 }
 
 // MARK: IGListAdapterDataSource

@@ -54,7 +54,24 @@ class ImageCell: UICollectionViewCell, FeedItemSubSectionCell {
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
         let cell = collectionContext.dequeueReusableCell(of: ImageCell.self, for: sectionController, at: index) as! ImageCell
         
-        cell.setImage(image: feedItem.photo)
+        // Check to see if the image is currently cached in the file directory
+        // If it is not, begin async request to download image
+        if let photo = feedItem.photo {
+            cell.setImage(image: photo)
+        } else {
+            // TODO: Set placeholder Image
+            cell.setImage(image: UIImage())
+            let caching = index < 10
+            // Begin background process to download image from URL
+            // Cache if necessary
+            feedItem.photoFromURL(cache: caching, completionHandler: { (image) in
+                DispatchQueue.main.async {
+                    if let cellToUpdate = collectionContext.cellForItem(at: index, sectionController: sectionController) as? ImageCell {
+                        cellToUpdate.setImage(image: image)
+                    }
+                }
+            })
+        }
         
         return cell
     }

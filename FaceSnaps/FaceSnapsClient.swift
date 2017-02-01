@@ -187,14 +187,11 @@ class FaceSnapsClient: NSObject {
 
     }
     // MARK: Get latest feed for the user
-    func getUserFeed(atPage page: Int, completionHandler: @escaping (_ success: Bool, _ data: [FeedItem]?, _ errors: [String:String]?) -> Void) {
+    func getUserFeed(atPage page: Int, completionHandler: @escaping (_ success: Bool, _ data: List<FeedItem>?, _ errors: [String:String]?) -> Void) {
         // Delete the latest feed items if we are attempting to get page 1 again
         var lastFeed: Results<FeedItem>?
         
-        if page == 1 {
-            lastFeed = FaceSnapsDataSource.sharedInstance.latestFeed
-            FaceSnapsDataSource.sharedInstance.deleteFeedItems()
-        }
+        // TODO: Remove success Bool and replace with just data
         
         // Build URL
         let userFeedEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeed)
@@ -229,22 +226,7 @@ class FaceSnapsClient: NSObject {
             
                 // Parse postsJSON
                 if var latestFeed = self.parse(postsArray: postsJSON) {
-                    // TODO: Save to realm if it is page 1 and return the feed object
-                    // TODO: Otherwise, just return the feed object (page 2 or more)
-                    if page == 1 {
-                        DispatchQueue.main.async {
-                            _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: latestFeed)
-                        }
-                        // If we are refreshing the data to get new items, only return back the new items instead of duplicates
-                        if let lastFeed = lastFeed {
-                            var latestFeedArray = Array(latestFeed)
-                            var lastFeedArray = Array(lastFeed)
-                            
-                            var newFeedItems = latestFeedArray.removingObjectsInArray(array: lastFeedArray)
-                            completionHandler(true, newFeedItems, nil)
-                        }
-                    }
-                    completionHandler(true, Array(latestFeed), nil)
+                    completionHandler(true, latestFeed, nil)
                 } else {
                     completionHandler(false, nil, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
                 }

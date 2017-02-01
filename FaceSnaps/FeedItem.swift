@@ -15,10 +15,11 @@ final class FeedItem: Object, IGListDiffable {
     dynamic var user: User?
     dynamic var caption: String = ""
     var comments = List<Comment>()
-    dynamic var photoData: Data = Data()
+    dynamic var photoData: Data? = nil
     dynamic var liked: Bool = false
     dynamic var likesCount: Int = 0
     dynamic var datePosted: Date = Date()
+    var photoURLString: String = ""
     
     convenience init(pk: Int, user: User, caption: String, comments: List<Comment>, photoURLString: String, liked: Bool, datePosted: Date, likesCount: Int) {
         self.init()
@@ -31,20 +32,51 @@ final class FeedItem: Object, IGListDiffable {
         self.likesCount = likesCount
         self.datePosted = datePosted
         
-        guard let photoURL = URL(string: photoURLString) else {
+        // Return if invalid URL string
+        guard let _ = URL(string: photoURLString) else {
             return
         }
         
-        do {
-            let data = try Data(contentsOf: photoURL)
-            self.photoData = data
-        } catch {}
+        self.photoURLString = photoURLString
+        
     }
     
+    
+    // Set imageView on cell to this property. If the property is null,
+    // then begin background request to URL
     var photo: UIImage? {
         get {
-            return UIImage(data: self.photoData)
+            let photoPathString = (FaceSnapsDataSource.sharedInstance.directoryPath() as NSString).appendingPathComponent("\(pk).jpg")
+            if FaceSnapsDataSource.sharedInstance.fileManager.fileExists(atPath: photoPathString) {
+                print("File exists!")
+            }
+            return UIImage(contentsOfFile: photoPathString)
         }
+    }
+    
+    // Background request for UIImage from URL String
+    func photoFromURL(cache: Bool, completionHandler: @escaping (_ image: UIImage?) -> Void) {
+        let url = URL(string: photoURLString)!
+        let session = URLSession.shared
+        let request = URLRequest(url: url)
+        let dataTask = session.dataTask(with: request) { (data, response, error) in
+            guard let data = data, let image = UIImage(data: data) else {
+                completionHandler(nil)
+                return
+            }
+            // TODO: Old implementation of caching to documents dir
+            if cache {
+                var path = FaceSnapsDataSource.sharedInstance.directoryPath() as NSString
+                path.appendingPathComponent("\(self.pk).jpg")
+
+                
+                let success = FaceSnapsDataSource.sharedInstance.fileManager.createFile(atPath: path as String, contents: data, attributes: nil)
+                print(success)
+            }
+            completionHandler(image)
+        }
+        
+        dataTask.resume()
     }
     
     // MARK: - IGListDiffable
