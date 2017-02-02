@@ -144,14 +144,16 @@ class HomeController: UIViewController {
             DispatchQueue.main.async {
                 let lastFeed = FaceSnapsDataSource.sharedInstance.latestFeed
                 
-                var lastFeedArray = Array(lastFeed!)
+                let lastPublicKeys = Array(lastFeed!).map { $0.pk }
                 var newFeedArray = Array(newData!)
                 
-                var newFeedItems = newFeedArray.removingObjectsInArray(array: lastFeedArray)
+                newFeedArray = newFeedArray.filter({ (item) -> Bool in
+                    return !lastPublicKeys.contains(item.pk)
+                })
                 
                 // If there are new posts, append to data and save data to Realm
-                if newFeedItems.count > 0 {
-                    self.data.insert(contentsOf: newFeedItems, at: 0)
+                if newFeedArray.count > 0 {
+                    self.data.insert(contentsOf: newFeedArray, at: 0)
                     FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData!)
                 }
                 

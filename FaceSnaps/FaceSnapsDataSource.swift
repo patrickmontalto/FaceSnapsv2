@@ -85,9 +85,9 @@ class FaceSnapsDataSource {
     }
     
     func deleteFeedItems() {
-        try! realm.write {
-            realm.delete(realm.objects(FeedItem.self))
-        }
+        //try! realm.write {
+        //    realm.delete(realm.objects(FeedItem.self))
+       // }
     }
     
     // Background request for UIImage from URL String

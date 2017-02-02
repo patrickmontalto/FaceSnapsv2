@@ -47,9 +47,6 @@ final class FeedItem: Object, IGListDiffable {
     var photo: UIImage? {
         get {
             let photoPathString = (FaceSnapsDataSource.sharedInstance.directoryPath() as NSString).appendingPathComponent("\(pk).jpg")
-            if FaceSnapsDataSource.sharedInstance.fileManager.fileExists(atPath: photoPathString) {
-                print("File exists!")
-            }
             return UIImage(contentsOfFile: photoPathString)
         }
     }
