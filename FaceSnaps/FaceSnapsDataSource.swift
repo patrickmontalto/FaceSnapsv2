@@ -31,7 +31,7 @@ class FaceSnapsDataSource {
         }
     }
     
-    var latestFeed: Results<FeedItem>? {
+    var latestFeed: Results<FeedItem> {
         get {
             return realm.objects(FeedItem.self)
         }

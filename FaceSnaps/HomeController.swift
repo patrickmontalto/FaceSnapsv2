@@ -23,7 +23,9 @@ class HomeController: UIViewController {
         return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
     }()
 
-    lazy var data: [FeedItem] = Array(FaceSnapsDataSource.sharedInstance.latestFeed!)
+    lazy var data: [FeedItem] = {
+        return Array(FaceSnapsDataSource.sharedInstance.latestFeed)
+    }()
     var loading = false
     let spinToken = "spinner"
     var page = 1
@@ -43,9 +45,8 @@ class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initializeFeed()
-        
         view.addSubview(collectionView)
+    
         collectionView.backgroundColor = .white
         self.automaticallyAdjustsScrollViewInsets = false
         adapter.collectionView = collectionView
@@ -63,6 +64,8 @@ class HomeController: UIViewController {
         let cameraItem = UIBarButtonItem(image: cameraImage, style: .plain, target: #selector(launchCamera), action: nil)
         self.navigationItem.setLeftBarButton(cameraItem, animated: false)
         
+        initializeFeed()
+        
     }
     
     func scrollToTop() {
@@ -77,6 +80,9 @@ class HomeController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        
+        collectionView.backgroundView?.layer.zPosition = -1
+        edgesForExtendedLayout = []
         
         view.addSubview(initLoadFeedIndicator)
         
@@ -98,6 +104,24 @@ class HomeController: UIViewController {
     }
     
     private func initializeFeed() {
+        // Check to see if data from last feed exists
+        // If it does, display last feed and only refresh data
+        if data.count > 0 {
+            // Start refresh control
+            let offset = CGPoint(x: 0, y: -refreshControl.frame.size.height)
+            
+            collectionView.setContentOffset(offset, animated: true)
+            refreshControl.beginRefreshing()
+            
+            // TODO: Have to add an activity indicator to the refreshControl
+            refreshControl.sendActions(for: .valueChanged)
+        } else {
+            getNewFeed()
+        }
+        
+    }
+    
+    private func getNewFeed() {
         // Start animating
         initLoadFeedIndicator.startAnimating()
         
@@ -118,10 +142,12 @@ class HomeController: UIViewController {
                 } else {
                     print("Couldn't get feed")
                 }
-
+                
             }
         }
+
     }
+    
     
     func loadNextPage(completionHandler: @escaping (_ success: Bool, _ data: List<FeedItem>?) -> Void ) {
         let nextPage = page + 1
@@ -144,7 +170,7 @@ class HomeController: UIViewController {
             DispatchQueue.main.async {
                 let lastFeed = FaceSnapsDataSource.sharedInstance.latestFeed
                 
-                let lastPublicKeys = Array(lastFeed!).map { $0.pk }
+                let lastPublicKeys = Array(lastFeed).map { $0.pk }
                 var newFeedArray = Array(newData!)
                 
                 newFeedArray = newFeedArray.filter({ (item) -> Bool in
@@ -163,7 +189,7 @@ class HomeController: UIViewController {
                     print(self.data)
                 })
                 
-                self.refreshControl.endRefreshing()
+               self.refreshControl.endRefreshing()
             }
         }
     }
