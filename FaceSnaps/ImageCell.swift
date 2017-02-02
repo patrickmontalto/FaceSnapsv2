@@ -67,10 +67,6 @@ class ImageCell: UICollectionViewCell, FeedItemSubSectionCell {
             FaceSnapsDataSource.sharedInstance.photoFromURL(for: feedItem, cache: caching, completionHandler: { (image) in
                 DispatchQueue.main.async {
                     cell.setImage(image: image)
-                    //if let cellToUpdate = collectionContext.cellForItem(at: index, sectionController: sectionController) as? ImageCell {
-                      //  cellToUpdate.setImage(image: image)
-                        
-                    //}
                 }
             })
             

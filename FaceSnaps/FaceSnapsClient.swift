@@ -195,7 +195,7 @@ class FaceSnapsClient: NSObject {
         
         // Build URL
         let userFeedEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeed)
-    
+     
         let pageParam = ["page": page]
         // Make request
         Alamofire.request(userFeedEndpoint, method: .get, parameters: pageParam, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
@@ -221,6 +221,11 @@ class FaceSnapsClient: NSObject {
                 return
             }
             
+            // TODO: Set posts Ids array on data source
+            self.getUserFeedPostId(completionHandler: { (success) in
+                
+            })
+            
             // Switch to background thread to parse
             DispatchQueue.global(qos: .default).async {
             
@@ -232,6 +237,42 @@ class FaceSnapsClient: NSObject {
                 }
             }
         }
+    }
+    
+    private func getUserFeedPostId(completionHandler: @escaping (_ success: Bool) -> Void) {
+        let userFeedEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeedIds)
+        
+        // Make request
+        Alamofire.request(userFeedEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling GET on user feed")
+                completionHandler(false)
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(false)
+                return
+            }
+            
+            // GUARD: Is there a posts array?
+            guard let postsIds = json[Constant.JSONResponseKey.Post.postsIds] as? [Int] else {
+                let errorString = "Invalid JSON response: missing posts key"
+                completionHandler(false)
+                return
+            }
+            
+            // Set on DataManager
+            FaceSnapsDataSource.sharedInstance.postKeys = postsIds
+            
+            completionHandler(true)
+
+        }
+
     }
     
     

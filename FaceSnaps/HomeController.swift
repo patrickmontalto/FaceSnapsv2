@@ -19,13 +19,19 @@ class HomeController: UIViewController {
         return view
     }()
     
+    lazy var refreshIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy var adapter: IGListAdapter = {
         return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
     }()
 
-    lazy var data: [FeedItem] = {
-        return Array(FaceSnapsDataSource.sharedInstance.latestFeed)
-    }()
+    var data: [FeedItem] = Array(FaceSnapsDataSource.sharedInstance.latestFeed)
+
     var loading = false
     let spinToken = "spinner"
     var page = 1
@@ -56,8 +62,7 @@ class HomeController: UIViewController {
         // Add notification to scroll view to top when home is tapped
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .tappedHomeNotificationName, object: nil)
         
-        collectionView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(refreshData(sender:)), for: .valueChanged)
+        configureRefreshControl()
         
         // Make camera outline image
         let cameraImage = UIImage(named: "camera")!
@@ -66,6 +71,12 @@ class HomeController: UIViewController {
         
         initializeFeed()
         
+    }
+    
+    private func configureRefreshControl() {
+        collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshData(sender:)), for: .valueChanged)
+        refreshControl.addSubview(refreshIndicator)
     }
     
     func scrollToTop() {
@@ -92,7 +103,9 @@ class HomeController: UIViewController {
                 collectionView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
                 collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
                 collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
-                collectionView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor)
+                collectionView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
+                refreshIndicator.centerYAnchor.constraint(equalTo: refreshControl.centerYAnchor),
+                refreshIndicator.centerXAnchor.constraint(equalTo: refreshControl.centerXAnchor)
         ])
     }
     
@@ -115,6 +128,7 @@ class HomeController: UIViewController {
             
             // TODO: Have to add an activity indicator to the refreshControl
             refreshControl.sendActions(for: .valueChanged)
+            refreshIndicator.startAnimating()
         } else {
             getNewFeed()
         }
@@ -133,7 +147,7 @@ class HomeController: UIViewController {
                 if success {
                     print("Got user feed!")
                     self.data = Array(newData!)
-                    self.adapter.reloadData(completion: { (completed) in
+                    self.adapter.performUpdates(animated: true, completion: { (completed) in
                         // TODO: Save to realm and delete old feed
                         _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData!)
                         print("completed reload")
@@ -166,30 +180,62 @@ class HomeController: UIViewController {
     }
     
     func refreshData(sender: UIRefreshControl) {
+
         FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (success, newData, errors) in
             DispatchQueue.main.async {
-                let lastFeed = FaceSnapsDataSource.sharedInstance.latestFeed
+                guard let newData = newData else {
+                    return
+                }
                 
-                let lastPublicKeys = Array(lastFeed).map { $0.pk }
-                var newFeedArray = Array(newData!)
+                let lastPublicKeys = self.data.map { $0.pk }
                 
-                newFeedArray = newFeedArray.filter({ (item) -> Bool in
+                // TODO: Get last item on page as cut-off point
+                let lastItemOnPage = self.data.last?.pk
+                
+                
+                let newFeedItems = newData.filter({ (item) -> Bool in
                     return !lastPublicKeys.contains(item.pk)
                 })
                 
-                // If there are new posts, append to data and save data to Realm
-                if newFeedArray.count > 0 {
-                    self.data.insert(contentsOf: newFeedArray, at: 0)
-                    FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData!)
+                var deletedFeedItems = [FeedItem]()
+                
+                if let lastItemOnPage = lastItemOnPage {
+                    deletedFeedItems = self.data.filter({ (item) -> Bool in
+                        // If there is a feed already, we need to remove whatever may be deleted or prevent deletions of what shifted to the next page(s)
+                        return !FaceSnapsDataSource.sharedInstance.postKeys.contains(item.pk)
+                    })
+                    deletedFeedItems = deletedFeedItems.filter({ (item) -> Bool in
+                        return item.pk >= lastItemOnPage
+                    })
+
                 }
                 
                 
-                self.adapter.reloadData(completion: { (completed) in
+                // If there are new posts, append to data and save data to Realm
+                if newFeedItems.count > 0 {
+                    self.data.insert(contentsOf: newFeedItems, at: 0)
+                }
+                
+                // Delete items from data if there are any
+                if deletedFeedItems.count > 0 {
+                    for item in deletedFeedItems {
+                        if let index = self.data.index(of: item) {
+                            self.data.remove(at: index)
+                        }
+                    }
+                }
+                
+                if newFeedItems.count > 0 || deletedFeedItems.count > 0 {
+                    _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData)
+                }
+                
+                self.adapter.performUpdates(animated: true, completion: { (completed) in
                     print("completed pull-to-fresh")
                     print(self.data)
+                    self.refreshControl.endRefreshing()
+                    self.refreshIndicator.stopAnimating()
                 })
                 
-               self.refreshControl.endRefreshing()
             }
         }
     }

@@ -37,6 +37,9 @@ class FaceSnapsDataSource {
         }
     }
     
+    // This holds an array of post IDs for the current user's feed, from page 1 to infinity
+    var postKeys = [Int]()
+    
     var signedIn: Bool {
         return !(currentUser == nil)
     }

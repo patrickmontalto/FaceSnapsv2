@@ -56,6 +56,8 @@ extension FaceSnapsClient {
                 }
                 // Get current user's feed
                 static let getUserFeed = "/users/self/feed"
+                // Get an array of all post IDs on the users feed
+                static let getUserFeedIds = "/users/self/feed/post_ids"
                 // Get current user
                 static let getCurrentUser = "/users/self"
                 // Get information about a user
@@ -134,7 +136,7 @@ extension FaceSnapsClient {
                 static let likedByUser = "liked_by_user"
                 static let likes = "likes"
                 static let createdAt = "created_at"
-
+                static let postsIds = "posts_ids"
             }
             
             // MARK: - Comments Data
