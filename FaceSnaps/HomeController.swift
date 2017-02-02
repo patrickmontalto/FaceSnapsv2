@@ -41,14 +41,6 @@ class HomeController: UIViewController {
     
     private let refreshControl = UIRefreshControl()
     
-//    lazy var refreshActivityIndicatorView :UIActivityIndicatorView = {
-//        let view = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-//        view.hidesWhenStopped = true
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//        
-//    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeFeed()
