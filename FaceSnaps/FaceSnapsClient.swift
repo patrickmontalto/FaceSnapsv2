@@ -266,7 +266,7 @@ class FaceSnapsClient: NSObject {
                 return
             }
             
-            // Set on DataManager
+            // Set on DataSource
             FaceSnapsDataSource.sharedInstance.postKeys = postsIds
             
             completionHandler(true)

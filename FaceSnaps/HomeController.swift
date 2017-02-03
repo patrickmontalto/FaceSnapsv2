@@ -180,35 +180,41 @@ class HomeController: UIViewController {
     }
     
     func refreshData(sender: UIRefreshControl) {
+        
+        let lastFeedPostKeys = FaceSnapsDataSource.sharedInstance.postKeys
+        let firstLoadedKey = data.last?.pk
 
         FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (success, newData, errors) in
             DispatchQueue.main.async {
+
+                // Do not do anything if there is not any data
                 guard let newData = newData else {
                     return
                 }
-                
                 let lastPublicKeys = self.data.map { $0.pk }
-                
-                // TODO: Get last item on page as cut-off point
-                let lastItemOnPage = self.data.last?.pk
-                
-                
+
                 let newFeedItems = newData.filter({ (item) -> Bool in
                     return !lastPublicKeys.contains(item.pk)
                 })
                 
                 var deletedFeedItems = [FeedItem]()
                 
-                if let lastItemOnPage = lastItemOnPage {
+                if let firstLoadedKey = firstLoadedKey, let lastFeedPostKeys = lastFeedPostKeys {
+                    // Get a list of deleted post keys
+                    var deletedFeedPostKeys = lastFeedPostKeys.filter({ (key) -> Bool in
+                        return !FaceSnapsDataSource.sharedInstance.postKeys!.contains(key)
+                    })
+                    // Only concern ourselves with posts that should be loaded in the current data
+                    deletedFeedPostKeys = deletedFeedPostKeys.filter({ (key) -> Bool in
+                        return key >= firstLoadedKey
+                    })
+                    // Sort through current data. Deleted posts are those with a key inside of the deletedFeedPostKeys array
                     deletedFeedItems = self.data.filter({ (item) -> Bool in
-                        // If there is a feed already, we need to remove whatever may be deleted or prevent deletions of what shifted to the next page(s)
-                        return !FaceSnapsDataSource.sharedInstance.postKeys.contains(item.pk)
+                        return deletedFeedPostKeys.contains(item.pk)
                     })
-                    deletedFeedItems = deletedFeedItems.filter({ (item) -> Bool in
-                        return item.pk >= lastItemOnPage
-                    })
-
                 }
+                
+               
                 
                 
                 // If there are new posts, append to data and save data to Realm

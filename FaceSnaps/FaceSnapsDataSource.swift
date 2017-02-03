@@ -20,7 +20,6 @@ class FaceSnapsDataSource {
     var currentUser: User? {
         get {
             return realm.objects(User.self).first
-            // return FaceSnapsStrongbox.sharedInstance.unarchive(objectForKey: .currentUser) as? User
         }
     }
     
@@ -38,7 +37,15 @@ class FaceSnapsDataSource {
     }
     
     // This holds an array of post IDs for the current user's feed, from page 1 to infinity
-    var postKeys = [Int]()
+    var postKeys: [Int]? {
+        set {
+            guard let newValue = newValue else { return }
+            _ = FaceSnapsStrongbox.sharedInstance.archive(newValue, key: .postKeys)
+        }
+        get {
+            return FaceSnapsStrongbox.sharedInstance.unarchive(objectForKey: .postKeys) as? [Int]
+        }
+    }
     
     var signedIn: Bool {
         return !(currentUser == nil)
