@@ -53,7 +53,12 @@ class HomeController: UIViewController {
         super.viewDidLoad()
         view.addSubview(collectionView)
         
-        data = Array(FaceSnapsDataSource.sharedInstance.latestFeed)
+        // If there is a last feed, set data.
+        if let lastFeedItems = FaceSnapsDataSource.sharedInstance.lastFeedItems {
+            data = Array(lastFeedItems)
+        } else {
+            data = []
+        }
     
         collectionView.backgroundColor = .white
         self.automaticallyAdjustsScrollViewInsets = false
@@ -151,7 +156,6 @@ class HomeController: UIViewController {
                     self.data = Array(newData!)
                     self.adapter.performUpdates(animated: true, completion: { (completed) in
                         // TODO: Save to realm and delete old feed
-                        _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData!)
                         print("completed reload")
                         print(self.data)
                     })
@@ -182,9 +186,7 @@ class HomeController: UIViewController {
     }
     
     func refreshData(sender: UIRefreshControl) {
-        
-        let lastFeedPostKeys = FaceSnapsDataSource.sharedInstance.postKeys
-        let firstLoadedKey = data.last?.pk
+
 
         FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (success, newData, errors) in
             DispatchQueue.main.async {
@@ -193,55 +195,14 @@ class HomeController: UIViewController {
                 guard let newData = newData else {
                     return
                 }
-                let lastPublicKeys = self.data.map { $0.pk }
-
-                let newFeedItems = newData.filter({ (item) -> Bool in
-                    return !lastPublicKeys.contains(item.pk)
-                })
                 
-                var deletedFeedItems = [FeedItem]()
-                
-                if let firstLoadedKey = firstLoadedKey, let lastFeedPostKeys = lastFeedPostKeys {
-                    // Get a list of deleted post keys
-                    var deletedFeedPostKeys = lastFeedPostKeys.filter({ (key) -> Bool in
-                        return !FaceSnapsDataSource.sharedInstance.postKeys!.contains(key)
-                    })
-                    // Only concern ourselves with posts that should be loaded in the current data
-                    deletedFeedPostKeys = deletedFeedPostKeys.filter({ (key) -> Bool in
-                        return key >= firstLoadedKey
-                    })
-                    // Sort through current data. Deleted posts are those with a key inside of the deletedFeedPostKeys array
-                    deletedFeedItems = self.data.filter({ (item) -> Bool in
-                        return deletedFeedPostKeys.contains(item.pk)
-                    })
-                }
-                
-                // If there are any deleted items or new items, update the feed with the new data
-                if newFeedItems.count > 0 || deletedFeedItems.count > 0 {
-                    _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData)
-                }
-                
-                // If there are new posts, append to data and save data to Realm
-                if newFeedItems.count > 0 {
-                    self.data.insert(contentsOf: newFeedItems, at: 0)
-                }
-                
-                // Delete items from data if there are any
-                if deletedFeedItems.count > 0 {
-                    for item in deletedFeedItems {
-                        if let index = self.data.index(of: item) {
-                            self.data.remove(at: index)
-                        }
-                    }
-                }
-                
+                self.data = Array(newData)
                 self.adapter.performUpdates(animated: true, completion: { (completed) in
                     print("completed pull-to-fresh")
                     print(self.data)
                     self.refreshControl.endRefreshing()
                     self.refreshIndicator.stopAnimating()
                 })
-                
             }
         }
     }

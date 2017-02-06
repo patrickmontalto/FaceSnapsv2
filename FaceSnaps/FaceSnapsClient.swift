@@ -26,7 +26,7 @@ class FaceSnapsClient: NSObject {
     // MARK: Sign in as a user
     func signInUser(credential: String, password: String, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void) {
         // Build URL
-        let signInEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signInUser)
+        let signInEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signInUser)
         // Build params
         let params = ["session":["credential": credential, "password": password]]
         // Make request
@@ -69,7 +69,7 @@ class FaceSnapsClient: NSObject {
             var photoURLstring: String? = nil
             
             if let photoPath = user[Constant.JSONResponseKey.User.photoPath] as? String {
-                photoURLstring = self.urlString(forPhotoPath: photoPath)
+                photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             }
             
             let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken)
@@ -87,7 +87,7 @@ class FaceSnapsClient: NSObject {
     // MARK: Sign up as a new user
     func signUpUser(username: String, email: String, fullName: String, password: String, profileImage: String?, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void ) {
         // Build URL
-        let signUpEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signUpUser)
+        let signUpEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signUpUser)
         // Build params
         var params: [String: Any] = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password]]
         if let profileImage = profileImage {
@@ -141,7 +141,7 @@ class FaceSnapsClient: NSObject {
             var photoURLstring: String? = nil
             
             if let photoPath = user[Constant.JSONResponseKey.User.photoPath] as? String {
-                photoURLstring = self.urlString(forPhotoPath: photoPath)
+                photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             }
             
             let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken)
@@ -157,7 +157,7 @@ class FaceSnapsClient: NSObject {
     // MARK: Check if username/email is available
     func checkAvailability(forUserCredential userCredential: String, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void ) {
         // Build URL
-        let checkEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.checkAvailability)
+        let checkEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.checkAvailability)
         // Build params
         let params = ["user_credential": userCredential]
         // Make request
@@ -194,9 +194,10 @@ class FaceSnapsClient: NSObject {
         // TODO: Remove success Bool and replace with just data
         
         // Build URL
-        let userFeedEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeed)
+        let userFeedEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeed)
      
         let pageParam = ["page": page]
+
         // Make request
         Alamofire.request(userFeedEndpoint, method: .get, parameters: pageParam, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
             
@@ -230,7 +231,9 @@ class FaceSnapsClient: NSObject {
             DispatchQueue.global(qos: .default).async {
             
                 // Parse postsJSON
-                if var latestFeed = self.parse(postsArray: postsJSON) {
+                if let latestFeed = FaceSnapsParser.parse(postsArray: postsJSON) {
+                    // Save JSON to Strongbox
+                    FaceSnapsDataSource.sharedInstance.lastJSONdata = postsJSON
                     completionHandler(true, latestFeed, nil)
                 } else {
                     completionHandler(false, nil, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
@@ -240,7 +243,7 @@ class FaceSnapsClient: NSObject {
     }
     
     private func getUserFeedPostId(completionHandler: @escaping (_ success: Bool) -> Void) {
-        let userFeedEndpoint = urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeedIds)
+        let userFeedEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeedIds)
         
         // Make request
         Alamofire.request(userFeedEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
@@ -274,138 +277,7 @@ class FaceSnapsClient: NSObject {
         }
 
     }
-    
-    
-    // MARK: - Parse Methods
-    
-    private func parse(userDictionary: [String: Any]) -> User? {
-        // GUARD: Get and print the auth_token
-        guard let authToken = userDictionary[Constant.JSONResponseKey.User.authToken] as? String else {
-            return nil
-        }
-        
-        // GUARD: Is there a username and full name?
-        guard let pk = userDictionary[Constant.JSONResponseKey.User.id] as? Int, let fullName = userDictionary[Constant.JSONResponseKey.User.fullName] as? String, let userName = userDictionary[Constant.JSONResponseKey.User.username] as? String else {
-            return nil
-        }
-    
-        var photoURLstring: String? = nil
-        
-        if let photoPath = userDictionary[Constant.JSONResponseKey.User.photoPath] as? String {
-            photoURLstring = self.urlString(forPhotoPath: photoPath)
-        }
-    
-        return User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken)
-    }
-    
-    // TODO: Parse Comments Array
-    private func parse(commentsArray: [[String:Any]]) -> List<Comment>? {
-        // GUARD: Does the comment have a user?
-        let list = List<Comment>()
-    
-        for comment in commentsArray {
-            // GUARD: Does the comment have an ID?
-            guard let pk = comment[Constant.JSONResponseKey.Comment.id] as? Int else {
-                continue
-            }
-            
-            // GUARD: Does the comment have a user?
-            guard let userDictionary = comment[Constant.JSONResponseKey.Comment.user] as? [String: Any] else {
-                continue
-            }
-            
-            // Parse user
-            guard let user = parse(userDictionary: userDictionary) else {
-                continue
-            }
-            
-            // GUARD: Does the comment have text?
-            guard let text = comment[Constant.JSONResponseKey.Comment.text] as? String else {
-                continue
-            }
-            
-            let comment = Comment(pk: pk, author: user, text: text)
-            
-            list.append(comment)
-        }
-        
-        return list
-    }
-    
-    private func parse(postsArray: [[String:Any]]) -> List<FeedItem>? {
-        let feedItems = List<FeedItem>()
-        
-        for post in postsArray {
-            // GUARD: Does the post have an ID?
-            guard let pk = post[Constant.JSONResponseKey.Post.id] as? Int else {
-                continue
-            }
-            // GUARD: Does the post have a user?
-            guard let userDictionary = post[Constant.JSONResponseKey.Post.user] as? [String: Any] else {
-                continue
-            }
-            
-            // Parse user
-            guard let user = parse(userDictionary: userDictionary) else {
-                continue
-            }
-            
-            // GUARD: Does the post have a photo path?
-            guard let photoPath = post[Constant.JSONResponseKey.Post.photoPath] as? String else {
-                continue
-            }
-            
-            // GUARD: Does the user like the post?
-            guard let liked = post[Constant.JSONResponseKey.Post.likedByUser] as? Bool else {
-                continue
-            }
-            
-            // GUARD: Is there a likes array?
-            guard let likes = post[Constant.JSONResponseKey.Post.likes] as? [[String:AnyObject]] else {
-                continue
-            }
-            
-            // GUARD: Is there a time created?
-            guard let createdAt = post[Constant.JSONResponseKey.Post.createdAt] as? String else {
-                continue
-            }
-            
-            let formatter = DateFormatter()
-            
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-            
-            guard let datePosted = formatter.date(from: createdAt) else {
-                continue
-            }
-            
-            let likesCount = likes.count
-            
-            let photoURLstring = self.urlString(forPhotoPath: photoPath)
 
-
-            // GUARD: Does the post have a caption?
-            guard let caption = post[Constant.JSONResponseKey.Post.caption] as? String else {
-                continue
-            }
-            
-            // Handle comments
-            var comments = List<Comment>()
-            
-            if let commentsArray = post[Constant.JSONResponseKey.Post.comments] as? [[String:Any]] {
-                if let parsedComments = parse(commentsArray: commentsArray) {
-                    comments = parsedComments
-                }
-            }
-            
-            // TODO: Store post as a Post object and cache it. Can use Realm or Core Data for object mapping
-            let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked, datePosted: datePosted, likesCount: likesCount)
-            
-            feedItems.append(post)
-        }
-        
-        return feedItems
-    }
-    
     // MARK: Get information about the owner of the access token (user)
     
     // MARK: Get information about a user
@@ -423,12 +295,12 @@ class FaceSnapsClient: NSObject {
     // MARK: Get a list of comments on a post (*paginated in reverse)
     
     // MARK: Build URL
-    private func urlString(forEndpoint endpoint: String) -> String {
+    static func urlString(forEndpoint endpoint: String) -> String {
         return APIClient.buildURLString(scheme: Constant.ApiScheme, host: Constant.ApiHost, port: Constant.ApiPort, clientType: .facesnaps, endpoint: endpoint)
     }
     
     // MARK: Build Photo URL
-    private func urlString(forPhotoPath photoPath: String) -> String {
+    static func urlString(forPhotoPath photoPath: String) -> String {
         return APIClient.buildURLString(scheme: Constant.ApiScheme, host: Constant.ApiHost, port: Constant.ApiPort, clientType: .facesnaps, endpoint: photoPath)
     }
 }

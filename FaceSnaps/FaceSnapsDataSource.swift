@@ -30,11 +30,26 @@ class FaceSnapsDataSource {
         }
     }
     
-    var latestFeed: Results<FeedItem> {
+//    var latestFeed: Results<FeedItem> {
+//        get {
+//            return realm.objects(FeedItem.self)
+//        }
+//    }
+//    
+    var lastJSONdata: [[String:Any]]? {
+        set {
+            _ = FaceSnapsStrongbox.sharedInstance.archive(newValue, key: .lastFeedJSON)
+        }
         get {
-            return realm.objects(FeedItem.self)
+            return FaceSnapsStrongbox.sharedInstance.unarchive(objectForKey: .lastFeedJSON) as? [[String:Any]]
         }
     }
+    
+    lazy var lastFeedItems: List<FeedItem>? = {
+        // Parse last JSON data
+        guard let postsJSON = self.lastJSONdata else { return nil }
+        return FaceSnapsParser.parse(postsArray: postsJSON)
+    }()
     
     // This holds an array of post IDs for the current user's feed, from page 1 to infinity
     var postKeys: [Int]? {
@@ -70,22 +85,21 @@ class FaceSnapsDataSource {
         } catch {
             return false
         }
-//        return FaceSnapsStrongbox.sharedInstance.archive(user, key: .currentUser)
     }
-    
-    // TODO: Can we just write an entire array?
-    func setLatestFeed(asFeed feed: List<FeedItem>) -> Bool {
-        deleteFeedItems()
-        
-        do {
-            try realm.write({
-                realm.add(feed)
-            })
-            return true
-        } catch {
-            return false
-        }
-    }
+//
+//    // TODO: Can we just write an entire array?
+//    func setLatestFeed(asFeed feed: List<FeedItem>, completionHandler: @escaping (_ completed: Bool) -> Void) {
+//        deleteFeedItems()
+//        
+//        do {
+//            try realm.write({
+//                realm.add(feed)
+//            })
+//            completionHandler(true)
+//        } catch {
+//            completionHandler(false)
+//        }
+//    }
     
     func wipeRealm() {
         try! realm.write {
