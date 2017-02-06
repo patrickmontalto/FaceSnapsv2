@@ -30,7 +30,7 @@ class HomeController: UIViewController {
         return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
     }()
 
-    var data: [FeedItem] = Array(FaceSnapsDataSource.sharedInstance.latestFeed)
+    var data: [FeedItem]!
 
     var loading = false
     let spinToken = "spinner"
@@ -52,6 +52,8 @@ class HomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(collectionView)
+        
+        data = Array(FaceSnapsDataSource.sharedInstance.latestFeed)
     
         collectionView.backgroundColor = .white
         self.automaticallyAdjustsScrollViewInsets = false
@@ -214,8 +216,10 @@ class HomeController: UIViewController {
                     })
                 }
                 
-               
-                
+                // If there are any deleted items or new items, update the feed with the new data
+                if newFeedItems.count > 0 || deletedFeedItems.count > 0 {
+                    _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData)
+                }
                 
                 // If there are new posts, append to data and save data to Realm
                 if newFeedItems.count > 0 {
@@ -229,10 +233,6 @@ class HomeController: UIViewController {
                             self.data.remove(at: index)
                         }
                     }
-                }
-                
-                if newFeedItems.count > 0 || deletedFeedItems.count > 0 {
-                    _ = FaceSnapsDataSource.sharedInstance.setLatestFeed(asFeed: newData)
                 }
                 
                 self.adapter.performUpdates(animated: true, completion: { (completed) in

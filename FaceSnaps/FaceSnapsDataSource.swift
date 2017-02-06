@@ -85,7 +85,6 @@ class FaceSnapsDataSource {
         } catch {
             return false
         }
-//        return FaceSnapsStrongbox.sharedInstance.archive(feed, key: .latestFeed)
     }
     
     func wipeRealm() {
@@ -95,9 +94,9 @@ class FaceSnapsDataSource {
     }
     
     func deleteFeedItems() {
-        //try! realm.write {
-        //    realm.delete(realm.objects(FeedItem.self))
-       // }
+        try! realm.write {
+            realm.delete(realm.objects(FeedItem.self))
+        }
     }
     
     // Background request for UIImage from URL String
