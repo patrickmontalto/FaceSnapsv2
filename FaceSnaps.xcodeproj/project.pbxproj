@@ -34,7 +34,7 @@
 		3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32DD211DA1628800CD2669 /* MediaPickerManager.swift */; };
 		3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */; };
 		3A5714B31E397709003C7BC5 /* UIImage+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5714B21E397709003C7BC5 /* UIImage+Size.swift */; };
-		3A5714B51E398030003C7BC5 /* ControlsCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5714B41E398030003C7BC5 /* ControlsCellDelegate.swift */; };
+		3A5714B51E398030003C7BC5 /* FeedItemSectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */; };
 		3A74B8481E3D9DCE00408BBB /* TextSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74B8471E3D9DCE00408BBB /* TextSize.swift */; };
 		3A74B84F1E3E97B700408BBB /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74B84D1E3E97B700408BBB /* TimeView.swift */; };
 		3A74B8501E3E97B700408BBB /* TimeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A74B84E1E3E97B700408BBB /* TimeView.xib */; };
@@ -136,7 +136,7 @@
 		3A32DD211DA1628800CD2669 /* MediaPickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerManager.swift; sourceTree = "<group>"; };
 		3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoFilterController.swift; sourceTree = "<group>"; };
 		3A5714B21E397709003C7BC5 /* UIImage+Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Size.swift"; sourceTree = "<group>"; };
-		3A5714B41E398030003C7BC5 /* ControlsCellDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsCellDelegate.swift; sourceTree = "<group>"; };
+		3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSectionDelegate.swift; sourceTree = "<group>"; };
 		3A74B8471E3D9DCE00408BBB /* TextSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextSize.swift; sourceTree = "<group>"; };
 		3A74B84D1E3E97B700408BBB /* TimeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
 		3A74B84E1E3E97B700408BBB /* TimeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeView.xib; sourceTree = "<group>"; };
@@ -456,7 +456,7 @@
 				D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */,
 				D224C6601E36AEF100AA1DC6 /* CommentCell.swift */,
 				D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */,
-				3A5714B41E398030003C7BC5 /* ControlsCellDelegate.swift */,
+				3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */,
 				3A74B84D1E3E97B700408BBB /* TimeView.swift */,
 				3A74B84E1E3E97B700408BBB /* TimeView.xib */,
 				3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */,
@@ -658,7 +658,7 @@
 				3AB17FB81E12F879005E8739 /* EmailSignUpController.swift in Sources */,
 				3ADE2A661E4151D900D1D4C6 /* Notification + Name.swift in Sources */,
 				D26703611E26AFFD001C06BE /* AppTabBarController.swift in Sources */,
-				3A5714B51E398030003C7BC5 /* ControlsCellDelegate.swift in Sources */,
+				3A5714B51E398030003C7BC5 /* FeedItemSectionDelegate.swift in Sources */,
 				3AB17FAA1E0A4815005E8739 /* UIColor.swift in Sources */,
 				3AB17FA01E02329F005E8739 /* LoginViews.swift in Sources */,
 				3A32A6B71DA6060A00AEE45F /* Photo.swift in Sources */,

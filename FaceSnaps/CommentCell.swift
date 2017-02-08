@@ -45,7 +45,7 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
         if tapGesture.didTapAttributedTextInLabel(label: contentLabel, inRange: contentLabel.boldRange) {
-            delegate?.didPress(button: .AuthorName)
+            delegate?.didPress(button: .AuthorName, sender: nil)
         }
     }
     

@@ -101,9 +101,14 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
 // MARK: - ControlsCellDelegate
 extension FeedItemSectionController: FeedItemSectionDelegate {
     
-    func didPress(button: FeedItemButtonType) {
+    func didPress(button: FeedItemButtonType, sender: UIButton?) {
         // TODO: Switch on button type and do appropriate action
-        
+        switch button {
+        case .Like:
+            didPressLikeButton(sender!)
+        default:
+            break
+        }
         
     }
     
@@ -111,15 +116,30 @@ extension FeedItemSectionController: FeedItemSectionDelegate {
         // Present user controller
     }
     
-    func didPressCommentButton() {
+    func didPressCommentButton(_ button: UIButton) {
         //TODO:  Present the comments screen for the post
     }
     
-    func didPressLikeButton() {
+    func didPressLikeButton(_ button: UIButton) {
         // TODO: Configure
         // Does the user currently like the post?
-        // What action needs to be taken.
+        let action: FaceSnapsClient.LikeAction = feedItem.liked ? .unlike : .like
         // POST a like or an unlike on the current post as the current user
+        FaceSnapsClient.sharedInstance.likeOrUnlikePost(action: action, postId: feedItem.pk) { (success) in
+            if success {
+                // Like/unlike was successful. Update status on feedItem
+                self.feedItem.liked = !self.feedItem.liked
+                // Need to update button icon
+                if self.feedItem.liked {
+                    let image = UIImage(named: "ios-heart-red")!
+                    button.setImage(image, for: .normal)
+                } else {
+                    let image = UIImage(named: "ios-heart-outline")!
+                    button.setImage(image, for: .normal)
+                }
+            }
+        }
+        
         // Ensure that the correct heart icon is set and that the like count increases or decreases by 1
     }
 }

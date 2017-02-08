@@ -16,7 +16,7 @@ enum FeedItemButtonType {
 }
 
 protocol FeedItemSectionDelegate {
-    func didPress(button: FeedItemButtonType)
+    func didPress(button: FeedItemButtonType, sender: UIButton?)
     
     func didPressUserButton(forUser user: User)
 }

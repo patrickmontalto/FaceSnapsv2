@@ -39,7 +39,7 @@ class LikesViewCell: UICollectionViewCell, FeedItemSubSectionCell {
     }
     
     func likesCountPressed(sender: UIButton) {
-        delegate?.didPress(button: .LikesCount)
+        delegate?.didPress(button: .LikesCount, sender: sender)
     }
     
     override func layoutSubviews() {

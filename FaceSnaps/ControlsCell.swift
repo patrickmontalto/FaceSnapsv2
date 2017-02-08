@@ -63,11 +63,11 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
     // MARK: - Handling button presses
     
     func likeButtonPressed(sender: UIButton) {
-        delegate?.didPress(button: .Like)
+        delegate?.didPress(button: .Like, sender: sender)
     }
     
     func commentButtonPressed(sender: UIButton) {
-        delegate?.didPress(button: .Comment)
+        delegate?.didPress(button: .Comment, sender: sender)
     }
     
     func setLikeButtonImage(liked: Bool) {
@@ -83,6 +83,8 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
     // TODO: Complete implementation
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
         let cell = collectionContext.dequeueReusableCell(of: ControlsCell.self, for: sectionController, at: index) as! ControlsCell
+        
+        cell.delegate = sectionController as! FeedItemSectionController
         
         cell.setLikeButtonImage(liked: feedItem.liked)
         

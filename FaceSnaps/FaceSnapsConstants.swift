@@ -22,6 +22,10 @@ extension FaceSnapsClient {
     enum Environment {
         case production, development
     }
+    
+    enum LikeAction {
+        case like, unlike
+    }
 
     // MARK: - Set Application Environment
     static let ApplicationEnvironment: Environment = .development
@@ -83,10 +87,18 @@ extension FaceSnapsClient {
 //                
 //            }
 //            
-//            enum LikesEndpoint {
-//                
-//            }
-//            
+            enum LikesEndpoint {
+                static func likePost(postId: Int) -> String {
+                    return "/posts/\(postId)/likes"
+                }
+                static func unlikePost(postId: Int) -> String {
+                    return likePost(postId: postId)
+                }
+                static func getPostLikes(postId: Int) -> String {
+                    return likePost(postId: postId)
+                }
+            }
+//
 //            enum CommentsEndpoint {
 //                
 //            }

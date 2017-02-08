@@ -283,6 +283,38 @@ class FaceSnapsClient: NSObject {
     // MARK: Get information about a user
     
     // MARK: Set a like on a post by the current user
+    func likeOrUnlikePost(action: LikeAction, postId: Int, completionHandler: @escaping (_ success: Bool) -> Void) {
+        let likeEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.LikesEndpoint.likePost(postId: postId))
+        
+        let method: HTTPMethod = action == .like ? .post : .delete
+        
+        // Make request
+        Alamofire.request(likeEndpoint, method: method, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling GET on user feed")
+                completionHandler(false)
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(false)
+                return
+            }
+            
+            // GUARD: Was it a success?
+            guard let meta = json["meta"] as? [String: Any], let code = meta["code"] as? Int, code == 200 else {
+                completionHandler(false)
+                return
+            }
+            
+            completionHandler(true)
+        }
+        
+    }
     
     // MARK: Remove a like on a post by the current user
     
