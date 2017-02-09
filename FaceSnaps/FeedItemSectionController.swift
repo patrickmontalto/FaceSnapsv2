@@ -129,7 +129,8 @@ extension FeedItemSectionController: FeedItemSectionDelegate {
             if success {
                 // Like/unlike was successful. Update status on feedItem
                 self.feedItem.liked = !self.feedItem.liked
-                let likesViewCell = self.cellForItem(at: FeedItemSubsection.likes.rawValue) as! LikesViewCell
+                guard let collectionContext = self.collectionContext else { return }
+                let likesViewCell = collectionContext.cellForItem(at: FeedItemSubsection.likes.rawValue, sectionController: self) as! LikesViewCell
                 // Need to update button icon and counter
                 if self.feedItem.liked {
                     let image = UIImage(named: "ios-heart-red")!
@@ -141,9 +142,7 @@ extension FeedItemSectionController: FeedItemSectionDelegate {
                     self.feedItem.likesCount -= 1
                 }
                 
-                DispatchQueue.main.async {
-                    likesViewCell.setLikesCount(count: self.feedItem.likesCount)
-                }
+                likesViewCell.setLikesCount(count: self.feedItem.likesCount)
             }
         }
         

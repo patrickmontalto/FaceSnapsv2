@@ -15,7 +15,7 @@ class LikesViewCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     var delegate: FeedItemSectionDelegate?
     
-    private lazy var likesCount: UIButton = {
+    lazy var likesCount: UIButton = {
         let button = UIButton()
         let imageSize = CGSize(width: 11, height: 10)
         let heartImage = UIImage(named: "ios-heart")?.with(size: imageSize)
