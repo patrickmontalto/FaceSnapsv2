@@ -19,7 +19,7 @@ class TimeView: UICollectionReusableView {
     }
     
     func setTimeLabel(timeCreated: Date) {
-        timeLabel.text = Timer.timeAgoSinceDate(date: timeCreated as NSDate, numericDates: true).uppercased()
+        timeLabel.text = Timer.timeAgoSinceDate(date: timeCreated as NSDate, numericDates: true, shortened: false).uppercased()
     }
     
 }

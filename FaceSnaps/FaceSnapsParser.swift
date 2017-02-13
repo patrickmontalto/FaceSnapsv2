@@ -58,13 +58,58 @@ enum FaceSnapsParser {
                 continue
             }
             
-            let comment = Comment(pk: pk, author: user, text: text)
+            // Date formatting
+            guard let createdAt = comment[FaceSnapsClient.Constant.JSONResponseKey.Comment.createdAt] as? String else {
+                continue
+            }
+            
+            let formatter = DateFormatter()
+            
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+            
+            guard let datePosted = formatter.date(from: createdAt) else {
+                continue
+            }
+            
+            let comment = Comment(pk: pk, author: user, text: text, datePosted: datePosted)
             
             list.append(comment)
         }
         
         return list
     }
+    
+    // TODO: Parse Comments Array
+    static func parse(commentDictionary: [String:Any], forUser user: User) -> Comment? {
+        
+        // GUARD: Does the comment have an ID?
+        guard let pk = commentDictionary[FaceSnapsClient.Constant.JSONResponseKey.Comment.id] as? Int else {
+            return nil
+        }
+        
+        // GUARD: Does the comment have text?
+        guard let text = commentDictionary[FaceSnapsClient.Constant.JSONResponseKey.Comment.text] as? String else {
+            return nil
+        }
+        
+        // Date formatting
+        guard let createdAt = commentDictionary[FaceSnapsClient.Constant.JSONResponseKey.Comment.createdAt] as? String else {
+            return nil
+        }
+        
+        let formatter = DateFormatter()
+        
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        
+        guard let datePosted = formatter.date(from: createdAt) else {
+            return nil
+        }
+        
+        let comment = Comment(pk: pk, author: user, text: text, datePosted: datePosted)
+        
+        return comment
+    }
+    
     
     static func parse(postsArray: [[String:Any]]) -> List<FeedItem>? {
         let feedItems = List<FeedItem>()

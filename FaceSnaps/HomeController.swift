@@ -38,7 +38,6 @@ class HomeController: UIViewController {
     
     
     lazy var collectionView: IGListCollectionView = {
-        // TODO: Why are there spaces between sections?
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.sectionInset = UIEdgeInsets.zero
 
@@ -79,6 +78,11 @@ class HomeController: UIViewController {
         initializeFeed()
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        // Unhide FaceSnaps logo and tab bar
+        (navigationController as? HomeNavigationController)?.logoIsHidden = false
+        tabBarController?.tabBar.isHidden = false
+    }
     
     private func configureRefreshControl() {
         collectionView.refreshControl = refreshControl
@@ -88,12 +92,6 @@ class HomeController: UIViewController {
     
     func scrollToTop() {
         collectionView.setContentOffset(.zero, animated: true)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
     }
     
     override func viewWillLayoutSubviews() {
@@ -226,7 +224,7 @@ extension HomeController: IGListAdapterDataSource {
         if let obj = object as? String, obj == spinToken {
             return spinnerSectionController()
         } else {
-            return FeedItemSectionController()
+            return FeedItemSectionController(feedItemSectionDelegate: self, commentDelegate: self)
         }
     }
     
@@ -237,8 +235,8 @@ extension HomeController: IGListAdapterDataSource {
 
 // MARK: UIScrollViewDelegate
 extension HomeController: UIScrollViewDelegate {
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let distance = scrollView.contentSize.height - (targetContentOffset.pointee.y + scrollView.bounds.height)
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContenopffset: UnsafeMutablePointer<CGPoint>) {
+        let distance = scrollView.contentSize.height - (targetContenopffset.pointee.y + scrollView.bounds.height)
         if !loading && distance < 200 && !initLoadFeedIndicator.isAnimating {
             loading = true
             adapter.performUpdates(animated: true, completion: nil)
@@ -259,4 +257,52 @@ extension HomeController: UIScrollViewDelegate {
             }
         }
     }
+}
+
+// TODO: Clean up delegates!!
+// MARK: FeedItemSectionDelegate
+extension HomeController: FeedItemSectionDelegate, CommentDelegate {
+    
+    func didPressLikesCount(forPost post: FeedItem) {
+        // .. Go to likes page for post
+    }
+    func didPressCommentButton(forPost post: FeedItem) {
+        let vc = CommentController(post: post)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func didPressUserButton(forUser user: User) {
+        // .. Go to user profile
+    }
+
+    func didPressLikeButton(forPost post: FeedItem, inSectionController sectionController: FeedItemSectionController, withButton button: UIButton) {
+        let action: FaceSnapsClient.LikeAction = post.liked ? .unlike : .like
+        FaceSnapsClient.sharedInstance.likeOrUnlikePost(action: action, postId: post.pk) { (success) in
+            if success {
+                post.liked = !post.liked
+                guard let collectionContext = sectionController.collectionContext else { return }
+                let likesViewCell = collectionContext.cellForItem(at: FeedItemSubsection.likes.rawValue, sectionController: sectionController) as! LikesViewCell
+                if post.liked {
+                    let image = UIImage(named: "ios-heart-red")!
+                    button.setImage(image, for: .normal)
+                    post.likesCount += 1
+                } else {
+                    let image = UIImage(named: "ios-heart-outline")!
+                    button.setImage(image, for: .normal)
+                    post.likesCount -= 1
+                }
+                
+                likesViewCell.setLikesCount(count: post.likesCount)
+            }
+        }
+    }
+    
+    // TODO: Remove didTapAuthor and only make a call to didPressUserButton? Then remove commentDelegate from homeController
+    // MARK: CommentDelegate
+    func didTapAuthor(author: User) {
+        // Go to user profile
+    }
+    
+    func didTapReply(toAuthor author: User) {}
+    
 }

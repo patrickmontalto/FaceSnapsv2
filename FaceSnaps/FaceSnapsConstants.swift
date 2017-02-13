@@ -98,11 +98,19 @@ extension FaceSnapsClient {
                     return likePost(postId: postId)
                 }
             }
+
+            enum CommentsEndpoint {
+                static func getComments(postId: Int) -> String {
+                    return "/posts/\(postId)/comments"
+                }
+                static func postComment(postId: Int) -> String {
+                    return "/posts/\(postId)/comments"
+                }
+                static func deleteComment(postId: Int) -> String {
+                    return "/posts/\(postId)/comments/"
+                }
+            }
 //
-//            enum CommentsEndpoint {
-//                
-//            }
-//            
 //            enum TagsEndpoint {
 //                
 //            }
@@ -114,6 +122,11 @@ extension FaceSnapsClient {
         
         // MARK: - JSON Response Keys
         enum JSONResponseKey {
+            
+            enum Meta {
+                static let meta = "meta"
+                static let code = "code"
+            }
             
             // MARK: - Error
             enum Error {
@@ -156,6 +169,9 @@ extension FaceSnapsClient {
                 static let id = "id"
                 static let user = "user"
                 static let text = "text"
+                static let comments = "comments"
+                static let comment = "comment"
+                static let createdAt = "created_at"
             }
             
             // MARK: - Tags Data

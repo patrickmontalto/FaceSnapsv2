@@ -321,10 +321,77 @@ class FaceSnapsClient: NSObject {
     // MARK: Get a list of users who have liked a post
     
     // MARK: Create a comment on a post (as the current user)
+    func postComment(onPost post: FeedItem, withText text: String, completionHandler: @escaping (_ data: Comment?) -> Void) {
+        let postCommentEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.CommentsEndpoint.postComment(postId: post.pk))
+        
+        // Build params
+        let params = ["comment": ["text": text]]
+        
+        // Make request
+        Alamofire.request(postCommentEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling GET on user feed")
+                completionHandler(nil)
+                return
+            }
+            
+            // GUARD: Do we have a successful json response?
+            guard let json = response.result.value as? [String:Any], let meta = json[Constant.JSONResponseKey.Meta.meta] as? [String:Any], let code = meta[Constant.JSONResponseKey.Meta.code] as? Int, code == 200 else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(nil)
+                return
+            }
+            
+            // GUARD: Do we have a comment in the json?
+            guard let commentJson = json[Constant.JSONResponseKey.Comment.comment] as? [String: Any] else {
+                completionHandler(nil)
+                return
+            }
+            
+            guard let comment = FaceSnapsParser.parse(commentDictionary: commentJson, forUser: FaceSnapsDataSource.sharedInstance.currentUser!) else {
+                completionHandler(nil)
+                return
+            }
+            
+            completionHandler(comment)
+        }
+        
+    }
     
     // MARK: Remove a comment on a post (as the current user)
     
     // MARK: Get a list of comments on a post (*paginated in reverse)
+    func getComments(forPost post: FeedItem, completionHandler: @escaping (_ data: [Comment]?) -> Void) {
+        let getCommentsEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.CommentsEndpoint.getComments(postId: post.pk))
+        
+        // Make Request
+        Alamofire.request(getCommentsEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling GET on user feed")
+                completionHandler(nil)
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String:Any], let commentsJSON = json[Constant.JSONResponseKey.Comment.comments] as? [[String:Any]] else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(nil)
+                return
+            }
+            
+            // Parse the array of comments
+            guard let comments = FaceSnapsParser.parse(commentsArray: commentsJSON) else {
+                completionHandler(nil)
+                return
+            }
+            
+            completionHandler(comments.reversed())
+        }
+    }
     
     // MARK: Build URL
     static func urlString(forEndpoint endpoint: String) -> String {

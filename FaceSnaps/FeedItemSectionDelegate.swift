@@ -7,16 +7,21 @@
 //
 
 import UIKit
+import IGListKit
 
 enum FeedItemButtonType {
-    case Like
-    case Comment
-    case LikesCount
-    case AuthorName
+    case like
+    case comment
+    case likesCount
+    case authorName
 }
 
 protocol FeedItemSectionDelegate {
-    func didPress(button: FeedItemButtonType, sender: UIButton?)
+    func didPressLikeButton(forPost post: FeedItem, inSectionController sectionController: FeedItemSectionController, withButton button: UIButton)
     
     func didPressUserButton(forUser user: User)
+    
+    func didPressCommentButton(forPost post: FeedItem)
+    
+    func didPressLikesCount(forPost post: FeedItem)
 }

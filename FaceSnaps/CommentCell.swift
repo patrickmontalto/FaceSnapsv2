@@ -19,7 +19,13 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
         return labelHeight + 8
     }
     
-    var delegate: FeedItemSectionDelegate?
+    var delegate: CommentDelegate?
+    
+    var comment: Comment! {
+        didSet {
+            setContentLabel(self.comment)
+        }
+    }
     
     private var contentLabel: InteractableLabel = {
         return InteractableLabel()
@@ -29,7 +35,7 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
         return UITapGestureRecognizer(target: self, action: #selector(handleTapOnLabel(tapGesture:)))
     }()
     
-    func setContentLabel(_ comment: Comment) {
+    private func setContentLabel(_ comment: Comment) {
         
         // Get author and caption strings
         let author = comment.author!.userName
@@ -45,7 +51,7 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
         if tapGesture.didTapAttributedTextInLabel(label: contentLabel, inRange: contentLabel.boldRange) {
-            delegate?.didPress(button: .AuthorName, sender: nil)
+            delegate?.didTapAuthor(author: comment.author!)
         }
     }
     
@@ -91,6 +97,9 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
         let cell = collectionContext.dequeueReusableCell(of: CommentCell.self, for: sectionController, at: index) as! CommentCell
         
+        cell.delegate = (sectionController as! FeedItemSectionController).commentDelegate
+
+        
         let commentIndex = FeedItemSubsection.commentIndex(feedItem)
         
         var comment = Comment()
@@ -106,8 +115,8 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
             break
         }
         
-        cell.setContentLabel(comment)
-        
+        cell.comment = comment
+    
         return cell
     }
 }

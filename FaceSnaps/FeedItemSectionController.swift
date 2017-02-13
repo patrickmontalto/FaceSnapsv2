@@ -45,6 +45,15 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
     
     var feedItem: FeedItem!
     
+    var feedItemSectionDelegate: FeedItemSectionDelegate!
+    var commentDelegate: CommentDelegate!
+    
+    convenience init(feedItemSectionDelegate: FeedItemSectionDelegate, commentDelegate: CommentDelegate) {
+        self.init()
+        self.feedItemSectionDelegate = feedItemSectionDelegate
+        self.commentDelegate = commentDelegate
+    }
+    
     
     override init() {
         super.init()
@@ -62,7 +71,6 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
         
         let commentIndex = FeedItemSubsection.commentIndex(feedItem)
         
-        // Need to get the
         switch item {
         case .header:
             return CGSize(width: collectionContext.containerSize.width, height: UserHeaderView.height)
@@ -75,7 +83,12 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
         case .caption:
             return CGSize(width: collectionContext.containerSize.width, height: CaptionCell.cellHeight(forFeedItem: feedItem))
         case .comment1:
-            return CGSize(width: collectionContext.containerSize.width, height: CommentCell.cellHeight(forComment: feedItem.comments[commentIndex]))
+            // If there are more than 3 comments, show "View all X comments button" instead of first comment on list
+            if feedItem.comments.count > 3 {
+                return CGSize(width: collectionContext.containerSize.width, height: ViewAllCommentsCell.cellHeight)
+            } else {
+                return CGSize(width: collectionContext.containerSize.width, height: CommentCell.cellHeight(forComment: feedItem.comments[commentIndex]))
+            }
         case .comment2:
             return CGSize(width: collectionContext.containerSize.width, height: CommentCell.cellHeight(forComment: feedItem.comments[commentIndex - 1]))
         case .comment3:
@@ -85,9 +98,17 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
     
     func cellForItem(at index: Int) -> UICollectionViewCell {
         guard let sectionType = FeedItemSubsection(rawValue: index) else { return UICollectionViewCell() }
-        let cell = sectionType.cellForSection().cell(forFeedItem: feedItem, withCollectionContext: collectionContext!, andSectionController: self, atIndex: index)
-        
-        return cell
+        if feedItem.comments.count > 3 && index == FeedItemSubsection.comment1.rawValue {
+            let cell = collectionContext!.dequeueReusableCell(of: ViewAllCommentsCell.self, for: self, at: index) as! ViewAllCommentsCell
+            cell.delegate = feedItemSectionDelegate
+            cell.post = feedItem
+            
+            return cell
+        } else {
+            let cell = sectionType.cellForSection().cell(forFeedItem: feedItem, withCollectionContext: collectionContext!, andSectionController: self, atIndex: index)
+            
+            return cell
+        }
     }
     
     func didUpdate(to object: Any) {
@@ -96,58 +117,6 @@ final class FeedItemSectionController: IGListSectionController, IGListSectionTyp
     
     func didSelectItem(at index: Int) {}
     
-}
-
-// MARK: - ControlsCellDelegate
-extension FeedItemSectionController: FeedItemSectionDelegate {
-    
-    func didPress(button: FeedItemButtonType, sender: UIButton?) {
-        // TODO: Switch on button type and do appropriate action
-        switch button {
-        case .Like:
-            didPressLikeButton(sender!)
-        default:
-            break
-        }
-        
-    }
-    
-    func didPressUserButton(forUser user: User) {
-        // Present user controller
-    }
-    
-    func didPressCommentButton(_ button: UIButton) {
-        //TODO:  Present the comments screen for the post
-    }
-    
-    func didPressLikeButton(_ button: UIButton) {
-        // TODO: Configure
-        // Does the user currently like the post?
-        let action: FaceSnapsClient.LikeAction = feedItem.liked ? .unlike : .like
-        // POST a like or an unlike on the current post as the current user
-        FaceSnapsClient.sharedInstance.likeOrUnlikePost(action: action, postId: feedItem.pk) { (success) in
-            if success {
-                // Like/unlike was successful. Update status on feedItem
-                self.feedItem.liked = !self.feedItem.liked
-                guard let collectionContext = self.collectionContext else { return }
-                let likesViewCell = collectionContext.cellForItem(at: FeedItemSubsection.likes.rawValue, sectionController: self) as! LikesViewCell
-                // Need to update button icon and counter
-                if self.feedItem.liked {
-                    let image = UIImage(named: "ios-heart-red")!
-                    button.setImage(image, for: .normal)
-                    self.feedItem.likesCount += 1
-                } else {
-                    let image = UIImage(named: "ios-heart-outline")!
-                    button.setImage(image, for: .normal)
-                    self.feedItem.likesCount -= 1
-                }
-                
-                likesViewCell.setLikesCount(count: self.feedItem.likesCount)
-            }
-        }
-        
-        // Ensure that the correct heart icon is set and that the like count increases or decreases by 1
-    }
 }
 
 // MARK: IGListSupplementaryViewSource

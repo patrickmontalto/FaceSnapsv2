@@ -19,6 +19,12 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         return labelHeight + 8
     }
     
+    var post: FeedItem! {
+        didSet {
+            setContentLabel()
+        }
+    }
+    
     var delegate: FeedItemSectionDelegate?
     
     private var contentLabel: InteractableLabel = {
@@ -29,11 +35,11 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         return UITapGestureRecognizer(target: self, action: #selector(handleTapOnLabel(tapGesture:)))
     }()
     
-    func setContentLabel(_ feedItem: FeedItem) {
+    func setContentLabel() {
         
         // Get author and caption strings
-        let author = feedItem.user!.userName
-        let caption = feedItem.caption
+        let author = post.user!.userName
+        let caption = post.caption
     
         // Set contentLabel to interactable label with author and caption
         self.contentLabel = InteractableLabel(type: .comment, boldText: author, nonBoldText: caption)
@@ -45,7 +51,7 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
         if tapGesture.didTapAttributedTextInLabel(label: contentLabel, inRange: contentLabel.boldRange) {
-            delegate?.didPress(button: .AuthorName, sender: nil)
+            delegate?.didPressUserButton(forUser: post.user!)
         }
     }
     
@@ -61,7 +67,6 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         NSLayoutConstraint.activate([
             contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            contentView.bottomAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
             contentView.heightAnchor.constraint(equalToConstant: frame.height),
             contentView.trailingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 12),
         ])
@@ -89,8 +94,9 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
         let cell = collectionContext.dequeueReusableCell(of: CaptionCell.self, for: sectionController, at: index) as! CaptionCell
         
+        cell.delegate = (sectionController as! FeedItemSectionController).feedItemSectionDelegate
         
-        cell.setContentLabel(feedItem)
+        cell.post = feedItem
         
         return cell
     }

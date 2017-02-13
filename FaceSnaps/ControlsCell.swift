@@ -13,11 +13,15 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     static let height: CGFloat = 46
     
+    var post: FeedItem!
+    
+    var sectionController: FeedItemSectionController!
+    
     var delegate: FeedItemSectionDelegate?
     
     private lazy var likeButton: UIButton = {
         let btn = UIButton()
-        btn.addTarget(self, action: #selector(likeButtonPressed(sender:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         return btn
     }()
     
@@ -25,7 +29,7 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
         let btn = UIButton()
         let commentImage = UIImage(named: "ios-chatbubble-outline")!
         btn.setImage(commentImage, for: .normal)
-        btn.addTarget(self, action: #selector(commentButtonPressed(sender:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(commentButtonPressed), for: .touchUpInside)
         return btn
     }()
     
@@ -62,12 +66,12 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     // MARK: - Handling button presses
     
-    func likeButtonPressed(sender: UIButton) {
-        delegate?.didPress(button: .Like, sender: sender)
+    func likeButtonPressed() {
+        delegate?.didPressLikeButton(forPost: post, inSectionController: sectionController, withButton: likeButton)
     }
     
-    func commentButtonPressed(sender: UIButton) {
-        delegate?.didPress(button: .Comment, sender: sender)
+    func commentButtonPressed() {
+        delegate?.didPressCommentButton(forPost: post)
     }
     
     func setLikeButtonImage(liked: Bool) {
@@ -84,9 +88,12 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
         let cell = collectionContext.dequeueReusableCell(of: ControlsCell.self, for: sectionController, at: index) as! ControlsCell
         
-        cell.delegate = sectionController as! FeedItemSectionController
+        
+        cell.delegate = (sectionController as! FeedItemSectionController).feedItemSectionDelegate
         
         cell.setLikeButtonImage(liked: feedItem.liked)
+        cell.post = feedItem
+        cell.sectionController = sectionController as! FeedItemSectionController
         
         return cell
     }

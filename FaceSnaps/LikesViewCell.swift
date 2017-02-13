@@ -13,6 +13,13 @@ class LikesViewCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     static let height: CGFloat = 32
     
+    var post: FeedItem!
+//        {
+////        didSet {
+////            setLikesCount(count: post.likesCount)
+////        }
+//    }
+//    
     var delegate: FeedItemSectionDelegate?
     
     lazy var likesCount: UIButton = {
@@ -26,7 +33,7 @@ class LikesViewCell: UICollectionViewCell, FeedItemSubSectionCell {
         
         button.titleEdgeInsets = UIEdgeInsetsMake(0, 6.0, 0, -6.0)
         
-        button.addTarget(self, action: #selector(likesCountPressed(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(likesCountPressed), for: .touchUpInside)
         
         button.tintColor = .black
                 
@@ -38,8 +45,8 @@ class LikesViewCell: UICollectionViewCell, FeedItemSubSectionCell {
         likesCount.setTitle(countString, for: .normal)
     }
     
-    func likesCountPressed(sender: UIButton) {
-        delegate?.didPress(button: .LikesCount, sender: sender)
+    func likesCountPressed() {
+        delegate?.didPressLikesCount(forPost: post)
     }
     
     override func layoutSubviews() {
@@ -59,6 +66,10 @@ class LikesViewCell: UICollectionViewCell, FeedItemSubSectionCell {
     // TODO: Complete function
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
         let cell = collectionContext.dequeueReusableCell(of: LikesViewCell.self, for: sectionController, at: index)  as! LikesViewCell
+        
+        cell.delegate = (sectionController as! FeedItemSectionController).feedItemSectionDelegate
+        
+        cell.post = feedItem
         
         cell.setLikesCount(count: feedItem.likesCount)
         

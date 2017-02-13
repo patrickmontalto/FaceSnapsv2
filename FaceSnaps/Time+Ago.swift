@@ -10,13 +10,29 @@ import Foundation
 
 
 extension Timer {
-    static func timeAgoSinceDate(date:NSDate, numericDates:Bool) -> String {
+    static func timeAgoSinceDate(date:NSDate, numericDates:Bool, shortened: Bool) -> String {
         let calendar = NSCalendar.current
         let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]
         let now = NSDate()
         let earliest = now.earlierDate(date as Date)
         let latest = (earliest == now as Date) ? date : now
         let components = calendar.dateComponents(unitFlags, from: earliest as Date,  to: latest as Date)
+        
+        if shortened {
+            if (components.weekOfYear! >= 1) {
+                return "\(components.weekOfYear!)w"
+            } else if (components.day! >= 1) {
+                return "\(components.day!)d"
+            } else if (components.hour! >= 1) {
+                return "\(components.hour!)h"
+            } else if (components.minute! >= 1) {
+                return "\(components.minute!)m"
+            } else if (components.second! >= 3) {
+                return "\(components.second!)s"
+            } else {
+                return "now"
+            }
+        }
         
         if (components.year! >= 2) {
             return "\(components.year!) years ago"
