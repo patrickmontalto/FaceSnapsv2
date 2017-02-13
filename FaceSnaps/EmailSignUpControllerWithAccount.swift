@@ -96,7 +96,7 @@ class EmailSignUpControllerWithAccount: UIViewController {
     
     lazy var mediaPickerManager: MediaPickerManager = {
         let manager = MediaPickerManager(presentingViewController: self)
-//        manager.delegate = self
+        manager.delegate = self
         
         return manager
     }()
@@ -119,8 +119,6 @@ class EmailSignUpControllerWithAccount: UIViewController {
             let vc = FaceSnapsImagePickerController()
             vc.delegate = self
             self.present(vc, animated: true, completion: nil)
-            // Present media picker manager with camera
-//            self.mediaPickerManager.presentImagePickerController(animated: true, withSourceType: .camera)
         })
         
         let chooseFromLibrary = UIAlertAction(title: "Choose from Library", style: .default, handler: { (action) in
@@ -236,12 +234,19 @@ extension EmailSignUpControllerWithAccount: UITextFieldDelegate {
 // MARK: FaceSnapsImagePickerControllerDelegate
 extension EmailSignUpControllerWithAccount: FaceSnapsImagePickerControllerDelegate {
     func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingImage image: UIImage) {
-        addPhotoButton.setImage(image, for: .normal)
-        addPhotoButton.setImage(image, for: .highlighted)
+        let circleImage = image.circle!
+        addPhotoButton.setImage(circleImage, for: .normal)
+        addPhotoButton.setImage(circleImage, for: .highlighted)
     }
-//    func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-//        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-//        addPhotoButton.setImage(image, for: .normal)
-//        addPhotoButton.setImage(image, for: .highlighted)
-//    }
+}
+
+// MARK: MediaPickerManagerDelegate
+extension EmailSignUpControllerWithAccount: MediaPickerManagerDelegate {
+    func mediaPickerManager(manager: MediaPickerManager, didFinishPickingImage image: UIImage) {
+        let compressedImage = UIImage(data: image.jpeg(.low)!)!
+        let circleImage = compressedImage.resized(toWidth: view.frame.width)!.circle!
+        addPhotoButton.setImage(circleImage, for: .normal)
+        addPhotoButton.setImage(circleImage, for: .highlighted)
+        manager.dismissImagePickerController(animated: true) {}
+    }
 }

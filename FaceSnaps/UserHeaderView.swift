@@ -33,7 +33,6 @@ final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0.01, bottom: 0.01, right: 0)
         button.setTitleColor(.black, for: .normal)
         button.setTitleColor(.gray, for: .highlighted)
-        button.addTarget(self, action: #selector(handleUserTap), for: .touchUpInside)
         return button
     }()
     
@@ -74,6 +73,8 @@ final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
         let userName = post.user?.userName ?? "Username"
         nameButton.setTitle(userName, for: .normal)
         userIcon.image = post.user?.photo?.circle ?? UIImage()
+        nameButton.addTarget(self, action: #selector(handleUserTap), for: .touchUpInside)
+
         // TODO: Add location
     }
     

@@ -120,9 +120,6 @@ class CommentBoxView: UIView {
         commentTextView.setContentOffset(.zero, animated: false)
     }
     
-    func clearTextbox() {
-        commentTextView.text = ""
-    }
 }
 
 // MARK: - UITextViewDelegate

@@ -174,7 +174,7 @@ class FaceSnapsImagePickerController: UIViewController {
                 if let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer) {
                     let image = UIImage(data: imageData)!
                     // dismiss controller and set image as cropped profile image of add photo button on EmailSignUpControllerWithAccount
-                    let croppedImage = ImageCropHelper.cropToPreviewLayer(previewLayer: self.previewLayer, originalImage: image).circle!
+                    let croppedImage = ImageCropHelper.cropToPreviewLayer(previewLayer: self.previewLayer, originalImage: image)
                     self.delegate?.imagePickerController(self, didFinishPickingImage: croppedImage)
                     self.dismissImagePicker()
                 }

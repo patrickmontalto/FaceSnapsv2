@@ -94,6 +94,8 @@ class FaceSnapsClient: NSObject {
              params = ["user" : ["username": username, "email": email, "full_name": fullName, "password": password], "photo": "data:image/jpeg;base64,\(profileImage)"]
         }
         
+        print(params["photo"]!)
+        
         // Make headers
         let headers: HTTPHeaders = [
             APIConstants.HTTPHeaderKey.contentType: "application/json",

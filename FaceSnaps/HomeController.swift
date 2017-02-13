@@ -195,6 +195,7 @@ class HomeController: UIViewController {
                 }
                 
                 self.data = Array(newData)
+                self.adapter.reloadObjects(self.data!)
                 self.adapter.performUpdates(animated: true, completion: { (completed) in
                     print("completed pull-to-fresh")
                     print(self.data)

@@ -183,7 +183,7 @@ extension CommentController: CommentSubmissionDelegate {
         FaceSnapsClient.sharedInstance.postComment(onPost: post, withText: text) { (comment) in
             if let comment = comment {
                 // Clear comment box
-                self.commentBoxView.clearTextbox()
+                self.commentBoxView.setPlaceholder()
                 // Successfully posted comment. Append to data 
                 self.data.append(comment)
                 self.adapter.performUpdates(animated: true, completion: { (completed) in

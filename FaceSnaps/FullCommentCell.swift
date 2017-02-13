@@ -61,7 +61,6 @@ class FullCommentCell: UICollectionViewCell {
         button.setTitle("Reply", for: .normal)
         button.setTitleColor(.gray, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0.01, bottom: 0.01, right: 0)
-        button.addTarget(self, action: #selector(handleReplyTap), for: .touchUpInside)
         button.titleLabel?.font = .boldSystemFont(ofSize: 12.0)
         return button
     }()
@@ -95,6 +94,7 @@ class FullCommentCell: UICollectionViewCell {
         self.contentLabel.numberOfLines = 0
         
         self.contentLabel.addGestureRecognizer(self.authorTap)
+        self.replyButton.addTarget(self, action: #selector(handleReplyTap), for: .touchUpInside)
     }
     
     // Notify the delegate of which author got tapped
