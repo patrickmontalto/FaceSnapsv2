@@ -22,6 +22,7 @@ class CommentController: UIViewController {
     var post: FeedItem!
     var data: [Comment]! = []
     var delegate: FeedItemReloadDelegate!
+    var panGesture: UIPanGestureRecognizer!
     
     convenience init(post: FeedItem, delegate: FeedItemReloadDelegate) {
         self.init()
@@ -76,6 +77,9 @@ class CommentController: UIViewController {
         // Add notification for keyboard showing/hiding
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        
+        // Add pan gesture to collectionView
+        setPanGesture()
     }
     
     override func viewWillLayoutSubviews() {
@@ -95,7 +99,26 @@ class CommentController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         commentBoxView.showKeyboard()
-
+    }
+    
+    // MARK: Create gesture for swiping cells
+    private func setPanGesture() {
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(panCell(_:)))
+        panGesture.delegate = self
+        collectionView.addGestureRecognizer(panGesture)
+    }
+    func panCell(_ recognizer: UIPanGestureRecognizer) {
+        if recognizer != panGesture { return }
+        
+        let point = recognizer.location(in: collectionView)
+        guard let indexPath = self.collectionView.indexPathForItem(at: point) else {
+            return
+        }
+        guard let cell = self.collectionView.cellForItem(at: indexPath) as? FullCommentCell else {
+            return
+        }
+        
+        
     }
     
     private func getComments() {
@@ -212,5 +235,10 @@ extension CommentController: CommentSubmissionDelegate {
             }
         }
     }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension CommentController: UIGestureRecognizerDelegate {
+    
 }
 
