@@ -14,7 +14,6 @@ final class CommentSectionController: IGListSectionController, IGListSectionType
     var comment: Comment!
     var commentDelegate: CommentDelegate!
     
-    
     // Use dependency injection to inject the comment delegate
     convenience init(commentDelegate: CommentDelegate) {
         self.init()

@@ -21,9 +21,11 @@ class CommentController: UIViewController {
     
     var post: FeedItem!
     var data: [Comment]! = []
+    var delegate: FeedItemReloadDelegate!
     
-    convenience init(post: FeedItem) {
+    convenience init(post: FeedItem, delegate: FeedItemReloadDelegate) {
         self.init()
+        self.delegate = delegate
         self.post = post
     }
     
@@ -82,7 +84,6 @@ class CommentController: UIViewController {
         NSLayoutConstraint.activate([
             commentBoxView.height,
             commentBoxViewBottomAnchor,
-//            commentBoxView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             commentBoxView.leftAnchor.constraint(equalTo: view.leftAnchor),
             commentBoxView.rightAnchor.constraint(equalTo: view.rightAnchor),
             collectionView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
@@ -172,22 +173,36 @@ extension CommentController: CommentDelegate {
     }
     
     func didTapReply(toAuthor author: User) {
-        // TODO: Jump to form in order to fill in reply
+        if commentBoxView.commentTextView.text == "Add a comment..." {
+            commentBoxView.commentTextView.text = "@\(author.userName) "
+            commentBoxView.commentTextView.textColor = .black
+        } else {
+            var text = commentBoxView.commentTextView.text!
+            if text.characters.last == " " {
+                text += "@\(author.userName) "
+            } else {
+                text += " @\(author.userName) "
+            }
+            commentBoxView.commentTextView.text = text
+            commentBoxView.textViewDidChange(commentBoxView.commentTextView)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        delegate.didUpdateFeedItem(feedItem: post)
     }
 }
 
 extension CommentController: CommentSubmissionDelegate {
     func didSubmitComment(withText text: String) {
         // Handle POSTing comment
-        // Will get a Comment object back from FaceSnapsClient.
-        // Comment will then be appended to the data array
-        // The comment needs to also appear on the feed when we hit the back button.
         // Maybe post notification to get new comments for post X? Then reload adapter ?
         FaceSnapsClient.sharedInstance.postComment(onPost: post, withText: text) { (comment) in
             if let comment = comment {
                 // Clear comment box
                 self.commentBoxView.setPlaceholder()
-                // Successfully posted comment. Append to data 
+                // Successfully posted comment. Append to data
+                self.post.comments.insert(comment, at: 0)
                 self.data.append(comment)
                 self.adapter.performUpdates(animated: true, completion: { (completed) in
                     self.scrollToBottom()

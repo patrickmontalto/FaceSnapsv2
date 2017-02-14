@@ -10,6 +10,15 @@ import UIKit
 import IGListKit
 import RealmSwift
 
+protocol FeedItemReloadDelegate {
+    func didUpdateFeedItem(feedItem: FeedItem)
+}
+extension FeedItemReloadDelegate where Self: HomeController {
+    func didUpdateFeedItem(feedItem: FeedItem) {
+        adapter.reloadObjects([feedItem])
+    }
+}
+
 class HomeController: UIViewController {
     
     lazy var initLoadFeedIndicator: UIActivityIndicatorView = {
@@ -268,7 +277,7 @@ extension HomeController: FeedItemSectionDelegate, CommentDelegate {
         // .. Go to likes page for post
     }
     func didPressCommentButton(forPost post: FeedItem) {
-        let vc = CommentController(post: post)
+        let vc = CommentController(post: post, delegate: self)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -307,3 +316,6 @@ extension HomeController: FeedItemSectionDelegate, CommentDelegate {
     func didTapReply(toAuthor author: User) {}
     
 }
+
+// MARK: - FeedItemReloadDelegate
+extension HomeController: FeedItemReloadDelegate {}
