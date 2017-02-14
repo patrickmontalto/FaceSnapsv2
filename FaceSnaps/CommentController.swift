@@ -101,7 +101,8 @@ class CommentController: UIViewController {
         FaceSnapsClient.sharedInstance.getComments(forPost: post) { (comments) in
             guard let comments = comments else { return }
             self.data.append(contentsOf: comments)
-            self.adapter.performUpdates(animated: true, completion: nil)
+            self.adapter.performUpdates(animated: true, completion: { (completed) in
+            })
         }
     }
     
@@ -129,8 +130,10 @@ class CommentController: UIViewController {
 
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
             self.view.layoutIfNeeded()
-        }, completion: nil)
-//        self.scrollToBottom()
+        }, completion: { (completed) in
+            self.scrollToBottom()
+        })
+ 
     }
     
     func keyboardWillHide(notification: NSNotification) {

@@ -24,6 +24,11 @@ class FullCommentCell: UICollectionViewCell {
     
     var comment: Comment! {
         didSet {
+            for view in contentView.subviews {
+                if view is InteractableLabel {
+                    view.removeFromSuperview()
+                }
+            }
             setLabelContent()
             isCaptionCell = false
         }
@@ -83,7 +88,6 @@ class FullCommentCell: UICollectionViewCell {
     }
     
     private func setContentLabel() {
-        
         // Get author and caption strings
         let author = comment.author!.userName
         let text = comment.text
@@ -92,6 +96,7 @@ class FullCommentCell: UICollectionViewCell {
         self.contentLabel = InteractableLabel(type: .comment, boldText: author, nonBoldText: text)
         
         self.contentLabel.numberOfLines = 0
+        contentView.addSubview(contentLabel)
         
         self.contentLabel.addGestureRecognizer(self.authorTap)
         self.replyButton.addTarget(self, action: #selector(handleReplyTap), for: .touchUpInside)
@@ -107,25 +112,34 @@ class FullCommentCell: UICollectionViewCell {
     func handleReplyTap() {
         delegate?.didTapReply(toAuthor: comment.author!)
     }
-
-    override func layoutSubviews() {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentView.addSubview(userIcon)
+        contentView.addSubview(timeLabel)
+        contentView.addSubview(replyButton)
+        contentView.addSubview(divider)
+        
         contentView.backgroundColor = .white
         backgroundColor = .white
         
         heightConstraint = NSLayoutConstraint(item: contentView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0)
         heightConstraint.constant = frame.height
         
-        contentView.addSubview(contentLabel)
-        contentView.addSubview(userIcon)
-        contentView.addSubview(timeLabel)
-        contentView.addSubview(replyButton)
-        contentView.addSubview(divider)
+        
         
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         userIcon.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         replyButton.translatesAutoresizingMaskIntoConstraints = false
-        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
         NSLayoutConstraint.activate([
             userIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
@@ -135,7 +149,7 @@ class FullCommentCell: UICollectionViewCell {
             contentLabel.leftAnchor.constraint(equalTo: userIcon.rightAnchor, constant: 12),
             contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
             heightConstraint,
-//            contentView.heightAnchor.constraint(equalToConstant: frame.height),
+            //            contentView.heightAnchor.constraint(equalToConstant: frame.height),
             contentView.trailingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 50),
             timeLabel.leadingAnchor.constraint(equalTo: contentLabel.leadingAnchor),
             timeLabel.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 10),
@@ -148,25 +162,26 @@ class FullCommentCell: UICollectionViewCell {
         ])
     }
     
-    override func prepareForReuse() {
-        self.contentLabel = InteractableLabel()
-        for view in contentView.subviews {
-            view.removeFromSuperview()
-        }
-        let height = FullCommentCell.cellHeight(forComment: comment)
-        heightConstraint.constant = height
-        super.prepareForReuse()
-    }
+//    override func prepareForReuse() {
+//        self.contentLabel = InteractableLabel()
+//        for view in contentView.subviews {
+//            view.removeFromSuperview()
+//        }
+//        super.prepareForReuse()
+//
+//        let height = FullCommentCell.cellHeight(forComment: comment)
+//        heightConstraint.constant = height
+//    }
 
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        setNeedsLayout()
-        layoutIfNeeded()
-        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
-        var newFrame = layoutAttributes.frame
-        // note: don't change the width
-        newFrame.size.height = ceil(size.height)
-        layoutAttributes.frame = newFrame
-        return layoutAttributes
-    }
+//    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+//        setNeedsLayout()
+//        layoutIfNeeded()
+//        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+//        var newFrame = layoutAttributes.frame
+//        // note: don't change the width
+//        newFrame.size.height = ceil(size.height)
+//        layoutAttributes.frame = newFrame
+//        return layoutAttributes
+//    }
 
 }
