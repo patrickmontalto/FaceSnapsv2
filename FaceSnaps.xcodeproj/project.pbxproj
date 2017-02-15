@@ -93,6 +93,7 @@
 		D21BD4821E54B95B009196C8 /* UISegmentedControl+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */; };
 		D21BD4841E54D1BD009196C8 /* UserSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */; };
 		D21BD4861E54D1DE009196C8 /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4851E54D1DE009196C8 /* UserSearchCell.swift */; };
+		D21BD4881E54F9CB009196C8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4871E54F9CB009196C8 /* ProfileHeaderView.swift */; };
 		D224C65B1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */; };
 		D224C65D1E36AC8D00AA1DC6 /* ControlsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */; };
 		D224C65F1E36ACEC00AA1DC6 /* CaptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */; };
@@ -208,6 +209,7 @@
 		D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Appearance.swift"; sourceTree = "<group>"; };
 		D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserSearchCell.xib; sourceTree = "<group>"; };
 		D21BD4851E54D1DE009196C8 /* UserSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
+		D21BD4871E54F9CB009196C8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSubSectionCell.swift; sourceTree = "<group>"; };
 		D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsCell.swift; sourceTree = "<group>"; };
 		D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionCell.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 			children = (
 				D26703621E26D1B1001C06BE /* ProfileNavigationController.swift */,
 				D26703651E26D2B8001C06BE /* ProfileController.swift */,
+				D21BD4871E54F9CB009196C8 /* ProfileHeaderView.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -702,6 +705,7 @@
 				3AB17FB81E12F879005E8739 /* EmailSignUpController.swift in Sources */,
 				3ADE2A661E4151D900D1D4C6 /* Notification + Name.swift in Sources */,
 				D26703611E26AFFD001C06BE /* AppTabBarController.swift in Sources */,
+				D21BD4881E54F9CB009196C8 /* ProfileHeaderView.swift in Sources */,
 				3A5714B51E398030003C7BC5 /* FeedItemSectionDelegate.swift in Sources */,
 				3ADE2A6C1E4D2F7000D1D4C6 /* CommentController.swift in Sources */,
 				3AB17FAA1E0A4815005E8739 /* UIColor.swift in Sources */,
