@@ -14,6 +14,11 @@ extension UIColor {
             return UIColor(red: 247/255.0, green: 247/255.0, blue: 247/255.0, alpha: 1.0)
         }
     }
+    open class var mediumLightGray: UIColor {
+        get {
+            return UIColor(red: 227/255.0, green: 227/255.0, blue: 227/255.0, alpha: 1.0)
+        }
+    }
     open class var extraLightGray: UIColor {
         get {
             return UIColor(white: 245/255, alpha: 0.8)

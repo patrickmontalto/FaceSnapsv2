@@ -89,6 +89,10 @@
 		CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */; };
 		CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */; };
 		CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */; };
+		D21BD4801E54A487009196C8 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD47F1E54A487009196C8 /* SearchManager.swift */; };
+		D21BD4821E54B95B009196C8 /* UISegmentedControl+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */; };
+		D21BD4841E54D1BD009196C8 /* UserSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */; };
+		D21BD4861E54D1DE009196C8 /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4851E54D1DE009196C8 /* UserSearchCell.swift */; };
 		D224C65B1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */; };
 		D224C65D1E36AC8D00AA1DC6 /* ControlsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */; };
 		D224C65F1E36ACEC00AA1DC6 /* CaptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */; };
@@ -200,6 +204,10 @@
 		CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDeletionManager.swift; sourceTree = "<group>"; };
 		CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+FilterDuplicates.swift"; sourceTree = "<group>"; };
+		D21BD47F1E54A487009196C8 /* SearchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
+		D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Appearance.swift"; sourceTree = "<group>"; };
+		D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserSearchCell.xib; sourceTree = "<group>"; };
+		D21BD4851E54D1DE009196C8 /* UserSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSubSectionCell.swift; sourceTree = "<group>"; };
 		D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsCell.swift; sourceTree = "<group>"; };
 		D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionCell.swift; sourceTree = "<group>"; };
@@ -353,6 +361,9 @@
 			children = (
 				3A9A3BA91E285E48008A1334 /* SearchNavigationController.swift */,
 				3A9A3BAB1E285E72008A1334 /* SearchController.swift */,
+				D21BD4851E54D1DE009196C8 /* UserSearchCell.swift */,
+				D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */,
+				D21BD47F1E54A487009196C8 /* SearchManager.swift */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -426,6 +437,7 @@
 				3ADE2A671E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift */,
 				3ADE2A731E4D692C00D1D4C6 /* CALayer+AddBorder.swift */,
 				3AA3B22E1E50F45F0000A312 /* UITextView+NumLines.swift */,
+				D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */,
 			);
 			name = Convenience;
 			sourceTree = "<group>";
@@ -557,6 +569,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D21BD4841E54D1BD009196C8 /* UserSearchCell.xib in Resources */,
 				3A32DD1A1DA0309100CD2669 /* LaunchScreen.storyboard in Resources */,
 				3A74B8501E3E97B700408BBB /* TimeView.xib in Resources */,
 				3A32DD171DA0309100CD2669 /* Assets.xcassets in Resources */,
@@ -620,6 +633,7 @@
 			files = (
 				3A32A6C81DA9845500AEE45F /* SortItemSelector.swift in Sources */,
 				D267036C1E2D448F001C06BE /* FeedItemSectionController.swift in Sources */,
+				D21BD4821E54B95B009196C8 /* UISegmentedControl+Appearance.swift in Sources */,
 				3AA3B2311E516FE00000A312 /* ViewAllCommentsCell.swift in Sources */,
 				3AA3B22D1E4FEC3D0000A312 /* CommentBoxView.swift in Sources */,
 				D2318A901E1D621D00E0347F /* APIConstants.swift in Sources */,
@@ -644,6 +658,7 @@
 				3A9A3BAC1E285E72008A1334 /* SearchController.swift in Sources */,
 				3A74B84F1E3E97B700408BBB /* TimeView.swift in Sources */,
 				3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */,
+				D21BD4861E54D1DE009196C8 /* UserSearchCell.swift in Sources */,
 				3A9A3B9F1E20B929008A1334 /* Formatter.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
 				D26703631E26D1B1001C06BE /* ProfileNavigationController.swift in Sources */,
@@ -717,6 +732,7 @@
 				3A9D882C1E199C6100FB928D /* ImageCropHelper.swift in Sources */,
 				3A32DD101DA0309100CD2669 /* AppDelegate.swift in Sources */,
 				3AA3B22F1E50F45F0000A312 /* UITextView+NumLines.swift in Sources */,
+				D21BD4801E54A487009196C8 /* SearchManager.swift in Sources */,
 				3A9D88281E16014100FB928D /* FaceSnapsImagePickerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

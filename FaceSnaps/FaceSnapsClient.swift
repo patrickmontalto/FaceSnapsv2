@@ -72,7 +72,7 @@ class FaceSnapsClient: NSObject {
                 photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             }
             
-            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken)
+            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false)
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
@@ -146,7 +146,7 @@ class FaceSnapsClient: NSObject {
                 photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             }
             
-            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken)
+            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false)
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
@@ -278,6 +278,40 @@ class FaceSnapsClient: NSObject {
 
         }
 
+    }
+    
+    // MARK: Search users
+    func searchUsers(queryString: String, completionHandler: @escaping (_ data: [User]?) -> Void) {
+        let userSearchEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUsersQuery)
+        
+        let params = ["query": queryString]
+        
+        // Make request
+        Alamofire.request(userSearchEndpoint, method: .get, parameters: params, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling GET on user feed")
+                completionHandler(nil)
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(nil)
+                return
+            }
+            
+            guard let usersArray = json[Constant.JSONResponseKey.User.users] as? [[String:Any]] else {
+                completionHandler(nil)
+                return
+            }
+            
+            let userResults = FaceSnapsParser.parse(usersArray: usersArray)
+            
+            completionHandler(userResults)
+        }
     }
 
     // MARK: Get information about the owner of the access token (user)

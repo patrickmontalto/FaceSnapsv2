@@ -12,6 +12,19 @@ import RealmSwift
 enum FaceSnapsParser {
     // MARK: - Parse Methods
     
+    static func parse(usersArray: [[String:Any]]) -> [User] {
+        var results = [User]()
+        
+        for user in usersArray {
+            guard let user = parse(userDictionary: user) else {
+                continue
+            }
+            results.append(user)
+        }
+        
+        return results
+    }
+    
     static func parse(userDictionary: [String: Any]) -> User? {
         // GUARD: Get and print the auth_token
         guard let authToken = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.authToken] as? String else {
@@ -29,7 +42,11 @@ enum FaceSnapsParser {
             photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
         }
         
-        return User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken)
+        guard let following = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.following] as? Bool else {
+            return nil
+        }
+        
+        return User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: following)
     }
     
     // TODO: Parse Comments Array

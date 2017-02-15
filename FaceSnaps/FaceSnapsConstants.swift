@@ -75,7 +75,7 @@ extension FaceSnapsClient {
                     return "users/\(userId)/posts/recent"
                 }
                 // Search for a user by name (*paginated)
-                static let getUsersQuery = "/users/search"
+                static let getUsersQuery = "/user/search"
                 
             }
             
@@ -138,6 +138,7 @@ extension FaceSnapsClient {
             // MARK: - User Data
             enum User {
                 static let user = "user"
+                static let users = "users"
                 static let id = "id"
                 static let username = "username"
                 static let fullName = "full_name"
@@ -145,6 +146,7 @@ extension FaceSnapsClient {
                 static let authToken = "auth_token"
                 static let available = "available"
                 static let photoPath = "photo_path"
+                static let following = "following"
             }
             // MARK: - Relationship Data
             
