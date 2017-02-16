@@ -9,8 +9,20 @@
 import UIKit
 
 class ProfileNavigationController: UINavigationController {
+    var user: User!
+    
+    init(user: User) {
+        super.init(nibName: nil, bundle: nil)
+        self.user = user
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         let profileController = ProfileController()
+        profileController.user = user
         setViewControllers([profileController], animated: false)
     }
 }

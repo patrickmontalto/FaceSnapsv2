@@ -55,7 +55,7 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         likesTab.tabBarItem = likesTabBarItem
         
         // Profile view controller
-        let profileTab = ProfileNavigationController()
+        let profileTab = ProfileNavigationController(user: FaceSnapsDataSource.sharedInstance.currentUser!)
         let profileImage = UIImage(named: "person-outline")?.with(size: imageSize)
         let profileImageSelected = UIImage(named: "person-selected")?.with(size: imageSize)
         let profileTabBarItem = UITabBarItem(title: nil, image: profileImage, selectedImage: profileImageSelected)
