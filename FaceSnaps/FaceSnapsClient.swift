@@ -24,33 +24,28 @@ class FaceSnapsClient: NSObject {
     private override init() {}
     
     // MARK: Sign in as a user
-    func signInUser(credential: String, password: String, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void) {
+    func signInUser(credential: String, password: String, completionHandler: @escaping (_ error: APIError?) -> Void) {
         // Build URL
         let signInEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signInUser)
         // Build params
         let params = ["session":["credential": credential, "password": password]]
         // Make request
         Alamofire.request(signInEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
-            // GUARD: Was there an error?
-            guard response.result.error == nil else {
-                print("Error calling GET on sign in")
-                completionHandler(false, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+            // GUARD: Get JSON
+            guard let json = FaceSnapsParser.getJSON(fromResponse: response) else {
+                completionHandler(.noJSON)
                 return
             }
-            // GUARD: Do we have a json response?
-            guard let json = response.result.value as? [String: Any] else {
-                let errorString = "Unable to get results as JSON from API"
-                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
-                return
-            }
+            
             // GUARD: Get and print the auth_token
             guard let user = json["user"] as? [String: Any], let authToken = user[Constant.JSONResponseKey.User.authToken] as? String else {
-                guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String], let _ = errorResponse[Constant.JSONResponseKey.Error.title], let _ = errorResponse[Constant.JSONResponseKey.Error.message] else {
+                guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String] else {
                     let errorString = "An error occurred parsing errors JSON"
-                    completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
+                    completionHandler(.parseError(message: nil))
                     return
                 }
-                completionHandler(false, errorResponse)
+                let errorMessage = errorResponse[0] + errorResponse[1]
+                completionHandler(false, .responseError(message: errorR))
                 return
             }
             
@@ -72,7 +67,22 @@ class FaceSnapsClient: NSObject {
                 photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             }
             
-            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false)
+            guard let postsCount = user[FaceSnapsClient.Constant.JSONResponseKey.User.postsCount] as? Int else {
+                completionHandler(false, nil)
+                return
+            }
+            
+            guard let followersCount = user[FaceSnapsClient.Constant.JSONResponseKey.User.followersCount] as? Int else {
+                completionHandler(false, nil)
+                return
+            }
+            
+            guard let followingCount = user[FaceSnapsClient.Constant.JSONResponseKey.User.followingCount] as? Int else {
+                completionHandler(false, nil)
+                return
+            }
+            
+            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount)
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
@@ -146,7 +156,7 @@ class FaceSnapsClient: NSObject {
                 photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             }
             
-            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false)
+            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: 0, followersCount: 0, followingCount: 0)
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
@@ -190,9 +200,6 @@ class FaceSnapsClient: NSObject {
     }
     // MARK: Get latest feed for the user
     func getUserFeed(atPage page: Int, completionHandler: @escaping (_ success: Bool, _ data: List<FeedItem>?, _ errors: [String:String]?) -> Void) {
-        // Delete the latest feed items if we are attempting to get page 1 again
-        var lastFeed: Results<FeedItem>?
-        
         // TODO: Remove success Bool and replace with just data
         
         // Build URL
@@ -239,6 +246,59 @@ class FaceSnapsClient: NSObject {
                     completionHandler(true, latestFeed, nil)
                 } else {
                     completionHandler(false, nil, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
+                }
+            }
+        }
+    }
+    
+    // MARK: Get a users posts
+    func getUserFeed(forUser user: User, atPage page: Int, completionHandler: @escaping ( _ data: List<FeedItem>?, _ errors: [String:String]?) -> Void) {
+        // TODO: Remove success Bool and replace with just data
+        
+        // Build URL
+        let userFeedEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeed)
+        
+        let pageParam = ["page": page]
+        
+        // Make request
+        Alamofire.request(userFeedEndpoint, method: .get, parameters: pageParam, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                print("Error calling GET on user feed")
+                completionHandler(nil, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                let errorString = "Unable to get results as JSON from API"
+                completionHandler(nil, [Constant.ErrorResponseKey.title: errorString])
+                return
+            }
+            
+            // GUARD: Is there a posts array?
+            guard let postsJSON = json[Constant.JSONResponseKey.Post.posts] as? [[String:Any]] else {
+                let errorString = "Invalid JSON response: missing posts key"
+                completionHandler(nil, [Constant.ErrorResponseKey.title: errorString])
+                return
+            }
+            
+            // TODO: Set posts Ids array on data source
+            self.getUserFeedPostId(completionHandler: { (success) in
+                
+            })
+            
+            // Switch to background thread to parse
+            DispatchQueue.global(qos: .default).async {
+                
+                // Parse postsJSON
+                if let latestFeed = FaceSnapsParser.parse(postsArray: postsJSON) {
+                    // Save JSON to Strongbox
+                    FaceSnapsDataSource.sharedInstance.lastJSONdata = postsJSON
+                    completionHandler(latestFeed, nil)
+                } else {
+                    completionHandler(nil, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
                 }
             }
         }
@@ -351,8 +411,6 @@ class FaceSnapsClient: NSObject {
         }
         
     }
-    
-    // MARK: Remove a like on a post by the current user
     
     // MARK: Get a list of users who have liked a post
     

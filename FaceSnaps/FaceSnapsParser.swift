@@ -8,8 +8,27 @@
 
 import Foundation
 import RealmSwift
+import Alamofire
 
 enum FaceSnapsParser {
+    
+    static func getJSON(fromResponse response: DataResponse<Any>) -> [String:Any]? {
+        // GUARD: Was there an error?
+        guard response.result.error == nil else {
+            print("API Response had error")
+            return nil
+        }
+        
+        // GUARD: Do we have a json response?
+        guard let json = response.result.value as? [String: Any] else {
+            print("Unable to get results as JSON from API")
+            return nil
+        }
+        
+        return json
+
+    }
+    
     // MARK: - Parse Methods
     
     static func parse(usersArray: [[String:Any]]) -> [User] {
@@ -46,7 +65,19 @@ enum FaceSnapsParser {
             return nil
         }
         
-        return User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: following)
+        guard let postsCount = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.postsCount] as? Int else {
+            return nil
+        }
+        
+        guard let followersCount = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.followersCount] as? Int else {
+            return nil
+        }
+        
+        guard let followingCount = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.followingCount] as? Int else {
+            return nil
+        }
+        
+        return User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: following, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount)
     }
     
     // TODO: Parse Comments Array

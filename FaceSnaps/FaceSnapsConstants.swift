@@ -8,17 +8,21 @@
 
 import Foundation
 
-// TODO: Implement these APIErrors in Client
 enum APIError: Error {
-    case callFailed(reason: String)
+    case responseError(message: String?)
+    case parseError(message: String?)
     case noJSON
-    case errorParsing
     case missingKey(key: String)
 }
 
-extension FaceSnapsClient {
+struct APIErrorHandler {
+    static func handle(error: APIError) {
+        // TODO: Handle errors based on types
+        // Display UIAlert as needed
+    }
+}
 
-    
+extension FaceSnapsClient {
     enum Environment {
         case production, development
     }
@@ -147,6 +151,9 @@ extension FaceSnapsClient {
                 static let available = "available"
                 static let photoPath = "photo_path"
                 static let following = "following"
+                static let postsCount = "posts_count"
+                static let followersCount = "followers_count"
+                static let followingCount = "following_count"
             }
             // MARK: - Relationship Data
             

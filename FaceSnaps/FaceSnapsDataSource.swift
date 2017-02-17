@@ -86,21 +86,7 @@ class FaceSnapsDataSource {
             return false
         }
     }
-//
-//    // TODO: Can we just write an entire array?
-//    func setLatestFeed(asFeed feed: List<FeedItem>, completionHandler: @escaping (_ completed: Bool) -> Void) {
-//        deleteFeedItems()
-//        
-//        do {
-//            try realm.write({
-//                realm.add(feed)
-//            })
-//            completionHandler(true)
-//        } catch {
-//            completionHandler(false)
-//        }
-//    }
-    
+
     func wipeRealm() {
         try! realm.write {
             realm.deleteAll()

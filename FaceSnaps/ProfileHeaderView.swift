@@ -15,37 +15,38 @@ protocol ProfileHeaderDelegate {
     func userForView() -> User
 }
 
-class ProfileHeaderView: UIView {
+class ProfileHeaderView: UICollectionReusableView {
     
     var delegate: ProfileHeaderDelegate!
     var user: User!
     
     lazy var userIconView: UIImageView = {
         let imgView = UIImageView()
+        imgView.translatesAutoresizingMaskIntoConstraints = false
+        imgView.image = self.user.photo?.circle ?? UIImage()
         return imgView
     }()
     
     lazy var postsCounterBtn: UIButton = {
         let btn = UIButton()
-        btn.titleLabel?.numberOfLines = 2
-        let titleText = "posts"
-        let count = "\(33)" //user.posts.count
-        var attributedText = NSMutableAttributedString(string: "\(count) \(titleText)")
-        let countRange = NSRange(location: 0, length: count.characters.count)
-        let titleRange = NSRange(location: count.characters.count + 1, length: titleText.characters.count)
-        attributedText.addAttributes([NSFontAttributeName: UIFont.boldSystemFont(ofSize: 16.0), NSForegroundColorAttributeName: UIColor.black], range: countRange)
-        attributedText.addAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 12.0), NSForegroundColorAttributeName: UIColor.gray], range: titleRange)
-        
+        let postsCounter = self.headerCounter(property: self.user.postsCount)
+        let postsCounterLabel = self.headerLabel(withText: "posts")
+        btn.addSubview(postsCounter)
+        btn.addSubview(postsCounterLabel)
         btn.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            postsCounter.topAnchor.constraint(equalTo: btn.topAnchor),
+            postsCounter.centerXAnchor.constraint(equalTo: btn.centerXAnchor),
+            postsCounterLabel.topAnchor.constraint(equalTo: postsCounter.bottomAnchor),
+            postsCounterLabel.centerXAnchor.constraint(equalTo: btn.centerXAnchor),
+            ])
         return btn
     }()
     
-//    lazy var postsCounter: UILabel = { return self.headerCounter() }()
-//    lazy var postsCounterLabel: UILabel = { return self.headerLabel(withText: "posts") }()
-    
     lazy var followersCounterBtn: UIButton = {
         let btn = UIButton()
-        let followersCounter = self.headerCounter(property: 100)
+        let followersCounter = self.headerCounter(property: self.user.followersCount)
         let followersCounterLabel = self.headerLabel(withText: "followers")
         btn.addSubview(followersCounter)
         btn.addSubview(followersCounterLabel)
@@ -60,15 +61,9 @@ class ProfileHeaderView: UIView {
         return btn
     }()
     
-//    lazy var followersCounter: UILabel = { return self.headerCounter() }()
-//    lazy var followersCounterLabel: UILabel = { return self.headerLabel(withText: "followers") }()
-    
-//    lazy var followingCounter: UILabel = { return self.headerCounter() }()
-//    lazy var followingCounterLabel: UILabel = { return self.headerLabel(withText: "following") }()
-    
     lazy var followingCounterBtn: UIButton = {
         let btn = UIButton()
-        let followingCounter = self.headerCounter(property: 57)
+        let followingCounter = self.headerCounter(property: self.user.followingCount)
         let followingCounterLabel = self.headerLabel(withText: "following")
         btn.addSubview(followingCounter)
         btn.addSubview(followingCounterLabel)
@@ -86,8 +81,12 @@ class ProfileHeaderView: UIView {
     lazy var editProfileButton: UIButton = {
         let btn = UIButton()
         btn.setTitleColor(.black, for: .normal)
-        btn.layer.borderColor =  UIColor.gray.cgColor
+        btn.layer.borderColor =  UIColor.lightGray.cgColor
+        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 4
         btn.setTitle("Edit Profile", for: .normal)
+        btn.titleLabel?.font = .boldSystemFont(ofSize: 14.0)
+        btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
     
@@ -96,6 +95,7 @@ class ProfileHeaderView: UIView {
         lbl.text = self.user.name
         lbl.textColor = .black
         lbl.font = .boldSystemFont(ofSize: 14.0)
+        lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
     
@@ -105,12 +105,21 @@ class ProfileHeaderView: UIView {
         lbl.textColor = .black
         lbl.font = .systemFont(ofSize: 14.0)
         lbl.text = "User bio here..."
+        lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
     
-    lazy var segmentedController: UISegmentedControl = {
-        return UISegmentedControl()
-    }()
+    func prepareCell(withDelegate delegate: ProfileHeaderDelegate) {
+        self.delegate = delegate
+        user = delegate.userForView()
+        
+        addSubview(userIconView)
+        addSubview(postsCounterBtn)
+        addSubview(followersCounterBtn)
+        addSubview(followingCounterBtn)
+        addSubview(editProfileButton)
+        addSubview(userNameLabel)
+    }
     
     convenience init(delegate: ProfileHeaderDelegate) {
         self.init()
@@ -122,9 +131,7 @@ class ProfileHeaderView: UIView {
         addSubview(followersCounterBtn)
         addSubview(followingCounterBtn)
         addSubview(editProfileButton)
-        
-        translatesAutoresizingMaskIntoConstraints = false
-        
+        addSubview(userNameLabel)
     }
     
     override func layoutSubviews() {
@@ -132,8 +139,8 @@ class ProfileHeaderView: UIView {
         NSLayoutConstraint.activate([
             userIconView.topAnchor.constraint(equalTo: self.topAnchor, constant: 12),
             userIconView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 12),
-            userIconView.widthAnchor.constraint(equalToConstant: 56),
-            userIconView.heightAnchor.constraint(equalToConstant: 56),
+            userIconView.widthAnchor.constraint(equalToConstant: 72),
+            userIconView.heightAnchor.constraint(equalToConstant: 72),
             postsCounterBtn.topAnchor.constraint(equalTo: userIconView.topAnchor),
             postsCounterBtn.leftAnchor.constraint(equalTo: editProfileButton.leftAnchor, constant: 24),
             followersCounterBtn.topAnchor.constraint(equalTo: userIconView.topAnchor),
@@ -141,8 +148,11 @@ class ProfileHeaderView: UIView {
             followingCounterBtn.rightAnchor.constraint(equalTo: editProfileButton.rightAnchor, constant: -24),
             followingCounterBtn.topAnchor.constraint(equalTo: userIconView.topAnchor),
             editProfileButton.leftAnchor.constraint(equalTo: userIconView.rightAnchor, constant: 24),
-            editProfileButton.heightAnchor.constraint(equalToConstant: 32),
+            editProfileButton.heightAnchor.constraint(equalToConstant: 24),
             editProfileButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -12),
+            editProfileButton.topAnchor.constraint(equalTo: postsCounterBtn.bottomAnchor, constant: 12),
+            userNameLabel.topAnchor.constraint(equalTo: userIconView.bottomAnchor, constant: 16),
+            userNameLabel.leftAnchor.constraint(equalTo: userIconView.leftAnchor),
         
         ])
         

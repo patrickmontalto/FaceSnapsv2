@@ -25,4 +25,9 @@ class ProfileNavigationController: UINavigationController {
         profileController.user = user
         setViewControllers([profileController], animated: false)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
 }

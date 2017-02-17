@@ -59,7 +59,11 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         let profileImage = UIImage(named: "person-outline")?.with(size: imageSize)
         let profileImageSelected = UIImage(named: "person-selected")?.with(size: imageSize)
         let profileTabBarItem = UITabBarItem(title: nil, image: profileImage, selectedImage: profileImageSelected)
+        // Hide title for item
+        let tabBarTitleOffset = UIOffsetMake(0, 50)
+        profileTabBarItem.titlePositionAdjustment = tabBarTitleOffset
         profileTabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+
         profileTab.tabBarItem = profileTabBarItem
         
         // Set VCs
