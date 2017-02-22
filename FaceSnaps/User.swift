@@ -11,6 +11,7 @@ import RealmSwift
 
 class User: Object, IGListDiffable {
     
+    // MARK: - Properties
     dynamic var pk: Int = 0
     dynamic var name: String = ""
     dynamic var email: String = ""
@@ -23,6 +24,7 @@ class User: Object, IGListDiffable {
     dynamic var followingCount: Int = 0
     // TODO: Posts property?
     
+    // MARK: - Initializers
     convenience init(pk: Int, name: String, email: String, userName: String, photoURLString: String?, authToken: String, isFollowing: Bool, postsCount: Int, followersCount: Int, followingCount: Int) {
         self.init()
         
@@ -51,22 +53,26 @@ class User: Object, IGListDiffable {
             return UIImage(data: self.photoData)
         }
     }
-    
+    /// Accepts a JSON dictionary representing a user object.
+    /// 
+    /// Will Update email, name, username, and photo.
+    ///
+    /// - parameter userDictionary: The JSON representation of the user object.
     func update(userDictionary: [String: Any]) {
         let email = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.email] as! String
         let name = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.fullName] as! String
         let username = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.username] as! String
 //        let private = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.]
-        let photoURLString = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.photoPath] as! String
-        
-        if let photoURL = URL(string: photoURLString) {
-            do {
-                let data = try Data(contentsOf: photoURL)
-                self.photoData = data
-            } catch {}
-            
+        if let photoPath = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.photoPath] as? String {
+            let photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
+            if let photoURL = URL(string: photoURLstring) {
+                do {
+                    let data = try Data(contentsOf: photoURL)
+                    self.photoData = data
+                } catch {}
+            }
         }
-
+        
         self.email = email
         self.name = name
         self.userName = username

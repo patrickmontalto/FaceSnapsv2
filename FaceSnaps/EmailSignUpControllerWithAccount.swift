@@ -102,35 +102,7 @@ class EmailSignUpControllerWithAccount: UIViewController {
     }()
     
     lazy var alertController: UIAlertController = {
-        let controller = UIAlertController(title: "", message: nil, preferredStyle: .actionSheet)
-        
-        let attributedTitle = NSAttributedString(string: "Change Profile Photo", attributes: [
-            NSFontAttributeName: UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightMedium),
-            NSForegroundColorAttributeName: UIColor.black
-        ])
-        
-        controller.setValue(attributedTitle, forKey: "attributedTitle")
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
-            // .. cancel
-        })
-        
-        let takePhoto = UIAlertAction(title: "Take Photo", style: .default, handler: { (action) in
-            let vc = FaceSnapsImagePickerController()
-            vc.delegate = self
-            self.present(vc, animated: true, completion: nil)
-        })
-        
-        let chooseFromLibrary = UIAlertAction(title: "Choose from Library", style: .default, handler: { (action) in
-            // Present photo library
-            self.mediaPickerManager.presentImagePickerController(animated: true, withSourceType: .photoLibrary)
-        })
-        
-        controller.addAction(takePhoto)
-        controller.addAction(chooseFromLibrary)
-        controller.addAction(cancelAction)
-        
-        return controller
+        return self.createPhotoAlertController(delegate: self, mediaPickerManager: self.mediaPickerManager)
     }()
     
     
@@ -172,7 +144,6 @@ class EmailSignUpControllerWithAccount: UIViewController {
     // TODO: Add profile photo
     func addPhotoTapped(sender: UIButton) {
         present(alertController, animated: true, completion: nil)
-        //        mediaPickerManager.presentImagePickerController(animated: true)
     }
     
     // MARK: Sign In tapped

@@ -82,6 +82,8 @@ class ProfileController: UIViewController {
     
     func updateViewForUpdatedUser() {
         // TODO: Update user's full name on the header view
+        let cell = collectionView.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! ProfileHeaderView
+        cell.updateUser()
     }
     
     // TODO: profileHeaderView is a header to the entire collectionView

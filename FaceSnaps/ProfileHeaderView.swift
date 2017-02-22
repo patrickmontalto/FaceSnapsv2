@@ -121,6 +121,11 @@ class ProfileHeaderView: UICollectionReusableView {
         addSubview(userNameLabel)
     }
     
+    func updateUser() {
+        userIconView.image = user.photo?.circle
+        userNameLabel.text = user.name
+    }
+    
 
     override func layoutSubviews() {
         super.layoutSubviews()

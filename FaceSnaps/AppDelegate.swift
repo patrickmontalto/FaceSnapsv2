@@ -43,7 +43,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Tell the application that this window is the main window (key window)
         window.makeKeyAndVisible()
         
+        // Observe if the user logs out
+        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogOut), name: Notification.Name.userDidLogOutNotification, object: nil)
+        
         return true
+    }
+    
+    func userDidLogOut() {
+        guard let window = window else {
+            return
+        }
+        let loginController = LoginViewController()
+        let loginFlowNavController = LoginFlowNavigationController(rootViewController: loginController)
+//        window.rootViewController = loginFlowNavController
+        UIView.transition(with: window, duration: 0.5, options: .transitionFlipFromRight, animations: {() in
+            self.window?.rootViewController = loginFlowNavController
+        }, completion: nil)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

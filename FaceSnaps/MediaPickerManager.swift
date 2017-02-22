@@ -38,9 +38,8 @@ class MediaPickerManager: NSObject {
     func presentImagePickerController(animated: Bool, withSourceType sourceType: UIImagePickerControllerSourceType) {
         
         imagePickerController.sourceType = .photoLibrary
-        
-        presentingViewController.present(imagePickerController, animated: animated
-            , completion: nil)
+        imagePickerController.modalPresentationStyle = .overCurrentContext
+        presentingViewController.present(imagePickerController, animated: true, completion: nil)
     }
     
     func dismissImagePickerController(animated: Bool, completion: @escaping (() -> Void)) {
@@ -55,6 +54,12 @@ extension MediaPickerManager: UINavigationControllerDelegate, UIImagePickerContr
         // Pass image to our delegate
         delegate?.mediaPickerManager(manager: self, didFinishPickingImage: image)
     }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    
 }
 
 

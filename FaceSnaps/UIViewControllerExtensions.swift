@@ -60,4 +60,37 @@ extension UIViewController {
     func removeDeviceOrientationObserver() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: UIDevice.current)
     }
+    
+    
+    func createPhotoAlertController(delegate: FaceSnapsImagePickerControllerDelegate, mediaPickerManager: MediaPickerManager) -> UIAlertController {
+        let controller = UIAlertController(title: "", message: nil, preferredStyle: .actionSheet)
+        
+        let attributedTitle = NSAttributedString(string: "Change Profile Photo", attributes: [
+            NSFontAttributeName: UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightMedium),
+            NSForegroundColorAttributeName: UIColor.black
+            ])
+        
+        controller.setValue(attributedTitle, forKey: "attributedTitle")
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+            // .. cancel
+        })
+        
+        let takePhoto = UIAlertAction(title: "Take Photo", style: .default, handler: { (action) in
+            let vc = FaceSnapsImagePickerController()
+            vc.delegate = delegate
+            self.present(vc, animated: true, completion: nil)
+        })
+        
+        let chooseFromLibrary = UIAlertAction(title: "Choose from Library", style: .default, handler: { (action) in
+            // Present photo library
+            mediaPickerManager.presentImagePickerController(animated: true, withSourceType: .photoLibrary)
+        })
+        
+        controller.addAction(takePhoto)
+        controller.addAction(chooseFromLibrary)
+        controller.addAction(cancelAction)
+        
+        return controller
+    }
 }

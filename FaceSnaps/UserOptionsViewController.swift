@@ -110,7 +110,7 @@ extension UserOptionsViewController: UITableViewDelegate, UITableViewDataSource 
     private func actionForItem(item: OptionsItem) {
         switch item {
         case .editProfile:
-            // TODO: Present Edit Profile VC
+            // Present Edit Profile VC
             let vc = EditProfileViewController()
             navigationController?.pushViewController(vc, animated: true)
         case .changePassword:
@@ -130,6 +130,13 @@ extension UserOptionsViewController: UITableViewDelegate, UITableViewDataSource 
             break
         case .logOut:
             // TODO: Present UIAlert for log out
+            let logOut = UIAlertAction(title: "Log Out", style: .default, handler: { (action) in
+                // Log out user
+                FaceSnapsDataSource.sharedInstance.logOutCurrentUser()
+                // Go back to LoginFlowNav controller
+            })
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            displayAlert(withMessage: "", title: "Log Out of FaceSnaps?", actions: [cancel, logOut])
             break
         }
         

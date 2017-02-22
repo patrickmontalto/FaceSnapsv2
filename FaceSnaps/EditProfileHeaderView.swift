@@ -44,6 +44,10 @@ class EditProfileHeaderView: UITableViewHeaderFooterView {
         contentView.backgroundColor = .superLightGray
     }
     
+    func update(image: UIImage) {
+        userIconView.image = image
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         

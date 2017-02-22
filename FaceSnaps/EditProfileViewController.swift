@@ -57,9 +57,24 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-    var editableItems: [EditableItem] = [.name, .username, .email]
+    var headerView: EditProfileHeaderView {
+        get {
+            return self.tableView.headerView(forSection: 0) as! EditProfileHeaderView
+        }
+    }
     
- 
+    lazy var mediaPickerManager: MediaPickerManager = {
+        let manager = MediaPickerManager(presentingViewController: self)
+        manager.delegate = self
+        
+        return manager
+    }()
+    
+    lazy var alertController: UIAlertController = {
+        return self.createPhotoAlertController(delegate: self, mediaPickerManager: self.mediaPickerManager)
+    }()
+    
+    var editableItems: [EditableItem] = [.name, .username, .email]
     
     lazy var tableView: UITableView = {
         let tblView = UITableView(frame: .zero, style: .grouped)
@@ -111,7 +126,6 @@ class EditProfileViewController: UIViewController {
         
         var editParams = ["user": [ "full_name": name, "username": username, "email": email] ]
         
-        let headerView = tableView.headerView(forSection: 0) as! EditProfileHeaderView
         if let photo = headerView.userIconView.image {
             let base64String = ImageCoder.encodeToBase64(image: photo)!
             editParams["user"]!["photo"] = "data:image/jpeg;base64,\(base64String)"
@@ -168,5 +182,25 @@ extension EditProfileViewController: UITableViewDelegate, UITableViewDataSource 
 extension EditProfileViewController: EditProfileHeaderDelegate {
     func didTapChangeProfilePhoto() {
         // TODO: Present modal to select or take photo
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - MediaPickerManagerDelegate
+extension EditProfileViewController: MediaPickerManagerDelegate {
+    func mediaPickerManager(manager: MediaPickerManager, didFinishPickingImage image: UIImage) {
+        let compressedImage = UIImage(data: image.jpeg(.low)!)!
+        let circleImage = compressedImage.resized(toWidth: view.frame.width)!.circle!
+        headerView.update(image: circleImage)
+        manager.dismissImagePickerController(animated: true) {}
+    }
+}
+
+// MARK: - FaceSnapsImagePickerControllerDelegate
+extension EditProfileViewController: FaceSnapsImagePickerControllerDelegate {
+    func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingImage image: UIImage) {
+        // TODO: Get a reference to the userIconImageView more cleanly. Then set the image
+        let circleImage = image.circle!
+        headerView.update(image: circleImage)
     }
 }

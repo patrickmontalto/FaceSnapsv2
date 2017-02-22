@@ -80,6 +80,14 @@ class FaceSnapsDataSource {
             return false
         }
     }
+    
+    func logOutCurrentUser() {
+        // Wipe database
+        wipeRealm()
+        
+        // Post notification that user logged out
+        NotificationCenter.default.post(name: Notification.Name.userDidLogOutNotification, object: nil)
+    }
 
     func wipeRealm() {
         try! realm.write {
