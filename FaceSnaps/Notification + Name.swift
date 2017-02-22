@@ -11,5 +11,5 @@ import Foundation
 extension Notification.Name {
     static let tappedHomeNotificationName = Notification.Name("tappedHomeNotificationName")
     static let textViewWillChangeHeightNotification = Notification.Name("textViewWillChangeHeightNotification")
-//    static let textViewWillShrinkNotification = Notification.Name("textViewWillShrinkNotification")
+    static let userProfileUpdatedNotification = Notification.Name("userProfileUpdatedNotification")
 }

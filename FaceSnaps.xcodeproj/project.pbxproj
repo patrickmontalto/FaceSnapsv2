@@ -63,6 +63,12 @@
 		3AA3B22D1E4FEC3D0000A312 /* CommentBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B22C1E4FEC3D0000A312 /* CommentBoxView.swift */; };
 		3AA3B22F1E50F45F0000A312 /* UITextView+NumLines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B22E1E50F45F0000A312 /* UITextView+NumLines.swift */; };
 		3AA3B2311E516FE00000A312 /* ViewAllCommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B2301E516FE00000A312 /* ViewAllCommentsCell.swift */; };
+		3AA3B2331E58F0980000A312 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B2321E58F0980000A312 /* APIError.swift */; };
+		3AA3B2351E594E750000A312 /* UserOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B2341E594E750000A312 /* UserOptionsViewController.swift */; };
+		3AA3B2391E5A90F90000A312 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B2381E5A90F90000A312 /* EditProfileViewController.swift */; };
+		3AA3B23B1E5A95400000A312 /* EditableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B23A1E5A95400000A312 /* EditableTableViewCell.swift */; };
+		3AA3B23D1E5A95660000A312 /* EditableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA3B23C1E5A95660000A312 /* EditableTableViewCell.xib */; };
+		3AA3B23F1E5AA6270000A312 /* EditProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B23E1E5AA6270000A312 /* EditProfileHeaderView.swift */; };
 		3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */; };
 		3AB17FA01E02329F005E8739 /* LoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9F1E02329F005E8739 /* LoginViews.swift */; };
 		3AB17FA41E04FEE9005E8739 /* InteractableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */; };
@@ -178,6 +184,12 @@
 		3AA3B22C1E4FEC3D0000A312 /* CommentBoxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentBoxView.swift; sourceTree = "<group>"; };
 		3AA3B22E1E50F45F0000A312 /* UITextView+NumLines.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextView+NumLines.swift"; sourceTree = "<group>"; };
 		3AA3B2301E516FE00000A312 /* ViewAllCommentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewAllCommentsCell.swift; sourceTree = "<group>"; };
+		3AA3B2321E58F0980000A312 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		3AA3B2341E594E750000A312 /* UserOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserOptionsViewController.swift; sourceTree = "<group>"; };
+		3AA3B2381E5A90F90000A312 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		3AA3B23A1E5A95400000A312 /* EditableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableTableViewCell.swift; sourceTree = "<group>"; };
+		3AA3B23C1E5A95660000A312 /* EditableTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditableTableViewCell.xib; sourceTree = "<group>"; };
+		3AA3B23E1E5AA6270000A312 /* EditProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileHeaderView.swift; sourceTree = "<group>"; };
 		3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookLoginViews.swift; sourceTree = "<group>"; };
 		3AB17F9F1E02329F005E8739 /* LoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViews.swift; sourceTree = "<group>"; };
 		3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractableLabel.swift; sourceTree = "<group>"; };
@@ -404,6 +416,7 @@
 				3A9D88331E1A184A00FB928D /* FaceSnapsClient.swift */,
 				3A9D88351E1A185B00FB928D /* FaceSnapsConstants.swift */,
 				D24EB88F1E492216003960F0 /* FaceSnapsParser.swift */,
+				3AA3B2321E58F0980000A312 /* APIError.swift */,
 			);
 			name = FaceSnapsAPI;
 			sourceTree = "<group>";
@@ -473,6 +486,11 @@
 				D26703621E26D1B1001C06BE /* ProfileNavigationController.swift */,
 				D26703651E26D2B8001C06BE /* ProfileController.swift */,
 				D21BD4871E54F9CB009196C8 /* ProfileHeaderView.swift */,
+				3AA3B2341E594E750000A312 /* UserOptionsViewController.swift */,
+				3AA3B2381E5A90F90000A312 /* EditProfileViewController.swift */,
+				3AA3B23E1E5AA6270000A312 /* EditProfileHeaderView.swift */,
+				3AA3B23A1E5A95400000A312 /* EditableTableViewCell.swift */,
+				3AA3B23C1E5A95660000A312 /* EditableTableViewCell.xib */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -575,6 +593,7 @@
 				D21BD4841E54D1BD009196C8 /* UserSearchCell.xib in Resources */,
 				3A32DD1A1DA0309100CD2669 /* LaunchScreen.storyboard in Resources */,
 				3A74B8501E3E97B700408BBB /* TimeView.xib in Resources */,
+				3AA3B23D1E5A95660000A312 /* EditableTableViewCell.xib in Resources */,
 				3A32DD171DA0309100CD2669 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -661,6 +680,7 @@
 				3A9A3BAC1E285E72008A1334 /* SearchController.swift in Sources */,
 				3A74B84F1E3E97B700408BBB /* TimeView.swift in Sources */,
 				3A0805E91DEE5134002DB0DF /* LoginTextField.swift in Sources */,
+				3AA3B23B1E5A95400000A312 /* EditableTableViewCell.swift in Sources */,
 				D21BD4861E54D1DE009196C8 /* UserSearchCell.swift in Sources */,
 				3A9A3B9F1E20B929008A1334 /* Formatter.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
@@ -678,6 +698,8 @@
 				3A32DD121DA0309100CD2669 /* PhotoListController.swift in Sources */,
 				3A32A6BC1DA6069900AEE45F /* Location.swift in Sources */,
 				D2F8D2F81E2E64B900723204 /* LikesViewCell.swift in Sources */,
+				3AA3B23F1E5AA6270000A312 /* EditProfileHeaderView.swift in Sources */,
+				3AA3B2351E594E750000A312 /* UserOptionsViewController.swift in Sources */,
 				D2DEE0081E204899004BCEF7 /* UsernameSignUpController.swift in Sources */,
 				3AB17FB21E0B753D005E8739 /* SignUpController.swift in Sources */,
 				3A32A6C41DA95BE800AEE45F /* PhotoSortListController.swift in Sources */,
@@ -699,6 +721,7 @@
 				D26703691E26D8E1001C06BE /* HomeNavigationController.swift in Sources */,
 				3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */,
 				3AB17FB61E0CEA9C005E8739 /* SignUpViews.swift in Sources */,
+				3AA3B2391E5A90F90000A312 /* EditProfileViewController.swift in Sources */,
 				3A74B8481E3D9DCE00408BBB /* TextSize.swift in Sources */,
 				3ADE2A681E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift in Sources */,
 				3AB17FAE1E0B6441005E8739 /* UITextField+Blank.swift in Sources */,
@@ -717,6 +740,7 @@
 				D2318A921E1D623D00E0347F /* APIClient.swift in Sources */,
 				3A17EA4E1DFF57A000031834 /* UIView+Resize.swift in Sources */,
 				3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */,
+				3AA3B2331E58F0980000A312 /* APIError.swift in Sources */,
 				3A7C7FB71DEE2737008608D1 /* HomeController.swift in Sources */,
 				3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */,
 				3A9D88361E1A185B00FB928D /* FaceSnapsConstants.swift in Sources */,

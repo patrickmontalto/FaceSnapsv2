@@ -121,19 +121,7 @@ class ProfileHeaderView: UICollectionReusableView {
         addSubview(userNameLabel)
     }
     
-    convenience init(delegate: ProfileHeaderDelegate) {
-        self.init()
-        self.delegate = delegate
-        user = delegate.userForView()
-        
-        addSubview(userIconView)
-        addSubview(postsCounterBtn)
-        addSubview(followersCounterBtn)
-        addSubview(followingCounterBtn)
-        addSubview(editProfileButton)
-        addSubview(userNameLabel)
-    }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         NSLayoutConstraint.activate([

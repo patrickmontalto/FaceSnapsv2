@@ -55,6 +55,10 @@ enum FaceSnapsParser {
             return nil
         }
         
+        guard let email = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.email] as? String else {
+            return nil
+        }
+        
         var photoURLstring: String? = nil
         
         if let photoPath = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.photoPath] as? String {
@@ -77,7 +81,7 @@ enum FaceSnapsParser {
             return nil
         }
         
-        return User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: following, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount)
+        return User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: following, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount)
     }
     
     // TODO: Parse Comments Array

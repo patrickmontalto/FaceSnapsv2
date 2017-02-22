@@ -12,10 +12,14 @@ class ProfileController: UIViewController {
     
     var user: User!
 
-    var posts: [FeedItem]?
+    var posts = [FeedItem]()
     
     lazy var collectionView: UICollectionView = {
         let cvLayout = UICollectionViewFlowLayout()
+        cvLayout.minimumLineSpacing = 1
+        cvLayout.minimumInteritemSpacing = 1
+        let itemWidth = (self.view.frame.width - 2)/3
+        cvLayout.itemSize = CGSize(width: itemWidth, height: itemWidth)
         let cv = UICollectionView(frame: .zero, collectionViewLayout: cvLayout)
         cvLayout.headerReferenceSize = CGSize(width: self.view.frame.width, height: 150)
         cv.translatesAutoresizingMaskIntoConstraints = false
@@ -27,26 +31,57 @@ class ProfileController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        posts =  // user.posts.count
-        title = user.userName
         
         view.addSubview(collectionView)
         
         collectionView.register(ProfileHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "profileHeaderView")
+        collectionView.register(ImageCell.self, forCellWithReuseIdentifier: "imageCell")
         
         self.automaticallyAdjustsScrollViewInsets = false
         
+        // Add notification if current user updates profile
+        NotificationCenter.default.addObserver(self, selector: #selector(updateViewForUpdatedUser), name: .userProfileUpdatedNotification, object: nil)
+     
         if FaceSnapsDataSource.sharedInstance.currentUser! == user {
             // On current user profile. Make right Nav bar action the settings
             // TODO: Get gear symbol for options and elipses for actions
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Options", style: .plain, target: self, action: #selector(pushUserOptionsView))
+            let optionsButton = UIBarButtonItem(image: UIImage(named: "cog")!, style: .plain, target: self, action: #selector(pushUserOptionsView))
+            optionsButton.tintColor = .black
+            navigationItem.rightBarButtonItem = optionsButton
+
         }
         
         // TODO: Get posts for user
+        FaceSnapsClient.sharedInstance.getUserPosts(user: user) { (data, error) in
+            if let data = data {
+                print(data.count)
+                self.posts = Array(data)
+                self.collectionView.reloadData()
+            } else {
+                _ = APIErrorHandler.handle(error: error!, logError: true)
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        title = user.userName
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        title = nil
     }
     
     func pushUserOptionsView() {
         // TODO: Push user options view
+        let vc = UserOptionsViewController()
+        vc.user = user
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func updateViewForUpdatedUser() {
+        // TODO: Update user's full name on the header view
     }
     
     // TODO: profileHeaderView is a header to the entire collectionView
@@ -71,11 +106,29 @@ extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0 // return posts.count
+        return posts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return UICollectionViewCell()
+        let post = posts[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageCell
+        if let photo = post.photo {
+            cell.setImage(image: photo)
+        } else {
+            // TODO: Set placeholder Image
+            cell.setImage(image: UIImage())
+            let caching = true
+            // Begin background process to download image from URL
+            // Cache if necessary
+            FaceSnapsDataSource.sharedInstance.photoFromURL(for: post, cache: caching, completionHandler: { (image) in
+                DispatchQueue.main.async {
+                    cell.setImage(image: image)
+                }
+            })
+            
+        }
+
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -98,14 +151,14 @@ extension ProfileController: ProfileHeaderDelegate {
     }
     
     func didTapFollowers() {
-        
+        // TODO: Present list of followers
     }
     
     func didTapFollowing() {
-        
+        // TODO: Present list of following
     }
     
     func didTapEditProfile() {
-        
+        // TODO: Present edit profile view
     }
 }

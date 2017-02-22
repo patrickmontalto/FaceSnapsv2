@@ -13,6 +13,7 @@ class User: Object, IGListDiffable {
     
     dynamic var pk: Int = 0
     dynamic var name: String = ""
+    dynamic var email: String = ""
     dynamic var userName: String = ""
     dynamic var photoData: Data = Data()
     dynamic var authToken: String = ""
@@ -22,11 +23,12 @@ class User: Object, IGListDiffable {
     dynamic var followingCount: Int = 0
     // TODO: Posts property?
     
-    convenience init(pk: Int, name: String, userName: String, photoURLString: String?, authToken: String, isFollowing: Bool, postsCount: Int, followersCount: Int, followingCount: Int) {
+    convenience init(pk: Int, name: String, email: String, userName: String, photoURLString: String?, authToken: String, isFollowing: Bool, postsCount: Int, followersCount: Int, followingCount: Int) {
         self.init()
         
         self.pk = pk
         self.name = name
+        self.email = email
         self.userName = userName
         self.authToken = authToken
         self.isFollowing = isFollowing
@@ -48,6 +50,28 @@ class User: Object, IGListDiffable {
         get {
             return UIImage(data: self.photoData)
         }
+    }
+    
+    func update(userDictionary: [String: Any]) {
+        let email = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.email] as! String
+        let name = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.fullName] as! String
+        let username = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.username] as! String
+//        let private = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.]
+        let photoURLString = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.photoPath] as! String
+        
+        if let photoURL = URL(string: photoURLString) {
+            do {
+                let data = try Data(contentsOf: photoURL)
+                self.photoData = data
+            } catch {}
+            
+        }
+
+        self.email = email
+        self.name = name
+        self.userName = username
+        // self.private = private
+        
     }
     
     // MARK: - IGListDiffable

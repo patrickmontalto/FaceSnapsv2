@@ -8,20 +8,6 @@
 
 import Foundation
 
-enum APIError: Error {
-    case responseError(message: String?)
-    case parseError(message: String?)
-    case noJSON
-    case missingKey(key: String)
-}
-
-struct APIErrorHandler {
-    static func handle(error: APIError) {
-        // TODO: Handle errors based on types
-        // Display UIAlert as needed
-    }
-}
-
 extension FaceSnapsClient {
     enum Environment {
         case production, development
@@ -42,6 +28,7 @@ extension FaceSnapsClient {
         static let ApiKey = ""
         static let ClientType = APIConstants.Client.facesnaps
         static let AuthorizationHeader = [APIConstants.HTTPHeaderKey.authorization: FaceSnapsDataSource.sharedInstance.authToken!]
+        static let CurrentUserId = FaceSnapsDataSource.sharedInstance.currentUser!.pk
         
         enum ErrorResponseKey {
             static let error = "error"
@@ -62,6 +49,8 @@ extension FaceSnapsClient {
                 static func signOutUser(auth_token: String) -> String {
                     return "/sessions/\(auth_token)"
                 }
+                // Update a users profile
+                static let updateUserProfile = "/users/\(CurrentUserId)"
                 // Get current user's feed
                 static let getUserFeed = "/users/self/feed"
                 // Get an array of all post IDs on the users feed
@@ -70,13 +59,11 @@ extension FaceSnapsClient {
                 static let getCurrentUser = "/users/self"
                 // Get information about a user
                 static let getUser = "/users/"
-                // Get most recent posts of the current user (*paginated)
-                static let getCurrentUserMedia = "/users/self/posts/recent"
                 // Get most recently liked posts by the current user (*paginated)
-                static let getCurrentUserLikedMedia = "/users/self/posts/liked"
+                // static let getCurrentUserLikedMedia = "/users/self/posts/liked"
                 // Get most recent posts of a user (*paginated)
                 static func getUserMedia(userId: Int) -> String {
-                    return "users/\(userId)/posts/recent"
+                    return "/users/\(userId)/posts/recent"
                 }
                 // Search for a user by name (*paginated)
                 static let getUsersQuery = "/user/search"

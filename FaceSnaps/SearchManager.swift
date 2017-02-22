@@ -47,7 +47,7 @@ class SearchManager: NSObject, UISearchBarDelegate {
         switch selectedScope {
         case 0:
             // Get users
-            FaceSnapsClient.sharedInstance.searchUsers(queryString: searchText, completionHandler: { (usersArray) in
+            FaceSnapsClient.sharedInstance.searchUsers(queryString: searchText, completionHandler: { (usersArray, error) in
                 guard let usersArray = usersArray else { return }
                 self.data = usersArray
                 DispatchQueue.main.async {

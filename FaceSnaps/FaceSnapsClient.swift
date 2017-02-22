@@ -39,20 +39,17 @@ class FaceSnapsClient: NSObject {
             
             // GUARD: Get and print the auth_token
             guard let user = json["user"] as? [String: Any], let authToken = user[Constant.JSONResponseKey.User.authToken] as? String else {
-                guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String] else {
-                    let errorString = "An error occurred parsing errors JSON"
+                guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String], let errorMessage = errorResponse[Constant.JSONResponseKey.Error.message]  else {
                     completionHandler(.parseError(message: nil))
                     return
                 }
-                let errorMessage = errorResponse[0] + errorResponse[1]
-                completionHandler(false, .responseError(message: errorR))
+                completionHandler(.responseError(message: errorMessage))
                 return
             }
             
             // GUARD: Is there a username and full name?
-            guard let pk = user[Constant.JSONResponseKey.User.id] as? Int, let fullName = user[Constant.JSONResponseKey.User.fullName] as? String, let userName = user[Constant.JSONResponseKey.User.username] as? String else {
-                let errorString = "Invalid JSON response: missing key"
-                completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
+            guard let pk = user[Constant.JSONResponseKey.User.id] as? Int, let fullName = user[Constant.JSONResponseKey.User.fullName] as? String, let email = user[Constant.JSONResponseKey.User.email] as? String, let userName = user[Constant.JSONResponseKey.User.username] as? String else {
+                completionHandler(APIError.missingKey(message: nil))
                 return
             }
             
@@ -68,34 +65,34 @@ class FaceSnapsClient: NSObject {
             }
             
             guard let postsCount = user[FaceSnapsClient.Constant.JSONResponseKey.User.postsCount] as? Int else {
-                completionHandler(false, nil)
+                completionHandler(.parseError(message: nil))
                 return
             }
             
             guard let followersCount = user[FaceSnapsClient.Constant.JSONResponseKey.User.followersCount] as? Int else {
-                completionHandler(false, nil)
+                completionHandler(.parseError(message: nil))
                 return
             }
             
             guard let followingCount = user[FaceSnapsClient.Constant.JSONResponseKey.User.followingCount] as? Int else {
-                completionHandler(false, nil)
+                completionHandler(.parseError(message: nil))
                 return
             }
             
-            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount)
+            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount)
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
-                completionHandler(true, nil)
+                completionHandler(nil)
             } else {
-                completionHandler(false, [Constant.ErrorResponseKey.title: "Error saving user to strongbox"])
+                completionHandler(.persistenceError)
             }
         }
 
     }
     
     // MARK: Sign up as a new user
-    func signUpUser(username: String, email: String, fullName: String, password: String, profileImage: String?, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void ) {
+    func signUpUser(username: String, email: String, fullName: String, password: String, profileImage: String?, completionHandler: @escaping (_ error: APIError?) -> Void ) {
         // Build URL
         let signUpEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.signUpUser)
         // Build params
@@ -116,32 +113,29 @@ class FaceSnapsClient: NSObject {
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
-                print("Error calling POST on sign up")
-                completionHandler(false, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+                completionHandler(APIError.responseError(message: "Error calling POST on sign up"))
                 return
             }
             // GUARD: Do we have a json response?
             guard let json = response.result.value as? [String: Any] else {
-                let errorString = "Unable to get results as JSON from API"
-                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                completionHandler(APIError.noJSON)
                 return
             }
 
             // GUARD: Get and print the auth_token
             guard let user = json["user"] as? [String: Any], let authToken = user[Constant.JSONResponseKey.User.authToken] as? String else {
-                guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String], let _ = errorResponse[Constant.JSONResponseKey.Error.title], let _ = errorResponse[Constant.JSONResponseKey.Error.message] else {
-                    let errorString = "An error occurred parsing errors JSON"
-                    completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
+                guard let errorResponse = json[Constant.JSONResponseKey.Error.errors] as? [String: String], let message = errorResponse[Constant.JSONResponseKey.Error.message] else {
+                    completionHandler(APIError.parseError(message: nil))
                     return
                 }
-                completionHandler(false, errorResponse)
+                completionHandler(APIError.responseError(message: message))
                 return
             }
             
             // GUARD: Is there a username and full name?
-            guard let pk = user[Constant.JSONResponseKey.User.id] as? Int, let fullName = user[Constant.JSONResponseKey.User.fullName] as? String, let userName = user[Constant.JSONResponseKey.User.username] as? String else {
+            guard let pk = user[Constant.JSONResponseKey.User.id] as? Int, let fullName = user[Constant.JSONResponseKey.User.fullName] as? String, let email = user[Constant.JSONResponseKey.User.email] as? String, let userName = user[Constant.JSONResponseKey.User.username] as? String else {
                 let errorString = "Invalid JSON response: missing key"
-                completionHandler(false, [Constant.JSONResponseKey.Error.title: errorString])
+                completionHandler(APIError.missingKey(message: nil))
                 return
             }
             
@@ -156,18 +150,18 @@ class FaceSnapsClient: NSObject {
                 photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             }
             
-            let currentUser = User(pk: pk, name: fullName, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: 0, followersCount: 0, followingCount: 0)
+            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: 0, followersCount: 0, followingCount: 0)
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
-                completionHandler(true, nil)
+                completionHandler(nil)
             } else {
-                completionHandler(false, [Constant.ErrorResponseKey.title: "Error saving user to strongbox"])
+                completionHandler(APIError.persistenceError)
             }
         }
     }
     // MARK: Check if username/email is available
-    func checkAvailability(forUserCredential userCredential: String, completionHandler: @escaping (_ success: Bool, _ errors: [String: String]?) -> Void ) {
+    func checkAvailability(forUserCredential userCredential: String, completionHandler: @escaping (_ available: Bool?, _ error: APIError?) -> Void ) {
         // Build URL
         let checkEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.checkAvailability)
         // Build params
@@ -176,21 +170,19 @@ class FaceSnapsClient: NSObject {
         Alamofire.request(checkEndpoint, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (response) in
             // GUARD: Was there an error?
             guard response.result.error == nil else {
-                print("Error calling GET on check availability")
-                completionHandler(false, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+                let message = "Error calling GET on check availability"
+                completionHandler(nil, APIError.responseError(message: message))
                 return
             }
             // GUARD: Do we have a json response?
             guard let json = response.result.value as? [String: Any] else {
-                let errorString = "Unable to get results as JSON from API"
-                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                completionHandler(nil, APIError.noJSON)
                 return
             }
             
             // GUARD: Get and return whether or not it is available
             guard let available = json[Constant.JSONResponseKey.User.available] as? Bool else {
-                let errorString = "Invalid JSON response: missing key"
-                completionHandler(false, [Constant.ErrorResponseKey.title: errorString])
+                completionHandler(nil, APIError.missingKey(message: nil))
                 return
             }
             
@@ -199,7 +191,7 @@ class FaceSnapsClient: NSObject {
 
     }
     // MARK: Get latest feed for the user
-    func getUserFeed(atPage page: Int, completionHandler: @escaping (_ success: Bool, _ data: List<FeedItem>?, _ errors: [String:String]?) -> Void) {
+    func getUserFeed(atPage page: Int, completionHandler: @escaping (_ data: List<FeedItem>?, _ error: APIError?) -> Void) {
         // TODO: Remove success Bool and replace with just data
         
         // Build URL
@@ -212,22 +204,21 @@ class FaceSnapsClient: NSObject {
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
-                print("Error calling GET on user feed")
-                completionHandler(false, nil, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+                let message = "Error calling GET on user feed"
+                completionHandler(nil, APIError.responseError(message: message))
                 return
             }
             
             // GUARD: Do we have a json response?
             guard let json = response.result.value as? [String: Any] else {
-                let errorString = "Unable to get results as JSON from API"
-                completionHandler(false, nil, [Constant.ErrorResponseKey.title: errorString])
+                completionHandler(nil, APIError.noJSON)
                 return
             }
             
             // GUARD: Is there a posts array?
             guard let postsJSON = json[Constant.JSONResponseKey.Post.posts] as? [[String:Any]] else {
                 let errorString = "Invalid JSON response: missing posts key"
-                completionHandler(false, nil, [Constant.ErrorResponseKey.title: errorString])
+                completionHandler(nil, APIError.missingKey(message: errorString))
                 return
             }
             
@@ -243,16 +234,16 @@ class FaceSnapsClient: NSObject {
                 if let latestFeed = FaceSnapsParser.parse(postsArray: postsJSON) {
                     // Save JSON to Strongbox
                     FaceSnapsDataSource.sharedInstance.lastJSONdata = postsJSON
-                    completionHandler(true, latestFeed, nil)
+                    completionHandler(latestFeed, nil)
                 } else {
-                    completionHandler(false, nil, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
+                    completionHandler(nil, APIError.parseError(message: "Error parsing posts JSON"))
                 }
             }
         }
     }
     
     // MARK: Get a users posts
-    func getUserFeed(forUser user: User, atPage page: Int, completionHandler: @escaping ( _ data: List<FeedItem>?, _ errors: [String:String]?) -> Void) {
+    func getUserFeed(forUser user: User, atPage page: Int, completionHandler: @escaping ( _ data: List<FeedItem>?, _ error: APIError?) -> Void) {
         // TODO: Remove success Bool and replace with just data
         
         // Build URL
@@ -265,22 +256,21 @@ class FaceSnapsClient: NSObject {
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
-                print("Error calling GET on user feed")
-                completionHandler(nil, [Constant.ErrorResponseKey.title: response.result.error!.localizedDescription])
+                let message = response.result.error!.localizedDescription
+                completionHandler(nil, APIError.responseError(message: message))
                 return
             }
             
             // GUARD: Do we have a json response?
             guard let json = response.result.value as? [String: Any] else {
-                let errorString = "Unable to get results as JSON from API"
-                completionHandler(nil, [Constant.ErrorResponseKey.title: errorString])
+                completionHandler(nil, APIError.noJSON)
                 return
             }
             
             // GUARD: Is there a posts array?
             guard let postsJSON = json[Constant.JSONResponseKey.Post.posts] as? [[String:Any]] else {
                 let errorString = "Invalid JSON response: missing posts key"
-                completionHandler(nil, [Constant.ErrorResponseKey.title: errorString])
+                completionHandler(nil, APIError.missingKey(message: errorString))
                 return
             }
             
@@ -298,12 +288,12 @@ class FaceSnapsClient: NSObject {
                     FaceSnapsDataSource.sharedInstance.lastJSONdata = postsJSON
                     completionHandler(latestFeed, nil)
                 } else {
-                    completionHandler(nil, [Constant.ErrorResponseKey.title: "Error parsing posts JSON"])
+                    completionHandler(nil, APIError.parseError(message: "Error parsing posts JSON"))
                 }
             }
         }
     }
-    
+    // MARK: Get a list of posts IDs for the user
     private func getUserFeedPostId(completionHandler: @escaping (_ success: Bool) -> Void) {
         let userFeedEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeedIds)
         
@@ -341,7 +331,7 @@ class FaceSnapsClient: NSObject {
     }
     
     // MARK: Search users
-    func searchUsers(queryString: String, completionHandler: @escaping (_ data: [User]?) -> Void) {
+    func searchUsers(queryString: String, completionHandler: @escaping (_ data: [User]?, _ error: APIError?) -> Void) {
         let userSearchEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUsersQuery)
         
         let params = ["query": queryString]
@@ -351,35 +341,66 @@ class FaceSnapsClient: NSObject {
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
-                print("Error calling GET on user feed")
-                completionHandler(nil)
+                completionHandler(nil, APIError.responseError(message: response.result.error!.localizedDescription))
                 return
             }
             
             // GUARD: Do we have a json response?
             guard let json = response.result.value as? [String: Any] else {
-                let errorString = "Unable to get results as JSON from API"
-                completionHandler(nil)
+                completionHandler(nil, APIError.noJSON)
                 return
             }
             
             guard let usersArray = json[Constant.JSONResponseKey.User.users] as? [[String:Any]] else {
-                completionHandler(nil)
+                completionHandler(nil, nil)
                 return
             }
             
             let userResults = FaceSnapsParser.parse(usersArray: usersArray)
             
-            completionHandler(userResults)
+            completionHandler(userResults, nil)
         }
     }
 
     // MARK: Get information about the owner of the access token (user)
     
-    // MARK: Get information about a user
+    // MARK: Put an update on the current user
+    func updateCurrentUserProfile(withAttributes params: [String: Any], completionHandler: @escaping (_ error: APIError?) -> Void) {
+        let updateEndpoint = FaceSnapsClient.urlString(forEndpoint: FaceSnapsClient.Constant.APIMethod.UserEndpoint.updateUserProfile)
+        
+        // Make request
+        Alamofire.request(updateEndpoint, method: .put, parameters: params, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                completionHandler(.responseError(message: response.result.error!.localizedDescription))
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                completionHandler(.noJSON)
+                return
+            }
+            
+            // GUARD: Was it a success?
+            guard let userDictionary = json[Constant.JSONResponseKey.User.user] as? [String: Any] else {
+                completionHandler(APIError.missingKey(message: "Missing user key from server response"))
+                return
+            }
+            
+            // Update current user (photo / name / username / email / private )
+            try! FaceSnapsDataSource.sharedInstance.realm.write {
+                FaceSnapsDataSource.sharedInstance.currentUser!.update(userDictionary: userDictionary)
+                completionHandler(nil)
+            }
+            
+        }
+        
+    }
     
     // MARK: Set a like on a post by the current user
-    func likeOrUnlikePost(action: LikeAction, postId: Int, completionHandler: @escaping (_ success: Bool) -> Void) {
+    func likeOrUnlikePost(action: LikeAction, postId: Int, completionHandler: @escaping (_ error: APIError?) -> Void) {
         let likeEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.LikesEndpoint.likePost(postId: postId))
         
         let method: HTTPMethod = action == .like ? .post : .delete
@@ -389,25 +410,23 @@ class FaceSnapsClient: NSObject {
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
-                print("Error calling GET on user feed")
-                completionHandler(false)
+                completionHandler(APIError.responseError(message: response.result.error!.localizedDescription))
                 return
             }
             
             // GUARD: Do we have a json response?
             guard let json = response.result.value as? [String: Any] else {
-                let errorString = "Unable to get results as JSON from API"
-                completionHandler(false)
+                completionHandler(APIError.noJSON)
                 return
             }
             
             // GUARD: Was it a success?
             guard let meta = json["meta"] as? [String: Any], let code = meta["code"] as? Int, code == 200 else {
-                completionHandler(false)
+                completionHandler(APIError.responseError(message: nil))
                 return
             }
             
-            completionHandler(true)
+            completionHandler(nil)
         }
         
     }
@@ -415,7 +434,7 @@ class FaceSnapsClient: NSObject {
     // MARK: Get a list of users who have liked a post
     
     // MARK: Create a comment on a post (as the current user)
-    func postComment(onPost post: FeedItem, withText text: String, completionHandler: @escaping (_ data: Comment?) -> Void) {
+    func postComment(onPost post: FeedItem, withText text: String, completionHandler: @escaping (_ data: Comment?, _ error: APIError?) -> Void) {
         let postCommentEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.CommentsEndpoint.postComment(postId: post.pk))
         
         // Build params
@@ -426,30 +445,28 @@ class FaceSnapsClient: NSObject {
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
-                print("Error calling GET on user feed")
-                completionHandler(nil)
+                completionHandler(nil, APIError.responseError(message: response.result.error!.localizedDescription))
                 return
             }
             
             // GUARD: Do we have a successful json response?
             guard let json = response.result.value as? [String:Any], let meta = json[Constant.JSONResponseKey.Meta.meta] as? [String:Any], let code = meta[Constant.JSONResponseKey.Meta.code] as? Int, code == 200 else {
-                let errorString = "Unable to get results as JSON from API"
-                completionHandler(nil)
+                completionHandler(nil, APIError.noJSON)
                 return
             }
             
             // GUARD: Do we have a comment in the json?
             guard let commentJson = json[Constant.JSONResponseKey.Comment.comment] as? [String: Any] else {
-                completionHandler(nil)
+                completionHandler(nil, APIError.missingKey(message: nil))
                 return
             }
             
             guard let comment = FaceSnapsParser.parse(commentDictionary: commentJson, forUser: FaceSnapsDataSource.sharedInstance.currentUser!) else {
-                completionHandler(nil)
+                completionHandler(nil, APIError.missingKey(message: nil))
                 return
             }
             
-            completionHandler(comment)
+            completionHandler(comment, nil)
         }
         
     }
@@ -457,7 +474,7 @@ class FaceSnapsClient: NSObject {
     // MARK: Remove a comment on a post (as the current user)
     
     // MARK: Get a list of comments on a post (*paginated in reverse)
-    func getComments(forPost post: FeedItem, completionHandler: @escaping (_ data: [Comment]?) -> Void) {
+    func getComments(forPost post: FeedItem, completionHandler: @escaping (_ data: [Comment]?, _ error: APIError?) -> Void) {
         let getCommentsEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.CommentsEndpoint.getComments(postId: post.pk))
         
         // Make Request
@@ -465,27 +482,54 @@ class FaceSnapsClient: NSObject {
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
-                print("Error calling GET on user feed")
-                completionHandler(nil)
+                completionHandler(nil, APIError.responseError(message: response.result.error!.localizedDescription))
                 return
             }
             
             // GUARD: Do we have a json response?
             guard let json = response.result.value as? [String:Any], let commentsJSON = json[Constant.JSONResponseKey.Comment.comments] as? [[String:Any]] else {
-                let errorString = "Unable to get results as JSON from API"
-                completionHandler(nil)
+                completionHandler(nil, APIError.noJSON)
                 return
             }
             
             // Parse the array of comments
             guard let comments = FaceSnapsParser.parse(commentsArray: commentsJSON) else {
-                completionHandler(nil)
+                completionHandler(nil, APIError.parseError(message: nil))
                 return
             }
             
-            completionHandler(comments.reversed())
+            completionHandler(comments.reversed(), nil)
         }
     }
+    
+    // MARK: - Get User Posts
+    func getUserPosts(user: User, completionHandler: @escaping(_ data: List<FeedItem>?, _ error: APIError?) -> Void) {
+        let getUserMediaEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserMedia(userId: user.pk))
+        
+        // Make request
+        Alamofire.request(getUserMediaEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                completionHandler(nil, APIError.responseError(message: response.result.error!.localizedDescription))
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String:Any], let postsJSON = json[Constant.JSONResponseKey.Post.posts] as? [[String:Any]] else {
+                completionHandler(nil, APIError.noJSON)
+                return
+            }
+            
+            // Parse postsJSON
+            guard let postsResults = FaceSnapsParser.parse(postsArray: postsJSON) else {
+                completionHandler(nil, APIError.parseError(message: "Error parsing posts response from server."))
+                return
+            }
+            
+            completionHandler(postsResults, nil)
+        }
+    }
+
     
     // MARK: Build URL
     static func urlString(forEndpoint endpoint: String) -> String {

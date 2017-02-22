@@ -132,7 +132,12 @@ class EmailSignUpController: UIViewController {
         }
         
         // Check if email is taken yet
-        FaceSnapsClient.sharedInstance.checkAvailability(forUserCredential: email) { (available, errors) in
+        FaceSnapsClient.sharedInstance.checkAvailability(forUserCredential: email) { (available, error) in
+            guard let available = available else {
+                let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                APIErrorHandler.handle(error: error!, withActions: [action], presentingViewController: self)
+                return
+            }
             if available {
                 // Present EmailSignUpControllerWithAccount
                 let vc = EmailSignUpControllerWithAccount()
@@ -142,11 +147,7 @@ class EmailSignUpController: UIViewController {
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
             } else {
-                if errors == nil {
-                    self.displayAlert(withMessage: "Email already taken.", title: "Please enter another email.", actions: [action])
-                } else {
-                    print(errors!["title"]!)
-                }
+                self.displayAlert(withMessage: "Email already taken.", title: "Please enter another email.", actions: [action])
             }
         }
     }

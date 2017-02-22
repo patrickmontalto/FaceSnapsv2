@@ -29,13 +29,7 @@ class FaceSnapsDataSource {
             return currentUser.authToken
         }
     }
-    
-//    var latestFeed: Results<FeedItem> {
-//        get {
-//            return realm.objects(FeedItem.self)
-//        }
-//    }
-//    
+      
     var lastJSONdata: [[String:Any]]? {
         set {
             _ = FaceSnapsStrongbox.sharedInstance.archive(newValue, key: .lastFeedJSON)

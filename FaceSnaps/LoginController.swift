@@ -128,11 +128,11 @@ class LoginViewController: UIViewController {
         // TODO: Spinner on log in button
         loginStackView.animateLoginButton(true)
         guard let username = loginStackView.usernameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), let password = loginStackView.passwordTextField.text else { return }
-        FaceSnapsClient.sharedInstance.signInUser(credential: username, password: password) { (success, errors) -> Void in
+        FaceSnapsClient.sharedInstance.signInUser(credential: username, password: password) { (error) -> Void in
             // stop animating the indicator view
             self.loginStackView.animateLoginButton(false)
             
-            if success {
+            if error == nil {
                 // TODO: make request to user feed
                 // TODO: Transition to home controller
                 let appTabBarController = AppTabBarController()
@@ -142,14 +142,7 @@ class LoginViewController: UIViewController {
                 // Create action
                 let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
 
-                guard let errors = errors, let title = errors[FaceSnapsClient.Constant.ErrorResponseKey.title] else {
-                    self.displayAlert(withMessage: "", title: "An unspecified error ocurred.", actions: [action])
-                    return
-                }
-
-                let message = errors[FaceSnapsClient.Constant.ErrorResponseKey.message] ?? ""
-                
-                self.displayAlert(withMessage: message, title: title, actions: [action])
+                APIErrorHandler.handle(error: error!, withActions: [action], presentingViewController: self)
             }
         }
     }

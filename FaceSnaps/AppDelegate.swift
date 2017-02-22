@@ -24,6 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window.backgroundColor = UIColor.white
         
+        // Remove bar button titles from all bar buttons
+        let barButtonItemAppearance = UIBarButtonItem.appearance()
+        barButtonItemAppearance.setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -6000), for: .default)
+        // Set all navigation bars to black tint for button items
+        let barAppearance = UINavigationBar.appearance()
+        barAppearance.tintColor = .black
+        
         if FaceSnapsDataSource.sharedInstance.signedIn {
             let controller = AppTabBarController()
             window.rootViewController = controller

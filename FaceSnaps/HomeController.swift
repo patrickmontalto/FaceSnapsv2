@@ -153,12 +153,12 @@ class HomeController: UIViewController {
         // Start animating
         initLoadFeedIndicator.startAnimating()
         
-        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (success, newData, errors) in
+        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (newData, error) in
             DispatchQueue.main.async {
                 // Stop animating
                 self.initLoadFeedIndicator.stopAnimating()
                 
-                if success {
+                if error == nil {
                     print("Got user feed!")
                     self.data = Array(newData!)
                     self.adapter.performUpdates(animated: true, completion: { (completed) in
@@ -167,7 +167,8 @@ class HomeController: UIViewController {
                         print(self.data)
                     })
                 } else {
-                    print("Couldn't get feed")
+                    let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                    APIErrorHandler.handle(error: error!, withActions: [action], presentingViewController: self)
                 }
                 
             }
@@ -178,7 +179,7 @@ class HomeController: UIViewController {
     
     func loadNextPage(completionHandler: @escaping (_ success: Bool, _ data: List<FeedItem>?) -> Void ) {
         let nextPage = page + 1
-        FaceSnapsClient.sharedInstance.getUserFeed(atPage: nextPage) { (success, data, errors) in
+        FaceSnapsClient.sharedInstance.getUserFeed(atPage: nextPage) { (data, error) in
             // Stop animating
             self.initLoadFeedIndicator.stopAnimating()
             
@@ -195,7 +196,7 @@ class HomeController: UIViewController {
     func refreshData(sender: UIRefreshControl) {
 
 
-        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (success, newData, errors) in
+        FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (newData, error) in
             DispatchQueue.main.async {
 
                 // Do not do anything if there is not any data
@@ -287,8 +288,8 @@ extension HomeController: FeedItemSectionDelegate, CommentDelegate {
 
     func didPressLikeButton(forPost post: FeedItem, inSectionController sectionController: FeedItemSectionController, withButton button: UIButton) {
         let action: FaceSnapsClient.LikeAction = post.liked ? .unlike : .like
-        FaceSnapsClient.sharedInstance.likeOrUnlikePost(action: action, postId: post.pk) { (success) in
-            if success {
+        FaceSnapsClient.sharedInstance.likeOrUnlikePost(action: action, postId: post.pk) { (error) in
+            if error == nil {
                 post.liked = !post.liked
                 guard let collectionContext = sectionController.collectionContext else { return }
                 let likesViewCell = collectionContext.cellForItem(at: FeedItemSubsection.likes.rawValue, sectionController: sectionController) as! LikesViewCell

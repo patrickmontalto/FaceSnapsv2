@@ -154,10 +154,10 @@ class UsernameSignUpController: UIViewController {
         nextButton.animateLoading(true)
         
         // TODO: Complete sign up
-        FaceSnapsClient.sharedInstance.signUpUser(username: username, email: email, fullName: fullName, password: password, profileImage: base64String) { (success, errors) -> Void in
+        FaceSnapsClient.sharedInstance.signUpUser(username: username, email: email, fullName: fullName, password: password, profileImage: base64String) { (error) -> Void in
             // Stop the activity indicator on the button
             self.nextButton.animateLoading(false)
-            if success {
+            if error == nil {
                 let appTabBarController = AppTabBarController()
                 self.present(appTabBarController, animated: true, completion: nil)
                 print("Signed up!")
@@ -165,13 +165,7 @@ class UsernameSignUpController: UIViewController {
                 // Create action
                 let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
                 
-                guard let errors = errors, let title = errors[FaceSnapsClient.Constant.ErrorResponseKey.title] else {
-                    self.displayAlert(withMessage: "", title: "An unspecified error ocurred.", actions: [action])
-                    return
-                }
-                let message = errors[FaceSnapsClient.Constant.ErrorResponseKey.message] ?? ""
-                
-                self.displayAlert(withMessage: message, title: title, actions: [action])
+                APIErrorHandler.handle(error: error!, withActions: [action], presentingViewController: self)
             }
         }
     }
@@ -253,12 +247,12 @@ extension UsernameSignUpController: UITextFieldDelegate {
         let username = usernameTextField.text!
         usernameTextField.setSubviewLoadingState()
         // Make call to network checking if username is available
-        FaceSnapsClient.sharedInstance.checkAvailability(forUserCredential: username) { (available, errors) in
-            if errors != nil {
-                print(errors!["title"]!)
+        FaceSnapsClient.sharedInstance.checkAvailability(forUserCredential: username) { (available, error) in
+            if error != nil {
+                APIErrorHandler.handle(error: error!, logError: true)
             } else {
                 DispatchQueue.main.async {
-                    self.usernameTextField.toggleSubviewState(forResponse: available)
+                    self.usernameTextField.toggleSubviewState(forResponse: available!)
                 }
             }
         }

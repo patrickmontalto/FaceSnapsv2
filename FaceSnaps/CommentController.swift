@@ -122,7 +122,7 @@ class CommentController: UIViewController {
     }
     
     private func getComments() {
-        FaceSnapsClient.sharedInstance.getComments(forPost: post) { (comments) in
+        FaceSnapsClient.sharedInstance.getComments(forPost: post) { (comments, error) in
             guard let comments = comments else { return }
             self.data.append(contentsOf: comments)
             self.adapter.performUpdates(animated: true, completion: { (completed) in
@@ -220,7 +220,7 @@ extension CommentController: CommentSubmissionDelegate {
     func didSubmitComment(withText text: String) {
         // Handle POSTing comment
         // Maybe post notification to get new comments for post X? Then reload adapter ?
-        FaceSnapsClient.sharedInstance.postComment(onPost: post, withText: text) { (comment) in
+        FaceSnapsClient.sharedInstance.postComment(onPost: post, withText: text) { (comment, error) in
             if let comment = comment {
                 // Clear comment box
                 self.commentBoxView.setPlaceholder()
@@ -232,6 +232,8 @@ extension CommentController: CommentSubmissionDelegate {
                 })
             } else {
                 // TODO: Notify user of error with alert
+                let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
+                APIErrorHandler.handle(error: error!, withActions: [action], presentingViewController: self)
             }
         }
     }
