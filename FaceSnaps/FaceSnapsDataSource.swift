@@ -85,6 +85,9 @@ class FaceSnapsDataSource {
         // Wipe database
         wipeRealm()
         
+        // Remove last feed items
+        lastFeedItems = nil
+        
         // Post notification that user logged out
         NotificationCenter.default.post(name: Notification.Name.userDidLogOutNotification, object: nil)
     }

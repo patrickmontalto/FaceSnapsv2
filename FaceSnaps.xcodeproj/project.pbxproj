@@ -69,6 +69,7 @@
 		3AA3B23B1E5A95400000A312 /* EditableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B23A1E5A95400000A312 /* EditableTableViewCell.swift */; };
 		3AA3B23D1E5A95660000A312 /* EditableTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA3B23C1E5A95660000A312 /* EditableTableViewCell.xib */; };
 		3AA3B23F1E5AA6270000A312 /* EditProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B23E1E5AA6270000A312 /* EditProfileHeaderView.swift */; };
+		3AA3B2411E5E984D0000A312 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3B2401E5E984D0000A312 /* ChangePasswordViewController.swift */; };
 		3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */; };
 		3AB17FA01E02329F005E8739 /* LoginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17F9F1E02329F005E8739 /* LoginViews.swift */; };
 		3AB17FA41E04FEE9005E8739 /* InteractableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */; };
@@ -190,6 +191,7 @@
 		3AA3B23A1E5A95400000A312 /* EditableTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditableTableViewCell.swift; sourceTree = "<group>"; };
 		3AA3B23C1E5A95660000A312 /* EditableTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditableTableViewCell.xib; sourceTree = "<group>"; };
 		3AA3B23E1E5AA6270000A312 /* EditProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileHeaderView.swift; sourceTree = "<group>"; };
+		3AA3B2401E5E984D0000A312 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		3AB17F9D1E02264E005E8739 /* FacebookLoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookLoginViews.swift; sourceTree = "<group>"; };
 		3AB17F9F1E02329F005E8739 /* LoginViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViews.swift; sourceTree = "<group>"; };
 		3AB17FA31E04FEE9005E8739 /* InteractableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractableLabel.swift; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 				3AA3B23E1E5AA6270000A312 /* EditProfileHeaderView.swift */,
 				3AA3B23A1E5A95400000A312 /* EditableTableViewCell.swift */,
 				3AA3B23C1E5A95660000A312 /* EditableTableViewCell.xib */,
+				3AA3B2401E5E984D0000A312 /* ChangePasswordViewController.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -686,6 +689,7 @@
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
 				D26703631E26D1B1001C06BE /* ProfileNavigationController.swift in Sources */,
 				3A17EA501DFF644C00031834 /* LineView.swift in Sources */,
+				3AA3B2411E5E984D0000A312 /* ChangePasswordViewController.swift in Sources */,
 				D224C65B1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift in Sources */,
 				3AB17FAC1E0B2080005E8739 /* LoginFlowNavigationController.swift in Sources */,
 				3A9A3BAA1E285E48008A1334 /* SearchNavigationController.swift in Sources */,

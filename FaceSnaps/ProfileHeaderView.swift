@@ -51,6 +51,8 @@ class ProfileHeaderView: UICollectionReusableView {
         btn.addSubview(followersCounter)
         btn.addSubview(followersCounterLabel)
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(didTapFollowers), for: .touchUpInside)
+
         
         NSLayoutConstraint.activate([
             followersCounter.topAnchor.constraint(equalTo: btn.topAnchor),
@@ -68,6 +70,7 @@ class ProfileHeaderView: UICollectionReusableView {
         btn.addSubview(followingCounter)
         btn.addSubview(followingCounterLabel)
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(didTapFollowing), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             followingCounter.topAnchor.constraint(equalTo: btn.topAnchor),
@@ -87,6 +90,7 @@ class ProfileHeaderView: UICollectionReusableView {
         btn.setTitle("Edit Profile", for: .normal)
         btn.titleLabel?.font = .boldSystemFont(ofSize: 14.0)
         btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.addTarget(self, action: #selector(didTapEditProfile), for: .touchUpInside)
         return btn
     }()
     
@@ -124,6 +128,18 @@ class ProfileHeaderView: UICollectionReusableView {
     func updateUser() {
         userIconView.image = user.photo?.circle
         userNameLabel.text = user.name
+    }
+    
+    func didTapEditProfile() {
+        delegate.didTapEditProfile()
+    }
+    
+    func didTapFollowers() {
+        delegate.didTapFollowers()
+    }
+    
+    func didTapFollowing() {
+        delegate.didTapFollowing()
     }
     
 

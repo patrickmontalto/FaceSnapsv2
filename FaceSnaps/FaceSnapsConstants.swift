@@ -27,7 +27,11 @@ extension FaceSnapsClient {
         static let ApiPath = ""
         static let ApiKey = ""
         static let ClientType = APIConstants.Client.facesnaps
-        static let AuthorizationHeader = [APIConstants.HTTPHeaderKey.authorization: FaceSnapsDataSource.sharedInstance.authToken!]
+        static var AuthorizationHeader: [String: String] {
+            get {
+                return [APIConstants.HTTPHeaderKey.authorization: FaceSnapsDataSource.sharedInstance.authToken!]
+            }
+        }
         static let CurrentUserId = FaceSnapsDataSource.sharedInstance.currentUser!.pk
         
         enum ErrorResponseKey {

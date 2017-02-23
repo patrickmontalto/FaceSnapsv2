@@ -74,14 +74,12 @@ class ProfileController: UIViewController {
     }
     
     func pushUserOptionsView() {
-        // TODO: Push user options view
         let vc = UserOptionsViewController()
         vc.user = user
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func updateViewForUpdatedUser() {
-        // TODO: Update user's full name on the header view
         let cell = collectionView.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! ProfileHeaderView
         cell.updateUser()
     }
@@ -162,5 +160,7 @@ extension ProfileController: ProfileHeaderDelegate {
     
     func didTapEditProfile() {
         // TODO: Present edit profile view
+        let editProfileVC = EditProfileViewController()
+        navigationController?.pushViewController(editProfileVC, animated: true)
     }
 }
