@@ -71,6 +71,7 @@ extension FaceSnapsClient {
                 }
                 // Search for a user by name (*paginated)
                 static let getUsersQuery = "/user/search"
+                static let changePassword = "/users/self/change_password"
                 
             }
             

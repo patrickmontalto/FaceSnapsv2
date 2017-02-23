@@ -49,10 +49,27 @@ class ChangePasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Password"
+        self.automaticallyAdjustsScrollViewInsets = false
+
+        view.addSubview(tableView)
         
+        title = "Password"
+        view.backgroundColor = .white
+
         // Add Done button
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(finishChangingPassword))
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        // Constraints
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+            tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor)
+        ])
     }
     
     func finishChangingPassword() {
@@ -67,16 +84,31 @@ class ChangePasswordViewController: UIViewController {
             // TODO: password and password confirmation do not match.
             return
         }
-        // TODO:
+        let editParams = ["password": password, "new_password": newPassword]
+
         // Submit changes to API
-        // If OK, pop view controller
-        // API Failure response: present alert to user
+        FaceSnapsClient.sharedInstance.changeUserPassword(params: editParams, completionHandler: { (error) in
+            if let error = error {
+                let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
+                APIErrorHandler.handle(error: error, withActions: [action], presentingViewController: self)
+            } else {
+                // TODO: Dropdown - password changed
+                let action = UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                    _ = self.navigationController?.popViewController(animated: true)
+                })
+                self.displayAlert(withMessage: "", title: "Password successfully updated.", actions: [action])
+            }
+        })
         
     }
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
 extension ChangePasswordViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return " "
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -87,7 +119,18 @@ extension ChangePasswordViewController: UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "editableTableViewCell", for: indexPath) as! EditableTableViewCell
+        
+        let placeholder = rowTitles[indexPath.section][indexPath.row]
+        let lockImage = UIImage(named: "lock-icon")
+        cell.configure(accessoryImage: lockImage, placeholder: placeholder, currentValue: nil)
+        cell.textField.isSecureTextEntry = true
+        cell.textField.clearButtonMode = .whileEditing
         return cell
     }
-    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
 }

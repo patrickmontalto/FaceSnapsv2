@@ -14,7 +14,7 @@ import RealmSwift
 // MARK: - Face Snaps Client: NSObject
 
 class FaceSnapsClient: NSObject {
-    
+        
     // MARK: - Properties
 
     // MARK: - Singleton
@@ -396,7 +396,37 @@ class FaceSnapsClient: NSObject {
             }
             
         }
+    }
+    
+    // MARK: Change user password
+    func changeUserPassword(params: [String: String], completionHandler: @escaping (_ error: APIError?) -> Void) {
+        let changePasswordEndpoint = FaceSnapsClient.urlString(forEndpoint: FaceSnapsClient.Constant.APIMethod.UserEndpoint.changePassword)
         
+        // Make request
+        Alamofire.request(changePasswordEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            // GUARD: Error?
+            guard response.result.error == nil else {
+                completionHandler(.responseError(message: response.result.error!.localizedDescription))
+                return
+            }
+            
+            // GUARD: JSON Response?
+            guard let json = response.result.value as? [String: Any] else {
+                completionHandler(.noJSON)
+                return
+            }
+            guard let meta = json[Constant.JSONResponseKey.Meta.meta] as? [String: Any],
+                let code = meta[Constant.JSONResponseKey.Meta.code] as? Int, code == 200 else {
+                if let error = json["error"] as? String {
+                    completionHandler(APIError.responseError(message: error))
+                } else {
+                    completionHandler(APIError.responseError(message: nil))
+                }
+                return
+            }
+
+            completionHandler(nil)
+        }
     }
     
     // MARK: Set a like on a post by the current user

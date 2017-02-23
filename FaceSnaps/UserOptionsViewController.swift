@@ -104,6 +104,8 @@ extension UserOptionsViewController: UITableViewDelegate, UITableViewDataSource 
         let selectedItem = optionsItems[indexPath.section][indexPath.row]
         
         actionForItem(item: selectedItem)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     /// Returns the view controller for the particular option item selected
@@ -115,6 +117,8 @@ extension UserOptionsViewController: UITableViewDelegate, UITableViewDataSource 
             navigationController?.pushViewController(vc, animated: true)
         case .changePassword:
             // TODO: Present change password VC
+            let vc = ChangePasswordViewController()
+            navigationController?.pushViewController(vc, animated: true)
             break
         case .postsLiked:
             // TODO: Present Posts Liked VC

@@ -39,13 +39,13 @@ struct APIErrorHandler {
         // Display UIAlert as needed
         var errorMessage: String!
         if case .responseError(let message) = error {
-            errorMessage = message ?? error.defaultMessage()
+            errorMessage = message?.localizedCapitalized ?? error.defaultMessage()
         } else if case .parseError(let message) = error {
-            errorMessage = message ?? error.defaultMessage()
+            errorMessage = message?.localizedCapitalized ?? error.defaultMessage()
         } else if case .noJSON = error {
             errorMessage = error.defaultMessage()
         } else if case .missingKey(let message) = error {
-            errorMessage = message ?? error.defaultMessage()
+            errorMessage = message?.localizedCapitalized ?? error.defaultMessage()
         } else if case .persistenceError = error {
             errorMessage = error.defaultMessage()
         }
