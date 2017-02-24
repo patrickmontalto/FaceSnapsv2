@@ -162,76 +162,81 @@ enum FaceSnapsParser {
         return comment
     }
     
+    static func parse(postDictionary post: [String:Any]) -> FeedItem? {
+        // GUARD: Does the post have an ID?
+        guard let pk = post[FaceSnapsClient.Constant.JSONResponseKey.Post.id] as? Int else {
+            return nil
+        }
+        // GUARD: Does the post have a user?
+        guard let userDictionary = post[FaceSnapsClient.Constant.JSONResponseKey.Post.user] as? [String: Any] else {
+            return nil
+        }
+        
+        // Parse user
+        guard let user = parse(userDictionary: userDictionary) else {
+            return nil
+        }
+        
+        // GUARD: Does the post have a photo path?
+        guard let photoPath = post[FaceSnapsClient.Constant.JSONResponseKey.Post.photoPath] as? String else {
+            return nil
+        }
+        
+        // GUARD: Does the user like the post?
+        guard let liked = post[FaceSnapsClient.Constant.JSONResponseKey.Post.likedByUser] as? Bool else {
+            return nil
+        }
+        
+        // GUARD: Is there a likes array?
+        guard let likes = post[FaceSnapsClient.Constant.JSONResponseKey.Post.likes] as? [[String:AnyObject]] else {
+            return nil
+        }
+        
+        // GUARD: Is there a time created?
+        guard let createdAt = post[FaceSnapsClient.Constant.JSONResponseKey.Post.createdAt] as? String else {
+            return nil
+        }
+        
+        let formatter = DateFormatter()
+        
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        
+        guard let datePosted = formatter.date(from: createdAt) else {
+            return nil
+        }
+        
+        let likesCount = likes.count
+        
+        let photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
+        
+        
+        // GUARD: Does the post have a caption?
+        guard let caption = post[FaceSnapsClient.Constant.JSONResponseKey.Post.caption] as? String else {
+            return nil
+        }
+        
+        // Handle comments
+        var comments = List<Comment>()
+        
+        if let commentsArray = post[FaceSnapsClient.Constant.JSONResponseKey.Post.comments] as? [[String:Any]] {
+            if let parsedComments = parse(commentsArray: commentsArray) {
+                comments = parsedComments
+            }
+        }
+        
+        let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked, datePosted: datePosted, likesCount: likesCount)
+        
+        return post
+    }
+    
     
     static func parse(postsArray: [[String:Any]]) -> List<FeedItem>? {
         let feedItems = List<FeedItem>()
         
         for post in postsArray {
-            // GUARD: Does the post have an ID?
-            guard let pk = post[FaceSnapsClient.Constant.JSONResponseKey.Post.id] as? Int else {
-                continue
+            if let newPost = parse(postDictionary: post) {
+                feedItems.append(newPost)
             }
-            // GUARD: Does the post have a user?
-            guard let userDictionary = post[FaceSnapsClient.Constant.JSONResponseKey.Post.user] as? [String: Any] else {
-                continue
-            }
-            
-            // Parse user
-            guard let user = parse(userDictionary: userDictionary) else {
-                continue
-            }
-            
-            // GUARD: Does the post have a photo path?
-            guard let photoPath = post[FaceSnapsClient.Constant.JSONResponseKey.Post.photoPath] as? String else {
-                continue
-            }
-            
-            // GUARD: Does the user like the post?
-            guard let liked = post[FaceSnapsClient.Constant.JSONResponseKey.Post.likedByUser] as? Bool else {
-                continue
-            }
-            
-            // GUARD: Is there a likes array?
-            guard let likes = post[FaceSnapsClient.Constant.JSONResponseKey.Post.likes] as? [[String:AnyObject]] else {
-                continue
-            }
-            
-            // GUARD: Is there a time created?
-            guard let createdAt = post[FaceSnapsClient.Constant.JSONResponseKey.Post.createdAt] as? String else {
-                continue
-            }
-            
-            let formatter = DateFormatter()
-            
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-            
-            guard let datePosted = formatter.date(from: createdAt) else {
-                continue
-            }
-            
-            let likesCount = likes.count
-            
-            let photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
-            
-            
-            // GUARD: Does the post have a caption?
-            guard let caption = post[FaceSnapsClient.Constant.JSONResponseKey.Post.caption] as? String else {
-                continue
-            }
-            
-            // Handle comments
-            var comments = List<Comment>()
-            
-            if let commentsArray = post[FaceSnapsClient.Constant.JSONResponseKey.Post.comments] as? [[String:Any]] {
-                if let parsedComments = parse(commentsArray: commentsArray) {
-                    comments = parsedComments
-                }
-            }
-            
-            // TODO: Store post as a Post object and cache it. Can use Realm or Core Data for object mapping
-            let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked, datePosted: datePosted, likesCount: likesCount)
-            
-            feedItems.append(post)
         }
         
         return feedItems

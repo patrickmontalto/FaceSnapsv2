@@ -293,6 +293,85 @@ class FaceSnapsClient: NSObject {
             }
         }
     }
+    
+    // MARK: Get liked posts for the user
+    func getLikedPosts(atPage page: Int, completionHandler: @escaping (_ data: [FeedItem]?, APIError?) -> Void) {
+        // Build URL
+        let likedPostsEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.likedPosts)
+        
+        let pageParam = ["page": page]
+        
+        // Make request
+        Alamofire.request(likedPostsEndpoint, method: .get, parameters: pageParam, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                let message = response.result.error!.localizedDescription
+                completionHandler(nil, APIError.responseError(message: message))
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                completionHandler(nil, APIError.noJSON)
+                return
+            }
+            
+            // GUARD: Is there a posts array?
+            guard let postsArray = json[Constant.JSONResponseKey.Post.posts] as? [[String: Any]] else {
+                completionHandler(nil, APIError.missingKey(message: "Missing posts response from server."))
+                return
+            }
+            
+            // Parse the postsArray
+            if let postsResult = FaceSnapsParser.parse(postsArray: postsArray) {
+                completionHandler(Array(postsResult), nil)
+            } else {
+                completionHandler(nil, nil)
+            }
+            
+        }
+    }
+    
+    // MARK: Get data for a single post
+    func getPostData(postId: Int, completionHandler: @escaping ( _ data: FeedItem?, _ error: APIError?) -> Void) {
+        
+        // Build URL
+        let postDataEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.PostsEndpoint.getPost(postId))
+        
+        // Make request
+        Alamofire.request(postDataEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                let message = response.result.error!.localizedDescription
+                completionHandler(nil, APIError.responseError(message: message))
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                completionHandler(nil, APIError.noJSON)
+                return
+            }
+            
+            guard let postJSON = json["post"] as? [String: Any] else {
+                completionHandler(nil, APIError.parseError(message: "Missing post key."))
+                return
+            }
+
+            // GUARD: Is there a post dictionary?
+            if let post = FaceSnapsParser.parse(postDictionary: postJSON) {
+                completionHandler(post, nil)
+            } else {
+                completionHandler(nil, APIError.parseError(message: "Unable to parse post data."))
+            }
+        }
+    }
+    
+
+    
+    
     // MARK: Get a list of posts IDs for the user
     private func getUserFeedPostId(completionHandler: @escaping (_ success: Bool) -> Void) {
         let userFeedEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeedIds)
@@ -325,9 +404,7 @@ class FaceSnapsClient: NSObject {
             FaceSnapsDataSource.sharedInstance.postKeys = postsIds
             
             completionHandler(true)
-
         }
-
     }
     
     // MARK: Search users

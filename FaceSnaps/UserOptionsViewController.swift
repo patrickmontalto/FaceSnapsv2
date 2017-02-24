@@ -122,7 +122,11 @@ extension UserOptionsViewController: UITableViewDelegate, UITableViewDataSource 
             break
         case .postsLiked:
             // TODO: Present Posts Liked VC
-            // 
+            // style individual
+            // style thumbnails
+            // style feed
+            let vc = PostsCollectionViewContainer(style: .thumbnails, dataSource: .postsLiked)
+            navigationController?.pushViewController(vc, animated: true)
             break
         case .privateAccount:
             // TODO: Toggle switch

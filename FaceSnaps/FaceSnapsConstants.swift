@@ -62,7 +62,9 @@ extension FaceSnapsClient {
                 // Get current user
                 static let getCurrentUser = "/users/self"
                 // Get information about a user
-                static let getUser = "/users/"
+                static func getUser(_ userId: Int) -> String {
+                    return "/users/\(userId)"
+                }
                 // Get most recently liked posts by the current user (*paginated)
                 // static let getCurrentUserLikedMedia = "/users/self/posts/liked"
                 // Get most recent posts of a user (*paginated)
@@ -72,6 +74,7 @@ extension FaceSnapsClient {
                 // Search for a user by name (*paginated)
                 static let getUsersQuery = "/user/search"
                 static let changePassword = "/users/self/change_password"
+                static let likedPosts = "/users/self/posts/liked"
                 
             }
             
@@ -79,10 +82,13 @@ extension FaceSnapsClient {
 //                
 //            }
 //            
-//            enum PostsEndpoint {
-//                
-//            }
-//            
+            enum PostsEndpoint {
+                // GET post data
+                static func getPost(_ postId: Int) -> String {
+                    return "/posts/\(postId)"
+                }
+            }
+            
             enum LikesEndpoint {
                 static func likePost(postId: Int) -> String {
                     return "/posts/\(postId)/likes"

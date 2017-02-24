@@ -13,13 +13,13 @@ import RealmSwift
 protocol FeedItemReloadDelegate {
     func didUpdateFeedItem(feedItem: FeedItem)
 }
-extension FeedItemReloadDelegate where Self: HomeController {
+extension FeedItemReloadDelegate where Self: CollectionViewContainer {
     func didUpdateFeedItem(feedItem: FeedItem) {
         adapter.reloadObjects([feedItem])
     }
 }
 
-class HomeController: UIViewController {
+class HomeController: UIViewController, CollectionViewContainer {
     
     lazy var initLoadFeedIndicator: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(activityIndicatorStyle: .gray)
@@ -273,49 +273,7 @@ extension HomeController: UIScrollViewDelegate {
 // TODO: Clean up delegates!!
 // MARK: FeedItemSectionDelegate
 extension HomeController: FeedItemSectionDelegate, CommentDelegate {
-    
-    func didPressLikesCount(forPost post: FeedItem) {
-        // .. Go to likes page for post
-    }
-    func didPressCommentButton(forPost post: FeedItem) {
-        let vc = CommentController(post: post, delegate: self)
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func didPressUserButton(forUser user: User) {
-        // .. Go to user profile
-    }
 
-    func didPressLikeButton(forPost post: FeedItem, inSectionController sectionController: FeedItemSectionController, withButton button: UIButton) {
-        let action: FaceSnapsClient.LikeAction = post.liked ? .unlike : .like
-        FaceSnapsClient.sharedInstance.likeOrUnlikePost(action: action, postId: post.pk) { (error) in
-            if error == nil {
-                post.liked = !post.liked
-                guard let collectionContext = sectionController.collectionContext else { return }
-                let likesViewCell = collectionContext.cellForItem(at: FeedItemSubsection.likes.rawValue, sectionController: sectionController) as! LikesViewCell
-                if post.liked {
-                    let image = UIImage(named: "ios-heart-red")!
-                    button.setImage(image, for: .normal)
-                    post.likesCount += 1
-                } else {
-                    let image = UIImage(named: "ios-heart-outline")!
-                    button.setImage(image, for: .normal)
-                    post.likesCount -= 1
-                }
-                
-                likesViewCell.setLikesCount(count: post.likesCount)
-            }
-        }
-    }
-    
-    // TODO: Remove didTapAuthor and only make a call to didPressUserButton? Then remove commentDelegate from homeController
-    // MARK: CommentDelegate
-    func didTapAuthor(author: User) {
-        // Go to user profile
-    }
-    
-    func didTapReply(toAuthor author: User) {}
-    
 }
 
 // MARK: - FeedItemReloadDelegate

@@ -13,3 +13,11 @@ protocol CommentDelegate {
     func didTapAuthor(author: User)
     func didTapReply(toAuthor author: User)
 }
+
+extension CommentDelegate {
+    func didTapAuthor(author: User) {
+        // Go to user profile
+    }
+    
+    func didTapReply(toAuthor author: User) {}
+}

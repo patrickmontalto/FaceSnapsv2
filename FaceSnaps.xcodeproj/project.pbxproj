@@ -102,6 +102,9 @@
 		D21BD4861E54D1DE009196C8 /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4851E54D1DE009196C8 /* UserSearchCell.swift */; };
 		D21BD4881E54F9CB009196C8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4871E54F9CB009196C8 /* ProfileHeaderView.swift */; };
 		D21BD48C1E5F526B009196C8 /* APIResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD48B1E5F526B009196C8 /* APIResult.swift */; };
+		D21BD48E1E608B8B009196C8 /* CollectionViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD48D1E608B8B009196C8 /* CollectionViewContainer.swift */; };
+		D21BD4901E609A33009196C8 /* PostsCollectionViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD48F1E609A33009196C8 /* PostsCollectionViewContainer.swift */; };
+		D21BD4921E60D800009196C8 /* FeedItemTnSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4911E60D800009196C8 /* FeedItemTnSectionController.swift */; };
 		D224C65B1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */; };
 		D224C65D1E36AC8D00AA1DC6 /* ControlsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */; };
 		D224C65F1E36ACEC00AA1DC6 /* CaptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */; };
@@ -226,6 +229,9 @@
 		D21BD4851E54D1DE009196C8 /* UserSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		D21BD4871E54F9CB009196C8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		D21BD48B1E5F526B009196C8 /* APIResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIResult.swift; sourceTree = "<group>"; };
+		D21BD48D1E608B8B009196C8 /* CollectionViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewContainer.swift; sourceTree = "<group>"; };
+		D21BD48F1E609A33009196C8 /* PostsCollectionViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsCollectionViewContainer.swift; sourceTree = "<group>"; };
+		D21BD4911E60D800009196C8 /* FeedItemTnSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemTnSectionController.swift; sourceTree = "<group>"; };
 		D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSubSectionCell.swift; sourceTree = "<group>"; };
 		D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsCell.swift; sourceTree = "<group>"; };
 		D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionCell.swift; sourceTree = "<group>"; };
@@ -328,12 +334,15 @@
 				3A32A6C31DA95BE800AEE45F /* PhotoSortListController.swift */,
 				D26703601E26AFFD001C06BE /* AppTabBarController.swift */,
 				3A9D88271E16014100FB928D /* FaceSnapsImagePickerController.swift */,
+				D21BD48F1E609A33009196C8 /* PostsCollectionViewContainer.swift */,
+				D21BD4911E60D800009196C8 /* FeedItemTnSectionController.swift */,
 				D26703641E26D1FF001C06BE /* Log In / Sign Up */,
 				D267036A1E26D8F0001C06BE /* Home */,
 				3A9A3BA61E285DAC008A1334 /* Search */,
 				3A9A3BA71E285DC2008A1334 /* Camera */,
 				3A9A3BA81E285DCB008A1334 /* Likes */,
 				D26703671E26D34D001C06BE /* Profile */,
+				D21BD48D1E608B8B009196C8 /* CollectionViewContainer.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -661,6 +670,7 @@
 			files = (
 				3A32A6C81DA9845500AEE45F /* SortItemSelector.swift in Sources */,
 				D267036C1E2D448F001C06BE /* FeedItemSectionController.swift in Sources */,
+				D21BD48E1E608B8B009196C8 /* CollectionViewContainer.swift in Sources */,
 				D21BD4821E54B95B009196C8 /* UISegmentedControl+Appearance.swift in Sources */,
 				3AA3B2311E516FE00000A312 /* ViewAllCommentsCell.swift in Sources */,
 				3AA3B22D1E4FEC3D0000A312 /* CommentBoxView.swift in Sources */,
@@ -716,6 +726,7 @@
 				3A9A3BA11E219138008A1334 /* NextButton.swift in Sources */,
 				3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */,
 				D267035D1E269C9D001C06BE /* URL+Parameters.swift in Sources */,
+				D21BD4921E60D800009196C8 /* FeedItemTnSectionController.swift in Sources */,
 				D2F8D2F61E2D644C00723204 /* User.swift in Sources */,
 				D2F8D2F01E2D630800723204 /* ImageCell.swift in Sources */,
 				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,
@@ -747,6 +758,7 @@
 				3A9D882A1E163F4600FB928D /* UIButton+setImage.swift in Sources */,
 				D2318A921E1D623D00E0347F /* APIClient.swift in Sources */,
 				3A17EA4E1DFF57A000031834 /* UIView+Resize.swift in Sources */,
+				D21BD4901E609A33009196C8 /* PostsCollectionViewContainer.swift in Sources */,
 				3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */,
 				3AA3B2331E58F0980000A312 /* APIError.swift in Sources */,
 				3A7C7FB71DEE2737008608D1 /* HomeController.swift in Sources */,
