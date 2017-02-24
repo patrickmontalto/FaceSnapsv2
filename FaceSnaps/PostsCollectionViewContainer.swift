@@ -35,6 +35,7 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
 //    }()
     
     var dataSourceType: PostsCollectionViewDataSourceType!
+    var style: PostsCollectionViewContainerStyle!
     
     lazy var adapter: IGListAdapter = {
         return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
@@ -53,6 +54,7 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
     init(style: PostsCollectionViewContainerStyle, dataSource: PostsCollectionViewDataSourceType) {
         super.init(nibName: nil, bundle: nil)
         self.dataSourceType = dataSource
+        self.style = style
         
         // Default style is feed. If thumbnails, change flow layout for collectionView
         if style == .thumbnails {
@@ -161,8 +163,10 @@ extension PostsCollectionViewContainer: IGListAdapterDataSource {
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
         if let obj = object as? String, obj == spinToken {
             return spinnerSectionController()
+        } else if style == .thumbnails{
+            return FeedItemTnSectionController(delegate: self)
         } else {
-            return FeedItemSectionController(feedItemSectionDelegate: self, commentDelegate: self)
+             return FeedItemSectionController(feedItemSectionDelegate: self, commentDelegate: self)
         }
     }
     
@@ -198,4 +202,10 @@ extension PostsCollectionViewContainer: UIScrollViewDelegate {
 }
 
 extension PostsCollectionViewContainer: FeedItemSectionDelegate, CommentDelegate, FeedItemReloadDelegate {
+}
+
+extension PostsCollectionViewContainer: FeedItemThumbnailDelegate {
+    func didTapItem(item: FeedItem) {
+        // TODO: Present individual view
+    }
 }

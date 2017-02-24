@@ -29,19 +29,10 @@ final class FeedItemTnSectionController: IGListSectionController {
     }
 
     func cellForItem(at index: Int) -> UICollectionViewCell {
-        // TODO: ImageCell that is 1/3 width of the screen
-//        guard let sectionType = FeedItemSubsection(rawValue: index) else { return UICollectionViewCell() }
-//        if feedItem.comments.count > 3 && index == FeedItemSubsection.comment1.rawValue {
-//            let cell = collectionContext!.dequeueReusableCell(of: ViewAllCommentsCell.self, for: self, at: index) as! ViewAllCommentsCell
-//            cell.delegate = feedItemSectionDelegate
-//            cell.post = feedItem
-//            
-//            return cell
-//        } else {
-//            let cell = sectionType.cellForSection().cell(forFeedItem: feedItem, withCollectionContext: collectionContext!, andSectionController: self, atIndex: index)
-//            
-//            return cell
-//        }
+        let cell = collectionContext!.dequeueReusableCell(of: ImageCell.self, for: self, at: index) as! ImageCell
+        // TODO: Add tap delegate
+        // cell.setImage(image: feedItem.photo!)
+        return cell
     }
     
     func didUpdate(to object: Any) {
@@ -49,5 +40,5 @@ final class FeedItemTnSectionController: IGListSectionController {
     }
     
     func didSelectItem(at index: Int) {}
-    
+
 }
