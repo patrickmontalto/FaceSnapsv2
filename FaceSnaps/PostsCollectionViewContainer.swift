@@ -27,12 +27,12 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
     var loading = false
     let spinToken = "spinner"
     
-//    lazy var initLoadFeedIndicator: UIActivityIndicatorView = {
-//        let view = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-//        view.hidesWhenStopped = true
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
+    lazy var initLoadFeedIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     var dataSourceType: PostsCollectionViewDataSourceType!
     var style: PostsCollectionViewContainerStyle!
@@ -50,6 +50,7 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
         return cv
     }()
     
+    
 
     init(style: PostsCollectionViewContainerStyle, dataSource: PostsCollectionViewDataSourceType) {
         super.init(nibName: nil, bundle: nil)
@@ -58,12 +59,12 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
         
         // Default style is feed. If thumbnails, change flow layout for collectionView
         if style == .thumbnails {
-            let cvLayout = UICollectionViewFlowLayout()
-            cvLayout.minimumLineSpacing = 1
-            cvLayout.minimumInteritemSpacing = 1
+            let gridLayout = IGListGridCollectionViewLayout()
+            gridLayout.minimumLineSpacing = 1
+            gridLayout.minimumInteritemSpacing = 1
             let itemWidth = (self.view.frame.width - 2)/3
-            cvLayout.itemSize = CGSize(width: itemWidth, height: itemWidth)
-            collectionView.collectionViewLayout = cvLayout
+            gridLayout.itemSize = CGSize(width: itemWidth, height: itemWidth)
+            collectionView.collectionViewLayout = gridLayout
         }
         
         // Configure adapter
@@ -153,18 +154,18 @@ extension PostsCollectionViewContainer: IGListAdapterDataSource {
             objects.append(spinToken as IGListDiffable)
         }
         
-//        if loading && !initLoadFeedIndicator.isAnimating {
-//            objects.append(spinToken as IGListDiffable)
-//        }
-//        
+        if loading && !initLoadFeedIndicator.isAnimating {
+            objects.append(spinToken as IGListDiffable)
+        }
+        
         return objects
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
         if let obj = object as? String, obj == spinToken {
             return spinnerSectionController()
-        } else if style == .thumbnails{
-            return FeedItemTnSectionController(delegate: self)
+        } else if style == .thumbnails {
+            return FeedItemThumbnailSectionController(parentViewController: self)
         } else {
              return FeedItemSectionController(feedItemSectionDelegate: self, commentDelegate: self)
         }
@@ -204,8 +205,3 @@ extension PostsCollectionViewContainer: UIScrollViewDelegate {
 extension PostsCollectionViewContainer: FeedItemSectionDelegate, CommentDelegate, FeedItemReloadDelegate {
 }
 
-extension PostsCollectionViewContainer: FeedItemThumbnailDelegate {
-    func didTapItem(item: FeedItem) {
-        // TODO: Present individual view
-    }
-}

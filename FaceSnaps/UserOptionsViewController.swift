@@ -126,6 +126,7 @@ extension UserOptionsViewController: UITableViewDelegate, UITableViewDataSource 
             // style thumbnails
             // style feed
             let vc = PostsCollectionViewContainer(style: .thumbnails, dataSource: .postsLiked)
+            vc.title = "Liked Posts"
             navigationController?.pushViewController(vc, animated: true)
             break
         case .privateAccount:
