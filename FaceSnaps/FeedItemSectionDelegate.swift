@@ -57,6 +57,11 @@ extension FeedItemSectionDelegate where Self:UIViewController, Self:CommentDeleg
                     post.likesCount -= 1
                 }
                 
+                // Post notification that the feed item (post) has been modified
+                let object = ["post": post] //, "notifier": self]
+//                NotificationCenter.default.post(name: Notification.Name.postWasModifiedNotification, object: post)
+                NotificationCenter.default.post(name: Notification.Name.postWasModifiedNotification, object: self, userInfo: object)
+                
                 likesViewCell.setLikesCount(count: post.likesCount)
             }
         }

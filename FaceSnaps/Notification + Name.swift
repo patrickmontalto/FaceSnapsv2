@@ -13,4 +13,5 @@ extension Notification.Name {
     static let textViewWillChangeHeightNotification = Notification.Name("textViewWillChangeHeightNotification")
     static let userProfileUpdatedNotification = Notification.Name("userProfileUpdatedNotification")
     static let userDidLogOutNotification = Notification.Name("userDidLogOutNotification")
+    static let postWasModifiedNotification = Notification.Name("postWasModifiedNotification")
 }

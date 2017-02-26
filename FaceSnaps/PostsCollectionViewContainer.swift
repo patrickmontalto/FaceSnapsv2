@@ -75,9 +75,30 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
         // Configure collectionView view
         automaticallyAdjustsScrollViewInsets = false
         collectionView.backgroundColor = .white
+        
     }
     
-
+    /// Updates the post if the post is currently loaded by the controller.
+    /// Will not update the post if source of update was initiated by self.
+    func updatePostInData(_ notification: Notification) {
+        
+        guard let notifier = notification.object as? UIViewController, notifier != self else {
+            return
+        }
+        
+        guard let userInfo = notification.userInfo else { return }
+        
+        // TODO: Skip update if source for notification was self??
+        if let newPost = userInfo["post"] as? FeedItem {
+            let newPostId = newPost.pk
+            if let oldPost = data.first(where: {$0.pk == newPostId }) {
+                oldPost.comments = newPost.comments
+                oldPost.liked = newPost.liked
+                oldPost.likesCount = newPost.likesCount
+                self.adapter.reloadObjects([oldPost])
+            }
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -89,6 +110,9 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
         view.addSubview(collectionView)
         
         initializeData()
+        
+        // Add notification to observe changes in the post
+        observePostUpdateNotifications(responseSelector: #selector(updatePostInData(_:)))
     }
     
     override func viewWillLayoutSubviews() {

@@ -93,4 +93,9 @@ extension UIViewController {
         
         return controller
     }
+    
+    // MARK: - Post update notification
+    func observePostUpdateNotifications(responseSelector: Selector) {
+        NotificationCenter.default.addObserver(self, selector: responseSelector, name: Notification.Name.postWasModifiedNotification, object: nil)
+    }
 }

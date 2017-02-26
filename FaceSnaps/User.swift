@@ -22,10 +22,11 @@ class User: Object, IGListDiffable {
     dynamic var postsCount: Int = 0
     dynamic var followersCount: Int = 0
     dynamic var followingCount: Int = 0
+    dynamic var privateProfile: Bool = false
     // TODO: Posts property?
     
     // MARK: - Initializers
-    convenience init(pk: Int, name: String, email: String, userName: String, photoURLString: String?, authToken: String, isFollowing: Bool, postsCount: Int, followersCount: Int, followingCount: Int) {
+    convenience init(pk: Int, name: String, email: String, userName: String, photoURLString: String?, authToken: String, isFollowing: Bool, postsCount: Int, followersCount: Int, followingCount: Int, privateProfile: Bool) {
         self.init()
         
         self.pk = pk
@@ -37,6 +38,7 @@ class User: Object, IGListDiffable {
         self.postsCount = postsCount
         self.followersCount = followersCount
         self.followingCount = followingCount
+        self.privateProfile = privateProfile
         
         guard let photoURLString = photoURLString, let photoURL = URL(string: photoURLString) else {
             return
