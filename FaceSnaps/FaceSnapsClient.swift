@@ -543,6 +543,56 @@ class FaceSnapsClient: NSObject {
         
     }
     
+    // MARK: Get the list of users a user is followed by
+    func getFollowedByForUser(user: User, completionHandler: @escaping (_ data: [User]?, _ error: APIError?) -> Void ) {
+        let followersEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.RelationshipsEndpoint.followedBy(userId: user.pk))
+        
+        // Make request
+        Alamofire.request(followersEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                completionHandler(nil, APIError.responseError(message: response.result.error!.localizedDescription))
+                return
+            }
+            
+            // GUARD: Successful JSON response?
+            guard let json = response.result.value as? [String:Any], let usersJson = json[Constant.JSONResponseKey.User.users] as? [[String:Any]] else {
+                completionHandler(nil, APIError.noJSON)
+                return
+            }
+            
+            let users = FaceSnapsParser.parse(usersArray: usersJson)
+            
+            completionHandler(users, nil)
+        }
+    }
+    
+    // MARK: Get a list of users a user follows
+    func getFollowersForUser(user: User, completionHandler: @escaping (_ data: [User]?, _ error: APIError?) -> Void ) {
+        let followersEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.RelationshipsEndpoint.followers(userId: user.pk))
+        
+        // Make request
+        Alamofire.request(followersEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                completionHandler(nil, APIError.responseError(message: response.result.error!.localizedDescription))
+                return
+            }
+            
+            // GUARD: Successful JSON response?
+            guard let json = response.result.value as? [String:Any], let usersJson = json[Constant.JSONResponseKey.User.users] as? [[String:Any]] else {
+                completionHandler(nil, APIError.noJSON)
+                return
+            }
+            
+            let users = FaceSnapsParser.parse(usersArray: usersJson)
+            
+            completionHandler(users, nil)
+        }
+    }
+    
+    
+    
     // MARK: Get a list of users who have liked a post
     
     // MARK: Create a comment on a post (as the current user)
