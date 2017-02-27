@@ -152,6 +152,7 @@ extension FaceSnapsClient {
                 static let postsCount = "posts_count"
                 static let followersCount = "followers_count"
                 static let followingCount = "following_count"
+                static let privateProfile = "private"
             }
             // MARK: - Relationship Data
             

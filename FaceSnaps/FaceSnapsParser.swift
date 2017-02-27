@@ -81,7 +81,11 @@ enum FaceSnapsParser {
             return nil
         }
         
-        return User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: following, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount)
+        guard let privateProfile = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.privateProfile] as? Bool else {
+            return nil
+        }
+        
+        return User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: following, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount, privateProfile: privateProfile)
     }
     
     // TODO: Parse Comments Array

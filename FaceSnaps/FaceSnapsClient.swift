@@ -79,7 +79,12 @@ class FaceSnapsClient: NSObject {
                 return
             }
             
-            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount)
+            guard let privateProfile = user[FaceSnapsClient.Constant.JSONResponseKey.User.privateProfile] as? Bool else {
+                completionHandler(.parseError(message: nil))
+                return
+            }
+            
+            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount, privateProfile: privateProfile)
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
@@ -150,7 +155,7 @@ class FaceSnapsClient: NSObject {
                 photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             }
             
-            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: 0, followersCount: 0, followingCount: 0)
+            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: 0, followersCount: 0, followingCount: 0, privateProfile: false)
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {

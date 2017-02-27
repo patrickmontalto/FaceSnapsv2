@@ -42,6 +42,10 @@ class UserOptionsViewController: UIViewController {
                                         [.privacyPolicy, .openSourceLibraries],
                                         [.logOut]]
     
+    lazy var privateSwitch: UISwitch = {
+        return UISwitch()
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,6 +53,11 @@ class UserOptionsViewController: UIViewController {
 
         
         view.addSubview(optionsTableView)
+    
+        // Set initial switch value
+        privateSwitch.setOn(user.privateProfile, animated: false)
+        // Add target-action for privacy switch
+        privateSwitch.addTarget(self, action: #selector(privateSwitchToggled), for: .valueChanged)
     }
     
     override func viewWillLayoutSubviews() {
@@ -64,6 +73,28 @@ class UserOptionsViewController: UIViewController {
             optionsTableView.rightAnchor.constraint(equalTo: view.rightAnchor),
             optionsTableView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor)
         ])
+    }
+    
+    func privateSwitchToggled() {
+        let userIsPrivate = !user.privateProfile
+
+        let params = ["user": ["private": userIsPrivate]]
+        
+        // Disable interaction temporarily
+        privateSwitch.isEnabled = false
+        
+        FaceSnapsClient.sharedInstance.updateCurrentUserProfile(withAttributes: params) { (error) in
+            // Re-enable switch
+            self.privateSwitch.isEnabled = true
+            
+            if let error = error {
+                // Handle error, switch back switch?
+                _ = APIErrorHandler.handle(error: error, logError: true)
+            } else {
+                // Success. Update user profile
+                self.user.privateProfile = userIsPrivate
+            }
+        }
     }
 }
 
@@ -91,8 +122,7 @@ extension UserOptionsViewController: UITableViewDelegate, UITableViewDataSource 
         cell.accessoryType = .disclosureIndicator
         
         if indexPath.section == 0 && indexPath.row == 3 {
-//            cell.accessoryView
-            // TODO: set cell's accessory view to a toggle switch for privacy (PUT edit to user profile: private: true )
+            cell.accessoryView = privateSwitch
         }
         
         return cell
