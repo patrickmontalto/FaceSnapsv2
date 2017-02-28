@@ -73,10 +73,21 @@ extension UsersListViewController: UserFollowDelegate {
     
     func didTapFollow(action: FollowAction, withCell cell: UserFollowCell) {
         guard let index = rowOfCell(cell) else { return }
-        // Make request to either follow or unfollow
-        FaceSnapsClient.sharedInstance
-        // on success, toggle button
         
+        let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as! UserFollowCell
+        let user = users[index]
+        
+        // Make request to either follow or unfollow
+        FaceSnapsClient.sharedInstance.modifyRelationship(action: action, user: user) { (result, error) in
+            guard let result = result else {
+                return
+            }
+            
+            // TODO: Switch on result to update if following, unfollowed, or requested
+            user.isFollowing = !user.isFollowing
+            
+            cell.setFollowButtonText()
+        }
     }
     
     private func rowOfCell(_ cell: UITableViewCell) -> Int? {

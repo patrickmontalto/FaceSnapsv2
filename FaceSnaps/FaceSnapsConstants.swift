@@ -8,6 +8,14 @@
 
 import Foundation
 
+enum FollowAction: String {
+    case follow, unfollow, approve, ignore
+}
+
+enum FollowResult: String {
+    case follows, none, requested
+}
+
 extension FaceSnapsClient {
     enum Environment {
         case production, development
@@ -16,6 +24,8 @@ extension FaceSnapsClient {
     enum LikeAction {
         case like, unlike
     }
+    
+    
 
     // MARK: - Set Application Environment
     static let ApplicationEnvironment: Environment = .development
@@ -161,6 +171,9 @@ extension FaceSnapsClient {
                 static let followersCount = "followers_count"
                 static let followingCount = "following_count"
                 static let privateProfile = "private"
+                static let relationship = "relationship"
+                static let incomingStatus = "incoming_status"
+                static let outgoingStatus = "outgoing_status"
             }
             // MARK: - Relationship Data
             

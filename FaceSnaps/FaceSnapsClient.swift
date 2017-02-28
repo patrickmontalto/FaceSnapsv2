@@ -84,7 +84,7 @@ class FaceSnapsClient: NSObject {
                 return
             }
             
-            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount, privateProfile: privateProfile)
+            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount, privateProfile: privateProfile, outgoingStatus: "none", incomingStatus: "none")
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
@@ -155,7 +155,7 @@ class FaceSnapsClient: NSObject {
                 photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             }
             
-            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: false, postsCount: 0, followersCount: 0, followingCount: 0, privateProfile: false)
+            let currentUser = User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, postsCount: 0, followersCount: 0, followingCount: 0, privateProfile: false, outgoingStatus: "none", incomingStatus: "none")
             
             // Store the user object
             if FaceSnapsDataSource.sharedInstance.setCurrentUser(asUser: currentUser) {
@@ -592,7 +592,7 @@ class FaceSnapsClient: NSObject {
     }
     
     // MARK: Modify the relationship with target user
-    func modifyRelationship(action: FollowAction, user: User, completionHandler: @escaping (_ error: APIError?) -> Void) {
+    func modifyRelationship(action: FollowAction, user: User, completionHandler: @escaping (_ result: FollowResult?, _ error: APIError?) -> Void) {
         let modifyRelationshipEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.RelationshipsEndpoint.relationship(userId: user.pk))
         
         // Build params
@@ -603,12 +603,30 @@ class FaceSnapsClient: NSObject {
             
             // GUARD: Was there an error?
             guard response.result.error == nil else {
-                completionHandler(APIError.responseError(message: response.result.error!.localizedDescription))
+                completionHandler(nil, APIError.responseError(message: response.result.error!.localizedDescription))
                 return
             }
             
-            // TODO: Check what a successful response should look like via POSTMAN
+            // GUARD: JSON repsonse?
+            guard let json = response.result.value as? [String:Any] else {
+                completionHandler(nil, APIError.noJSON)
+                return
+            }
             
+            // Data or error?
+            guard let data = json["data"] as? [String:Any], let status = data["outgoing_status"] as? String else {
+                if let error = json["errors"] as? String {
+                    completionHandler(nil, APIError.responseError(message: error))
+                } else {
+                    completionHandler(nil, APIError.responseError(message: nil))
+                }
+                return
+            }
+            
+            // status response
+            let result = FollowResult(rawValue: status)
+            
+            completionHandler(result, nil)
         }
     }
     

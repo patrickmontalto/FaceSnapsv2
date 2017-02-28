@@ -65,10 +65,6 @@ enum FaceSnapsParser {
             photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
         }
         
-        guard let following = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.following] as? Bool else {
-            return nil
-        }
-        
         guard let postsCount = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.postsCount] as? Int else {
             return nil
         }
@@ -85,10 +81,14 @@ enum FaceSnapsParser {
             return nil
         }
         
-        return User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, isFollowing: following, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount, privateProfile: privateProfile)
+        guard let relationship = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.relationship] as? [String: String], let outgoingStatus = relationship[FaceSnapsClient.Constant.JSONResponseKey.User.outgoingStatus], let incomingStatus = relationship[FaceSnapsClient.Constant.JSONResponseKey.User.incomingStatus] else {
+            return nil
+        }
+        
+        return User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount, privateProfile: privateProfile, outgoingStatus: outgoingStatus, incomingStatus: incomingStatus)
     }
     
-    // TODO: Parse Comments Array
+    /// Parses Comments Array
     static func parse(commentsArray: [[String:Any]]) -> List<Comment>? {
         // GUARD: Does the comment have a user?
         let list = List<Comment>()

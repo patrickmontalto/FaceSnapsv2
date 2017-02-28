@@ -46,8 +46,37 @@ class UserFollowCell: UITableViewCell {
     
     func setFollowButtonText() {
         guard let user = user else { return }
-        let actionText = user.isFollowing ? FollowAction.unfollow.rawValue : FollowAction.follow.rawValue
+        guard let outgoingStatus = FollowResult(rawValue: user.outgoingStatus) else { return }
+        
+        var actionText = ""
+        var backgroundColor = UIColor.clear
+        var borderColor = UIColor.clear
+        var textColor = UIColor.white
+        
+        switch outgoingStatus {
+        case .follows:
+            actionText = "Follow"
+            let buttonBlue = UIColor(red: 82/255.0, green: 149/255.0, blue: 253/255.0, alpha: 1.0)
+            backgroundColor = buttonBlue
+            borderColor = buttonBlue
+        case .none:
+            actionText = "Following"
+            backgroundColor = .white
+            borderColor = .lightGray
+            textColor = .black
+        case .requested:
+            actionText = "Requested"
+            backgroundColor = .white
+            borderColor = .lightGray
+            textColor = .black
+        }
+
         followButton.setTitle(actionText, for: .normal)
+        followButton.setTitleColor(textColor, for: .normal)
+        followButton.backgroundColor = backgroundColor
+        followButton.layer.borderColor = borderColor.cgColor
+        followButton.layer.borderWidth = 0.5
+        
     }
 }
 
@@ -58,8 +87,4 @@ protocol UserFollowDelegate {
     func didTapFollow(action: FollowAction, withCell cell: UserFollowCell)
     
     func userForCell(_ cell: UserFollowCell) -> User?
-}
-
-enum FollowAction: String {
-    case follow, unfollow
 }

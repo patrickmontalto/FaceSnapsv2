@@ -18,15 +18,27 @@ class User: Object, IGListDiffable {
     dynamic var userName: String = ""
     dynamic var photoData: Data = Data()
     dynamic var authToken: String = ""
-    dynamic var isFollowing: Bool = false
+    dynamic var outgoingStatus: String = ""
+    dynamic var incomingStatus: String = ""
     dynamic var postsCount: Int = 0
     dynamic var followersCount: Int = 0
     dynamic var followingCount: Int = 0
     dynamic var privateProfile: Bool = false
     // TODO: Posts property?
+    var isFollowing: Bool {
+        get {
+            guard let status = FollowResult(rawValue: self.outgoingStatus), status == .follows else {
+                return false
+            }
+            return true
+        } set {
+            self.outgoingStatus = newValue ? FollowResult.follows.rawValue : FollowResult.none.rawValue
+        }
+    }
+    
     
     // MARK: - Initializers
-    convenience init(pk: Int, name: String, email: String, userName: String, photoURLString: String?, authToken: String, isFollowing: Bool, postsCount: Int, followersCount: Int, followingCount: Int, privateProfile: Bool) {
+    convenience init(pk: Int, name: String, email: String, userName: String, photoURLString: String?, authToken: String, postsCount: Int, followersCount: Int, followingCount: Int, privateProfile: Bool, outgoingStatus: String, incomingStatus: String) {
         self.init()
         
         self.pk = pk
@@ -34,11 +46,12 @@ class User: Object, IGListDiffable {
         self.email = email
         self.userName = userName
         self.authToken = authToken
-        self.isFollowing = isFollowing
         self.postsCount = postsCount
         self.followersCount = followersCount
         self.followingCount = followingCount
         self.privateProfile = privateProfile
+        self.incomingStatus = incomingStatus
+        self.outgoingStatus = outgoingStatus
         
         guard let photoURLString = photoURLString, let photoURL = URL(string: photoURLString) else {
             return
@@ -64,7 +77,7 @@ class User: Object, IGListDiffable {
         let email = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.email] as! String
         let name = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.fullName] as! String
         let username = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.username] as! String
-//        let private = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.]
+//        let private = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.privateProfile]
         if let photoPath = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.photoPath] as? String {
             let photoURLstring = FaceSnapsClient.urlString(forPhotoPath: photoPath)
             if let photoURL = URL(string: photoURLstring) {
