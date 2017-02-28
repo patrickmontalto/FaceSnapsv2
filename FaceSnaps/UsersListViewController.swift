@@ -24,9 +24,12 @@ class UsersListViewController: UIViewController {
         return tblView
     }()
     
+    // TODO: Add search bar
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(tableView)
+        automaticallyAdjustsScrollViewInsets = false
         
         let userFollowNib = UINib(nibName: "UserFollowCell", bundle: nil)
         tableView.register(userFollowNib, forCellReuseIdentifier: "userFollowCell")
@@ -56,17 +59,20 @@ extension UsersListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // TODO: User Follow Cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "userFollowCell", for: indexPath) as! UserFollowCell
-        
+        cell.tag = indexPath.row
         cell.configure(withDelegate: self)
-        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UserFollowCell.height
     }
 }
 
 // MARK: - UserFollowDelegate
 extension UsersListViewController: UserFollowDelegate {
     func userForCell(_ cell: UserFollowCell) -> User? {
-        guard let index = rowOfCell(cell) else { return nil }
+        let index = cell.tag
         
         return users[index]
     }
@@ -82,9 +88,7 @@ extension UsersListViewController: UserFollowDelegate {
             guard let result = result else {
                 return
             }
-            
-            // TODO: Switch on result to update if following, unfollowed, or requested
-            user.isFollowing = !user.isFollowing
+            user.outgoingStatus = result.rawValue
             
             cell.setFollowButtonText()
         }

@@ -152,10 +152,24 @@ extension ProfileController: ProfileHeaderDelegate {
     
     func didTapFollowers() {
         // TODO: Present list of followers
+        FaceSnapsClient.sharedInstance.getFollowedByForUser(user: user) { (users, error) in
+            guard let users = users else { return }
+            let vc = UsersListViewController()
+            vc.users = users
+            vc.title = "Followers"
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func didTapFollowing() {
-        // TODO: Present list of following
+        // TODO: Present list of following\
+        FaceSnapsClient.sharedInstance.getFollowingForUser(user: user) { (users, error) in
+            guard let users = users else { return }
+            let vc = UsersListViewController()
+            vc.users = users
+            vc.title = "Following"
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func didTapEditProfile() {

@@ -568,7 +568,7 @@ class FaceSnapsClient: NSObject {
     }
     
     // MARK: Get a list of users a user follows
-    func getFollowersForUser(user: User, completionHandler: @escaping (_ data: [User]?, _ error: APIError?) -> Void ) {
+    func getFollowingForUser(user: User, completionHandler: @escaping (_ data: [User]?, _ error: APIError?) -> Void ) {
         let followersEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.RelationshipsEndpoint.followers(userId: user.pk))
         
         // Make request

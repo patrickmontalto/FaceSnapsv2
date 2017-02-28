@@ -10,6 +10,8 @@ import UIKit
 
 class UserFollowCell: UITableViewCell {
     
+    static let height: CGFloat = 58.0
+    
     var delegate: UserFollowDelegate?
     var user: User? {
         guard let delegate = delegate else { return nil }
