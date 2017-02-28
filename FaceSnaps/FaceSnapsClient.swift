@@ -591,6 +591,27 @@ class FaceSnapsClient: NSObject {
         }
     }
     
+    // MARK: Modify the relationship with target user
+    func modifyRelationship(action: FollowAction, user: User, completionHandler: @escaping (_ error: APIError?) -> Void) {
+        let modifyRelationshipEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.RelationshipsEndpoint.relationship(userId: user.pk))
+        
+        // Build params
+        let params = ["action": action.rawValue]
+        
+        // Make request
+        Alamofire.request(modifyRelationshipEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                completionHandler(APIError.responseError(message: response.result.error!.localizedDescription))
+                return
+            }
+            
+            // TODO: Check what a successful response should look like via POSTMAN
+            
+        }
+    }
+    
     
     
     // MARK: Get a list of users who have liked a post

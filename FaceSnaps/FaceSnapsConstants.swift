@@ -85,6 +85,9 @@ extension FaceSnapsClient {
                 static func followedBy(userId: Int) -> String {
                     return "/users/\(userId)/followed-by"
                 }
+                static func relationship(userId: Int) -> String {
+                    return "/users/\(userId)/relationship"
+                }
             }
             
             enum PostsEndpoint {

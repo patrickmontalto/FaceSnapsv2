@@ -12,7 +12,8 @@ class UserFollowCell: UITableViewCell {
     
     var delegate: UserFollowDelegate?
     var user: User? {
-        return delegate?.userForCell()
+        guard let delegate = delegate else { return nil }
+        return delegate.userForCell(self)
     }
     
     @IBOutlet var userIconView: UIImageView!
@@ -24,8 +25,8 @@ class UserFollowCell: UITableViewCell {
         guard let user = user, let delegate = delegate else { return }
         
         let action: FollowAction = user.isFollowing ? .unfollow : .follow
-        
-        delegate.didTapFollow(action: action)
+
+        delegate.didTapFollow(action: action, withCell: self)
     }
     
     func configure(withDelegate delegate: UserFollowDelegate) {
@@ -39,12 +40,14 @@ class UserFollowCell: UITableViewCell {
         
         // Configure follow button
         followButton.layer.cornerRadius = 4
+        setFollowButtonText()
         
     }
     
     func setFollowButtonText() {
         guard let user = user else { return }
-        let actionText = 
+        let actionText = user.isFollowing ? FollowAction.unfollow.rawValue : FollowAction.follow.rawValue
+        followButton.setTitle(actionText, for: .normal)
     }
 }
 
@@ -52,9 +55,9 @@ class UserFollowCell: UITableViewCell {
 
 protocol UserFollowDelegate {
     
-    func didTapFollow(action: FollowAction)
+    func didTapFollow(action: FollowAction, withCell cell: UserFollowCell)
     
-    func userForCell() -> User
+    func userForCell(_ cell: UserFollowCell) -> User?
 }
 
 enum FollowAction: String {
