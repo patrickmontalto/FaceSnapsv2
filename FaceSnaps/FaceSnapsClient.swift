@@ -96,6 +96,34 @@ class FaceSnapsClient: NSObject {
 
     }
     
+    // MARK: Refresh the current user data
+    func refreshCurrentUser(completionHandler: @escaping (_ error: APIError?) -> Void) {
+        let userEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getCurrentUser)
+        
+        // Make request
+        Alamofire.request(userEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            guard let json = FaceSnapsParser.getJSON(fromResponse: response) else {
+                completionHandler(.noJSON)
+                return
+            }
+            
+            guard let userDictionary = json[Constant.JSONResponseKey.User.user] as? [String:Any] else {
+                completionHandler(APIError.missingKey(message: "Unable to get user dictionary"))
+                return
+            }
+            do {
+                try FaceSnapsDataSource.sharedInstance.realm.write({
+                    FaceSnapsDataSource.sharedInstance.currentUser!.update(userDictionary: userDictionary)
+                    completionHandler(nil)
+                })
+            } catch {
+                completionHandler(APIError.persistenceError)
+            }
+        }
+        
+        
+    }
+    
     // MARK: Sign up as a new user
     func signUpUser(username: String, email: String, fullName: String, password: String, profileImage: String?, completionHandler: @escaping (_ error: APIError?) -> Void ) {
         // Build URL

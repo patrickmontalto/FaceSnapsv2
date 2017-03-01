@@ -33,6 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if FaceSnapsDataSource.sharedInstance.signedIn {
             let controller = AppTabBarController()
+            FaceSnapsClient.sharedInstance.refreshCurrentUser(completionHandler: { (error) in
+                
+            })
             window.rootViewController = controller
         } else {
             let loginController = LoginViewController()

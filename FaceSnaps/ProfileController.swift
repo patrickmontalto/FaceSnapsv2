@@ -77,7 +77,14 @@ class ProfileController: UIViewController {
     }
     
     func updateUser() {
-        collectionView.reloadData()
+        FaceSnapsClient.sharedInstance.refreshCurrentUser { (error) in
+            // Get indexPath of headerView
+//            let headerView = self.collectionView.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! ProfileHeaderView
+//            headerView.updateUser()
+            // Set needs layout for headerView?
+            let indexSet : IndexSet = [0]
+            self.collectionView.reloadSections(indexSet)
+        }
     }
     
     func pushUserOptionsView() {
@@ -87,8 +94,9 @@ class ProfileController: UIViewController {
     }
     
     func updateViewForUpdatedUser() {
-        let cell = collectionView.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! ProfileHeaderView
-        cell.updateUser()
+        collectionView.collectionViewLayout.invalidateLayout()
+//        let cell = collectionView.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! ProfileHeaderView
+//        cell.updateUser()
     }
     
     // TODO: profileHeaderView is a header to the entire collectionView

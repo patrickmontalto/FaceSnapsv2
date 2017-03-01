@@ -93,6 +93,14 @@ class User: Object, IGListDiffable {
         self.userName = username
         // self.private = private
         
+        if let followersCount = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.followersCount] as? Int {
+            self.followersCount = followersCount
+        }
+        
+        if let followingCount = userDictionary[FaceSnapsClient.Constant.JSONResponseKey.User.followingCount] as? Int {
+            self.followingCount = followingCount
+        }
+        
     }
     
     // MARK: - IGListDiffable

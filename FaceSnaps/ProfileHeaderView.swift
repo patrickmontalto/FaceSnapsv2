@@ -77,7 +77,7 @@ class ProfileHeaderView: UICollectionReusableView {
             followingCounter.centerXAnchor.constraint(equalTo: btn.centerXAnchor),
             followingCounterLabel.topAnchor.constraint(equalTo: followingCounter.bottomAnchor),
             followingCounterLabel.centerXAnchor.constraint(equalTo: btn.centerXAnchor),
-            ])
+        ])
         return btn
     }()
     
