@@ -596,7 +596,7 @@ class FaceSnapsClient: NSObject {
         let modifyRelationshipEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.RelationshipsEndpoint.relationship(userId: user.pk))
         
         // Build params
-        let params = ["action": action.rawValue]
+        let params = ["user_action": action.rawValue]
         
         // Make request
         Alamofire.request(modifyRelationshipEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in

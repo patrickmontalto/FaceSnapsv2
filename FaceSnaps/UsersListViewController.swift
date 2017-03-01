@@ -88,9 +88,14 @@ extension UsersListViewController: UserFollowDelegate {
             guard let result = result else {
                 return
             }
-            user.outgoingStatus = result.rawValue
+            // Update status for user
+            user.incomingStatus = result.rawValue
             
+            // Update button
             cell.setFollowButtonText()
+            
+            // Post notification to reload current user in app
+            NotificationCenter.default.post(name: Notification.Name.userProfileUpdatedNotification, object: nil)
         }
     }
     

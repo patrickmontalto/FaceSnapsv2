@@ -27,12 +27,12 @@ class User: Object, IGListDiffable {
     // TODO: Posts property?
     var isFollowing: Bool {
         get {
-            guard let status = FollowResult(rawValue: self.outgoingStatus), status == .follows else {
+            guard let status = FollowResult(rawValue: self.incomingStatus), status == .follows else {
                 return false
             }
             return true
         } set {
-            self.outgoingStatus = newValue ? FollowResult.follows.rawValue : FollowResult.none.rawValue
+            self.incomingStatus = newValue ? FollowResult.follows.rawValue : FollowResult.none.rawValue
         }
     }
     

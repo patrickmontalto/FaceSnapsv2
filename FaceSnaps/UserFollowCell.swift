@@ -48,24 +48,24 @@ class UserFollowCell: UITableViewCell {
     
     func setFollowButtonText() {
         guard let user = user else { return }
-        guard let outgoingStatus = FollowResult(rawValue: user.outgoingStatus) else { return }
+        guard let incomingStatus = FollowResult(rawValue: user.incomingStatus) else { return }
         
         var actionText = ""
         var backgroundColor = UIColor.clear
         var borderColor = UIColor.clear
         var textColor = UIColor.white
         
-        switch outgoingStatus {
+        switch incomingStatus {
         case .follows:
-            actionText = "Follow"
-            let buttonBlue = UIColor(red: 82/255.0, green: 149/255.0, blue: 253/255.0, alpha: 1.0)
-            backgroundColor = buttonBlue
-            borderColor = buttonBlue
-        case .none:
             actionText = "Following"
             backgroundColor = .white
             borderColor = .lightGray
             textColor = .black
+        case .none:
+            actionText = "Follow"
+            let buttonBlue = UIColor(red: 82/255.0, green: 149/255.0, blue: 253/255.0, alpha: 1.0)
+            backgroundColor = buttonBlue
+            borderColor = buttonBlue
         case .requested:
             actionText = "Requested"
             backgroundColor = .white

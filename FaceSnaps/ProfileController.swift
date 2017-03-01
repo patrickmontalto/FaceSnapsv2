@@ -61,6 +61,9 @@ class ProfileController: UIViewController {
                 _ = APIErrorHandler.handle(error: error!, logError: true)
             }
         }
+        
+        // Observe when the user profile is changed
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUser), name: Notification.Name.userProfileUpdatedNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,6 +74,10 @@ class ProfileController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         title = nil
+    }
+    
+    func updateUser() {
+        collectionView.reloadData()
     }
     
     func pushUserOptionsView() {
