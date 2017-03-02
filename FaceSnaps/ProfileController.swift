@@ -149,6 +149,14 @@ extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegat
         
         return cell
     }
+    
+    // Present the individual post selected
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let post = posts[indexPath.row]
+        let vc = PostsCollectionViewContainer(style: .feed, dataSource: .individualPost(postId: post.pk))
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 // MARK: - ProfileHeaderDelegate
