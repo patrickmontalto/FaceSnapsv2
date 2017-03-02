@@ -82,8 +82,6 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
     }
     // MARK: - UITabBarControllerDelegate
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        // Selected view controller
-        print("selected \(viewController)")
     }
     
 }

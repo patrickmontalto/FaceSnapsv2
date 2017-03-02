@@ -190,7 +190,6 @@ class HomeController: UIViewController, CollectionViewContainer {
                     self.adapter.performUpdates(animated: true, completion: { (completed) in
                         // TODO: Save to realm and delete old feed
                         print("completed reload")
-                        print(self.data)
                     })
                 } else {
                     let action = UIAlertAction(title: "Ok", style: .default, handler: nil)

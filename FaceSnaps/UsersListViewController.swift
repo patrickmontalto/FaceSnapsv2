@@ -34,6 +34,9 @@ class UsersListViewController: UIViewController {
         let userFollowNib = UINib(nibName: "UserFollowCell", bundle: nil)
         tableView.register(userFollowNib, forCellReuseIdentifier: "userFollowCell")
         
+        // Hide FaceSnaps logo
+        (navigationController as? HomeNavigationController)?.logoIsHidden = true
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,6 +69,14 @@ extension UsersListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UserFollowCell.height
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = ProfileController()
+        let user = users[indexPath.row]
+        vc.user = user
+        navigationController?.pushViewController(vc, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

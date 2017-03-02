@@ -687,6 +687,26 @@ class FaceSnapsClient: NSObject {
     
     
     // MARK: Get a list of users who have liked a post
+    func getLikingUsers(forPost post: FeedItem, completionHandler: @escaping (_ data: [User]?, _ error: APIError?) -> Void) {
+        let likingUsersEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.LikesEndpoint.likePost(postId: post.pk))
+        
+        // Make request
+        Alamofire.request(likingUsersEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            guard let json = FaceSnapsParser.getJSON(fromResponse: response) else {
+                completionHandler(nil, .noJSON)
+                return
+            }
+            
+            guard let usersArray = json[Constant.JSONResponseKey.User.users] as? [[String:Any]] else {
+                completionHandler(nil, APIError.missingKey(message: "Missing users key."))
+                return
+            }
+            
+            let users = FaceSnapsParser.parse(usersArray: usersArray)
+            
+            completionHandler(users, nil)
+        }
+    }
     
     // MARK: Create a comment on a post (as the current user)
     func postComment(onPost post: FeedItem, withText text: String, completionHandler: @escaping (_ data: Comment?, _ error: APIError?) -> Void) {

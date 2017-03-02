@@ -29,7 +29,15 @@ protocol FeedItemSectionDelegate {
 extension FeedItemSectionDelegate where Self:UIViewController, Self:CommentDelegate, Self: FeedItemReloadDelegate {
 
     func didPressLikesCount(forPost post: FeedItem) {
-        // .. Go to likes page for post
+        // Go to likes page for post
+        let vc = UsersListViewController()
+        // Get liking users
+        FaceSnapsClient.sharedInstance.getLikingUsers(forPost: post) { (users, error) in
+            vc.users = users ?? [User]()
+            vc.title = "Likes"
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
     }
     func didPressCommentButton(forPost post: FeedItem) {
         let vc = CommentController(post: post, delegate: self)
