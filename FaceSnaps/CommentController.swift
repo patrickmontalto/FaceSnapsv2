@@ -67,6 +67,8 @@ class CommentController: UIViewController {
         
         getComments()
         
+        hideKeyboardWhenTappedAround()
+        
         // Hide FaceSnaps logo
         (navigationController as? HomeNavigationController)?.logoIsHidden = true
         // Hide tab bar
@@ -107,6 +109,7 @@ class CommentController: UIViewController {
             })
         }
     }
+
     
     func scrollToBottom() {
         let section = collectionView.numberOfSections - 1
