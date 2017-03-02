@@ -114,6 +114,16 @@ extension SearchManager: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // TODO: Present UserProfileController with user at selected row
         presentingViewController?.view.endEditing(true)
+        switch selectedScope {
+        case 0:
+            let vc = ProfileController()
+            let user = data[indexPath.row] as! User
+            vc.user = user
+            presentingViewController?.navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

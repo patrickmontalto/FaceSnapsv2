@@ -36,14 +36,17 @@ class UserFollowCell: UITableViewCell {
         
         guard let user = user else { return }
         
-        userIconView.image = user.photo
+        userIconView.image = user.photo?.circle
         usernameLabel.text = user.userName
         fullnameLabel.text = user.name
         
         // Configure follow button
-        followButton.layer.cornerRadius = 4
-        setFollowButtonText()
-        
+        if user.isCurrentUser {
+            followButton.isHidden = true
+        } else {
+            followButton.layer.cornerRadius = 4
+            setFollowButtonText()
+        }
     }
     
     func setFollowButtonText() {
@@ -78,7 +81,6 @@ class UserFollowCell: UITableViewCell {
         followButton.backgroundColor = backgroundColor
         followButton.layer.borderColor = borderColor.cgColor
         followButton.layer.borderWidth = 0.5
-        
     }
 }
 

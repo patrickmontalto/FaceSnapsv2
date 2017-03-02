@@ -96,7 +96,35 @@ class FaceSnapsClient: NSObject {
 
     }
     
-    // MARK: Refresh the current user data
+    // MARK: Refresh a user's data (GET request)
+    func refreshUser(_ user: User, completionHandler: @escaping (_ error: APIError?) -> Void) {
+    
+        let userEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUser(user.pk))
+        
+        // Make request
+        Alamofire.request(userEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            guard let json = FaceSnapsParser.getJSON(fromResponse: response) else {
+                completionHandler(.noJSON)
+                return
+            }
+
+            guard let userDictionary = json[Constant.JSONResponseKey.User.user] as? [String:Any] else {
+                completionHandler(APIError.missingKey(message: "Unable to get user dictionary"))
+                return
+            }
+            do {
+                try FaceSnapsDataSource.sharedInstance.realm.write({
+                    user.update(userDictionary: userDictionary)
+                    completionHandler(nil)
+                })
+            } catch {
+                completionHandler(APIError.persistenceError)
+            }
+            
+        }
+    }
+    
+    // MARK: Refresh the current user data (GET request)
     func refreshCurrentUser(completionHandler: @escaping (_ error: APIError?) -> Void) {
         let userEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getCurrentUser)
         
@@ -120,8 +148,6 @@ class FaceSnapsClient: NSObject {
                 completionHandler(APIError.persistenceError)
             }
         }
-        
-        
     }
     
     // MARK: Sign up as a new user
@@ -474,7 +500,7 @@ class FaceSnapsClient: NSObject {
 
     // MARK: Get information about the owner of the access token (user)
     
-    // MARK: Put an update on the current user
+    // MARK: Put an update on the current user (PUT request)
     func updateCurrentUserProfile(withAttributes params: [String: Any], completionHandler: @escaping (_ error: APIError?) -> Void) {
         let updateEndpoint = FaceSnapsClient.urlString(forEndpoint: FaceSnapsClient.Constant.APIMethod.UserEndpoint.updateUserProfile)
         

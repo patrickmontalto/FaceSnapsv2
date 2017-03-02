@@ -10,6 +10,7 @@ import UIKit
 
 protocol ProfileHeaderDelegate {
     func didTapEditProfile()
+    func didTapFollow(action: FollowAction)
     func didTapFollowers()
     func didTapFollowing()
     func userForView() -> User
@@ -81,16 +82,18 @@ class ProfileHeaderView: UICollectionReusableView {
         return btn
     }()
     
-    lazy var editProfileButton: UIButton = {
+    lazy var interactiveButton: UIButton = {
         let btn = UIButton()
-        btn.setTitleColor(.black, for: .normal)
-        btn.layer.borderColor =  UIColor.lightGray.cgColor
-        btn.layer.borderWidth = 1
+        if self.user.isCurrentUser {
+            btn.setTitle("Edit Profile", for: .normal)
+            btn.setTitleColor(.black, for: .normal)
+            btn.layer.borderColor =  UIColor.lightGray.cgColor
+            btn.layer.borderWidth = 1
+        }
         btn.layer.cornerRadius = 4
-        btn.setTitle("Edit Profile", for: .normal)
         btn.titleLabel?.font = .boldSystemFont(ofSize: 14.0)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.addTarget(self, action: #selector(didTapEditProfile), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(didTapInteractiveButton), for: .touchUpInside)
         return btn
     }()
     
@@ -121,8 +124,10 @@ class ProfileHeaderView: UICollectionReusableView {
         addSubview(postsCounterBtn)
         addSubview(followersCounterBtn)
         addSubview(followingCounterBtn)
-        addSubview(editProfileButton)
+        addSubview(interactiveButton)
         addSubview(userNameLabel)
+        
+        setFollowButton()
     }
     
     func updateUser() {
@@ -130,8 +135,14 @@ class ProfileHeaderView: UICollectionReusableView {
         userNameLabel.text = user.name
     }
     
-    func didTapEditProfile() {
-        delegate.didTapEditProfile()
+    /// Alert the delegate that the edit profile / follow button was tapped
+    func didTapInteractiveButton() {
+        if user.isCurrentUser {
+            delegate.didTapEditProfile()
+        } else {
+            let action: FollowAction = user.isFollowing ? .unfollow : .follow
+            delegate.didTapFollow(action: action)
+        }
     }
     
     func didTapFollowers() {
@@ -140,6 +151,41 @@ class ProfileHeaderView: UICollectionReusableView {
     
     func didTapFollowing() {
         delegate.didTapFollowing()
+    }
+    
+    func setFollowButton(){
+        guard let user = user else { return }
+        if user.isCurrentUser { return }
+        guard let incomingStatus = FollowResult(rawValue: user.incomingStatus) else { return }
+        
+        var actionText = ""
+        var backgroundColor = UIColor.clear
+        var borderColor = UIColor.clear
+        var textColor = UIColor.white
+        
+        switch incomingStatus {
+        case .follows:
+            actionText = "Following"
+            backgroundColor = .white
+            borderColor = .lightGray
+            textColor = .black
+        case .none:
+            actionText = "Follow"
+            let buttonBlue = UIColor(red: 82/255.0, green: 149/255.0, blue: 253/255.0, alpha: 1.0)
+            backgroundColor = buttonBlue
+            borderColor = buttonBlue
+        case .requested:
+            actionText = "Requested"
+            backgroundColor = .white
+            borderColor = .lightGray
+            textColor = .black
+        }
+        
+        interactiveButton.setTitle(actionText, for: .normal)
+        interactiveButton.setTitleColor(textColor, for: .normal)
+        interactiveButton.backgroundColor = backgroundColor
+        interactiveButton.layer.borderColor = borderColor.cgColor
+        interactiveButton.layer.borderWidth = 0.5
     }
     
 
@@ -151,15 +197,15 @@ class ProfileHeaderView: UICollectionReusableView {
             userIconView.widthAnchor.constraint(equalToConstant: 72),
             userIconView.heightAnchor.constraint(equalToConstant: 72),
             postsCounterBtn.topAnchor.constraint(equalTo: userIconView.topAnchor),
-            postsCounterBtn.leftAnchor.constraint(equalTo: editProfileButton.leftAnchor, constant: 24),
+            postsCounterBtn.leftAnchor.constraint(equalTo: interactiveButton.leftAnchor, constant: 24),
             followersCounterBtn.topAnchor.constraint(equalTo: userIconView.topAnchor),
-            followersCounterBtn.centerXAnchor.constraint(equalTo: editProfileButton.centerXAnchor),
-            followingCounterBtn.rightAnchor.constraint(equalTo: editProfileButton.rightAnchor, constant: -24),
+            followersCounterBtn.centerXAnchor.constraint(equalTo: interactiveButton.centerXAnchor),
+            followingCounterBtn.rightAnchor.constraint(equalTo: interactiveButton.rightAnchor, constant: -24),
             followingCounterBtn.topAnchor.constraint(equalTo: userIconView.topAnchor),
-            editProfileButton.leftAnchor.constraint(equalTo: userIconView.rightAnchor, constant: 24),
-            editProfileButton.heightAnchor.constraint(equalToConstant: 24),
-            editProfileButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -12),
-            editProfileButton.topAnchor.constraint(equalTo: postsCounterBtn.bottomAnchor, constant: 12),
+            interactiveButton.leftAnchor.constraint(equalTo: userIconView.rightAnchor, constant: 24),
+            interactiveButton.heightAnchor.constraint(equalToConstant: 24),
+            interactiveButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -12),
+            interactiveButton.topAnchor.constraint(equalTo: postsCounterBtn.bottomAnchor, constant: 12),
             userNameLabel.topAnchor.constraint(equalTo: userIconView.bottomAnchor, constant: 16),
             userNameLabel.leftAnchor.constraint(equalTo: userIconView.leftAnchor),
         

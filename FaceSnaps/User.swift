@@ -24,7 +24,8 @@ class User: Object, IGListDiffable {
     dynamic var followersCount: Int = 0
     dynamic var followingCount: Int = 0
     dynamic var privateProfile: Bool = false
-    // TODO: Posts property?
+
+    /// A boolean represent whether or not the current user is following this user
     var isFollowing: Bool {
         get {
             guard let status = FollowResult(rawValue: self.incomingStatus), status == .follows else {
@@ -34,6 +35,11 @@ class User: Object, IGListDiffable {
         } set {
             self.incomingStatus = newValue ? FollowResult.follows.rawValue : FollowResult.none.rawValue
         }
+    }
+    
+    /// A boolean representing whether or not the current user is the user in question
+    var isCurrentUser: Bool {
+        return FaceSnapsDataSource.sharedInstance.currentUser!.pk == self.pk
     }
     
     

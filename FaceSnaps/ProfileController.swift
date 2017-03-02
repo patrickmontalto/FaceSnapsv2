@@ -42,16 +42,15 @@ class ProfileController: UIViewController {
         // Add notification if current user updates profile
         NotificationCenter.default.addObserver(self, selector: #selector(updateViewForUpdatedUser), name: .userProfileUpdatedNotification, object: nil)
      
-        if FaceSnapsDataSource.sharedInstance.currentUser! == user {
+        if user.isCurrentUser {
             // On current user profile. Make right Nav bar action the settings
-            // TODO: Get gear symbol for options and elipses for actions
             let optionsButton = UIBarButtonItem(image: UIImage(named: "cog")!, style: .plain, target: self, action: #selector(pushUserOptionsView))
             optionsButton.tintColor = .black
             navigationItem.rightBarButtonItem = optionsButton
 
         }
         
-        // TODO: Get posts for user
+        // Get posts for user
         FaceSnapsClient.sharedInstance.getUserPosts(user: user) { (data, error) in
             if let data = data {
                 print(data.count)
@@ -77,12 +76,8 @@ class ProfileController: UIViewController {
     }
     
     func updateUser() {
-        FaceSnapsClient.sharedInstance.refreshCurrentUser { (error) in
-            // Get indexPath of headerView
-//            let headerView = self.collectionView.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! ProfileHeaderView
-//            headerView.updateUser()
-            // Set needs layout for headerView?
-            let indexSet : IndexSet = [0]
+        FaceSnapsClient.sharedInstance.refreshUser(user) { (error) in
+            let indexSet: IndexSet = [0]
             self.collectionView.reloadSections(indexSet)
         }
     }
@@ -93,14 +88,12 @@ class ProfileController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    /// This function should be called after a change to the user is sent to the API.
+    /// Changes include an email, username, or photo change.
     func updateViewForUpdatedUser() {
         collectionView.collectionViewLayout.invalidateLayout()
-//        let cell = collectionView.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! ProfileHeaderView
-//        cell.updateUser()
     }
     
-    // TODO: profileHeaderView is a header to the entire collectionView
-    // CollectionView will have 3 cells per row
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
@@ -188,8 +181,27 @@ extension ProfileController: ProfileHeaderDelegate {
     }
     
     func didTapEditProfile() {
-        // TODO: Present edit profile view
+        // Present the edit view controller for the current user
         let editProfileVC = EditProfileViewController()
         navigationController?.pushViewController(editProfileVC, animated: true)
+    }
+    
+    func didTapFollow(action: FollowAction) {
+        // Make request to either follow or unfollow
+        FaceSnapsClient.sharedInstance.modifyRelationship(action: action, user: user) { (result, error) in
+            guard let result = result else {
+                return
+            }
+            // Update status for user
+            self.user.incomingStatus = result.rawValue
+            
+            // Update button
+            let cell = self.collectionView.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as! ProfileHeaderView
+            cell.setFollowButton()
+            
+            // Post notification to reload current user in app
+            NotificationCenter.default.post(name: Notification.Name.userProfileUpdatedNotification, object: nil)
+        }
+
     }
 }
