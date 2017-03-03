@@ -109,6 +109,7 @@
 		D21BD4941E649BA0009196C8 /* UsersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4931E649BA0009196C8 /* UsersListViewController.swift */; };
 		D21BD4961E64C8AD009196C8 /* UserFollowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21BD4951E64C8AD009196C8 /* UserFollowCell.xib */; };
 		D21BD4981E64C9CB009196C8 /* UserFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4971E64C9CB009196C8 /* UserFollowCell.swift */; };
+		D21BD49A1E69E714009196C8 /* FullCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21BD4991E69E714009196C8 /* FullCommentCell.xib */; };
 		D224C65B1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */; };
 		D224C65D1E36AC8D00AA1DC6 /* ControlsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */; };
 		D224C65F1E36ACEC00AA1DC6 /* CaptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */; };
@@ -240,6 +241,7 @@
 		D21BD4931E649BA0009196C8 /* UsersListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersListViewController.swift; sourceTree = "<group>"; };
 		D21BD4951E64C8AD009196C8 /* UserFollowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserFollowCell.xib; sourceTree = "<group>"; };
 		D21BD4971E64C9CB009196C8 /* UserFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFollowCell.swift; sourceTree = "<group>"; };
+		D21BD4991E69E714009196C8 /* FullCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullCommentCell.xib; sourceTree = "<group>"; };
 		D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSubSectionCell.swift; sourceTree = "<group>"; };
 		D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsCell.swift; sourceTree = "<group>"; };
 		D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionCell.swift; sourceTree = "<group>"; };
@@ -541,6 +543,7 @@
 				3A74B84E1E3E97B700408BBB /* TimeView.xib */,
 				3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */,
 				3ADE2A6B1E4D2F7000D1D4C6 /* CommentController.swift */,
+				D21BD4991E69E714009196C8 /* FullCommentCell.xib */,
 				3ADE2A6D1E4D319400D1D4C6 /* FullCommentCell.swift */,
 				3ADE2A6F1E4D343800D1D4C6 /* CommentDelegate.swift */,
 				3ADE2A711E4D35FD00D1D4C6 /* CommentSectionController.swift */,
@@ -621,6 +624,7 @@
 				3A32DD1A1DA0309100CD2669 /* LaunchScreen.storyboard in Resources */,
 				3A74B8501E3E97B700408BBB /* TimeView.xib in Resources */,
 				3AA3B23D1E5A95660000A312 /* EditableTableViewCell.xib in Resources */,
+				D21BD49A1E69E714009196C8 /* FullCommentCell.xib in Resources */,
 				3A32DD171DA0309100CD2669 /* Assets.xcassets in Resources */,
 				D21BD4961E64C8AD009196C8 /* UserFollowCell.xib in Resources */,
 			);
