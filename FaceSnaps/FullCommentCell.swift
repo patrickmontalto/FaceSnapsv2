@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ActiveLabel
 
 class FullCommentCell: UICollectionViewCell {
     
@@ -25,7 +26,7 @@ class FullCommentCell: UICollectionViewCell {
     var comment: Comment! {
         didSet {
             for view in contentView.subviews {
-                if view is InteractableLabel {
+                if view is ActiveLabel {
                     view.removeFromSuperview()
                 }
             }
@@ -49,8 +50,8 @@ class FullCommentCell: UICollectionViewCell {
         return imageView
     }()
     
-    private var contentLabel: InteractableLabel = {
-        return InteractableLabel()
+    private var contentLabel: ActiveLabel = {
+        return ActiveLabel()
     }()
     
     private var timeLabel: UILabel = {
@@ -77,10 +78,6 @@ class FullCommentCell: UICollectionViewCell {
         return lineView
     }()
     
-    lazy var authorTap: UITapGestureRecognizer = {
-        return UITapGestureRecognizer(target: self, action: #selector(handleTapOnLabel(tapGesture:)))
-    }()
-    
     private func setLabelContent() {
         setContentLabel()
         timeLabel.text = Timer.timeAgoSinceDate(date: comment.datePosted as NSDate, numericDates: true, shortened: true)
@@ -89,24 +86,16 @@ class FullCommentCell: UICollectionViewCell {
     
     private func setContentLabel() {
         // Get author and caption strings
-        let author = comment.author!.userName
+        let author = comment.author!
         let text = comment.text
         
         // Set contentLabel to interactable label with author and caption
-        self.contentLabel = InteractableLabel(type: .comment, boldText: author, nonBoldText: text)
+        self.contentLabel = ActiveLabel.commentLabel(author: author, caption: text, delegate: delegate!)
         
         self.contentLabel.numberOfLines = 0
         contentView.addSubview(contentLabel)
         
-        self.contentLabel.addGestureRecognizer(self.authorTap)
         self.replyButton.addTarget(self, action: #selector(handleReplyTap), for: .touchUpInside)
-    }
-    
-    // Notify the delegate of which author got tapped
-    func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
-        if tapGesture.didTapAttributedTextInLabel(label: contentLabel, inRange: contentLabel.boldRange) {
-            delegate?.didTapAuthor(author: comment.author!)
-        }
     }
     
     func handleReplyTap() {
@@ -128,7 +117,7 @@ class FullCommentCell: UICollectionViewCell {
         
         
         
-        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        //contentLabel.translatesAutoresizingMaskIntoConstraints = false
         userIcon.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         replyButton.translatesAutoresizingMaskIntoConstraints = false
@@ -162,16 +151,12 @@ class FullCommentCell: UICollectionViewCell {
         ])
     }
     
-//    override func prepareForReuse() {
-//        self.contentLabel = InteractableLabel()
-//        for view in contentView.subviews {
-//            view.removeFromSuperview()
-//        }
-//        super.prepareForReuse()
-//
-//        let height = FullCommentCell.cellHeight(forComment: comment)
-//        heightConstraint.constant = height
-//    }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        let height = FullCommentCell.cellHeight(forComment: comment)
+        heightConstraint.constant = height
+    }
 
 //    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
 //        setNeedsLayout()

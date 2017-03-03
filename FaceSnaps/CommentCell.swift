@@ -8,6 +8,7 @@
 
 import UIKit
 import IGListKit
+import ActiveLabel
 
 class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
     
@@ -27,32 +28,21 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
         }
     }
     
-    private var contentLabel: InteractableLabel = {
-        return InteractableLabel()
+    private var contentLabel: ActiveLabel = {
+        return ActiveLabel()
     }()
-    
-    lazy var authorTap: UITapGestureRecognizer = {
-        return UITapGestureRecognizer(target: self, action: #selector(handleTapOnLabel(tapGesture:)))
-    }()
+
     
     private func setContentLabel(_ comment: Comment) {
         
         // Get author and caption strings
-        let author = comment.author!.userName
+        let author = comment.author!
         let text = comment.text
         
         // Set contentLabel to interactable label with author and caption
-        self.contentLabel = InteractableLabel(type: .comment, boldText: author, nonBoldText: text)
-        
-        self.contentLabel.numberOfLines = 2
-        
-        self.contentLabel.addGestureRecognizer(self.authorTap)
-    }
-    
-    func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
-        if tapGesture.didTapAttributedTextInLabel(label: contentLabel, inRange: contentLabel.boldRange) {
-            delegate?.didTapAuthor(author: comment.author!)
-        }
+        contentLabel = ActiveLabel.commentLabel(author: author, caption: text, delegate: delegate!)
+        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel.numberOfLines = 2
     }
     
     
@@ -75,7 +65,7 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
     }
     
     override func prepareForReuse() {
-        self.contentLabel = InteractableLabel()
+        self.contentLabel = ActiveLabel()
         for view in contentView.subviews {
             view.removeFromSuperview()
         }

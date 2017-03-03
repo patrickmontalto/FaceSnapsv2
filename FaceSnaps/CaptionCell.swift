@@ -32,10 +32,6 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         return ActiveLabel()
     }()
     
-    lazy var authorTap: UITapGestureRecognizer = {
-        return UITapGestureRecognizer(target: self, action: #selector(handleTapOnLabel(tapGesture:)))
-    }()
-    
     func setContentLabel() {
         
         // Get author and caption strings
@@ -44,14 +40,6 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
     
         // Set contentLabel to interactable label with author and caption
         contentLabel = ActiveLabel.captionLabel(author: author, caption: caption, delegate: delegate!)
-        
-//        self.contentLabel.addGestureRecognizer(self.authorTap)
-    }
-    
-    func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
-//        if tapGesture.didTapAttributedTextInLabel(label: contentLabel, inRange: contentLabel.boldRange) {
-//            delegate?.didPressUserButton(forUser: post.user!)
-//        }
     }
     
     override func layoutSubviews() {
