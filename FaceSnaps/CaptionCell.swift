@@ -8,6 +8,7 @@
 
 import UIKit
 import IGListKit
+import ActiveLabel
 
 class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
     
@@ -25,10 +26,10 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         }
     }
     
-    var delegate: FeedItemSectionDelegate?
+    var delegate: CommentDelegate?
     
-    private var contentLabel: InteractableLabel = {
-        return InteractableLabel()
+    private var contentLabel: ActiveLabel = {
+        return ActiveLabel()
     }()
     
     lazy var authorTap: UITapGestureRecognizer = {
@@ -38,21 +39,19 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
     func setContentLabel() {
         
         // Get author and caption strings
-        let author = post.user!.userName
+        let author = post.user!
         let caption = post.caption
     
         // Set contentLabel to interactable label with author and caption
-        self.contentLabel = InteractableLabel(type: .comment, boldText: author, nonBoldText: caption)
-
-        self.contentLabel.numberOfLines = 5
+        contentLabel = ActiveLabel.captionLabel(author: author, caption: caption, delegate: delegate!)
         
-        self.contentLabel.addGestureRecognizer(self.authorTap)
+//        self.contentLabel.addGestureRecognizer(self.authorTap)
     }
     
     func handleTapOnLabel(tapGesture: UITapGestureRecognizer) {
-        if tapGesture.didTapAttributedTextInLabel(label: contentLabel, inRange: contentLabel.boldRange) {
-            delegate?.didPressUserButton(forUser: post.user!)
-        }
+//        if tapGesture.didTapAttributedTextInLabel(label: contentLabel, inRange: contentLabel.boldRange) {
+//            delegate?.didPressUserButton(forUser: post.user!)
+//        }
     }
     
     override func layoutSubviews() {
@@ -73,7 +72,7 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
     }
     
     override func prepareForReuse() {
-        self.contentLabel = InteractableLabel()
+        self.contentLabel = ActiveLabel()
         for view in contentView.subviews {
             view.removeFromSuperview()
         }
@@ -94,7 +93,7 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
         let cell = collectionContext.dequeueReusableCell(of: CaptionCell.self, for: sectionController, at: index) as! CaptionCell
         
-        cell.delegate = (sectionController as! FeedItemSectionController).feedItemSectionDelegate
+        cell.delegate = (sectionController as! FeedItemSectionController).commentDelegate
         
         cell.post = feedItem
         

@@ -32,6 +32,9 @@ class ProfileController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Hide FaceSnaps logo
+        (navigationController as? HomeNavigationController)?.logoIsHidden = true
+
         view.addSubview(collectionView)
         
         collectionView.register(ProfileHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "profileHeaderView")

@@ -37,4 +37,10 @@ extension UIColor {
         }
     }
     
+    open class var hashtagBlue: UIColor {
+        get {
+            return UIColor(red: 16/255, green: 65/255, blue: 114/255, alpha: 1.0)
+        }
+    }
+    
 }

@@ -1,5 +1,5 @@
 PODS:
-  - ActiveLabel (0.7.0)
+  - ActiveLabel (0.7.1)
   - Alamofire (4.2.0)
   - IGListKit (2.0.0)
   - Realm (2.1.2):
@@ -10,20 +10,29 @@ PODS:
   - Strongbox (0.3.0)
 
 DEPENDENCIES:
-  - ActiveLabel
+  - ActiveLabel (from `https://github.com/optonaut/ActiveLabel.swift`)
   - Alamofire (~> 4.0)
   - IGListKit (~> 2.0.0)
   - RealmSwift
   - Strongbox
 
+EXTERNAL SOURCES:
+  ActiveLabel:
+    :git: https://github.com/optonaut/ActiveLabel.swift
+
+CHECKOUT OPTIONS:
+  ActiveLabel:
+    :commit: 5c030f3c37a43faaa5250130898028d7093c3d89
+    :git: https://github.com/optonaut/ActiveLabel.swift
+
 SPEC CHECKSUMS:
-  ActiveLabel: eb405c5b99275be52fac161f7a55cab1dd672c54
+  ActiveLabel: faa96b5f50507770536a3e48a4cf291ee88fb7db
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
   IGListKit: ee255e4e61865bc3e01ca96b690c5435c2887849
   Realm: efe855f4d977c8ce5a82d3116d9f1ff155a6550c
   RealmSwift: 17d6ee30b6f9df86364408c2197492e33bfea567
   Strongbox: a35d6dc8967f00563df3a3cd3ab4ef401a63b133
 
-PODFILE CHECKSUM: db95b0420a59a12bf22dc84cb36b6aa20ee7b28d
+PODFILE CHECKSUM: 21fea74e9b8cb4ce743dfdfda4cece6c6c323867
 
 COCOAPODS: 1.1.1

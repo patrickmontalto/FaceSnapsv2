@@ -10,7 +10,7 @@ target 'FaceSnaps' do
   pod 'Strongbox'
   pod 'IGListKit', '~> 2.0.0'
   pod 'RealmSwift'
-  pod 'ActiveLabel'
+  pod 'ActiveLabel', :git => 'https://github.com/optonaut/ActiveLabel.swift'
 end
 
 post_install do |installer|
