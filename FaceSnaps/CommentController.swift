@@ -15,14 +15,9 @@ protocol CommentSubmissionDelegate {
 
 class CommentController: UIViewController {
     
-    lazy var adapter: IGListAdapter = {
-        return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 0)
-    }()
-    
     var post: FeedItem!
     var data: [Comment]! = []
     var delegate: FeedItemReloadDelegate!
-    var panGesture: UIPanGestureRecognizer!
     
     convenience init(post: FeedItem, delegate: FeedItemReloadDelegate) {
         self.init()
@@ -30,13 +25,18 @@ class CommentController: UIViewController {
         self.post = post
     }
     
-    lazy var collectionView: IGListCollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.sectionInset = UIEdgeInsets.zero
-        
-        let cv = IGListCollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        return cv
+    lazy var commentsTableView: UITableView = {
+        let tv = UITableView()
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.delegate = self
+        tv.dataSource = self
+        let nib = UINib(nibName: "FullCommentCell", bundle: nil)
+        tv.register(nib, forCellReuseIdentifier: "fullCommentCell")
+        tv.rowHeight = UITableViewAutomaticDimension
+        tv.estimatedRowHeight = 75
+        tv.clipsToBounds = true
+        tv.separatorStyle = .none
+        return tv
     }()
 
     lazy var commentBoxView: CommentBoxView = {
@@ -48,7 +48,7 @@ class CommentController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(collectionView)
+        view.addSubview(commentsTableView)
         view.addSubview(commentBoxView)
         
         // Add caption to data
@@ -60,10 +60,8 @@ class CommentController: UIViewController {
         // Set constraint for comment box view bottom
         commentBoxViewBottomAnchor = NSLayoutConstraint(item: commentBoxView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 0)
         
-        collectionView.backgroundColor = .white
+        commentsTableView.backgroundColor = .white
         automaticallyAdjustsScrollViewInsets = false
-        adapter.collectionView = collectionView
-        adapter.dataSource = self
         
         getComments()
         
@@ -90,10 +88,10 @@ class CommentController: UIViewController {
             commentBoxViewBottomAnchor,
             commentBoxView.leftAnchor.constraint(equalTo: view.leftAnchor),
             commentBoxView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            collectionView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
-            collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: commentBoxView.topAnchor),
+            commentsTableView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+            commentsTableView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            commentsTableView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            commentsTableView.bottomAnchor.constraint(equalTo: commentBoxView.topAnchor),
         ])
     }
     
@@ -105,19 +103,18 @@ class CommentController: UIViewController {
         FaceSnapsClient.sharedInstance.getComments(forPost: post) { (comments, error) in
             guard let comments = comments else { return }
             self.data.append(contentsOf: comments)
-            self.adapter.performUpdates(animated: true, completion: { (completed) in
-            })
+            self.commentsTableView.reloadData()
         }
     }
 
     
     func scrollToBottom() {
-        let section = collectionView.numberOfSections - 1
+        let section = commentsTableView.numberOfSections - 1
         guard section >= 0 else { return }
-        let item = collectionView.numberOfItems(inSection: section) - 1
+        let item = commentsTableView.numberOfRows(inSection: section) - 1
         guard item >= 0 else { return }
         let lastIndexPath = IndexPath(item: item, section: section)
-        collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: true)
+        commentsTableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
     }
     
     // Adjust the height of the comment box view and the uitextview for dynamic height
@@ -152,30 +149,30 @@ class CommentController: UIViewController {
         }, completion: nil)
     }
 }
-
-// MARK: - IGListAdapterDataSource
-extension CommentController: IGListAdapterDataSource {
-    func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
-        return data as [IGListDiffable]
+// MARK: - UITableViewDataSource & UITableViewDelegate
+extension CommentController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return data.count
     }
     
-    func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return CommentSectionController(commentDelegate: self)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "fullCommentCell", for: indexPath) as! FullCommentCell
+        
+        let comment = data[indexPath.row]
+        cell.prepare(comment: comment, delegate: self, captionCell: false)
+        
+        return cell
     }
     
-    func emptyView(for listAdapter: IGListAdapter) -> UIView? {
-        return nil
-    }
-    
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        let comment = data[indexPath.row]
+//        return FullCommentCell.cellHeight(forComment: comment)
+//    }
 }
 
 // MARK: - CommentDelegate
 // This is responsible for handling taps on the comment cell, such as reply and tapping the user icon for the cell
 extension CommentController: CommentDelegate {
-    func didTapAuthor(author: User) {
-        // TODO: Present user profile
-    }
-    
     func didTapReply(toAuthor author: User) {
         if commentBoxView.commentTextView.text == "Add a comment..." {
             commentBoxView.commentTextView.text = "@\(author.userName) "
@@ -208,9 +205,11 @@ extension CommentController: CommentSubmissionDelegate {
                 // Successfully posted comment. Append to data
                 self.post.comments.insert(comment, at: 0)
                 self.data.append(comment)
-                self.adapter.performUpdates(animated: true, completion: { (completed) in
-                    self.scrollToBottom()
-                })
+                self.commentsTableView.reloadData()
+                self.scrollToBottom()
+//                self.adapter.performUpdates(animated: true, completion: { (completed) in
+//                    self.scrollToBottom()
+//                })
             } else {
                 // TODO: Notify user of error with alert
                 let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
