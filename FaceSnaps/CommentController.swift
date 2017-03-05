@@ -64,9 +64,7 @@ class CommentController: UIViewController {
         automaticallyAdjustsScrollViewInsets = false
         
         getComments()
-        
-        hideKeyboardWhenTappedAround()
-        
+    
         // Hide FaceSnaps logo
         (navigationController as? HomeNavigationController)?.logoIsHidden = true
         // Hide tab bar
@@ -96,7 +94,6 @@ class CommentController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        commentBoxView.showKeyboard()
     }
     
     private func getComments() {
@@ -104,6 +101,7 @@ class CommentController: UIViewController {
             guard let comments = comments else { return }
             self.data.append(contentsOf: comments)
             self.commentsTableView.reloadData()
+            self.scrollToBottom()
         }
     }
 
@@ -147,6 +145,10 @@ class CommentController: UIViewController {
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseIn, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
     }
 }
 // MARK: - UITableViewDataSource & UITableViewDelegate
