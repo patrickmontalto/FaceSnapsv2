@@ -165,11 +165,7 @@ extension CommentController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        let comment = data[indexPath.row]
-//        return FullCommentCell.cellHeight(forComment: comment)
-//    }
+
 }
 
 // MARK: - CommentDelegate
@@ -209,9 +205,6 @@ extension CommentController: CommentSubmissionDelegate {
                 self.data.append(comment)
                 self.commentsTableView.reloadData()
                 self.scrollToBottom()
-//                self.adapter.performUpdates(animated: true, completion: { (completed) in
-//                    self.scrollToBottom()
-//                })
             } else {
                 // TODO: Notify user of error with alert
                 let action = UIAlertAction(title: "Try Again", style: .default, handler: nil)
