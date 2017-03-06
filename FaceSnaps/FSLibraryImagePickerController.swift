@@ -47,6 +47,7 @@ class FSLibraryImagePickerController: UIViewController {
     var imageManager = PHCachingImageManager()
     var cellSize = CGSize(width: 100, height: 100)
     
+    var gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
     
     // Variables for calculating position
     enum Direction {
@@ -113,6 +114,9 @@ class FSLibraryImagePickerController: UIViewController {
             collectionViewConstraintHeight,
         ])
         
+        // Set gesture
+        view.addGestureRecognizer(gesture)
+        
         // Get data from library
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -127,6 +131,22 @@ class FSLibraryImagePickerController: UIViewController {
 
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
+    }
+    
+    func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
+        let dragStartPos = recognizer.location(in: self.view)
+        
+        switch recognizer.state {
+        case .began, .changed:
+            let translation = recognizer.translation(in: self.view)
+            
+            if collectionView.frame.contains(dragStartPos) {
+                
+            }
+            
+        default:
+            break
+        }
     }
 }
 
