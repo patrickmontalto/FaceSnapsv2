@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FSLibraryViewCell" id="xU2-tt-9pR" customClass="FSLibraryViewCell" customModule="FaceSnaps" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Z2-Bi-u4P">
+                        <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                    </imageView>
+                    <view hidden="YES" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lg2-mH-Pos">
+                        <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="Lg2-mH-Pos" firstAttribute="leading" secondItem="xU2-tt-9pR" secondAttribute="leading" id="4S9-eX-kgb"/>
+                <constraint firstAttribute="trailing" secondItem="1Z2-Bi-u4P" secondAttribute="trailing" id="9Ro-mS-TKK"/>
+                <constraint firstAttribute="trailing" secondItem="Lg2-mH-Pos" secondAttribute="trailing" id="Mif-bK-EiK"/>
+                <constraint firstAttribute="bottom" secondItem="1Z2-Bi-u4P" secondAttribute="bottom" id="V6x-k6-MrX"/>
+                <constraint firstItem="1Z2-Bi-u4P" firstAttribute="top" secondItem="xU2-tt-9pR" secondAttribute="top" id="eYj-hU-3I7"/>
+                <constraint firstItem="Lg2-mH-Pos" firstAttribute="top" secondItem="xU2-tt-9pR" secondAttribute="top" id="jyh-PC-Y8x"/>
+                <constraint firstAttribute="bottom" secondItem="Lg2-mH-Pos" secondAttribute="bottom" id="mBE-Jc-Q6y"/>
+                <constraint firstItem="1Z2-Bi-u4P" firstAttribute="leading" secondItem="xU2-tt-9pR" secondAttribute="leading" id="z3b-OG-8eh"/>
+            </constraints>
+            <connections>
+                <outlet property="highlightView" destination="Lg2-mH-Pos" id="RSQ-gV-bLy"/>
+                <outlet property="imageView" destination="1Z2-Bi-u4P" id="Y2q-tf-6X5"/>
+            </connections>
+            <point key="canvasLocation" x="-22" y="-13"/>
+        </collectionViewCell>
+    </objects>
+</document>

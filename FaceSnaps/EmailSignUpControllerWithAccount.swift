@@ -202,9 +202,9 @@ extension EmailSignUpControllerWithAccount: UITextFieldDelegate {
 }
 
 
-// MARK: FaceSnapsImagePickerControllerDelegate
-extension EmailSignUpControllerWithAccount: FaceSnapsImagePickerControllerDelegate {
-    func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingImage image: UIImage) {
+// MARK: FSImagePickerControllerDelegate
+extension EmailSignUpControllerWithAccount: FSImagePickerControllerDelegate {
+    func imagePickerController(_ picker: FSImagePickerController, didFinishPickingImage image: UIImage) {
         let circleImage = image.circle!
         addPhotoButton.setImage(circleImage, for: .normal)
         addPhotoButton.setImage(circleImage, for: .highlighted)

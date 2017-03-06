@@ -1,5 +1,5 @@
 //
-//  FaceSnapsImagePickerController.swift
+//  FSImagePickerController.swift
 //  FaceSnaps
 //
 //  Created by Patrick Montalto on 12/29/16.
@@ -9,9 +9,9 @@
 import UIKit
 import AVFoundation
 
-class FaceSnapsImagePickerController: UIViewController {
+class FSImagePickerController: UIViewController {
     
-    var delegate: FaceSnapsImagePickerControllerDelegate?
+    var delegate: FSImagePickerControllerDelegate?
     
     // MARK: Top Navigation / Title bar
     lazy var navigationBar: UINavigationBar = {
@@ -20,7 +20,7 @@ class FaceSnapsImagePickerController: UIViewController {
         
         let navItem = UINavigationItem(title: "Photo")
         // TODO: Add cancel action (go back)
-        let cancelBarButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(FaceSnapsImagePickerController.dismissImagePicker))
+        let cancelBarButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(FSImagePickerController.dismissImagePicker))
         cancelBarButton.tintColor = .black
         
         navItem.leftBarButtonItem = cancelBarButton
@@ -61,7 +61,7 @@ class FaceSnapsImagePickerController: UIViewController {
         button.setImage(shutter, for: .normal)
 
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(FaceSnapsImagePickerController.takePhoto(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(FSImagePickerController.takePhoto(sender:)), for: .touchUpInside)
         return button
     }()
     
@@ -71,7 +71,7 @@ class FaceSnapsImagePickerController: UIViewController {
         let flip = UIImage(named: "flip")!
         button.setImage(flip, for: .normal)
         button.showsTouchWhenHighlighted = true
-        button.addTarget(self, action: #selector(FaceSnapsImagePickerController.flipCameraPressed(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(FSImagePickerController.flipCameraPressed(sender:)), for: .touchUpInside)
         
         return button
     }()
@@ -83,7 +83,7 @@ class FaceSnapsImagePickerController: UIViewController {
         button.setImage(flashOff, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.showsTouchWhenHighlighted = true
-        button.addTarget(self, action: #selector(FaceSnapsImagePickerController.toggleFlashPressed(sender:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(FSImagePickerController.toggleFlashPressed(sender:)), for: .touchUpInside)
         
         return button
     }()
@@ -465,11 +465,11 @@ class FaceSnapsImagePickerController: UIViewController {
     }
 }
 
-// MARK: FaceSnapsImagePickerControllerDelegate
-@objc protocol FaceSnapsImagePickerControllerDelegate: class {
-    func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingImage image: UIImage)
+// MARK: FSImagePickerControllerDelegate
+@objc protocol FSImagePickerControllerDelegate: class {
+    func imagePickerController(_ picker: FSImagePickerController, didFinishPickingImage image: UIImage)
     
-    @objc optional func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
+    @objc optional func imagePickerController(_ picker: FSImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
 }
 
 

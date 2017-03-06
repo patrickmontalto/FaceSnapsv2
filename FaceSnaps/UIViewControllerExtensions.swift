@@ -63,7 +63,7 @@ extension UIViewController {
     }
     
     
-    func createPhotoAlertController(delegate: FaceSnapsImagePickerControllerDelegate, mediaPickerManager: MediaPickerManager) -> UIAlertController {
+    func createPhotoAlertController(delegate: FSImagePickerControllerDelegate, mediaPickerManager: MediaPickerManager) -> UIAlertController {
         let controller = UIAlertController(title: "", message: nil, preferredStyle: .actionSheet)
         
         let attributedTitle = NSAttributedString(string: "Change Profile Photo", attributes: [
@@ -78,7 +78,7 @@ extension UIViewController {
         })
         
         let takePhoto = UIAlertAction(title: "Take Photo", style: .default, handler: { (action) in
-            let vc = FaceSnapsImagePickerController()
+            let vc = FSImagePickerController()
             vc.delegate = delegate
             self.present(vc, animated: true, completion: nil)
         })

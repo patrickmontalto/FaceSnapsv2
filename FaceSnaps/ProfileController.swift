@@ -56,7 +56,6 @@ class ProfileController: UIViewController {
         // Get posts for user
         FaceSnapsClient.sharedInstance.getUserPosts(user: user) { (data, error) in
             if let data = data {
-                print(data.count)
                 self.posts = Array(data)
                 self.collectionView.reloadData()
             } else {

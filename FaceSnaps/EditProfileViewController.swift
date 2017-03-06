@@ -196,9 +196,9 @@ extension EditProfileViewController: MediaPickerManagerDelegate {
     }
 }
 
-// MARK: - FaceSnapsImagePickerControllerDelegate
-extension EditProfileViewController: FaceSnapsImagePickerControllerDelegate {
-    func imagePickerController(_ picker: FaceSnapsImagePickerController, didFinishPickingImage image: UIImage) {
+// MARK: - FSImagePickerControllerDelegate
+extension EditProfileViewController: FSImagePickerControllerDelegate {
+    func imagePickerController(_ picker: FSImagePickerController, didFinishPickingImage image: UIImage) {
         // TODO: Get a reference to the userIconImageView more cleanly. Then set the image
         let circleImage = image.circle!
         headerView.update(image: circleImage)
