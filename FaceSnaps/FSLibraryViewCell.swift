@@ -18,10 +18,10 @@ class FSLibraryViewCell: UICollectionViewCell {
             self.imageView.image = image
         }
     }
-    
-    override var isHighlighted: Bool {
+
+    override var isSelected: Bool {
         didSet {
-            highlightView.isHidden = !isHighlighted
+            self.highlightView.isHidden = !isSelected
         }
     }
 }

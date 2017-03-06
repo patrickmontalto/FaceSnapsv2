@@ -93,7 +93,7 @@ class FSLibraryImagePickerController: UIViewController {
         
          selectedImageViewConstraintTopAnchor = NSLayoutConstraint(item: selectedImageViewContainer, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 50)
         
-        collectionViewConstraintHeight.constant = view.frame.height - view.frame.width - selectedImageViewConstraintTopAnchor.constant - 49 - (self.navigationController?.navigationBar.frame.height ?? 0)
+        collectionViewConstraintHeight.constant = view.frame.height - view.frame.width - selectedImageViewConstraintTopAnchor.constant - 49 - (self.navigationController?.navigationBar.frame.height ?? 0) - 20
         
         
         NSLayoutConstraint.activate([
@@ -156,6 +156,9 @@ extension FSLibraryImagePickerController: UICollectionViewDataSource, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // TODO
+//        let cell = collectionView.cellForItem(at: indexPath) as! FSLibraryViewCell
+//        cell.highlightView.isHidden = false
+//        
     }
     
 }
