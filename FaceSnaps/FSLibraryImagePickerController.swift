@@ -42,7 +42,7 @@ class FSLibraryImagePickerController: UIViewController {
     var selectedImageViewConstraintTopAnchor: NSLayoutConstraint!
     
     let initialCollectionViewHeightConstant: CGFloat = 150
-    
+    let initialSelectedImageViewTopConstraint: CGFloat = 50
     var images = [PHAsset]()
     var imageManager = PHCachingImageManager()
     var cellSize = CGSize(width: 100, height: 100)
@@ -157,10 +157,11 @@ class FSLibraryImagePickerController: UIViewController {
                     // Calculate the difference above the bottom Y of the selectedImageViewContainer
                     let difference = selectedImageViewBottomY - dragPos.y
                     
-                    // Move up the selectedImageViewContainer
+                    // Gradually move up the selectedImageViewContainer
                     selectedImageViewConstraintTopAnchor.constant -= difference
-                    // Increase the height of the collectionView
                     collectionViewConstraintHeight.constant += difference
+                    // Increase the height of the collectionView
+                    
                     UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
                         self.view.layoutIfNeeded()
                     }, completion: nil)
@@ -172,6 +173,14 @@ class FSLibraryImagePickerController: UIViewController {
 //                print("OUT of collectionView")
 //            }
         case .ended:
+            if (selectedImageViewConstraintTopAnchor.constant ) < 30 {
+                // Slide it up to the top
+                selectedImageViewConstraintTopAnchor.constant = -selectedImageViewContainer.frame.height + 20
+                collectionViewConstraintHeight.constant = view.frame.height - 20 - 49
+                UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
             print("TouchEnded")
         default:
             break
