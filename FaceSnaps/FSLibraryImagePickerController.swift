@@ -47,7 +47,11 @@ class FSLibraryImagePickerController: UIViewController {
     var imageManager = PHCachingImageManager()
     var cellSize = CGSize(width: 100, height: 100)
     
-    var gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+    lazy var gesture: UIPanGestureRecognizer = {
+        let gstr = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        gstr.delegate = self
+        return gstr
+    }()
     
     // Variables for calculating position
     enum Direction {
@@ -64,6 +68,9 @@ class FSLibraryImagePickerController: UIViewController {
         } else {
             PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
         }
+    }
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
     
     func requestAuthorizationHandler(status: PHAuthorizationStatus) {
@@ -94,7 +101,7 @@ class FSLibraryImagePickerController: UIViewController {
         
          selectedImageViewConstraintTopAnchor = NSLayoutConstraint(item: selectedImageViewContainer, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 50)
         
-        collectionViewConstraintHeight.constant = view.frame.height - view.frame.width - selectedImageViewConstraintTopAnchor.constant - 49 - (self.navigationController?.navigationBar.frame.height ?? 0) - 20
+        collectionViewConstraintHeight.constant = view.frame.height - view.frame.width - selectedImageViewConstraintTopAnchor.constant - 49 - (self.navigationController?.navigationBar.frame.height ?? 0)
         
         
         NSLayoutConstraint.activate([
@@ -132,21 +139,51 @@ class FSLibraryImagePickerController: UIViewController {
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
+    /// Holds the starting point for a new pan
+    var dragStartPos: CGPoint = .zero
     
+    /// Determines behavior of selectedImageView scrolling
     func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
-        let dragStartPos = recognizer.location(in: self.view)
-        
+        let selectedImageViewBottomY = selectedImageViewContainer.frame.origin.y + selectedImageViewContainer.frame.height
+        let dragPos = recognizer.location(in: self.view)
+
         switch recognizer.state {
-        case .began, .changed:
-            let translation = recognizer.translation(in: self.view)
-            
+        case .began:
+            dragStartPos = recognizer.location(in: self.view)
+        case .changed:
+//            let translation = recognizer.translation(in: self.view)
             if collectionView.frame.contains(dragStartPos) {
-                
+                if selectedImageViewContainer.frame.contains(dragPos) {
+                    // Calculate the difference above the bottom Y of the selectedImageViewContainer
+                    let difference = selectedImageViewBottomY - dragPos.y
+                    
+                    // Move up the selectedImageViewContainer
+                    selectedImageViewConstraintTopAnchor.constant -= difference
+                    // Increase the height of the collectionView
+                    collectionViewConstraintHeight.constant += difference
+                    UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+                        self.view.layoutIfNeeded()
+                    }, completion: nil)
+                }
             }
-            
+//            if collectionView.frame.contains(dragPos) {
+//                print("IN CollectionView")
+//            } else {
+//                print("OUT of collectionView")
+//            }
+        case .ended:
+            print("TouchEnded")
         default:
             break
         }
+        print("The beginning pos was: \(dragStartPos)")
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension FSLibraryImagePickerController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
 
