@@ -16,7 +16,8 @@ class FSLibraryImagePickerController: UIViewController {
         let cvLayout = UICollectionViewFlowLayout()
         let width = (self.view.frame.width - 3) / 4
         cvLayout.itemSize = CGSize(width: width, height: width)
-        
+        cvLayout.minimumInteritemSpacing = 1
+        cvLayout.minimumLineSpacing = 1
         let cv = UICollectionView(frame: .zero, collectionViewLayout: cvLayout)
         cv.delegate = self
         cv.dataSource = self
@@ -27,7 +28,11 @@ class FSLibraryImagePickerController: UIViewController {
         return cv
     }()
     
-    var selectedImageViewContainer = UIView()
+    var selectedImageViewContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue
+        return view
+    }()
 
     lazy var selectedImageView: FSImageCropView = {
         return FSImageCropView()
