@@ -39,7 +39,7 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         searchTab.tabBarItem = searchTabBarItem
         
         // Camera view controller
-        let cameraTab = CameraTabBarController()
+        let cameraTab = ImagePickerNavigationController()
         let cameraImage = UIImage(named: "camera-launch")?.with(size: imageSize)
         let cameraImageSelected = UIImage(named: "camera-selected")?.with(size: imageSize)
         let cameraTabBarItem = UITabBarItem(title: nil, image: cameraImage, selectedImage: cameraImageSelected)
@@ -73,8 +73,8 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
 
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         
-        if viewController is CameraTabBarController {
-            let vc = CameraTabBarController()
+        if viewController is ImagePickerNavigationController {
+            let vc = ImagePickerNavigationController()
             present(vc, animated: true, completion: nil)
             return false
         }

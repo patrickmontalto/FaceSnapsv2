@@ -42,7 +42,7 @@ class FSLibraryImagePickerController: UIViewController {
     var selectedImageViewConstraintTopAnchor: NSLayoutConstraint!
     
     let initialCollectionViewHeightConstant: CGFloat = 150
-    let initialSelectedImageViewTopConstraint: CGFloat = 50
+    let initialSelectedImageViewTopConstant: CGFloat = 0
     var images = [PHAsset]()
     var imageManager = PHCachingImageManager()
     var cellSize = CGSize(width: 100, height: 100)
@@ -69,6 +69,7 @@ class FSLibraryImagePickerController: UIViewController {
             PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
         }
     }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -99,7 +100,7 @@ class FSLibraryImagePickerController: UIViewController {
         // Initial values
         collectionViewConstraintHeight = NSLayoutConstraint(item: collectionView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: initialCollectionViewHeightConstant)
         
-         selectedImageViewConstraintTopAnchor = NSLayoutConstraint(item: selectedImageViewContainer, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: 50)
+         selectedImageViewConstraintTopAnchor = NSLayoutConstraint(item: selectedImageViewContainer, attribute: .top, relatedBy: .equal, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1.0, constant: initialSelectedImageViewTopConstant)
         
         collectionViewConstraintHeight.constant = view.frame.height - view.frame.width - selectedImageViewConstraintTopAnchor.constant - 49 - (self.navigationController?.navigationBar.frame.height ?? 0)
         
@@ -134,6 +135,28 @@ class FSLibraryImagePickerController: UIViewController {
         
         imageManager.startCachingImages(for: images, targetSize: cellSize, contentMode: .aspectFit, options: nil)
         collectionView.reloadData()
+        
+        // Select first item
+        selectFirstItem()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Add next button
+        tabBarController?.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(selectedImage))
+//        navigationController?.navigationItem.setRightBarButton(nextButtonItem, animated: false)
+    }
+    
+    func selectFirstItem() {
+        guard images.count > 0 else { return }
+        let indexPath = IndexPath(item: 0, section: 0)
+        collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
+    }
+
+    func selectedImage() {
+        // TODO: get cropped image and notify delegate
+        // TODO: Auto-select first item
+        delegate!.libraryImagePickerController(self, didFinishPickingImage: selectedImageView.image)
     }
 
     deinit {
@@ -177,15 +200,23 @@ class FSLibraryImagePickerController: UIViewController {
                 // Slide it up to the top
                 selectedImageViewConstraintTopAnchor.constant = -selectedImageViewContainer.frame.height + 20
                 collectionViewConstraintHeight.constant = view.frame.height - 20 - 49
-                UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
-                    self.view.layoutIfNeeded()
-                }, completion: nil)
+            } else {
+                // Slide it back down
+                selectedImageViewConstraintTopAnchor.constant = initialSelectedImageViewTopConstant
+                collectionViewConstraintHeight.constant = initialCollectionViewHeightConstant
             }
+            animateConstraintChanges()
             print("TouchEnded")
         default:
             break
         }
         print("The beginning pos was: \(dragStartPos)")
+    }
+    
+    private func animateConstraintChanges() {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 
@@ -242,6 +273,7 @@ extension FSLibraryImagePickerController: PHPhotoLibraryChangeObserver {
 //}
 
 protocol FSLibraryImagePickerControllerDelegate {
+    func libraryImagePickerController(_ picker: FSLibraryImagePickerController, didFinishPickingImage image: UIImage)
     func getCropHeightRatio() -> CGFloat
     
     func cameraRollAccessDenied()

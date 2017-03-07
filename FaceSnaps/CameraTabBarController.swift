@@ -9,7 +9,14 @@
 import UIKit
 
 class CameraTabBarController: UITabBarController, UITabBarControllerDelegate {
-
+    
+    var parentController: ImagePickerNavigationController!
+    
+    convenience init(parentController: ImagePickerNavigationController) {
+        self.init()
+        self.parentController = parentController
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,12 +41,25 @@ class CameraTabBarController: UITabBarController, UITabBarControllerDelegate {
         
         // Set view controllers
         viewControllers = [libraryTab, photoTab]
+        
+        // Add cancel button
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(dismissView))
     }
     
+    func dismissView() {
+        dismiss(animated: true, completion: nil)
+    }
+
 }
 
 // MARK: - FSLibaryImagePickerControllerDelegate
 extension CameraTabBarController: FSLibraryImagePickerControllerDelegate {
+    
+    
+    func libraryImagePickerController(_ picker: FSLibraryImagePickerController, didFinishPickingImage image: UIImage) {
+        // TODO: Get notified from FSLibraryImagePickerController that next button was tapped
+        // Get image and present image editing controller via navigation controller
+    }
     func cameraRollAccessDenied() {
         // TODO
     }
@@ -56,6 +76,7 @@ extension CameraTabBarController: FSLibraryImagePickerControllerDelegate {
 // MARK: - FSImagePickerControllerDelegate
 extension CameraTabBarController: FSImagePickerControllerDelegate {
     func imagePickerController(_ picker: FSImagePickerController, didFinishPickingImage image: UIImage) {
-        // TODO
+        // TODO:
+        // get image and move on to the image editing controller via navigiation controller
     }
 }
