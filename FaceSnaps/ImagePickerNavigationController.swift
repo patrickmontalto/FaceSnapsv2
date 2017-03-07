@@ -11,7 +11,7 @@ import UIKit
 class ImagePickerNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        let cameraTabBarController = CameraTabBarController(parentController: self)
+        let cameraTabBarController = CameraTabBarController()
         setViewControllers([cameraTabBarController], animated: false)
     }
 }

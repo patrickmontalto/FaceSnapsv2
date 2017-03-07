@@ -41,7 +41,11 @@ class FSLibraryImagePickerController: UIViewController {
     var collectionViewConstraintHeight: NSLayoutConstraint!
     var selectedImageViewConstraintTopAnchor: NSLayoutConstraint!
     
-    let initialCollectionViewHeightConstant: CGFloat = 150
+    lazy var initialCollectionViewHeightConstant: CGFloat = {
+        let tabBarHeight: CGFloat = 49.0
+        return self.view.frame.height - self.view.frame.width - tabBarHeight - (self.navigationController?.navigationBar.frame.height ?? 0)
+    }()
+    
     let initialSelectedImageViewTopConstant: CGFloat = 0
     var images = [PHAsset]()
     var imageManager = PHCachingImageManager()
@@ -70,6 +74,7 @@ class FSLibraryImagePickerController: UIViewController {
         }
     }
     
+    // Hide the status bar
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -91,6 +96,9 @@ class FSLibraryImagePickerController: UIViewController {
         view.addSubview(collectionView)
         view.addSubview(selectedImageViewContainer)
         selectedImageViewContainer.addSubview(selectedImageView)
+        
+        automaticallyAdjustsScrollViewInsets = false
+
         
         // Constraints
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -185,9 +193,7 @@ class FSLibraryImagePickerController: UIViewController {
                     collectionViewConstraintHeight.constant += difference
                     // Increase the height of the collectionView
                     
-                    UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
-                        self.view.layoutIfNeeded()
-                    }, completion: nil)
+                    animateConstraintChanges()
                 }
             }
 //            if collectionView.frame.contains(dragPos) {
@@ -196,10 +202,10 @@ class FSLibraryImagePickerController: UIViewController {
 //                print("OUT of collectionView")
 //            }
         case .ended:
-            if (selectedImageViewConstraintTopAnchor.constant ) < 30 {
+            if (selectedImageViewConstraintTopAnchor.constant ) < -40 {
                 // Slide it up to the top
-                selectedImageViewConstraintTopAnchor.constant = -selectedImageViewContainer.frame.height + 20
-                collectionViewConstraintHeight.constant = view.frame.height - 20 - 49
+                selectedImageViewConstraintTopAnchor.constant = -selectedImageViewContainer.frame.height + 40
+                collectionViewConstraintHeight.constant = view.frame.height - topLayoutGuide.length - bottomLayoutGuide.length
             } else {
                 // Slide it back down
                 selectedImageViewConstraintTopAnchor.constant = initialSelectedImageViewTopConstant
@@ -214,7 +220,7 @@ class FSLibraryImagePickerController: UIViewController {
     }
     
     private func animateConstraintChanges() {
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
     }

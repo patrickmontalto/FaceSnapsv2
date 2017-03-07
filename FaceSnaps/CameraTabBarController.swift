@@ -10,18 +10,15 @@ import UIKit
 
 class CameraTabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    var parentController: ImagePickerNavigationController!
-    
-    convenience init(parentController: ImagePickerNavigationController) {
-        self.init()
-        self.parentController = parentController
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        delegate = self
+        // Appearance
         UITabBar.appearance().tintColor = .black
+        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightMedium)], for: .normal)
+        automaticallyAdjustsScrollViewInsets = false
+        
+        delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,12 +28,15 @@ class CameraTabBarController: UITabBarController, UITabBarControllerDelegate {
         let libraryTab = FSLibraryImagePickerController()
         libraryTab.delegate = self
         let libraryTabBarItem = UITabBarItem(title: "Library", image: nil, tag: 0)
+        libraryTabBarItem.titlePositionAdjustment = UIOffsetMake(0, -12)
         libraryTab.tabBarItem  = libraryTabBarItem
+    
         
         // Photo
         let photoTab = FSImagePickerController()
         photoTab.delegate = self
         let photoTabBarItem = UITabBarItem(title: "Photo", image: nil, tag: 1)
+        photoTabBarItem.titlePositionAdjustment = UIOffsetMake(0, -12)
         photoTab.tabBarItem = photoTabBarItem
         
         // Set view controllers
@@ -54,8 +54,6 @@ class CameraTabBarController: UITabBarController, UITabBarControllerDelegate {
 
 // MARK: - FSLibaryImagePickerControllerDelegate
 extension CameraTabBarController: FSLibraryImagePickerControllerDelegate {
-    
-    
     func libraryImagePickerController(_ picker: FSLibraryImagePickerController, didFinishPickingImage image: UIImage) {
         // TODO: Get notified from FSLibraryImagePickerController that next button was tapped
         // Get image and present image editing controller via navigation controller
