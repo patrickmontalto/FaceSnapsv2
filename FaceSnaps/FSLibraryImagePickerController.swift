@@ -148,7 +148,7 @@ class FSLibraryImagePickerController: UIViewController {
         view.addGestureRecognizer(gesture)
         // Add tap gesture
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedView(_:)))
-        view.addGestureRecognizer(tapGesture)
+        selectedImageViewContainer.addGestureRecognizer(tapGesture)
         
         // Get data from library
         let options = PHFetchOptions()
@@ -158,7 +158,7 @@ class FSLibraryImagePickerController: UIViewController {
             self.images.append(obj)
         })
         
-        imageManager.startCachingImages(for: images, targetSize: cellSize, contentMode: .aspectFit, options: nil)
+        imageManager.startCachingImages(for: images, targetSize: cellSize, contentMode: .aspectFill, options: nil)
         collectionView.reloadData()
         
         // Select first item
@@ -188,8 +188,7 @@ class FSLibraryImagePickerController: UIViewController {
     }
     
     func tappedView(_ recognizer: UITapGestureRecognizer) {
-        let point = recognizer.location(in: self.view)
-        if selectedImageViewContainer.frame.contains(point) && selectedImageViewIsHidden {
+        if selectedImageViewIsHidden {
             resetSlidingViewConstraints()
             animateConstraintChanges()
         }
@@ -303,7 +302,14 @@ extension FSLibraryImagePickerController: UICollectionViewDataSource, UICollecti
         // TODO
 //        let cell = collectionView.cellForItem(at: indexPath) as! FSLibraryViewCell
 //        cell.highlightView.isHidden = false
-//        
+//       
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .opportunistic
+        let asset = images[indexPath.row]
+        let targetSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+        imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: options) { (image, info) in
+            self.selectedImageView.image = image
+        }
     }
     
 }
