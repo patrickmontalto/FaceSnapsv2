@@ -46,10 +46,24 @@ class FSLibraryImagePickerController: UIViewController {
         return self.view.frame.height - self.view.frame.width - tabBarHeight - (self.navigationController?.navigationBar.frame.height ?? 0)
     }()
     
+    var selectedImageViewIsHidden: Bool {
+        return self.selectedImageViewConstraintTopAnchor.constant == -self.selectedImageViewContainer.frame.height + 40
+    }
+    
+    var selectedImageViewShouldScrollUp: Bool {
+        if self.selectedImageViewIsHidden { return false }
+        return self.selectedImageViewConstraintTopAnchor.constant < -40
+    }
+    
     let initialSelectedImageViewTopConstant: CGFloat = 0
     var images = [PHAsset]()
     var imageManager = PHCachingImageManager()
     var cellSize = CGSize(width: 100, height: 100)
+    
+    /// Holds the starting point for a new pan
+    var dragStartPos: CGPoint = .zero
+    /// Whether the selectedImageViewContainer is currently raised or being risen
+    var viewDidRaise = false
     
     lazy var gesture: UIPanGestureRecognizer = {
         let gstr = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
@@ -132,6 +146,9 @@ class FSLibraryImagePickerController: UIViewController {
         
         // Set gesture
         view.addGestureRecognizer(gesture)
+        // Add tap gesture
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedView(_:)))
+        view.addGestureRecognizer(tapGesture)
         
         // Get data from library
         let options = PHFetchOptions()
@@ -152,7 +169,6 @@ class FSLibraryImagePickerController: UIViewController {
         super.viewWillAppear(animated)
         // Add next button
         tabBarController?.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(selectedImage))
-//        navigationController?.navigationItem.setRightBarButton(nextButtonItem, animated: false)
     }
     
     func selectFirstItem() {
@@ -170,53 +186,79 @@ class FSLibraryImagePickerController: UIViewController {
     deinit {
         PHPhotoLibrary.shared().unregisterChangeObserver(self)
     }
-    /// Holds the starting point for a new pan
-    var dragStartPos: CGPoint = .zero
+    
+    func tappedView(_ recognizer: UITapGestureRecognizer) {
+        let point = recognizer.location(in: self.view)
+        if selectedImageViewContainer.frame.contains(point) && selectedImageViewIsHidden {
+            resetSlidingViewConstraints()
+            animateConstraintChanges()
+        }
+    }
     
     /// Determines behavior of selectedImageView scrolling
     func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
         let selectedImageViewBottomY = selectedImageViewContainer.frame.origin.y + selectedImageViewContainer.frame.height
         let dragPos = recognizer.location(in: self.view)
+        let velocity = recognizer.velocity(in: self.view)
 
         switch recognizer.state {
         case .began:
             dragStartPos = recognizer.location(in: self.view)
         case .changed:
-//            let translation = recognizer.translation(in: self.view)
-            if collectionView.frame.contains(dragStartPos) {
+            
+            // Calculate the difference above the bottom Y of the selectedImageViewContainer
+            let difference = selectedImageViewBottomY - dragPos.y
+            
+            if collectionView.frame.contains(dragStartPos) && !selectedImageViewIsHidden {
                 if selectedImageViewContainer.frame.contains(dragPos) {
-                    // Calculate the difference above the bottom Y of the selectedImageViewContainer
-                    let difference = selectedImageViewBottomY - dragPos.y
-                    
-                    // Gradually move up the selectedImageViewContainer
-                    selectedImageViewConstraintTopAnchor.constant -= difference
-                    collectionViewConstraintHeight.constant += difference
-                    // Increase the height of the collectionView
-                    
-                    animateConstraintChanges()
+                    if velocity.y < 0 { // Moving up
+//                        print("Sliding it up!")
+
+                        viewDidRaise = true
+                        // Gradually move up the selectedImageViewContainer
+                        selectedImageViewConstraintTopAnchor.constant -= difference
+                        // Increase the height of the collectionView
+                        collectionViewConstraintHeight.constant += difference
+                    }
+                } else if viewDidRaise && velocity.y > 0 {
+                    // View is currently being slid up. Allow it to be dragged down
+                
+                    if selectedImageViewConstraintTopAnchor.constant < initialSelectedImageViewTopConstant {
+//                        print("sliding it down!")
+
+                        // Gradually move down the selectedImageViewContainer
+                        selectedImageViewConstraintTopAnchor.constant -= difference
+                        // Decrease the height of the collectionView
+                        collectionViewConstraintHeight.constant += difference
+                    }
                 }
+                animateConstraintChanges()
+
             }
-//            if collectionView.frame.contains(dragPos) {
-//                print("IN CollectionView")
-//            } else {
-//                print("OUT of collectionView")
-//            }
+
         case .ended:
-            if (selectedImageViewConstraintTopAnchor.constant ) < -40 {
+            
+            if selectedImageViewShouldScrollUp {
                 // Slide it up to the top
                 selectedImageViewConstraintTopAnchor.constant = -selectedImageViewContainer.frame.height + 40
-                collectionViewConstraintHeight.constant = view.frame.height - topLayoutGuide.length - bottomLayoutGuide.length
-            } else {
+                collectionViewConstraintHeight.constant = view.frame.height - bottomLayoutGuide.length - self.navigationController!.navigationBar.frame.height - 40
+            } else if velocity.y > 0 {
+//                print("Resetting position.")
                 // Slide it back down
-                selectedImageViewConstraintTopAnchor.constant = initialSelectedImageViewTopConstant
-                collectionViewConstraintHeight.constant = initialCollectionViewHeightConstant
+                resetSlidingViewConstraints()
             }
             animateConstraintChanges()
             print("TouchEnded")
         default:
             break
         }
-        print("The beginning pos was: \(dragStartPos)")
+//        print("The beginning pos was: \(dragStartPos)")
+    }
+    
+    private func resetSlidingViewConstraints() {
+        viewDidRaise = false
+        selectedImageViewConstraintTopAnchor.constant = initialSelectedImageViewTopConstant
+        collectionViewConstraintHeight.constant = initialCollectionViewHeightConstant
     }
     
     private func animateConstraintChanges() {
