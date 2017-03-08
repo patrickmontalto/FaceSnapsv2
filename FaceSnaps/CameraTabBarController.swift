@@ -67,7 +67,7 @@ extension CameraTabBarController: FSLibraryImagePickerControllerDelegate {
     
     func getCropHeightRatio() -> CGFloat {
         // TODO
-        return 0
+        return 1.0
     }
 }
 

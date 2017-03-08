@@ -46,6 +46,11 @@ class FSLibraryImagePickerController: UIViewController {
         return self.view.frame.height - self.view.frame.width - tabBarHeight - (self.navigationController?.navigationBar.frame.height ?? 0)
     }()
     
+    var selectedAsset: PHAsset? {
+        guard let selectedIndex = self.collectionView.indexPathsForSelectedItems?.first else { return nil }
+        return images[selectedIndex.row]
+    }
+    
     var selectedImageViewIsHidden: Bool {
         return self.selectedImageViewConstraintTopAnchor.constant == -self.selectedImageViewContainer.frame.height + 40
     }
@@ -181,8 +186,12 @@ class FSLibraryImagePickerController: UIViewController {
 
     func selectedImage() {
         // TODO: get cropped image and notify delegate
-        // TODO: Auto-select first item
-        delegate!.libraryImagePickerController(self, didFinishPickingImage: selectedImageView.image)
+        guard let selectedAsset = selectedAsset else { return }
+
+        ImageCropHelper.cropToImageCropView(selectedImageView, asset: selectedAsset, cropHeightRatio: delegate!.getCropHeightRatio()) { (image) in
+            guard let image = image else { return }
+            self.delegate!.libraryImagePickerController(self, didFinishPickingImage: image)
+        }
     }
 
     deinit {
@@ -275,15 +284,6 @@ class FSLibraryImagePickerController: UIViewController {
         let targetSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
         imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: options) { (image, info) in
             self.selectedImageView.image = image
-        }
-    }
-}
-
-// MARK: - UIScrollViewDelegate
-extension FSLibraryImagePickerController: UIScrollViewDelegate {
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        if scrollView is UICollectionView {
-            
         }
     }
 }
