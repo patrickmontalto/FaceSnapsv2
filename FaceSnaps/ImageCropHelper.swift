@@ -23,4 +23,10 @@ class ImageCropHelper {
 
         return croppedUIImage
     }
+    static func cropToImageCropView(_ cropView: FSImageCropView) -> UIImage {
+        
+        let normalizedX = (cropView)
+        
+        return UIImage()
+    }
 }

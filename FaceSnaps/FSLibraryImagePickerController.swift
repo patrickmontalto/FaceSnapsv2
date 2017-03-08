@@ -175,6 +175,8 @@ class FSLibraryImagePickerController: UIViewController {
         guard images.count > 0 else { return }
         let indexPath = IndexPath(item: 0, section: 0)
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
+        guard let asset = images.first else { return }
+        populateImageView(withAsset: asset)
     }
 
     func selectedImage() {
@@ -265,6 +267,25 @@ class FSLibraryImagePickerController: UIViewController {
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
+    
+    /// Populate the selectedImageView with the selected thumbnail asset
+    func populateImageView(withAsset asset: PHAsset) {
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .opportunistic
+        let targetSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
+        imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: options) { (image, info) in
+            self.selectedImageView.image = image
+        }
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension FSLibraryImagePickerController: UIScrollViewDelegate {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if scrollView is UICollectionView {
+            
+        }
+    }
 }
 
 // MARK: - UIGestureRecognizerDelegate
@@ -284,14 +305,9 @@ extension FSLibraryImagePickerController: UICollectionViewDataSource, UICollecti
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FSLibraryViewCell", for: indexPath) as! FSLibraryViewCell
         
-//        let currentTag = cell.tag + 1
-//        cell.tag = currentTag
-        
         let asset = images[indexPath.row]
         imageManager.requestImage(for: asset, targetSize: cellSize, contentMode: .aspectFill, options: nil) { (image, info) in
-//            if cell.tag == currentTag {
-//                cell.image = image
-//            }
+
             cell.image = image
         }
         
@@ -299,19 +315,9 @@ extension FSLibraryImagePickerController: UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO
-//        let cell = collectionView.cellForItem(at: indexPath) as! FSLibraryViewCell
-//        cell.highlightView.isHidden = false
-//       
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .opportunistic
         let asset = images[indexPath.row]
-        let targetSize = CGSize(width: asset.pixelWidth, height: asset.pixelHeight)
-        imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: options) { (image, info) in
-            self.selectedImageView.image = image
-        }
+        populateImageView(withAsset: asset)
     }
-    
 }
 
 // MARK: - PHPhotoLibraryChangeObserver
