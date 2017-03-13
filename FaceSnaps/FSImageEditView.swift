@@ -26,6 +26,8 @@ protocol FSImageEditViewDelegate {
     // Vignette
     // Tilt Shift
     // Sharpen
+    
+    func sliderViewDidAppear()
 }
 
 /// View containing a horizontal collection view and the image editing tools views
@@ -117,6 +119,9 @@ extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource,
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // TODO: Handle selection by unhiding the appropriate view
+        let type = availableTypes[indexPath.row]
+        showView(forSliderType: type)
+        delegate.sliderViewDidAppear()
     }
     
     /// Modifies the cell to the appropriate edit tool type
@@ -132,6 +137,24 @@ extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource,
         case .structure:
             cell.label.text = "Structure"
             cell.iconView.image = UIImage(named: "structure_icon")!
+        }
+    }
+    
+    /// Unhides and hides the appropriate views
+    private func showView(forSliderType type: FSImageSliderType) {
+        switch type {
+        case .brightness:
+            brightnessView.isHidden = false
+            contrastView.isHidden = true
+            structureView.isHidden = true
+        case .contrast:
+            brightnessView.isHidden = true
+            contrastView.isHidden = false
+            structureView.isHidden = true
+        case .structure:
+            brightnessView.isHidden = true
+            contrastView.isHidden = true
+            structureView.isHidden = false
         }
     }
     

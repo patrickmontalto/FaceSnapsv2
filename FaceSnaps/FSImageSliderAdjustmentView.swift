@@ -24,6 +24,7 @@ class FSImageSliderAdjustmentView: UIView {
         self.init()
         // Hide view by default
         isHidden = true
+        backgroundColor = .white
         translatesAutoresizingMaskIntoConstraints = false
         
         // Set properties

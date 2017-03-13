@@ -113,5 +113,5 @@ class FSImageEditToolsController: UIView {
             self.editorSelectionView.alpha = 1.0
         }
     }
-    
+
 }

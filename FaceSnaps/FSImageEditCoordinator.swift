@@ -31,6 +31,17 @@ class FSImageEditCoordinator: UIViewController {
         return controller
     }()
     
+    /// The Cancel and Done overlay buttons for when an editing tool's slider view is active
+    lazy var sliderConfirmationView: UIView = {
+        // 48 pt high, screen width view
+        // contains 2 buttons
+        // Cancel button, add target
+            // tells editToolsController to tell it's FSImageEditView to reset the slider position to the position prior to opening
+        // Done button, add target
+            // Tells editToolsController to tell its FSImageEditView to dismiss the slider view
+        return UIView()
+    }()
+    
     convenience init(image: UIImage) {
         self.init()
         self.image = image
@@ -66,5 +77,9 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
     }
     func structureSliderMove(sender: UISlider) {
         // TODO
+    }
+    
+    func sliderViewDidAppear() {
+        // Present Cancel and Done overlay for bottom buttons
     }
 }
