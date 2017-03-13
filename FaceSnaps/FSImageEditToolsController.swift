@@ -37,6 +37,7 @@ class FSImageEditToolsController: UIView {
         let view = FSImageFilterView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = false
+        view.alpha = 1.0
         return view
     }()
     
@@ -44,6 +45,7 @@ class FSImageEditToolsController: UIView {
         let view = FSImageEditView(delegate: self.delegate)
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0.0
         return view
     }()
     
@@ -59,6 +61,10 @@ class FSImageEditToolsController: UIView {
         addSubview(filterSelectionView)
         addSubview(editorSelectionView)
         
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         let filterButtonCenterX = 0.25 * coordinator.view.frame.width
         let editButtonCenterX = 0.75 * coordinator.view.frame.width
         
@@ -80,24 +86,32 @@ class FSImageEditToolsController: UIView {
             editorSelectionView.rightAnchor.constraint(equalTo: rightAnchor),
             editorSelectionView.heightAnchor.constraint(equalToConstant: frame.height - 48),
             
-        ])
-        
+            ])
     }
     
     func filterButtonTapped() {
         filterButton.setTitleColor(.black, for: .normal)
         editButton.setTitleColor(.lightGray, for: .normal)
         // Present FSImageFilterView
-        editorSelectionView.isHidden = true
-        filterSelectionView.isHidden = false
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: { () in
+            self.editorSelectionView.alpha = 0.0
+            self.filterSelectionView.alpha = 1.0
+        }, completion: { (completed) in
+            self.editorSelectionView.isHidden = true
+            self.filterSelectionView.isHidden = false
+        })
+        
     }
     
     func editButtonTapped() {
         filterButton.setTitleColor(.lightGray, for: .normal)
         editButton.setTitleColor(.black, for: .normal)
         // Present FSImageEditView
-        editorSelectionView.isHidden = false
-        filterSelectionView.isHidden = true
+        self.filterSelectionView.isHidden = true
+        self.editorSelectionView.isHidden = false
+        UIView.animate(withDuration: 0.2) {
+            self.editorSelectionView.alpha = 1.0
+        }
     }
     
 }
