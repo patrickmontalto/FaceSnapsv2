@@ -57,6 +57,8 @@ extension CameraTabBarController: FSLibraryImagePickerControllerDelegate {
     func libraryImagePickerController(_ picker: FSLibraryImagePickerController, didFinishPickingImage image: UIImage) {
         // TODO: Get notified from FSLibraryImagePickerController that next button was tapped
         // Get image and present image editing controller via navigation controller
+        let controller = FSImageEditCoordinator(image: image)
+        navigationController?.pushViewController(controller, animated: true)
     }
     func cameraRollAccessDenied() {
         // TODO
@@ -76,5 +78,7 @@ extension CameraTabBarController: FSImagePickerControllerDelegate {
     func imagePickerController(_ picker: FSImagePickerController, didFinishPickingImage image: UIImage) {
         // TODO:
         // get image and move on to the image editing controller via navigiation controller
+        let controller = FSImageEditCoordinator(image: image)
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

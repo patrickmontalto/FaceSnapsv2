@@ -87,6 +87,13 @@
 		3AC13E7D1E6C933F0036EB87 /* FSImageCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E7C1E6C933F0036EB87 /* FSImageCropView.swift */; };
 		3AC13E7F1E6C9B290036EB87 /* FSLibraryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E7E1E6C9B290036EB87 /* FSLibraryViewCell.swift */; };
 		3AC13E811E6CA1440036EB87 /* FSLibraryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AC13E801E6CA1440036EB87 /* FSLibraryViewCell.xib */; };
+		3AC13E871E7503480036EB87 /* FSImageEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E861E7503480036EB87 /* FSImageEditView.swift */; };
+		3AC13E891E7504B80036EB87 /* FSImageFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E881E7504B80036EB87 /* FSImageFilterView.swift */; };
+		3AC13E8D1E7509790036EB87 /* FSImageEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E8C1E7509790036EB87 /* FSImageEditCoordinator.swift */; };
+		3AC13E8F1E75D71C0036EB87 /* FSImageSliderAdjustmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E8E1E75D71C0036EB87 /* FSImageSliderAdjustmentView.swift */; };
+		3AC13E911E75E5880036EB87 /* FSImageEditViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AC13E901E75E5880036EB87 /* FSImageEditViewCell.xib */; };
+		3AC13E931E75E73F0036EB87 /* FSImageEditViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */; };
+		3AC13E951E75ED1D0036EB87 /* FSImageEditToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */; };
 		3ADE2A641E41356500D1D4C6 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */; };
 		3ADE2A661E4151D900D1D4C6 /* Notification + Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */; };
 		3ADE2A681E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A671E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift */; };
@@ -222,6 +229,13 @@
 		3AC13E7C1E6C933F0036EB87 /* FSImageCropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageCropView.swift; sourceTree = "<group>"; };
 		3AC13E7E1E6C9B290036EB87 /* FSLibraryViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSLibraryViewCell.swift; sourceTree = "<group>"; };
 		3AC13E801E6CA1440036EB87 /* FSLibraryViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSLibraryViewCell.xib; sourceTree = "<group>"; };
+		3AC13E861E7503480036EB87 /* FSImageEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditView.swift; sourceTree = "<group>"; };
+		3AC13E881E7504B80036EB87 /* FSImageFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageFilterView.swift; sourceTree = "<group>"; };
+		3AC13E8C1E7509790036EB87 /* FSImageEditCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditCoordinator.swift; sourceTree = "<group>"; };
+		3AC13E8E1E75D71C0036EB87 /* FSImageSliderAdjustmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageSliderAdjustmentView.swift; sourceTree = "<group>"; };
+		3AC13E901E75E5880036EB87 /* FSImageEditViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSImageEditViewCell.xib; sourceTree = "<group>"; };
+		3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditViewCell.swift; sourceTree = "<group>"; };
+		3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditToolsController.swift; sourceTree = "<group>"; };
 		3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
 		3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification + Name.swift"; sourceTree = "<group>"; };
 		3ADE2A671E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+RemoveObjectsInArray.swift"; sourceTree = "<group>"; };
@@ -465,6 +479,13 @@
 				3AC13E7E1E6C9B290036EB87 /* FSLibraryViewCell.swift */,
 				3AC13E801E6CA1440036EB87 /* FSLibraryViewCell.xib */,
 				D2F1A2411E6F27E200EFC6C8 /* ImagePickerNavigationController.swift */,
+				3AC13E8C1E7509790036EB87 /* FSImageEditCoordinator.swift */,
+				3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */,
+				3AC13E881E7504B80036EB87 /* FSImageFilterView.swift */,
+				3AC13E861E7503480036EB87 /* FSImageEditView.swift */,
+				3AC13E8E1E75D71C0036EB87 /* FSImageSliderAdjustmentView.swift */,
+				3AC13E901E75E5880036EB87 /* FSImageEditViewCell.xib */,
+				3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */,
 			);
 			name = "Image Pickers";
 			sourceTree = "<group>";
@@ -648,6 +669,7 @@
 				3A32DD171DA0309100CD2669 /* Assets.xcassets in Resources */,
 				D21BD4961E64C8AD009196C8 /* UserFollowCell.xib in Resources */,
 				3AC13E811E6CA1440036EB87 /* FSLibraryViewCell.xib in Resources */,
+				3AC13E911E75E5880036EB87 /* FSImageEditViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -709,6 +731,7 @@
 				3A32A6C81DA9845500AEE45F /* SortItemSelector.swift in Sources */,
 				D267036C1E2D448F001C06BE /* FeedItemSectionController.swift in Sources */,
 				D21BD48E1E608B8B009196C8 /* CollectionViewContainer.swift in Sources */,
+				3AC13E931E75E73F0036EB87 /* FSImageEditViewCell.swift in Sources */,
 				D21BD4821E54B95B009196C8 /* UISegmentedControl+Appearance.swift in Sources */,
 				3AC13E7A1E6C8C240036EB87 /* FSLibraryImagePickerController.swift in Sources */,
 				3AA3B2311E516FE00000A312 /* ViewAllCommentsCell.swift in Sources */,
@@ -723,6 +746,7 @@
 				3AC13E7F1E6C9B290036EB87 /* FSLibraryViewCell.swift in Sources */,
 				3A0805E71DEE2D01002DB0DF /* LoginController.swift in Sources */,
 				3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */,
+				3AC13E951E75ED1D0036EB87 /* FSImageEditToolsController.swift in Sources */,
 				3A32A6C61DA97A8E00AEE45F /* SortableDataSource.swift in Sources */,
 				3A32A6B51DA5F2A600AEE45F /* FaceSnap.xcdatamodeld in Sources */,
 				3ABF878E1E01EB0500388866 /* SignInHelpController.swift in Sources */,
@@ -740,8 +764,10 @@
 				3AA3B23B1E5A95400000A312 /* EditableTableViewCell.swift in Sources */,
 				D21BD4861E54D1DE009196C8 /* UserSearchCell.swift in Sources */,
 				3A9A3B9F1E20B929008A1334 /* Formatter.swift in Sources */,
+				3AC13E891E7504B80036EB87 /* FSImageFilterView.swift in Sources */,
 				D21BD48C1E5F526B009196C8 /* APIResult.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
+				3AC13E8D1E7509790036EB87 /* FSImageEditCoordinator.swift in Sources */,
 				D26703631E26D1B1001C06BE /* ProfileNavigationController.swift in Sources */,
 				3A17EA501DFF644C00031834 /* LineView.swift in Sources */,
 				3AA3B2411E5E984D0000A312 /* ChangePasswordViewController.swift in Sources */,
@@ -795,6 +821,7 @@
 				3A5714B51E398030003C7BC5 /* FeedItemSectionDelegate.swift in Sources */,
 				3ADE2A6C1E4D2F7000D1D4C6 /* CommentController.swift in Sources */,
 				3AB17FAA1E0A4815005E8739 /* UIColor.swift in Sources */,
+				3AC13E871E7503480036EB87 /* FSImageEditView.swift in Sources */,
 				3AB17FA01E02329F005E8739 /* LoginViews.swift in Sources */,
 				3A32A6B71DA6060A00AEE45F /* Photo.swift in Sources */,
 				CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */,
@@ -822,6 +849,7 @@
 				D2F8D2F41E2D644600723204 /* Comment.swift in Sources */,
 				3A8C1DEA1E135FE10095CE32 /* EmailSignUpControllerWithAccount.swift in Sources */,
 				3A9D882C1E199C6100FB928D /* ImageCropHelper.swift in Sources */,
+				3AC13E8F1E75D71C0036EB87 /* FSImageSliderAdjustmentView.swift in Sources */,
 				3A32DD101DA0309100CD2669 /* AppDelegate.swift in Sources */,
 				3AA3B22F1E50F45F0000A312 /* UITextView+NumLines.swift in Sources */,
 				D21BD4801E54A487009196C8 /* SearchManager.swift in Sources */,

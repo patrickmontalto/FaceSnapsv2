@@ -258,7 +258,7 @@ class FSLibraryImagePickerController: UIViewController {
                 resetSlidingViewConstraints()
             }
             animateConstraintChanges()
-            print("TouchEnded")
+//            print("TouchEnded")
         default:
             break
         }
