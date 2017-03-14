@@ -10,6 +10,17 @@ import UIKit
 
 enum FSImageSliderType: Int {
     case brightness, contrast, structure
+    
+    var stringRepresentation: String {
+        switch self {
+        case .brightness:
+            return "Brightness"
+        case .contrast:
+            return "Contrast"
+        case .structure:
+            return "Structure"
+        }
+    }
 }
 
 class FSImageSliderAdjustmentView: UIView {
@@ -18,6 +29,14 @@ class FSImageSliderAdjustmentView: UIView {
     var slider: UISlider!
     var delegate: FSImageEditViewDelegate!
     var type: FSImageSliderType!
+    var lastValue: Float = 0
+    lazy var valueLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 12.0)
+        return label
+    }()
     
     // MARK: - Initializer
     convenience init(delegate: FSImageEditViewDelegate, type: FSImageSliderType) {
@@ -33,8 +52,8 @@ class FSImageSliderAdjustmentView: UIView {
         self.type = type
         
         // Set slider values
-        slider.value = 0
-        
+        slider.value = lastValue
+
         switch type {
         case .brightness, .contrast:
             slider.minimumValue = -100
@@ -44,14 +63,17 @@ class FSImageSliderAdjustmentView: UIView {
             slider.maximumValue = 100
         }
         
-        // Set slider targets
-        slider.addTarget(self, action: #selector(sliderMoved(sender:)), for: .touchUpInside)
-        slider.addTarget(self, action: #selector(sliderMoved(sender:)), for: .touchUpOutside)
-        
+        // Set slider targets        
+        slider.addTarget(self, action: #selector(sliderMoved(sender:)), for: .valueChanged)
+
         // Layout
         addSubview(slider)
+        addSubview(valueLabel)
         slider.translatesAutoresizingMaskIntoConstraints = false
-        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         NSLayoutConstraint.activate([
             slider.centerYAnchor.constraint(equalTo: centerYAnchor),
             slider.leftAnchor.constraint(equalTo: leftAnchor, constant: 30),
@@ -68,5 +90,15 @@ class FSImageSliderAdjustmentView: UIView {
         case .structure:
             delegate.structureSliderMove(sender: sender)
         }
+        
+        let handleView = slider.subviews.last as! UIImageView
+        NSLayoutConstraint.activate([
+            valueLabel.centerXAnchor.constraint(equalTo: handleView.centerXAnchor),
+            valueLabel.bottomAnchor.constraint(equalTo: handleView.topAnchor, constant: -8),
+        ])
+
+        let sliderValue = Int(roundf(sender.value))
+
+        valueLabel.text = sliderValue == 0 ? nil : "\(sliderValue)"
     }
 }

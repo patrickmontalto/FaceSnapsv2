@@ -94,6 +94,7 @@
 		3AC13E911E75E5880036EB87 /* FSImageEditViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AC13E901E75E5880036EB87 /* FSImageEditViewCell.xib */; };
 		3AC13E931E75E73F0036EB87 /* FSImageEditViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */; };
 		3AC13E951E75ED1D0036EB87 /* FSImageEditToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */; };
+		3AC13E971E7855300036EB87 /* FSImageSliderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E961E7855300036EB87 /* FSImageSliderMenuView.swift */; };
 		3ADE2A641E41356500D1D4C6 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */; };
 		3ADE2A661E4151D900D1D4C6 /* Notification + Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */; };
 		3ADE2A681E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A671E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift */; };
@@ -236,6 +237,7 @@
 		3AC13E901E75E5880036EB87 /* FSImageEditViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSImageEditViewCell.xib; sourceTree = "<group>"; };
 		3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditViewCell.swift; sourceTree = "<group>"; };
 		3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditToolsController.swift; sourceTree = "<group>"; };
+		3AC13E961E7855300036EB87 /* FSImageSliderMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageSliderMenuView.swift; sourceTree = "<group>"; };
 		3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
 		3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification + Name.swift"; sourceTree = "<group>"; };
 		3ADE2A671E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+RemoveObjectsInArray.swift"; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 				3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */,
 				3AC13E881E7504B80036EB87 /* FSImageFilterView.swift */,
 				3AC13E861E7503480036EB87 /* FSImageEditView.swift */,
+				3AC13E961E7855300036EB87 /* FSImageSliderMenuView.swift */,
 				3AC13E8E1E75D71C0036EB87 /* FSImageSliderAdjustmentView.swift */,
 				3AC13E901E75E5880036EB87 /* FSImageEditViewCell.xib */,
 				3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */,
@@ -798,6 +801,7 @@
 				D21BD4921E60D800009196C8 /* FeedItemThumbnailSectionController.swift in Sources */,
 				D2F8D2F61E2D644C00723204 /* User.swift in Sources */,
 				D21BD4981E64C9CB009196C8 /* UserFollowCell.swift in Sources */,
+				3AC13E971E7855300036EB87 /* FSImageSliderMenuView.swift in Sources */,
 				D2F8D2F01E2D630800723204 /* ImageCell.swift in Sources */,
 				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,
 				3A9A3BB21E285FA3008A1334 /* CameraTabBarController.swift in Sources */,

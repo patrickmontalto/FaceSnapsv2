@@ -15,6 +15,21 @@ class FSImageEditCoordinator: UIViewController {
     
     var image: UIImage!
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    lazy var filterIconView: UIImageView = {
+        let image = UIImage(named: "filter_icon")!
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 23, height: 22))
+        imageView.center.x = self.navigationController!.view.center.x
+        imageView.center.y = self.navigationController!.navigationBar.center.y
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = image
+        
+        return imageView
+    }()
+    
     // TODO: Create an image view that can be manipulated with filters, brightness, etc
     /// Contains the selected image which is currently being manipulated.
     lazy var editingImageView: UIImageView = {
@@ -32,27 +47,27 @@ class FSImageEditCoordinator: UIViewController {
     }()
     
     /// The Cancel and Done overlay buttons for when an editing tool's slider view is active
-    lazy var sliderConfirmationView: UIView = {
-        // 48 pt high, screen width view
-        // contains 2 buttons
-        // Cancel button, add target
-            // tells editToolsController to tell it's FSImageEditView to reset the slider position to the position prior to opening
-        // Done button, add target
-            // Tells editToolsController to tell its FSImageEditView to dismiss the slider view
-        return UIView()
+    lazy var sliderMenuView: FSImageSliderMenuView = {
+        return FSImageSliderMenuView(delegate: self)
     }()
+    
+    var sliderMenuTopAnchorConstraint = NSLayoutConstraint()
     
     convenience init(image: UIImage) {
         self.init()
         self.image = image
         view.backgroundColor = .white
+        sliderMenuTopAnchorConstraint = sliderMenuView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        navigationController!.navigationBar.addSubview(filterIconView)
+
         // Constraints
         view.addSubview(editingImageView)
         view.addSubview(editToolsController)
+        view.addSubview(sliderMenuView)
         
         NSLayoutConstraint.activate([
             editingImageView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
@@ -64,7 +79,19 @@ class FSImageEditCoordinator: UIViewController {
             editToolsController.leftAnchor.constraint(equalTo: view.leftAnchor),
             editToolsController.rightAnchor.constraint(equalTo: view.rightAnchor),
             editToolsController.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            sliderMenuView.heightAnchor.constraint(equalToConstant: 48.0),
+            sliderMenuView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            sliderMenuView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            sliderMenuTopAnchorConstraint
         ])
+    }
+
+    
+    func animateConstraintChanges() {
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 // MARK: - FSImageEditViewDelegate
@@ -79,7 +106,39 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         // TODO
     }
     
-    func sliderViewDidAppear() {
+    func sliderViewDidAppear(type: FSImageSliderType) {
         // Present Cancel and Done overlay for bottom buttons
+        // Change nav bar title
+        self.title = type.stringRepresentation
+        sliderMenuTopAnchorConstraint.constant = -48
+        animateConstraintChanges()
+        navigationItem.setHidesBackButton(true, animated: false)
+        filterIconView.isHidden = true
+    }
+    
+    func sliderViewDidDisappear() {
+        // Change nav bar title
+        self.title = nil
+        navigationItem.setHidesBackButton(false, animated: false)
+        filterIconView.isHidden = false
+    }
+}
+
+// MARK: - FSSliderMenuViewDelegate
+extension FSImageEditCoordinator: FSImageSliderMenuViewDelegate {
+    func cancelButtonTapped() {
+        editToolsController.resetSlider()
+        // Cancel button was tapped. Reset active slider to lastValue
+        // Animate hiding the FSImageSliderMenuView
+        sliderMenuTopAnchorConstraint.constant = 0
+        animateConstraintChanges()
+    }
+    
+    func doneButtonTapped() {
+        // Done button was tapped. Set active slider's lastValue to it's currentValue
+        // Animate hiding the FSImageSliderMenuView
+        editToolsController.saveSlider()
+        sliderMenuTopAnchorConstraint.constant = 0
+        animateConstraintChanges()
     }
 }

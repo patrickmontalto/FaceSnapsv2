@@ -113,5 +113,21 @@ class FSImageEditToolsController: UIView {
             self.editorSelectionView.alpha = 1.0
         }
     }
-
+    
+    // TODO: Make sure slider's valueChanged targets get triggered from programatically setting the slider value
+    func resetSlider() {
+        // Reset to last value
+        editorSelectionView.resetSliderValue()
+        // Hide the slider view
+        editorSelectionView.hideActiveSliderView()
+        delegate.sliderViewDidDisappear()
+    }
+    
+    func saveSlider() {
+        // Save new value
+        editorSelectionView.setNewSliderValue()
+        // Hide the slider view
+        editorSelectionView.hideActiveSliderView()
+        delegate.sliderViewDidDisappear()
+    }
 }

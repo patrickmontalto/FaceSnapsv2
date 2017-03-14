@@ -27,7 +27,8 @@ protocol FSImageEditViewDelegate {
     // Tilt Shift
     // Sharpen
     
-    func sliderViewDidAppear()
+    func sliderViewDidAppear(type: FSImageSliderType)
+    func sliderViewDidDisappear()
 }
 
 /// View containing a horizontal collection view and the image editing tools views
@@ -53,6 +54,15 @@ class FSImageEditView: UIView {
     
     let availableTypes: [FSImageSliderType] = [.brightness, .contrast, .structure]
     
+    var activeSliderView: FSImageSliderAdjustmentView? {
+        get {
+            let unHiddenView = [self.brightnessView, self.contrastView, self.structureView].filter { (imageView) -> Bool in
+                return imageView.isHidden == false
+            }
+            return unHiddenView.first
+        }
+    }
+    
     lazy var brightnessView: FSImageSliderAdjustmentView = {
         return FSImageSliderAdjustmentView(delegate: self.delegate, type: .brightness)
     }()
@@ -74,9 +84,8 @@ class FSImageEditView: UIView {
         addSubview(brightnessView)
         addSubview(contrastView)
         addSubview(structureView)
-        
-        
     }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         NSLayoutConstraint.activate([
@@ -100,7 +109,24 @@ class FSImageEditView: UIView {
             structureView.leftAnchor.constraint(equalTo: self.leftAnchor),
             structureView.rightAnchor.constraint(equalTo: self.rightAnchor),
             structureView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            ])
+        ])
+    }
+    
+    func resetSliderValue() {
+        guard let activeSliderView = activeSliderView else { return }
+        activeSliderView.slider.value = activeSliderView.lastValue
+        activeSliderView.sliderMoved(sender: activeSliderView.slider)
+    }
+    
+    func setNewSliderValue() {
+        guard let activeSliderView = activeSliderView else { return }
+        activeSliderView.lastValue = activeSliderView.slider.value
+        activeSliderView.sliderMoved(sender: activeSliderView.slider)
+    }
+    
+    func hideActiveSliderView() {
+        guard let activeSliderView = activeSliderView else { return }
+        activeSliderView.isHidden = true
     }
 }
 // MARK: - UICollectionViewDelegate & UICollectionViewDataSource
@@ -121,7 +147,7 @@ extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource,
         // TODO: Handle selection by unhiding the appropriate view
         let type = availableTypes[indexPath.row]
         showView(forSliderType: type)
-        delegate.sliderViewDidAppear()
+        delegate.sliderViewDidAppear(type: type)
     }
     
     /// Modifies the cell to the appropriate edit tool type
