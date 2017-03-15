@@ -26,19 +26,11 @@ enum FSImageSliderType: Int {
 class FSImageSliderAdjustmentView: UIView {
     
     // MARK: - Properties
-    var slider: UISlider!
+    var slider: FSImageSlider!
     var hasLoadedConstraints = false
     var delegate: FSImageEditViewDelegate!
     var type: FSImageSliderType!
     var lastValue: Float = 0
-    
-//    lazy var valueLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.textColor = .black
-//        label.font = UIFont.systemFont(ofSize: 12.0)
-//        return label
-//    }()
     
     // MARK: - Initializer
     convenience init(delegate: FSImageEditViewDelegate, type: FSImageSliderType) {
@@ -49,11 +41,9 @@ class FSImageSliderAdjustmentView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         
         // Set properties
-        if type == .structure {
-            self.slider = UISlider()
-        } else {
-            self.slider = FSImageSlider(centered: true)
-        }
+        let centered = !(type == .structure)
+        self.slider = FSImageSlider(centered: centered)
+        
         self.delegate = delegate
         self.type = type
         
@@ -74,7 +64,6 @@ class FSImageSliderAdjustmentView: UIView {
 
         // Layout
         addSubview(slider)
-//        addSubview(valueLabel)
         slider.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -96,7 +85,7 @@ class FSImageSliderAdjustmentView: UIView {
     var valueLabelBottomAnchorConstraint: NSLayoutConstraint?
 
     
-    func sliderMoved(sender: UISlider) {
+    func sliderMoved(sender: FSImageSlider) {
         switch type! {
         case .brightness:
             delegate.brightnessSliderMove(sender: sender)
@@ -106,16 +95,6 @@ class FSImageSliderAdjustmentView: UIView {
             delegate.structureSliderMove(sender: sender)
         }
         
-//        let handleView = slider.subviews.last as! UIImageView
-//        valueLabel.centerXAnchor.constraint(equalTo: handleView.centerXAnchor).isActive = true
-//        
-//        valueLabelCenterXAnchorConstraint = valueLabel.centerXAnchor.constraint(equalTo: handleView.centerXAnchor)
-//        valueLabelCenterXAnchorConstraint?.isActive = true
-//        valueLabelBottomAnchorConstraint = valueLabel.bottomAnchor.constraint(equalTo: handleView.topAnchor, constant: -8)
-//        valueLabelBottomAnchorConstraint?.isActive = true
-//
-//        let sliderValue = Int(roundf(sender.value))
-//
-//        valueLabel.text = sliderValue == 0 ? nil : "\(sliderValue)"
+        sender.valueChanged()
     }
 }

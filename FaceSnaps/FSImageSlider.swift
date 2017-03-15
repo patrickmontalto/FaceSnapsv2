@@ -51,22 +51,32 @@ class FSImageSlider: UISlider {
     
     // MARK: - Initializer
     convenience init(centered: Bool) {
-        self.init()
+        self.init(centeredSlider: centered)
         self.centered = centered
         addSubview(valueLabel)
         addSubview(centerSliderIndicator)
         self.addTarget(self, action: #selector(valueChanged), for: .valueChanged)
     }
+    
+    init(centeredSlider: Bool) {
+        self.centered = centeredSlider
+        super.init(frame: .zero)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        if !centered { return }
         
         if !hasLoadedConstraints {
             hasLoadedConstraints = true
             
             insertSubview(leftSelectedTrackView, at: 4)
             insertSubview(rightSelectedTrackView, at: 4)
-    
             NSLayoutConstraint.activate([
                 centerSliderIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
                 centerSliderIndicator.topAnchor.constraint(equalTo: self.centerYAnchor, constant: -8),
@@ -82,7 +92,11 @@ class FSImageSlider: UISlider {
     }
 
     override func minimumTrackImage(for state: UIControlState) -> UIImage? {
-        return UIImage(named: "unselected_track")
+        if centered == true {
+            return UIImage(named: "unselected_track")
+        } else {
+            return UIImage(named: "selected_track")
+        }
     }
     
     override func maximumTrackImage(for state: UIControlState) -> UIImage? {
@@ -91,21 +105,24 @@ class FSImageSlider: UISlider {
     
     func valueChanged() {
         let thumbView = self.subviews.last!
-        leftSelectedViewLeftAnchorConstraint = leftSelectedTrackView.leftAnchor.constraint(equalTo: thumbView.centerXAnchor)
-        rightSelectedViewRightAnchorConstraint = rightSelectedTrackView.rightAnchor.constraint(equalTo: thumbView.centerXAnchor)
-        
-        leftSelectedViewLeftAnchorConstraint?.isActive = true
-        rightSelectedViewRightAnchorConstraint?.isActive = true
-        
-        if value < 0 {
-            leftSelectedTrackView.isHidden = false
-            rightSelectedTrackView.isHidden = true
-        } else if value > 0 {
-            leftSelectedTrackView.isHidden = true
-            rightSelectedTrackView.isHidden = false
-        } else {
-            leftSelectedTrackView.isHidden = true
-            rightSelectedTrackView.isHidden = true
+
+        if centered == true {
+            leftSelectedViewLeftAnchorConstraint = leftSelectedTrackView.leftAnchor.constraint(equalTo: thumbView.centerXAnchor)
+            rightSelectedViewRightAnchorConstraint = rightSelectedTrackView.rightAnchor.constraint(equalTo: thumbView.centerXAnchor)
+            
+            leftSelectedViewLeftAnchorConstraint?.isActive = true
+            rightSelectedViewRightAnchorConstraint?.isActive = true
+            
+            if value < 0 {
+                leftSelectedTrackView.isHidden = false
+                rightSelectedTrackView.isHidden = true
+            } else if value > 0 {
+                leftSelectedTrackView.isHidden = true
+                rightSelectedTrackView.isHidden = false
+            } else {
+                leftSelectedTrackView.isHidden = true
+                rightSelectedTrackView.isHidden = true
+            }
         }
         
         if value == maximumValue || value == minimumValue || value == 0 {
