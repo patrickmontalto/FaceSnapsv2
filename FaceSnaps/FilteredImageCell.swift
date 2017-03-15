@@ -6,6 +6,7 @@
 //  Copyright © 2016 Patrick Montalto. All rights reserved.
 //
 
+// TODO: Change to only contain a property of CIImageView instead of GLKView superclass
 import UIKit
 import GLKit
 
