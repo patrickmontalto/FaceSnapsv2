@@ -95,6 +95,7 @@
 		3AC13E931E75E73F0036EB87 /* FSImageEditViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */; };
 		3AC13E951E75ED1D0036EB87 /* FSImageEditToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */; };
 		3AC13E971E7855300036EB87 /* FSImageSliderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E961E7855300036EB87 /* FSImageSliderMenuView.swift */; };
+		3AC13E991E78893D0036EB87 /* FSImageSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E981E78893D0036EB87 /* FSImageSlider.swift */; };
 		3ADE2A641E41356500D1D4C6 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */; };
 		3ADE2A661E4151D900D1D4C6 /* Notification + Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */; };
 		3ADE2A681E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A671E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift */; };
@@ -238,6 +239,7 @@
 		3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditViewCell.swift; sourceTree = "<group>"; };
 		3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditToolsController.swift; sourceTree = "<group>"; };
 		3AC13E961E7855300036EB87 /* FSImageSliderMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageSliderMenuView.swift; sourceTree = "<group>"; };
+		3AC13E981E78893D0036EB87 /* FSImageSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageSlider.swift; sourceTree = "<group>"; };
 		3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
 		3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification + Name.swift"; sourceTree = "<group>"; };
 		3ADE2A671E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+RemoveObjectsInArray.swift"; sourceTree = "<group>"; };
@@ -489,6 +491,7 @@
 				3AC13E8E1E75D71C0036EB87 /* FSImageSliderAdjustmentView.swift */,
 				3AC13E901E75E5880036EB87 /* FSImageEditViewCell.xib */,
 				3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */,
+				3AC13E981E78893D0036EB87 /* FSImageSlider.swift */,
 			);
 			name = "Image Pickers";
 			sourceTree = "<group>";
@@ -808,6 +811,7 @@
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,
 				D267035B1E256BE0001C06BE /* ImageCoder.swift in Sources */,
+				3AC13E991E78893D0036EB87 /* FSImageSlider.swift in Sources */,
 				3ADE2A641E41356500D1D4C6 /* SpinnerCell.swift in Sources */,
 				3A9A3BB01E285F83008A1334 /* LikesController.swift in Sources */,
 				3A9D882E1E199F6C00FB928D /* UIImage+Circle.swift in Sources */,
