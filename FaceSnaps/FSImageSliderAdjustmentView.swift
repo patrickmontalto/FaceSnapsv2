@@ -88,7 +88,7 @@ class FSImageSliderAdjustmentView: UIView {
     func sliderMoved(sender: FSImageSlider) {
         if sender.currentRoundedValue == sender.lastRoundedValue { return }
 //        sender.valueChanged()
-        print(sender.currentRoundedValue)
+//        print(sender.currentRoundedValue)
         sender.updateTrackingView()
         
         switch type! {

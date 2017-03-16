@@ -139,14 +139,21 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         let outputImage = editFilterManager.editedImage(filter: .brightness, rawValue: sender.value)
         DispatchQueue.main.async {
             self.editingImageView.image = outputImage
-
         }
     }
     func contrastSliderMove(sender: UISlider) {
         // TODO
+        let outputImage = editFilterManager.editedImage(filter: .contrast, rawValue: sender.value)
+        DispatchQueue.main.async {
+            self.editingImageView.image = outputImage
+        }
     }
     func structureSliderMove(sender: UISlider) {
         // TODO
+        let outputImage = editFilterManager.editedImage(filter: .structure, rawValue: sender.value)
+        DispatchQueue.main.async {
+            self.editingImageView.image = outputImage
+        }
     }
     
     func sliderViewDidAppear(type: FSImageSliderType) {

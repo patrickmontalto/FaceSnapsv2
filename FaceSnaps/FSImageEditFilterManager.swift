@@ -13,7 +13,7 @@ class FSImageEditFilterManager {
     
     // TODO: Move into a separate enum/struct to be shared for Filter and Edit tools
     let CIColorControls = "CIColorControls"
-    let CISharpenLuminence = "CISharpenLuminence"
+    let CISharpenLuminance = "CISharpenLuminance"
     
     enum EditFilterType {
         case brightness, contrast, structure
@@ -21,6 +21,14 @@ class FSImageEditFilterManager {
     
     lazy var brightnessFilter: CIFilter = {
         return CIFilter(name: self.CIColorControls)!
+    }()
+    
+    lazy var contrastFilter: CIFilter = {
+        return CIFilter(name: self.CIColorControls)!
+    }()
+    
+    lazy var sharpenLuminanceFilter: CIFilter = {
+        return CIFilter(name: self.CISharpenLuminance)!
     }()
     
     var context: CIContext
@@ -37,18 +45,15 @@ class FSImageEditFilterManager {
         case .brightness:
             return editBrightness(rawValue: rawValue)
         case .contrast:
-            return CIImage()
+            return editContrast(rawValue: rawValue)
         case .structure:
-            return CIImage()
+            return editStructure(rawValue: rawValue)
         }
-        
-//        return UIImage(ciImage: ciImage)
     }
     
     private func editBrightness(rawValue: Float) -> CIImage {
         let value = NSNumber(value: (rawValue / 1000.0))
-        // Create brightness filter and set the image
-//        let filter = CIFilter(name: CIColorControls)!
+        // Set brightness and image
         brightnessFilter.setValue(value, forKey: kCIInputBrightnessKey)
         brightnessFilter.setValue(inputImage, forKey: kCIInputImageKey)
         
@@ -56,13 +61,44 @@ class FSImageEditFilterManager {
         return brightnessFilter.outputImage!
     }
     
-//    private func editContrast(rawValue: Float) -> CIImage {
+    private func editContrast(rawValue: Float) -> CIImage {
+        // Value from 0 to 4
+        // Receiving values from -100 to 100
+        // rawValue of 0 corresponds to value of 1.
+        let value = convertValueToScale(rawValue: rawValue, oldMin: -100.0, oldMax: 100.0, newMin: 0.9, newMax: 1.1)
+        contrastFilter.setValue(value, forKey: kCIInputContrastKey)
+        contrastFilter.setValue(inputImage, forKey: kCIInputImageKey)
+        
+        // Return edied output image
+        return contrastFilter.outputImage!
+    }
+
+    private func editStructure(rawValue: Float) -> CIImage {
+        // Edit contrast and sharpness together
+        let contrastValue = convertValueToScale(rawValue: rawValue, oldMin: 0, oldMax: 100.0, newMin: 1, newMax: 1.05)
+        let sharpnessValue = convertValueToScale(rawValue: rawValue, oldMin: 0, oldMax: 100.0, newMin: 0, newMax: 10)
+        
+//        return inputImage.applyingFilter(CIColorControls, withInputParameters: [
+//                kCIInputContrastKey: contrastValue
+//            ])
+//            .applyingFilter(CISharpenLuminance, withInputParameters: [
+//                kCIInputSharpnessKey: sharpnessValue
+//            ])
+//        contrastFilter.setValue(contrastValue, forKey: kCIInputContrastKey)
+//        contrastFilter.setValue(inputImage, forKey: kCIInputImageKey)
+//        let contrastedImage = contrastFilter.outputImage!
 //        
-//    }
-//    
-//    private func editStructure(rawValue: Float) -> CIImage {
-//        
-//    }
+//        return contrastedImage
+        sharpenLuminanceFilter.setValue(sharpnessValue, forKey: kCIInputSharpnessKey)
+        sharpenLuminanceFilter.setValue(inputImage, forKey: kCIInputImageKey)
+        
+        return sharpenLuminanceFilter.outputImage!
+    }
     
-    
+    private func convertValueToScale(rawValue oldValue: Float, oldMin: Float, oldMax: Float, newMin: Float, newMax: Float) -> NSNumber {
+        let newRange = newMax - newMin
+        let oldRange = oldMax - oldMin
+        let newValue = ((oldValue - oldMin) / oldRange) * newRange + newMin
+        return NSNumber(value: newValue)
+    }
 }
