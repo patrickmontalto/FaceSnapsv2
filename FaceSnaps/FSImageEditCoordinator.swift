@@ -13,11 +13,25 @@ import UIKit
 /// presented to the user.
 class FSImageEditCoordinator: UIViewController {
     
-    var image: UIImage!
+    // MARK: - Properties
+    var startImage: UIImage!
+    
+    var context: CIContext!
+    var eaglContext: EAGLContext!
     
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    lazy var hideEditPreviewGesture: UILongPressGestureRecognizer = {
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleHideGesture(sender:)))
+        gesture.minimumPressDuration = 0.05
+        return gesture
+    }()
+    
+    lazy var editFilterManager: FSImageEditFilterManager = {
+        return FSImageEditFilterManager(image: self.startImage, context: self.context)
+    }()
     
     lazy var filterIconView: UIImageView = {
         let image = UIImage(named: "filter_icon")!
@@ -32,9 +46,17 @@ class FSImageEditCoordinator: UIViewController {
     
     // TODO: Create an image view that can be manipulated with filters, brightness, etc
     /// Contains the selected image which is currently being manipulated.
-    lazy var editingImageView: UIImageView = {
+    lazy var startingImageView: UIImageView = {
         let imgView = UIImageView()
-        imgView.image = self.image
+        imgView.image = self.startImage
+        imgView.translatesAutoresizingMaskIntoConstraints = false
+        return imgView
+    }()
+    
+    lazy var editingImageView: CIImageView = {
+        let imgView = CIImageView(eaglContext: self.eaglContext, ciContext: self.context)
+        imgView.image = CIImage(image: self.startImage)
+        imgView.addGestureRecognizer(self.hideEditPreviewGesture)
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
@@ -53,9 +75,12 @@ class FSImageEditCoordinator: UIViewController {
     
     var sliderMenuTopAnchorConstraint = NSLayoutConstraint()
     
-    convenience init(image: UIImage) {
+    convenience init(image: UIImage, context: CIContext, eaglContext: EAGLContext) {
         self.init()
-        self.image = image
+        self.startImage = image
+        self.context = context
+        self.eaglContext = eaglContext
+        
         view.backgroundColor = .white
         sliderMenuTopAnchorConstraint = sliderMenuView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         
@@ -65,11 +90,17 @@ class FSImageEditCoordinator: UIViewController {
         navigationController!.navigationBar.addSubview(filterIconView)
 
         // Constraints
+        view.addSubview(startingImageView)
         view.addSubview(editingImageView)
         view.addSubview(editToolsController)
         view.addSubview(sliderMenuView)
         
         NSLayoutConstraint.activate([
+            startingImageView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+            startingImageView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            startingImageView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            startingImageView.heightAnchor.constraint(equalToConstant: view.frame.width),
+            
             editingImageView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
             editingImageView.leftAnchor.constraint(equalTo: view.leftAnchor),
             editingImageView.rightAnchor.constraint(equalTo: view.rightAnchor),
@@ -87,6 +118,13 @@ class FSImageEditCoordinator: UIViewController {
         ])
     }
 
+    func handleHideGesture(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            editingImageView.isHidden = true
+        } else if sender.state == .ended {
+            editingImageView.isHidden = false
+        }
+    }
     
     func animateConstraintChanges() {
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut, animations: {
@@ -98,6 +136,11 @@ class FSImageEditCoordinator: UIViewController {
 extension FSImageEditCoordinator: FSImageEditViewDelegate {
     func brightnessSliderMove(sender: UISlider) {
         // TODO
+        let outputImage = editFilterManager.editedImage(filter: .brightness, rawValue: sender.value)
+        DispatchQueue.main.async {
+            self.editingImageView.image = outputImage
+
+        }
     }
     func contrastSliderMove(sender: UISlider) {
         // TODO

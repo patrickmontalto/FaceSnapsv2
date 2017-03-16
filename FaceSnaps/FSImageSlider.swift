@@ -13,6 +13,17 @@ class FSImageSlider: UISlider {
     // MARK: - Properties
     var centered: Bool!
     
+    // Set when value changed finishes
+    lazy var lastRoundedValue: Int = {
+        return Int(roundf(self.value))
+    }()
+    
+    var currentRoundedValue: Int {
+        get {
+            return Int(roundf(self.value))
+        }
+    }
+    
     var leftSelectedViewLeftAnchorConstraint: NSLayoutConstraint?
     var rightSelectedViewRightAnchorConstraint: NSLayoutConstraint?
     var valueLabelCenterXAnchorConstraint: NSLayoutConstraint?
@@ -55,7 +66,7 @@ class FSImageSlider: UISlider {
         self.centered = centered
         addSubview(valueLabel)
         addSubview(centerSliderIndicator)
-        self.addTarget(self, action: #selector(valueChanged), for: .valueChanged)
+//        self.addTarget(self, action: #selector(valueChanged), for: .valueChanged)
     }
     
     init(centeredSlider: Bool) {
@@ -103,9 +114,9 @@ class FSImageSlider: UISlider {
         return UIImage(named: "unselected_track")
     }
     
-    func valueChanged() {
+    func updateTrackingView() {
         let thumbView = self.subviews.last!
-
+        
         if centered == true {
             leftSelectedViewLeftAnchorConstraint = leftSelectedTrackView.leftAnchor.constraint(equalTo: thumbView.centerXAnchor)
             rightSelectedViewRightAnchorConstraint = rightSelectedTrackView.rightAnchor.constraint(equalTo: thumbView.centerXAnchor)
@@ -136,10 +147,53 @@ class FSImageSlider: UISlider {
         valueLabelBottomAnchorConstraint = valueLabel.bottomAnchor.constraint(equalTo: thumbView.topAnchor, constant: -8)
         valueLabelBottomAnchorConstraint?.isActive = true
         
-        let sliderValue = Int(roundf(value))
+        let sliderValue = currentRoundedValue
         
         valueLabel.text = sliderValue == 0 ? nil : "\(sliderValue)"
     }
+    
+//    func valueChanged() {
+//        if currentRoundedValue == lastRoundedValue { return }
+//        
+//        let thumbView = self.subviews.last!
+//
+//        if centered == true {
+//            leftSelectedViewLeftAnchorConstraint = leftSelectedTrackView.leftAnchor.constraint(equalTo: thumbView.centerXAnchor)
+//            rightSelectedViewRightAnchorConstraint = rightSelectedTrackView.rightAnchor.constraint(equalTo: thumbView.centerXAnchor)
+//            
+//            leftSelectedViewLeftAnchorConstraint?.isActive = true
+//            rightSelectedViewRightAnchorConstraint?.isActive = true
+//            
+//            if value < 0 {
+//                leftSelectedTrackView.isHidden = false
+//                rightSelectedTrackView.isHidden = true
+//            } else if value > 0 {
+//                leftSelectedTrackView.isHidden = true
+//                rightSelectedTrackView.isHidden = false
+//            } else {
+//                leftSelectedTrackView.isHidden = true
+//                rightSelectedTrackView.isHidden = true
+//            }
+//        }
+//        
+//        if value == maximumValue || value == minimumValue || value == 0 {
+//            generateFeedback()
+//        }
+//        
+//        valueLabel.centerXAnchor.constraint(equalTo: thumbView.centerXAnchor).isActive = true
+//        
+//        valueLabelCenterXAnchorConstraint = valueLabel.centerXAnchor.constraint(equalTo: thumbView.centerXAnchor)
+//        valueLabelCenterXAnchorConstraint?.isActive = true
+//        valueLabelBottomAnchorConstraint = valueLabel.bottomAnchor.constraint(equalTo: thumbView.topAnchor, constant: -8)
+//        valueLabelBottomAnchorConstraint?.isActive = true
+//        
+//        let sliderValue = currentRoundedValue
+//        
+//        valueLabel.text = sliderValue == 0 ? nil : "\(sliderValue)"
+//        
+//        // Update last rounded value
+//        lastRoundedValue = currentRoundedValue
+//    }
     
     private func generateFeedback() {
         let generator = UISelectionFeedbackGenerator()

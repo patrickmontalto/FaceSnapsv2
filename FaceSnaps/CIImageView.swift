@@ -28,6 +28,8 @@ class CIImageView: GLKView, GLKViewDelegate {
     // MARK: - Initializer
     convenience init(frame: CGRect = .zero, eaglContext: EAGLContext, ciContext: CIContext) {
         self.init(frame: frame, context: eaglContext)
+        self.ciContext = ciContext
+        self.eaglContext = eaglContext
         self.delegate = self
     }
     

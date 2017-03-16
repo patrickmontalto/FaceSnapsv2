@@ -10,6 +10,7 @@ import UIKit
 
 class PhotoFilterController: UIViewController {
     
+    
     var mainImage: UIImage {
         // Add property observer to update the imageView
         didSet {

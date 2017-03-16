@@ -86,6 +86,11 @@ class FSImageSliderAdjustmentView: UIView {
 
     
     func sliderMoved(sender: FSImageSlider) {
+        if sender.currentRoundedValue == sender.lastRoundedValue { return }
+//        sender.valueChanged()
+        print(sender.currentRoundedValue)
+        sender.updateTrackingView()
+        
         switch type! {
         case .brightness:
             delegate.brightnessSliderMove(sender: sender)
@@ -95,6 +100,7 @@ class FSImageSliderAdjustmentView: UIView {
             delegate.structureSliderMove(sender: sender)
         }
         
-        sender.valueChanged()
+        sender.lastRoundedValue = sender.currentRoundedValue
+        
     }
 }
