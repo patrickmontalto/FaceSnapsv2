@@ -140,21 +140,21 @@ class FSImageEditCoordinator: UIViewController {
 extension FSImageEditCoordinator: FSImageEditViewDelegate {
     func brightnessSliderMove(sender: UISlider) {
         // TODO
-        let outputImage = editFilterManager.editedImage(filter: .brightness, rawValue: sender.value)
+        let outputImage = editFilterManager.editedInputImage(filter: .brightness, rawValue: sender.value)
         DispatchQueue.main.async {
             self.editingImageView.image = outputImage
         }
     }
     func contrastSliderMove(sender: UISlider) {
         // TODO
-        let outputImage = editFilterManager.editedImage(filter: .contrast, rawValue: sender.value)
+        let outputImage = editFilterManager.editedInputImage(filter: .contrast, rawValue: sender.value)
         DispatchQueue.main.async {
             self.editingImageView.image = outputImage
         }
     }
     func structureSliderMove(sender: UISlider) {
         // TODO
-        let outputImage = editFilterManager.editedImage(filter: .structure, rawValue: sender.value)
+        let outputImage = editFilterManager.editedInputImage(filter: .structure, rawValue: sender.value)
         DispatchQueue.main.async {
             self.editingImageView.image = outputImage
         }
@@ -162,7 +162,7 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
     
     func warmthSliderMove(sender: UISlider) {
         // TODO
-        let outputImage = editFilterManager.editedImage(filter: .warmth, rawValue: sender.value)
+        let outputImage = editFilterManager.editedInputImage(filter: .warmth, rawValue: sender.value)
         DispatchQueue.main.async {
             self.editingImageView.image = outputImage
         }

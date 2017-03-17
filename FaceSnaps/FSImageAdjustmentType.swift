@@ -65,26 +65,28 @@ enum FSImageAdjustmentType: Int {
         }
     }
     
-    var defaultValue: FilterValue {
-        switch self {
-        case .brightness:
-            return (0.0, nil)
-        case .contrast:
-            return (1.0, nil)
-        case .structure:
-            return (1.0, 0.0)
-        case .warmth:
-            return (6500.0, nil)
-        case .saturation:
-            return (1.0, nil)
-        case .highlights:
-            return (1.0, nil)
-        case .shadows:
-            return (1.0, nil)
-        case .vignette:
-            return (1.0, 0.0)
-        case .tiltshift:
-            return (0, nil)
-        }
+    var defaultValue: Float {
+        return 0
+
+//        switch self {
+//        case .brightness:
+//            return (0.0, nil)
+//        case .contrast:
+//            return (1.0, nil)
+//        case .structure:
+//            return (1.0, 0.0)
+//        case .warmth:
+//            return (6500.0, nil)
+//        case .saturation:
+//            return (1.0, nil)
+//        case .highlights:
+//            return (1.0, nil)
+//        case .shadows:
+//            return (1.0, nil)
+//        case .vignette:
+//            return (1.0, 0.0)
+//        case .tiltshift:
+//            return (0, nil)
+//        }
     }
 }
