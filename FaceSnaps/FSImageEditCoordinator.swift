@@ -138,6 +138,7 @@ class FSImageEditCoordinator: UIViewController {
 }
 // MARK: - FSImageEditViewDelegate
 extension FSImageEditCoordinator: FSImageEditViewDelegate {
+    // TODO: Remove individual slider moving methods and roll into one method that accepts the sender and the type.
     func brightnessSliderMove(sender: UISlider) {
         // TODO
         let outputImage = editFilterManager.editedInputImage(filter: .brightness, rawValue: sender.value)
@@ -170,6 +171,10 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
     
     func saturationSliderMove(sender: UISlider) {
         // todo
+        let outputImage = editFilterManager.editedInputImage(filter: .saturation, rawValue: sender.value)
+        DispatchQueue.main.async {
+            self.editingImageView.image = outputImage
+        }
     }
     
     func highlightsSliderMove(sender: UISlider) {
