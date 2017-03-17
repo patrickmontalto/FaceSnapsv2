@@ -9,7 +9,7 @@
 import UIKit
 
 enum FSImageSliderType: Int {
-    case brightness, contrast, structure
+    case brightness, contrast, structure, warmth, saturation, highlights, shadows, vignette, tiltshift
     
     var stringRepresentation: String {
         switch self {
@@ -19,6 +19,18 @@ enum FSImageSliderType: Int {
             return "Contrast"
         case .structure:
             return "Structure"
+        case .warmth:
+            return "Warmth"
+        case .saturation:
+            return "Saturation"
+        case .highlights:
+            return "Highlights"
+        case .shadows:
+            return "Shadows"
+        case .vignette:
+            return "Vignette"
+        case .tiltshift:
+            return "Tilt Shift"
         }
     }
 }

@@ -117,6 +117,10 @@ class FSImageEditCoordinator: UIViewController {
             sliderMenuTopAnchorConstraint
         ])
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        filterIconView.isHidden = true
+    }
 
     func handleHideGesture(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
@@ -156,6 +160,30 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         }
     }
     
+    func warmthSliderMove(sender: UISlider) {
+        // TODO
+    }
+    
+    func saturationSliderMove(sender: UISlider) {
+        // todo
+    }
+    
+    func highlightsSliderMove(sender: UISlider) {
+        // todo
+    }
+    
+    func shadowsSliderMove(sender: UISlider) {
+        //
+    }
+    
+    func vignetteSliderMove(sender: UISlider) {
+        //
+    }
+    
+    func tiltShiftChanged(mode: TiltShiftMode) {
+        //
+    }
+    
     func sliderViewDidAppear(type: FSImageSliderType) {
         // Present Cancel and Done overlay for bottom buttons
         // Change nav bar title
@@ -172,6 +200,7 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         navigationItem.setHidesBackButton(false, animated: false)
         filterIconView.isHidden = false
     }
+    
 }
 
 // MARK: - FSSliderMenuViewDelegate

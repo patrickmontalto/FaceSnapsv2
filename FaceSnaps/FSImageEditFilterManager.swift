@@ -15,10 +15,6 @@ class FSImageEditFilterManager {
     let CIColorControls = "CIColorControls"
     let CISharpenLuminance = "CISharpenLuminance"
     
-    enum EditFilterType {
-        case brightness, contrast, structure
-    }
-    
     lazy var brightnessFilter: CIFilter = {
         return CIFilter(name: self.CIColorControls)!
     }()
@@ -39,7 +35,7 @@ class FSImageEditFilterManager {
         self.context = context
     }
     
-    func editedImage(filter: EditFilterType, rawValue: Float) -> CIImage {
+    func editedImage(filter: FSImageSliderType, rawValue: Float) -> CIImage {
 //        var ciImage = CIImage()
         switch filter {
         case .brightness:
@@ -94,6 +90,26 @@ class FSImageEditFilterManager {
         
         return sharpenLuminanceFilter.outputImage!
     }
+    
+    private func editWarmth(rawValue: Float) -> CIImage {
+        
+    }
+//    private func editSaturation(rawValue: Float) -> CIImage {
+//        
+//    }
+//    private func editHighlights(rawValue: Float) -> CIImage {
+//        
+//    }
+//    private func editShadows(rawValue: Float) -> CIImage {
+//        
+//    }
+//    private func editVignette(rawValue: Float) -> CIImage {
+//        
+//    }
+//    
+//    private func toggleTiltShift(mode: TiltShiftMode) -> CIImage {
+//        
+//    }
     
     private func convertValueToScale(rawValue oldValue: Float, oldMin: Float, oldMax: Float, newMin: Float, newMax: Float) -> NSNumber {
         let newRange = newMax - newMin

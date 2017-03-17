@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+enum TiltShiftMode {
+    case off, radial, linear
+}
 /// Delegate for FSImageEditView
 protocol FSImageEditViewDelegate {
     // Brightness
@@ -18,15 +21,18 @@ protocol FSImageEditViewDelegate {
     // Structure
     func structureSliderMove(sender: UISlider)
     // Warmth
+    func warmthSliderMove(sender: UISlider)
     // Saturation
-    // Color
-    // Fade
+    func saturationSliderMove(sender: UISlider)
     // Highlights
+    func highlightsSliderMove(sender: UISlider)
     // Shadows
+    func shadowsSliderMove(sender: UISlider)
     // Vignette
+    func vignetteSliderMove(sender: UISlider)
     // Tilt Shift
-    // Sharpen
-    
+    func tiltShiftChanged(mode: TiltShiftMode)
+
     func sliderViewDidAppear(type: FSImageSliderType)
     func sliderViewDidDisappear()
 }
