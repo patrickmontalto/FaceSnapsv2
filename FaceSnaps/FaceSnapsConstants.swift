@@ -25,8 +25,6 @@ extension FaceSnapsClient {
         case like, unlike
     }
     
-    
-
     // MARK: - Set Application Environment
     static let ApplicationEnvironment: Environment = .development
     

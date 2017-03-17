@@ -162,6 +162,10 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
     
     func warmthSliderMove(sender: UISlider) {
         // TODO
+        let outputImage = editFilterManager.editedImage(filter: .warmth, rawValue: sender.value)
+        DispatchQueue.main.async {
+            self.editingImageView.image = outputImage
+        }
     }
     
     func saturationSliderMove(sender: UISlider) {
@@ -217,11 +221,13 @@ extension FSImageEditCoordinator: FSImageSliderMenuViewDelegate {
         animateConstraintChanges()
     }
     
-    func doneButtonTapped() {
+    func doneButtonTapped(type: FSImageAdjustmentType) {
         // Done button was tapped. Set active slider's lastValue to it's currentValue
         // Animate hiding the FSImageSliderMenuView
         editToolsController.saveSlider()
         sliderMenuTopAnchorConstraint.constant = 0
         animateConstraintChanges()
+        // Notify the filter manager to store the current value
+        editFilterManager.updateStoredValue(forType: type)
     }
 }

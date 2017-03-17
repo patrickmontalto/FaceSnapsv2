@@ -33,74 +33,95 @@ class FSImageEditFilterManager {
         return CIFilter(name: self.CITemperatureAndTint)!
     }()
     
-    var currentFilterValues: [FSImageAdjustmentType: FilterValue] = [
+    var storedFilterValues: [FSImageAdjustmentType: FilterValue] = [
         .brightness: FSImageAdjustmentType.brightness.defaultValue,
         .contrast: FSImageAdjustmentType.contrast.defaultValue,
         .structure: FSImageAdjustmentType.structure.defaultValue,
         .warmth: FSImageAdjustmentType.warmth.defaultValue,
     ]
     
-    var context: CIContext
-    var inputImage: CIImage
+    var currentValue: FilterValue?
     
-    init(image: UIImage, context: CIContext) {
-        self.inputImage = CIImage(image: image)!
-        self.context = context
-    }
-    
-    func editedImage(filter: FSImageAdjustmentType, rawValue: Float) -> CIImage {
-//        var ciImage = CIImage()
-        switch filter {
-        case .brightness:
-            return editBrightness(rawValue: rawValue)
-        case .contrast:
-            return editContrast(rawValue: rawValue)
-        case .structure:
-            return editStructure(rawValue: rawValue)
-        case .warmth:
-            return editWarmth(rawValue: rawValue)
-        default:
-            return CIImage()
+    var filtersApplied: [FSImageAdjustmentType] {
+        get {
+            return storedFilterValues.filter() { (key, value) in
+                return !(key.defaultValue == value)
+            }
+            .map() { (key, value) in
+                return key
+            }
         }
     }
     
-    private func editBrightness(rawValue: Float) -> CIImage {
+    var context: CIContext
+    var sourceImage: CIImage
+    
+    init(image: UIImage, context: CIContext) {
+        self.sourceImage = CIImage(image: image)!
+        self.context = context
+    }
+    
+    func editedInputImage(filter: FSImageAdjustmentType, rawValue: Float) -> CIImage {
+        return editedImage(sourceImage, filter: filter, rawValue: rawValue)
+    }
+    
+    func editedImage(_ inputImage: CIImage, filter: FSImageAdjustmentType, rawValue: Float) -> CIImage {
+        var image = CIImage()
+        switch filter {
+        case .brightness:
+            image = editBrightness(image: inputImage, rawValue: rawValue)
+        case .contrast:
+            image = editContrast(image: inputImage, rawValue: rawValue)
+        case .structure:
+            image = editStructure(image: inputImage, rawValue: rawValue)
+        case .warmth:
+            image = editWarmth(image: inputImage, rawValue: rawValue)
+        default:
+            return CIImage()
+        }
+        if inputImage == sourceImage {
+            for filter in filtersApplied {
+                image = editedImage(image, filter: filter, rawValue: <#T##Float#>)
+            }
+        }
+    }
+    
+    private func editBrightness(image: CIImage, rawValue: Float) -> CIImage {
         let value = NSNumber(value: (rawValue / 1000.0))
         // Set brightness and image
         brightnessFilter.setValue(value, forKey: kCIInputBrightnessKey)
-        brightnessFilter.setValue(inputImage, forKey: kCIInputImageKey)
+        brightnessFilter.setValue(image, forKey: kCIInputImageKey)
         
-        // Update current stored filter value
-        updateStoredValue(value1: value, forType: .brightness)
+        // Update current filter value
+        updateCurrentValue(value1: value)
         
         // Return edited output image
         return brightnessFilter.outputImage!
     }
     
-    private func editContrast(rawValue: Float) -> CIImage {
+    private func editContrast(image: CIImage, rawValue: Float) -> CIImage {
         // Value from 0 to 4
         // Receiving values from -100 to 100
         // rawValue of 0 corresponds to value of 1.
         let value = convertValueToScale(rawValue: rawValue, oldMin: -100.0, oldMax: 100.0, newMin: 0.9, newMax: 1.1)
         contrastFilter.setValue(value, forKey: kCIInputContrastKey)
-        contrastFilter.setValue(inputImage, forKey: kCIInputImageKey)
-        
-        // Update current stored filter value
-        updateStoredValue(value1: value, forType: .contrast)
+        contrastFilter.setValue(image, forKey: kCIInputImageKey)
+        // Update current filter value
+        updateCurrentValue(value1: value)
         
         // Return edied output image
         return contrastFilter.outputImage!
     }
 
-    private func editStructure(rawValue: Float) -> CIImage {
+    private func editStructure(image: CIImage, rawValue: Float) -> CIImage {
         // Edit contrast and sharpness together
         let contrastValue = convertValueToScale(rawValue: rawValue, oldMin: 0, oldMax: 100.0, newMin: 1, newMax: 1.05)
         let sharpnessValue = convertValueToScale(rawValue: rawValue, oldMin: 0, oldMax: 100.0, newMin: 0, newMax: 10)
         
         // Update current stored filter value
-        updateStoredValue(value1: contrastValue, value2: sharpnessValue, forType: .structure)
+        updateCurrentValue(value1: contrastValue, value2: sharpnessValue)
         
-        return inputImage.applyingFilter(CIColorControls, withInputParameters: [
+        return image.applyingFilter(CIColorControls, withInputParameters: [
                 kCIInputContrastKey: contrastValue
             ])
             .applyingFilter(CISharpenLuminance, withInputParameters: [
@@ -108,16 +129,15 @@ class FSImageEditFilterManager {
             ])
     }
     
-    private func editWarmth(rawValue: Float) -> CIImage {
-        let invertedValue = -rawValue
-        let temperatureValue = convertValueToScale(rawValue: invertedValue, oldMin: -100, oldMax: 100, newMin: 2500, newMax: 10500)
+    private func editWarmth(image: CIImage, rawValue: Float) -> CIImage {
+        let temperatureValue = convertValueToScale(rawValue: rawValue, oldMin: -100, oldMax: 100, newMin: 2000, newMax: 11000)
         let inputVector = CIVector(x: CGFloat(temperatureValue), y: 0)
         
-        // Update current stored filter value
-        updateStoredValue(value1: temperatureValue, forType: .warmth)
+        // Update current filter value
+        updateCurrentValue(value1: temperatureValue)
         
-        warmthFilter.setValue(inputVector, forKey: kCIInputNeutralTemperatureKey)
-        warmthFilter.setValue(inputImage, forKey: kCIInputImageKey)
+        warmthFilter.setValue(inputVector, forKey: "inputNeutral")
+        warmthFilter.setValue(image, forKey: kCIInputImageKey)
         
         return warmthFilter.outputImage!
     }
@@ -138,8 +158,13 @@ class FSImageEditFilterManager {
 //        
 //    }
     
-    private func updateStoredValue(value1: NSNumber, value2: NSNumber? = nil, forType type: FSImageAdjustmentType) {
-        currentFilterValues[type] = (value1, value2)
+    private func updateCurrentValue(value1: NSNumber, value2: NSNumber? = nil) {
+        currentValue = (value1, value2)
+    }
+    
+    func updateStoredValue(forType type: FSImageAdjustmentType) {
+        // Done button tapped. Update the stored value.
+        storedFilterValues[type] = currentValue!
     }
     
     private func convertValueToScale(rawValue oldValue: Float, oldMin: Float, oldMax: Float, newMin: Float, newMax: Float) -> NSNumber {
@@ -147,9 +172,5 @@ class FSImageEditFilterManager {
         let oldRange = oldMax - oldMin
         let newValue = ((oldValue - oldMin) / oldRange) * newRange + newMin
         return NSNumber(value: newValue)
-    }
-    
-    func resetStoredValue(type: FSImageAdjustmentType) {
-        // Cancel button was tapped. The stored value needs to be reset to the last saved value prior to editing.
     }
 }

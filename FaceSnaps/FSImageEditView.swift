@@ -61,9 +61,13 @@ class FSImageEditView: UIView {
     
     let availableTypes: [FSImageAdjustmentType] = [.brightness, .contrast, .structure, .warmth, .saturation, .highlights, .shadows, .vignette, .tiltshift]
     
-    var activeSliderView: FSImageSliderAdjustmentView? {
+    var activeSliderView: UIView? {
         get {
-            let unHiddenView = [self.brightnessView, self.contrastView, self.structureView].filter { (imageView) -> Bool in
+            let unHiddenView = [
+                self.brightnessView, self.contrastView, self.structureView,
+                self.warmthView, self.saturationView, self.highlightsView,
+                self.shadowsView, self.vignetteView, self.tiltshiftView
+            ].filter { (imageView) -> Bool in
                 return imageView.isHidden == false
             }
             return unHiddenView.first
@@ -116,6 +120,12 @@ class FSImageEditView: UIView {
         addSubview(brightnessView)
         addSubview(contrastView)
         addSubview(structureView)
+        addSubview(warmthView)
+        addSubview(saturationView)
+        addSubview(highlightsView)
+        addSubview(shadowsView)
+        addSubview(vignetteView)
+        addSubview(tiltshiftView)
     }
     
     override func layoutSubviews() {
@@ -141,17 +151,47 @@ class FSImageEditView: UIView {
             structureView.leftAnchor.constraint(equalTo: self.leftAnchor),
             structureView.rightAnchor.constraint(equalTo: self.rightAnchor),
             structureView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            warmthView.topAnchor.constraint(equalTo: self.topAnchor),
+            warmthView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            warmthView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            warmthView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            saturationView.topAnchor.constraint(equalTo: self.topAnchor),
+            saturationView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            saturationView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            saturationView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            highlightsView.topAnchor.constraint(equalTo: self.topAnchor),
+            highlightsView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            highlightsView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            highlightsView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            shadowsView.topAnchor.constraint(equalTo: self.topAnchor),
+            shadowsView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            shadowsView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            shadowsView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            vignetteView.topAnchor.constraint(equalTo: self.topAnchor),
+            vignetteView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            vignetteView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            vignetteView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            tiltshiftView.topAnchor.constraint(equalTo: self.topAnchor),
+            tiltshiftView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            tiltshiftView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            tiltshiftView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         ])
     }
-    
+    // TODO: Handle tilt-shift (as UIView instead of FSImageSliderAdjustmentView)
     func resetSliderValue() {
-        guard let activeSliderView = activeSliderView else { return }
+        guard let activeSliderView = activeSliderView as? FSImageSliderAdjustmentView else { return }
         activeSliderView.slider.value = activeSliderView.lastValue
         activeSliderView.sliderMoved(sender: activeSliderView.slider)
     }
     
     func setNewSliderValue() {
-        guard let activeSliderView = activeSliderView else { return }
+        guard let activeSliderView = activeSliderView as? FSImageSliderAdjustmentView else { return }
         activeSliderView.lastValue = activeSliderView.slider.value
         activeSliderView.sliderMoved(sender: activeSliderView.slider)
     }

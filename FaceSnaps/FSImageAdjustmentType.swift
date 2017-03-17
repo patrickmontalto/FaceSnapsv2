@@ -11,6 +11,11 @@ import Foundation
 
 typealias FilterValue = (NSNumber, NSNumber?)
 
+/// Equatable function implementation for FilterValue tuples
+func == <T:Equatable> (tuple1:(T,T?),tuple2:(T,T?)) -> Bool {
+    return (tuple1.0 == tuple2.0) && (tuple1.1 == tuple2.1)
+}
+
 enum FSImageAdjustmentType: Int {
     case brightness, contrast, structure, warmth, saturation, highlights, shadows, vignette, tiltshift
     

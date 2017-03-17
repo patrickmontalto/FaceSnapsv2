@@ -10,7 +10,7 @@ import UIKit
 
 protocol FSImageSliderMenuViewDelegate {
     func cancelButtonTapped(type: FSImageAdjustmentType)
-    func doneButtonTapped()
+    func doneButtonTapped(type: FSImageAdjustmentType)
 }
 
 class FSImageSliderMenuView: UIView {
@@ -70,6 +70,6 @@ class FSImageSliderMenuView: UIView {
         delegate.cancelButtonTapped(type: activeSlider!)
     }
     func doneButtonTapped() {
-        delegate.doneButtonTapped()
+        delegate.doneButtonTapped(type: activeSlider!)
     }
 }
