@@ -33,7 +33,7 @@ protocol FSImageEditViewDelegate {
     // Tilt Shift
     func tiltShiftChanged(mode: TiltShiftMode)
 
-    func sliderViewDidAppear(type: FSImageSliderType)
+    func sliderViewDidAppear(type: FSImageAdjustmentType)
     func sliderViewDidDisappear()
 }
 
@@ -52,13 +52,14 @@ class FSImageEditView: UIView {
         cv.delegate = self
         cv.dataSource = self
         cv.backgroundColor = .white
-        cv.contentInset = UIEdgeInsets(top: 0.0, left: 12, bottom: 0.0, right: 0.0)
+        cv.showsHorizontalScrollIndicator = false
+        cv.contentInset = UIEdgeInsets(top: 0.0, left: 12, bottom: 0.0, right: 12)
         let nib = UINib(nibName: "FSImageEditViewCell", bundle: nil)
         cv.register(nib, forCellWithReuseIdentifier: "fsImageEditViewCell")
         return cv
     }()
     
-    let availableTypes: [FSImageSliderType] = [.brightness, .contrast, .structure]
+    let availableTypes: [FSImageAdjustmentType] = [.brightness, .contrast, .structure, .warmth, .saturation, .highlights, .shadows, .vignette, .tiltshift]
     
     var activeSliderView: FSImageSliderAdjustmentView? {
         get {
@@ -80,6 +81,31 @@ class FSImageEditView: UIView {
     lazy var structureView: FSImageSliderAdjustmentView = {
         return FSImageSliderAdjustmentView(delegate: self.delegate, type: .structure)
     }()
+    
+    lazy var warmthView: FSImageSliderAdjustmentView = {
+        return FSImageSliderAdjustmentView(delegate: self.delegate, type: .warmth)
+    }()
+    
+    lazy var saturationView: FSImageSliderAdjustmentView = {
+        return FSImageSliderAdjustmentView(delegate: self.delegate, type: .saturation)
+    }()
+    
+    lazy var highlightsView: FSImageSliderAdjustmentView = {
+        return FSImageSliderAdjustmentView(delegate: self.delegate, type: .highlights)
+    }()
+    
+    lazy var shadowsView: FSImageSliderAdjustmentView = {
+        return FSImageSliderAdjustmentView(delegate: self.delegate, type: .shadows)
+    }()
+    
+    lazy var vignetteView: FSImageSliderAdjustmentView = {
+        return FSImageSliderAdjustmentView(delegate: self.delegate, type: .vignette)
+    }()
+    
+    lazy var tiltshiftView: UIView = {
+        return UIView()
+    }()
+    
     
     convenience init(delegate: FSImageEditViewDelegate) {
         self.init()
@@ -159,34 +185,21 @@ extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource,
     /// Modifies the cell to the appropriate edit tool type
     private func configureCell(_ cell: FSImageEditViewCell, atIndexPath indexPath: IndexPath) {
         let type = availableTypes[indexPath.row]
-        switch type {
-        case .brightness:
-            cell.label.text = "Brightness"
-            cell.iconView.image = UIImage(named: "brightness_icon")!
-        case .contrast:
-            cell.label.text = "Contrast"
-            cell.iconView.image = UIImage(named: "contrast_icon")!
-        case .structure:
-            cell.label.text = "Structure"
-            cell.iconView.image = UIImage(named: "structure_icon")!
-        }
+        
+        cell.label.text = type.stringRepresentation
+        cell.iconView.image = type.icon
     }
     
     /// Unhides and hides the appropriate views
-    private func showView(forSliderType type: FSImageSliderType) {
-        switch type {
-        case .brightness:
-            brightnessView.isHidden = false
-            contrastView.isHidden = true
-            structureView.isHidden = true
-        case .contrast:
-            brightnessView.isHidden = true
-            contrastView.isHidden = false
-            structureView.isHidden = true
-        case .structure:
-            brightnessView.isHidden = true
-            contrastView.isHidden = true
-            structureView.isHidden = false
+    private func showView(forSliderType type: FSImageAdjustmentType) {
+        // Get a collection of the adjustment views and tilt shift view
+        let adjustmentViews = subviews.filter() { $0 is FSImageSliderAdjustmentView || $0 is FSImageEditView }
+        for view in adjustmentViews {
+            if view.tag == type.rawValue {
+                view.isHidden = false
+            } else {
+                view.isHidden = true
+            }
         }
     }
     

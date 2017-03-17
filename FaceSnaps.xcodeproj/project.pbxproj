@@ -138,6 +138,7 @@
 		D267036C1E2D448F001C06BE /* FeedItemSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267036B1E2D448F001C06BE /* FeedItemSectionController.swift */; };
 		D28186D01E79AADB00EC7D23 /* FSImageEditFilterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */; };
 		D28186D21E79C50100EC7D23 /* CIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28186D11E79C50100EC7D23 /* CIImageView.swift */; };
+		D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType.swift */; };
 		D2DEE0051E1EF4D4004BCEF7 /* Strongbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */; };
 		D2DEE0081E204899004BCEF7 /* UsernameSignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */; };
 		D2F1A2421E6F27E200EFC6C8 /* ImagePickerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F1A2411E6F27E200EFC6C8 /* ImagePickerNavigationController.swift */; };
@@ -285,6 +286,7 @@
 		D267036B1E2D448F001C06BE /* FeedItemSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSectionController.swift; sourceTree = "<group>"; };
 		D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditFilterManager.swift; sourceTree = "<group>"; };
 		D28186D11E79C50100EC7D23 /* CIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIImageView.swift; sourceTree = "<group>"; };
+		D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageAdjustmentType.swift; sourceTree = "<group>"; };
 		D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strongbox.swift; sourceTree = "<group>"; };
 		D2DEE0061E201E87004BCEF7 /* FaceSnaps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FaceSnaps.entitlements; sourceTree = "<group>"; };
 		D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameSignUpController.swift; sourceTree = "<group>"; };
@@ -498,6 +500,7 @@
 				3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */,
 				3AC13E981E78893D0036EB87 /* FSImageSlider.swift */,
 				D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */,
+				D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType.swift */,
 			);
 			name = "Image Pickers";
 			sourceTree = "<group>";
@@ -827,6 +830,7 @@
 				3AB17FB61E0CEA9C005E8739 /* SignUpViews.swift in Sources */,
 				3AA3B2391E5A90F90000A312 /* EditProfileViewController.swift in Sources */,
 				3A74B8481E3D9DCE00408BBB /* TextSize.swift in Sources */,
+				D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType.swift in Sources */,
 				3ADE2A681E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift in Sources */,
 				3AB17FAE1E0B6441005E8739 /* UITextField+Blank.swift in Sources */,
 				3AB17FB81E12F879005E8739 /* EmailSignUpController.swift in Sources */,

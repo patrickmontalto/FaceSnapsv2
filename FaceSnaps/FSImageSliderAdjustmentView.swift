@@ -8,32 +8,7 @@
 
 import UIKit
 
-enum FSImageSliderType: Int {
-    case brightness, contrast, structure, warmth, saturation, highlights, shadows, vignette, tiltshift
-    
-    var stringRepresentation: String {
-        switch self {
-        case .brightness:
-            return "Brightness"
-        case .contrast:
-            return "Contrast"
-        case .structure:
-            return "Structure"
-        case .warmth:
-            return "Warmth"
-        case .saturation:
-            return "Saturation"
-        case .highlights:
-            return "Highlights"
-        case .shadows:
-            return "Shadows"
-        case .vignette:
-            return "Vignette"
-        case .tiltshift:
-            return "Tilt Shift"
-        }
-    }
-}
+
 
 class FSImageSliderAdjustmentView: UIView {
     
@@ -41,12 +16,14 @@ class FSImageSliderAdjustmentView: UIView {
     var slider: FSImageSlider!
     var hasLoadedConstraints = false
     var delegate: FSImageEditViewDelegate!
-    var type: FSImageSliderType!
+    var type: FSImageAdjustmentType!
     var lastValue: Float = 0
     
     // MARK: - Initializer
-    convenience init(delegate: FSImageEditViewDelegate, type: FSImageSliderType) {
+    convenience init(delegate: FSImageEditViewDelegate, type: FSImageAdjustmentType) {
         self.init()
+        // Set tag
+        self.tag = type.rawValue
         // Hide view by default
         isHidden = true
         backgroundColor = .white
@@ -63,11 +40,11 @@ class FSImageSliderAdjustmentView: UIView {
         slider.value = lastValue
 
         switch type {
-        case .brightness, .contrast:
-            slider.minimumValue = -100
-            slider.maximumValue = 100
-        case .structure:
+        case .structure, .vignette:
             slider.minimumValue = 0
+            slider.maximumValue = 100
+        default:
+            slider.minimumValue = -100
             slider.maximumValue = 100
         }
         
@@ -110,6 +87,18 @@ class FSImageSliderAdjustmentView: UIView {
             delegate.contrastSliderMove(sender: sender)
         case .structure:
             delegate.structureSliderMove(sender: sender)
+        case .warmth:
+            delegate.warmthSliderMove(sender: sender)
+        case .saturation:
+            delegate.saturationSliderMove(sender: sender)
+        case .highlights:
+            delegate.highlightsSliderMove(sender: sender)
+        case .shadows:
+            delegate.shadowsSliderMove(sender: sender)
+        case .vignette:
+            delegate.vignetteSliderMove(sender: sender)
+        case .tiltshift:
+            return
         }
         
         sender.lastRoundedValue = sender.currentRoundedValue

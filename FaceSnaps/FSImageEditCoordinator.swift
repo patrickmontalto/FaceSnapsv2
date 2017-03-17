@@ -184,11 +184,12 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         //
     }
     
-    func sliderViewDidAppear(type: FSImageSliderType) {
+    func sliderViewDidAppear(type: FSImageAdjustmentType) {
         // Present Cancel and Done overlay for bottom buttons
         // Change nav bar title
         self.title = type.stringRepresentation
         sliderMenuTopAnchorConstraint.constant = -48
+        sliderMenuView.activeSlider = type
         animateConstraintChanges()
         navigationItem.setHidesBackButton(true, animated: false)
         filterIconView.isHidden = true
@@ -199,15 +200,18 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         self.title = nil
         navigationItem.setHidesBackButton(false, animated: false)
         filterIconView.isHidden = false
+        // Set new input image on edit filter manager
+//        editFilterManager.inputImage = editingImageView.image!
     }
     
 }
 
 // MARK: - FSSliderMenuViewDelegate
 extension FSImageEditCoordinator: FSImageSliderMenuViewDelegate {
-    func cancelButtonTapped() {
-        editToolsController.resetSlider()
+    func cancelButtonTapped(type: FSImageAdjustmentType) {
         // Cancel button was tapped. Reset active slider to lastValue
+        editToolsController.resetSlider()
+        // Notify filter manager to reset stored value to lastValue
         // Animate hiding the FSImageSliderMenuView
         sliderMenuTopAnchorConstraint.constant = 0
         animateConstraintChanges()

@@ -8,12 +8,14 @@
 
 import UIKit
 
-@objc protocol FSImageSliderMenuViewDelegate {
-    func cancelButtonTapped()
+protocol FSImageSliderMenuViewDelegate {
+    func cancelButtonTapped(type: FSImageAdjustmentType)
     func doneButtonTapped()
 }
 
 class FSImageSliderMenuView: UIView {
+    
+    var activeSlider: FSImageAdjustmentType?
     
     lazy var cancelButton: UIButton = {
         let button = UIButton()
@@ -65,7 +67,7 @@ class FSImageSliderMenuView: UIView {
     }
     
     func cancelButtonTapped() {
-        delegate.cancelButtonTapped()
+        delegate.cancelButtonTapped(type: activeSlider!)
     }
     func doneButtonTapped() {
         delegate.doneButtonTapped()

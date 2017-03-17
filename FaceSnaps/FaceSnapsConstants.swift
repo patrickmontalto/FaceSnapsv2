@@ -28,7 +28,7 @@ extension FaceSnapsClient {
     
 
     // MARK: - Set Application Environment
-    static let ApplicationEnvironment: Environment = .production
+    static let ApplicationEnvironment: Environment = .development
     
     enum Constant {
         static let ApiScheme = "http"
