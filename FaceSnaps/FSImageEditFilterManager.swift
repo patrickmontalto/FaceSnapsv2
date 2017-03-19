@@ -16,6 +16,8 @@ class FSImageEditFilterManager {
     let CIColorControls = "CIColorControls"
     let CISharpenLuminance = "CISharpenLuminance"
     let CITemperatureAndTint = "CITemperatureAndTint"
+    let CIHighlightShadowAdjust = "CIHighlightShadowAdjust"
+    let CIVignette = "CIVignette"
     
     lazy var brightnessFilter: CIFilter = {
         return CIFilter(name: self.CIColorControls)!
@@ -37,11 +39,26 @@ class FSImageEditFilterManager {
         return CIFilter(name: self.CIColorControls)!
     }()
     
+    lazy var highlightsFilter: CIFilter = {
+        return CIFilter(name: self.CIHighlightShadowAdjust)!
+    }()
+    
+    lazy var shadowsFilter: CIFilter = {
+        return CIFilter(name: self.CIHighlightShadowAdjust)!
+    }()
+
+    lazy var vignetteFilter: CIFilter = {
+        return CIFilter(name: self.CIVignette)!
+    }()
+    
+//    lazy var tiltshiftFilter: CIFilter = {}()
+    
     var storedFilterValues: [FSImageAdjustmentType: Float] = [
         .brightness: FSImageAdjustmentType.brightness.defaultValue,
         .contrast: FSImageAdjustmentType.contrast.defaultValue,
         .structure: FSImageAdjustmentType.structure.defaultValue,
         .warmth: FSImageAdjustmentType.warmth.defaultValue,
+        .saturation: FSImageAdjustmentType.saturation.defaultValue,
     ]
     
     var currentValue: Float?
@@ -66,10 +83,10 @@ class FSImageEditFilterManager {
     }
     
     func editedInputImage(filter: FSImageAdjustmentType, rawValue: Float) -> CIImage {
-        return editedImage(sourceImage, filter: filter, rawValue: rawValue)
+        return editedImage(sourceImage, filter: filter, rawValue: rawValue, sourceImage: true)
     }
     
-    func editedImage(_ inputImage: CIImage, filter: FSImageAdjustmentType, rawValue: Float) -> CIImage {
+    func editedImage(_ inputImage: CIImage, filter: FSImageAdjustmentType, rawValue: Float, sourceImage: Bool) -> CIImage {
         var image = CIImage()
         switch filter {
         case .brightness:
@@ -80,37 +97,25 @@ class FSImageEditFilterManager {
             image = editStructure(image: inputImage, rawValue: rawValue)
         case .warmth:
             image = editWarmth(image: inputImage, rawValue: rawValue)
+        case .saturation:
+            image = editSaturation(image: inputImage, rawValue: rawValue)
+        case .highlights:
+            image = editHighlights(image: inputImage, rawValue: rawValue)
+        case .shadows:
+            image = editShadows(image: inputImage, rawValue: rawValue)
+        case .vignette:
+            image = editVignette(image: inputImage, rawValue: rawValue)
         default:
             return CIImage()
         }
-        
-        currentValue = rawValue
-        
-        if inputImage == sourceImage {
+        // If this is the source image, remaining filters will need to be applied
+        if sourceImage {
+            currentValue = rawValue
             for otherFilter in filtersApplied.filter({ $0 != filter }) {
                 let value = storedFilterValues[otherFilter]!
-                image = editedImageCompounded(image, filter: otherFilter, rawValue: value)
+                image = editedImage(image, filter: otherFilter, rawValue: value, sourceImage: false)
             }
         }
-        
-        return image
-    }
-    
-    private func editedImageCompounded(_ inputImage: CIImage, filter: FSImageAdjustmentType, rawValue: Float) -> CIImage {
-        var image = CIImage()
-        switch filter {
-        case .brightness:
-            image = editBrightness(image: inputImage, rawValue: rawValue)
-        case .contrast:
-            image = editContrast(image: inputImage, rawValue: rawValue)
-        case .structure:
-            image = editStructure(image: inputImage, rawValue: rawValue)
-        case .warmth:
-            image = editWarmth(image: inputImage, rawValue: rawValue)
-        default:
-            return CIImage()
-        }
-        
         return image
     }
     
@@ -162,17 +167,30 @@ class FSImageEditFilterManager {
         
         // Return edied output image
         return saturationFilter.outputImage!
+
     }
-//    private func editHighlights(rawValue: Float) -> CIImage {
-//        
-//    }
-//    private func editShadows(rawValue: Float) -> CIImage {
-//
-//    }
-//    private func editVignette(rawValue: Float) -> CIImage {
-//        
-//    }
-//    
+    private func editHighlights(image: CIImage, rawValue: Float) -> CIImage {
+        let value = convertValueToScale(rawValue: rawValue, oldMin: -100.0, oldMax: 100.0, newMin: -5, newMax: 7)
+        highlightsFilter.setValue(value, forKey: "inputHighlightAmount")
+        highlightsFilter.setValue(image, forKey: kCIInputImageKey)
+        
+        return highlightsFilter.outputImage!
+    }
+    private func editShadows(image: CIImage, rawValue: Float) -> CIImage {
+        let value = convertValueToScale(rawValue: rawValue, oldMin: -100.0, oldMax: 100.0, newMin: -5, newMax: 5)
+        shadowsFilter.setValue(value, forKey: "inputShadowAmount")
+        shadowsFilter.setValue(image, forKey: kCIInputImageKey)
+        
+        return shadowsFilter.outputImage!
+    }
+    private func editVignette(image: CIImage, rawValue: Float) -> CIImage {
+        let value = convertValueToScale(rawValue: rawValue, oldMin: -100.0, oldMax: 100.0, newMin: 0, newMax: 5)
+        vignetteFilter.setValue(value, forKey: kCIInputIntensityKey)
+        vignetteFilter.setValue(image, forKey: kCIInputImageKey)
+        
+        return vignetteFilter.outputImage!
+    }
+    
 //    private func toggleTiltShift(mode: TiltShiftMode) -> CIImage {
 //        
 //    }

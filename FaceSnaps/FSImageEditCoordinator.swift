@@ -118,7 +118,8 @@ class FSImageEditCoordinator: UIViewController {
         ])
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         filterIconView.isHidden = true
     }
 
@@ -139,54 +140,11 @@ class FSImageEditCoordinator: UIViewController {
 // MARK: - FSImageEditViewDelegate
 extension FSImageEditCoordinator: FSImageEditViewDelegate {
     // TODO: Remove individual slider moving methods and roll into one method that accepts the sender and the type.
-    func brightnessSliderMove(sender: UISlider) {
-        // TODO
-        let outputImage = editFilterManager.editedInputImage(filter: .brightness, rawValue: sender.value)
+    func sliderMoved(type: FSImageAdjustmentType, sender: UISlider) {
+        let outputImage = editFilterManager.editedInputImage(filter: type, rawValue: sender.value)
         DispatchQueue.main.async {
             self.editingImageView.image = outputImage
         }
-    }
-    func contrastSliderMove(sender: UISlider) {
-        // TODO
-        let outputImage = editFilterManager.editedInputImage(filter: .contrast, rawValue: sender.value)
-        DispatchQueue.main.async {
-            self.editingImageView.image = outputImage
-        }
-    }
-    func structureSliderMove(sender: UISlider) {
-        // TODO
-        let outputImage = editFilterManager.editedInputImage(filter: .structure, rawValue: sender.value)
-        DispatchQueue.main.async {
-            self.editingImageView.image = outputImage
-        }
-    }
-    
-    func warmthSliderMove(sender: UISlider) {
-        // TODO
-        let outputImage = editFilterManager.editedInputImage(filter: .warmth, rawValue: sender.value)
-        DispatchQueue.main.async {
-            self.editingImageView.image = outputImage
-        }
-    }
-    
-    func saturationSliderMove(sender: UISlider) {
-        // todo
-        let outputImage = editFilterManager.editedInputImage(filter: .saturation, rawValue: sender.value)
-        DispatchQueue.main.async {
-            self.editingImageView.image = outputImage
-        }
-    }
-    
-    func highlightsSliderMove(sender: UISlider) {
-        // todo
-    }
-    
-    func shadowsSliderMove(sender: UISlider) {
-        //
-    }
-    
-    func vignetteSliderMove(sender: UISlider) {
-        //
     }
     
     func tiltShiftChanged(mode: TiltShiftMode) {

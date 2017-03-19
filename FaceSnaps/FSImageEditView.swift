@@ -9,39 +9,28 @@
 import Foundation
 import UIKit
 
-enum TiltShiftMode {
-    case off, radial, linear
+enum TiltShiftMode: Int {
+    case off = 0, radial, linear
 }
 /// Delegate for FSImageEditView
 protocol FSImageEditViewDelegate {
-    // Brightness
-    func brightnessSliderMove(sender: UISlider)
-    // Contrast
-    func contrastSliderMove(sender: UISlider)
-    // Structure
-    func structureSliderMove(sender: UISlider)
-    // Warmth
-    func warmthSliderMove(sender: UISlider)
-    // Saturation
-    func saturationSliderMove(sender: UISlider)
-    // Highlights
-    func highlightsSliderMove(sender: UISlider)
-    // Shadows
-    func shadowsSliderMove(sender: UISlider)
-    // Vignette
-    func vignetteSliderMove(sender: UISlider)
-    // Tilt Shift
-    func tiltShiftChanged(mode: TiltShiftMode)
+    // Slider effect changes
+    func sliderMoved(type: FSImageAdjustmentType, sender: UISlider)
 
     func sliderViewDidAppear(type: FSImageAdjustmentType)
     func sliderViewDidDisappear()
+    
+    // Tilt shift effect changes
+    func tiltShiftChanged(mode: TiltShiftMode)
+    
+    func tiltShiftDidAppear()
+    func tiltShiftDidDisappear()
+
 }
 
 /// View containing a horizontal collection view and the image editing tools views
 class FSImageEditView: UIView {
     var delegate: FSImageEditViewDelegate!
-    
-    // TODO: Properties for current values of adjustments?
     
     lazy var collectionView: UICollectionView = {
         let cvLayout = UICollectionViewFlowLayout()
@@ -194,6 +183,11 @@ class FSImageEditView: UIView {
         guard let activeSliderView = activeSliderView as? FSImageSliderAdjustmentView else { return }
         activeSliderView.lastValue = activeSliderView.slider.value
         activeSliderView.sliderMoved(sender: activeSliderView.slider)
+        
+        let type = activeSliderView.type!
+        let row = type.rawValue
+        let indexPath = IndexPath(row: row, section: 0)
+        collectionView.reloadItems(at: [indexPath])
     }
     
     func hideActiveSliderView() {
@@ -228,6 +222,15 @@ extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource,
         
         cell.label.text = type.stringRepresentation
         cell.iconView.image = type.icon
+
+        guard let activeSliderView = activeSliderView as? FSImageSliderAdjustmentView else {
+            cell.hideActiveIndicator(true)
+            return
+        }
+        // Get the current type and the current type's associated collection view cell
+        // Display the active indicator if the slider value is not the default value
+        let hide = roundf(activeSliderView.slider.value) == type.defaultValue
+        cell.hideActiveIndicator(hide)
     }
     
     /// Unhides and hides the appropriate views

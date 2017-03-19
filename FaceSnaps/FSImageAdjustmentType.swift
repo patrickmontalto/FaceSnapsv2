@@ -53,7 +53,7 @@ enum FSImageAdjustmentType: Int {
         case .warmth:
             return UIImage(named: "warmth_icon")!
         case .saturation:
-            return UIImage(named: "structure_icon")!
+            return UIImage(named: "saturation_icon")!
         case .highlights:
             return UIImage(named: "highlights_icon")!
         case .shadows:

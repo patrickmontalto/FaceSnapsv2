@@ -12,5 +12,9 @@ class FSImageEditViewCell: UICollectionViewCell {
     
     @IBOutlet var label: UILabel!
     @IBOutlet var iconView: UIImageView!
+    @IBOutlet var activeIndicator: UIImageView!
     
+    func hideActiveIndicator(_ hidden: Bool) {
+        activeIndicator.isHidden = hidden
+    }
 }

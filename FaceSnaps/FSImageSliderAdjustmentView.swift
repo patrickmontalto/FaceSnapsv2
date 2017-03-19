@@ -30,7 +30,7 @@ class FSImageSliderAdjustmentView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         
         // Set properties
-        let centered = !(type == .structure)
+        let centered = !(type == .structure || type == .vignette)
         self.slider = FSImageSlider(centered: centered)
         
         self.delegate = delegate
@@ -79,28 +79,8 @@ class FSImageSliderAdjustmentView: UIView {
 //        sender.valueChanged()
 //        print(sender.currentRoundedValue)
         sender.updateTrackingView()
-        
-        switch type! {
-        case .brightness:
-            delegate.brightnessSliderMove(sender: sender)
-        case .contrast:
-            delegate.contrastSliderMove(sender: sender)
-        case .structure:
-            delegate.structureSliderMove(sender: sender)
-        case .warmth:
-            delegate.warmthSliderMove(sender: sender)
-        case .saturation:
-            delegate.saturationSliderMove(sender: sender)
-        case .highlights:
-            delegate.highlightsSliderMove(sender: sender)
-        case .shadows:
-            delegate.shadowsSliderMove(sender: sender)
-        case .vignette:
-            delegate.vignetteSliderMove(sender: sender)
-        case .tiltshift:
-            return
-        }
-        
+
+        delegate.sliderMoved(type: type!, sender: sender)
         sender.lastRoundedValue = sender.currentRoundedValue
         
     }

@@ -70,6 +70,7 @@ class FSImageSliderMenuView: UIView {
         delegate.cancelButtonTapped(type: activeSlider!)
     }
     func doneButtonTapped() {
+        // Hide/unhide active indicator on cell for active slider type if the current value is not it's default value
         delegate.doneButtonTapped(type: activeSlider!)
     }
 }
