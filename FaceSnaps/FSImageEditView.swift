@@ -11,6 +11,39 @@ import UIKit
 
 enum TiltShiftMode: Int {
     case off = 0, radial, linear
+    
+    var stringRepresentation: String {
+        switch self {
+        case .off:
+            return "Off"
+        case .radial:
+            return "Radial"
+        case .linear:
+            return "Linear"
+        }
+    }
+    
+    var offIcon: UIImage {
+        switch self {
+        case .off:
+            return UIImage(named:"tiltshift_off")!
+        case .radial:
+            return UIImage(named:"tiltshift_radial")!
+        case .linear:
+            return UIImage(named:"tiltshift_linear")!
+        }
+    }
+    
+    var onIcon: UIImage {
+        switch self {
+        case .off:
+            return UIImage(named:"tiltshift_off_on")!
+        case .radial:
+            return UIImage(named:"tiltshift_radial_on")!
+        case .linear:
+            return UIImage(named:"tiltshift_linear_on")!
+        }
+    }
 }
 /// Delegate for FSImageEditView
 protocol FSImageEditViewDelegate {
@@ -48,14 +81,34 @@ class FSImageEditView: UIView {
         return cv
     }()
     
+    lazy var tiltShiftCollectionView: UICollectionView = {
+        let cvLayout = UICollectionViewFlowLayout()
+        cvLayout.scrollDirection = .horizontal
+        cvLayout.minimumInteritemSpacing = 10.0
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: cvLayout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.delegate = self
+        cv.dataSource = self
+        cv.backgroundColor = .white
+        cv.showsHorizontalScrollIndicator = false
+        // TODO: Center all 3 cells
+        let nib = UINib(nibName: "FSImageEditViewCell", bundle: nil)
+        cv.register(nib, forCellWithReuseIdentifier: "fsImageEditViewCell")
+        cv.isHidden = true
+        cv.tag = FSImageAdjustmentType.tiltshift.rawValue
+        return cv
+    }()
+    
     let availableTypes: [FSImageAdjustmentType] = [.brightness, .contrast, .structure, .warmth, .saturation, .highlights, .shadows, .vignette, .tiltshift]
+    
+    let tiltShiftModes: [TiltShiftMode] = [.off, .radial, .linear]
     
     var activeSliderView: UIView? {
         get {
             let unHiddenView = [
                 self.brightnessView, self.contrastView, self.structureView,
                 self.warmthView, self.saturationView, self.highlightsView,
-                self.shadowsView, self.vignetteView, self.tiltshiftView
+                self.shadowsView, self.vignetteView, self.tiltShiftCollectionView
             ].filter { (imageView) -> Bool in
                 return imageView.isHidden == false
             }
@@ -95,11 +148,6 @@ class FSImageEditView: UIView {
         return FSImageSliderAdjustmentView(delegate: self.delegate, type: .vignette)
     }()
     
-    lazy var tiltshiftView: UIView = {
-        return UIView()
-    }()
-    
-    
     convenience init(delegate: FSImageEditViewDelegate) {
         self.init()
         self.delegate = delegate
@@ -114,13 +162,14 @@ class FSImageEditView: UIView {
         addSubview(highlightsView)
         addSubview(shadowsView)
         addSubview(vignetteView)
-        addSubview(tiltshiftView)
+        addSubview(tiltShiftCollectionView)
+        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+
         NSLayoutConstraint.activate([
-            // TODO: testing centerYAnchor
             collectionView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 8),
             collectionView.leftAnchor.constraint(equalTo: self.leftAnchor),
             collectionView.rightAnchor.constraint(equalTo: self.rightAnchor),
@@ -166,11 +215,13 @@ class FSImageEditView: UIView {
             vignetteView.rightAnchor.constraint(equalTo: self.rightAnchor),
             vignetteView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
-            tiltshiftView.topAnchor.constraint(equalTo: self.topAnchor),
-            tiltshiftView.leftAnchor.constraint(equalTo: self.leftAnchor),
-            tiltshiftView.rightAnchor.constraint(equalTo: self.rightAnchor),
-            tiltshiftView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            tiltShiftCollectionView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 8),
+            tiltShiftCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            tiltShiftCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            tiltShiftCollectionView.heightAnchor.constraint(equalToConstant: 0.6 * self.frame.height),
         ])
+        
+        centerTiltShiftView()
     }
     // TODO: Handle tilt-shift (as UIView instead of FSImageSliderAdjustmentView)
     func resetSliderValue() {
@@ -194,49 +245,75 @@ class FSImageEditView: UIView {
         guard let activeSliderView = activeSliderView else { return }
         activeSliderView.isHidden = true
     }
+    
+    /// Call this function for when the view loads
+    func selectDefaultForTiltShift() {
+        tiltShiftCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: [])
+    }
+    
 }
 // MARK: - UICollectionViewDelegate & UICollectionViewDataSource
 extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return availableTypes.count
+        if collectionView == self.collectionView {
+            return availableTypes.count
+        } else {
+            return tiltShiftModes.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "fsImageEditViewCell", for: indexPath) as! FSImageEditViewCell
-        
-        configureCell(cell, atIndexPath: indexPath)
-        
+        configureCell(cell, atIndexPath: indexPath, forCollectionView: collectionView)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: Handle selection by unhiding the appropriate view
-        let type = availableTypes[indexPath.row]
-        showView(forSliderType: type)
-        delegate.sliderViewDidAppear(type: type)
+        if collectionView == self.collectionView {
+            let type = availableTypes[indexPath.row]
+            showView(forAdjustmentType: type)
+            delegate.sliderViewDidAppear(type: type)
+        } else {
+            let mode = tiltShiftModes[indexPath.row]
+//            let cell = self.collectionView(collectionView, cellForItemAt: indexPath) as! FSImageEditViewCell
+//            cell.iconView.image = mode.onIcon
+//            let unselectedModes = tiltShiftModes.filter() { $0 != mode }
+            delegate.tiltShiftChanged(mode: mode)
+        }
+        // TODO: Configure for selecting tilt shift effects (off, radial, linear)
     }
     
     /// Modifies the cell to the appropriate edit tool type
-    private func configureCell(_ cell: FSImageEditViewCell, atIndexPath indexPath: IndexPath) {
-        let type = availableTypes[indexPath.row]
-        
-        cell.label.text = type.stringRepresentation
-        cell.iconView.image = type.icon
+    private func configureCell(_ cell: FSImageEditViewCell, atIndexPath indexPath: IndexPath, forCollectionView collectionView: UICollectionView) {
+        if collectionView == self.collectionView {
+            let type = availableTypes[indexPath.row]
+            
+            cell.label.text = type.stringRepresentation
+            cell.iconView.image = type.icon
 
-        guard let activeSliderView = activeSliderView as? FSImageSliderAdjustmentView else {
+            guard let activeSliderView = activeSliderView as? FSImageSliderAdjustmentView else {
+                cell.hideActiveIndicator(true)
+                return
+            }
+            // Get the current type and the current type's associated collection view cell
+            // Display the active indicator if the slider value is not the default value
+            let hide = roundf(activeSliderView.slider.value) == type.defaultValue
+            cell.hideActiveIndicator(hide)
+        } else {
+            let mode = tiltShiftModes[indexPath.row]
+            
+            cell.label.text = mode.stringRepresentation
+            cell.iconView.image = mode.offIcon
             cell.hideActiveIndicator(true)
-            return
+            cell.mode = mode
         }
-        // Get the current type and the current type's associated collection view cell
-        // Display the active indicator if the slider value is not the default value
-        let hide = roundf(activeSliderView.slider.value) == type.defaultValue
-        cell.hideActiveIndicator(hide)
     }
+
     
     /// Unhides and hides the appropriate views
-    private func showView(forSliderType type: FSImageAdjustmentType) {
+    private func showView(forAdjustmentType type: FSImageAdjustmentType) {
         // Get a collection of the adjustment views and tilt shift view
-        let adjustmentViews = subviews.filter() { $0 is FSImageSliderAdjustmentView || $0 is FSImageEditView }
+        let adjustmentViews = subviews.filter() { $0 is FSImageSliderAdjustmentView || $0 == tiltShiftCollectionView }
         for view in adjustmentViews {
             if view.tag == type.rawValue {
                 view.isHidden = false
@@ -251,5 +328,13 @@ extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource,
         // W: 88 H: 114
         let width = 0.77 * collectionView.frame.height
         return CGSize(width: width, height: collectionView.frame.height)
+    }
+    
+    // Center the tilt shift collectionView insets [--[O]-[O]-[O]--]
+    func centerTiltShiftView() {
+        let width = collectionView(tiltShiftCollectionView, layout: UICollectionViewLayout(), sizeForItemAt: IndexPath(row: 0, section:0)).width
+        let distance: CGFloat = 10
+        let sideMargin = (UIScreen.main.bounds.width - ((3 * width) + (2 * distance))) / 2
+        tiltShiftCollectionView.contentInset = UIEdgeInsetsMake(0, sideMargin, 0, sideMargin)
     }
 }

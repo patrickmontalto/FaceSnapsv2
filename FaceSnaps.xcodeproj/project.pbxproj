@@ -96,6 +96,7 @@
 		3AC13E951E75ED1D0036EB87 /* FSImageEditToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */; };
 		3AC13E971E7855300036EB87 /* FSImageSliderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E961E7855300036EB87 /* FSImageSliderMenuView.swift */; };
 		3AC13E991E78893D0036EB87 /* FSImageSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E981E78893D0036EB87 /* FSImageSlider.swift */; };
+		3AC13E9D1E7F825E0036EB87 /* FSTiltShiftFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC13E9C1E7F825E0036EB87 /* FSTiltShiftFilter.swift */; };
 		3ADE2A641E41356500D1D4C6 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */; };
 		3ADE2A661E4151D900D1D4C6 /* Notification + Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */; };
 		3ADE2A681E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A671E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift */; };
@@ -243,6 +244,7 @@
 		3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditToolsController.swift; sourceTree = "<group>"; };
 		3AC13E961E7855300036EB87 /* FSImageSliderMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageSliderMenuView.swift; sourceTree = "<group>"; };
 		3AC13E981E78893D0036EB87 /* FSImageSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageSlider.swift; sourceTree = "<group>"; };
+		3AC13E9C1E7F825E0036EB87 /* FSTiltShiftFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSTiltShiftFilter.swift; sourceTree = "<group>"; };
 		3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
 		3ADE2A651E4151D900D1D4C6 /* Notification + Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification + Name.swift"; sourceTree = "<group>"; };
 		3ADE2A671E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+RemoveObjectsInArray.swift"; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 				3AC13E981E78893D0036EB87 /* FSImageSlider.swift */,
 				D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */,
 				D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType.swift */,
+				3AC13E9C1E7F825E0036EB87 /* FSTiltShiftFilter.swift */,
 			);
 			name = "Image Pickers";
 			sourceTree = "<group>";
@@ -763,6 +766,7 @@
 				3ABF87901E01EBFF00388866 /* FaceSnapsGradient.swift in Sources */,
 				3AC13E951E75ED1D0036EB87 /* FSImageEditToolsController.swift in Sources */,
 				3A32A6C61DA97A8E00AEE45F /* SortableDataSource.swift in Sources */,
+				3AC13E9D1E7F825E0036EB87 /* FSTiltShiftFilter.swift in Sources */,
 				3A32A6B51DA5F2A600AEE45F /* FaceSnap.xcdatamodeld in Sources */,
 				3ABF878E1E01EB0500388866 /* SignInHelpController.swift in Sources */,
 				3A9FA6181DA17FF800FDFE63 /* FilteredImageBuilder.swift in Sources */,

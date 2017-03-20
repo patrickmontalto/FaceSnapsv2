@@ -51,7 +51,7 @@ class FSImageEditFilterManager {
         return CIFilter(name: self.CIVignette)!
     }()
     
-//    lazy var tiltshiftFilter: CIFilter = {}()
+    var tiltShiftFilter = FSTiltShiftFilter()
     
     var storedFilterValues: [FSImageAdjustmentType: Float] = [
         .brightness: FSImageAdjustmentType.brightness.defaultValue,
@@ -105,8 +105,9 @@ class FSImageEditFilterManager {
             image = editShadows(image: inputImage, rawValue: rawValue)
         case .vignette:
             image = editVignette(image: inputImage, rawValue: rawValue)
-        default:
-            return CIImage()
+        case .tiltshift:
+            let mode = TiltShiftMode(rawValue: Int(rawValue))!
+            image = toggleTiltShift(image: inputImage, mode: mode)
         }
         // If this is the source image, remaining filters will need to be applied
         if sourceImage {
@@ -191,9 +192,17 @@ class FSImageEditFilterManager {
         return vignetteFilter.outputImage!
     }
     
-//    private func toggleTiltShift(mode: TiltShiftMode) -> CIImage {
-//        
-//    }
+    private func toggleTiltShift(image: CIImage, mode: TiltShiftMode) -> CIImage {
+        switch mode {
+        case .off:
+            return image
+        case .linear:
+            return tiltShiftFilter.linearShift(inputImage: image)
+        case .radial:
+            return CIImage()
+        }
+        
+    }
     
     func updateStoredValue(forType type: FSImageAdjustmentType) {
         // Done button tapped. Update the stored value.

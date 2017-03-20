@@ -15,7 +15,7 @@ protocol FSImageSliderMenuViewDelegate {
 
 class FSImageSliderMenuView: UIView {
     
-    var activeSlider: FSImageAdjustmentType?
+    var activeAdjustment: FSImageAdjustmentType?
     
     lazy var cancelButton: UIButton = {
         let button = UIButton()
@@ -67,10 +67,10 @@ class FSImageSliderMenuView: UIView {
     }
     
     func cancelButtonTapped() {
-        delegate.cancelButtonTapped(type: activeSlider!)
+        delegate.cancelButtonTapped(type: activeAdjustment!)
     }
     func doneButtonTapped() {
         // Hide/unhide active indicator on cell for active slider type if the current value is not it's default value
-        delegate.doneButtonTapped(type: activeSlider!)
+        delegate.doneButtonTapped(type: activeAdjustment!)
     }
 }

@@ -117,6 +117,10 @@ class FSImageEditCoordinator: UIViewController {
             sliderMenuTopAnchorConstraint
         ])
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        editToolsController.editorSelectionView.selectDefaultForTiltShift()
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -147,19 +151,11 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         }
     }
     
-    func tiltShiftChanged(mode: TiltShiftMode) {
-        //
-    }
-    
     func sliderViewDidAppear(type: FSImageAdjustmentType) {
         // Present Cancel and Done overlay for bottom buttons
         // Change nav bar title
         self.title = type.stringRepresentation
-        sliderMenuTopAnchorConstraint.constant = -48
-        sliderMenuView.activeSlider = type
-        animateConstraintChanges()
-        navigationItem.setHidesBackButton(true, animated: false)
-        filterIconView.isHidden = true
+        presentMenuView(forType: type)
     }
     
     func sliderViewDidDisappear() {
@@ -171,6 +167,34 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
 //        editFilterManager.inputImage = editingImageView.image!
     }
     
+    func tiltShiftChanged(mode: TiltShiftMode) {
+        let rawValue = Float(mode.rawValue)
+        let outputImage = editFilterManager.editedInputImage(filter: .tiltshift, rawValue: rawValue)
+        DispatchQueue.main.async {
+            // TODO: Animate flash of white gradient for mode
+            self.editingImageView.image = outputImage
+        }
+    }
+    
+    func tiltShiftDidAppear() {
+        self.title = FSImageAdjustmentType.tiltshift.stringRepresentation
+        sliderMenuTopAnchorConstraint.constant = -48
+        presentMenuView(forType: .tiltshift)
+    }
+    
+    func tiltShiftDidDisappear() {
+        self.title = nil
+        navigationItem.setHidesBackButton(false, animated: false)
+        filterIconView.isHidden = false
+    }
+
+    private func presentMenuView(forType type: FSImageAdjustmentType) {
+        sliderMenuTopAnchorConstraint.constant = -48
+        sliderMenuView.activeAdjustment = type
+        animateConstraintChanges()
+        navigationItem.setHidesBackButton(true, animated: false)
+        filterIconView.isHidden = true
+    }
 }
 
 // MARK: - FSSliderMenuViewDelegate
