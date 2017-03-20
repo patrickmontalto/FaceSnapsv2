@@ -255,15 +255,15 @@ class FSImageEditView: UIView {
         if let activeAdjustmentView = self.activeAdjustmentView as? FSImageSliderAdjustmentView {
             let active = roundf(activeAdjustmentView.slider.value) != 0
             let type = FSImageAdjustmentType(rawValue: activeAdjustmentView.tag)!
-            activeAdjustmentView.isHidden = true
             // When hiding active slider view, determine whether or not it is an active filter (value != default)
             filterStatuses[type] = active
         } else if let activeAdjustmentView = self.activeAdjustmentView as? UICollectionView {
-            let active = mode!.rawValue == 0
+            let active = mode!.rawValue != 0
             let type = FSImageAdjustmentType.tiltshift
-            activeAdjustmentView.isHidden = true
             // When hiding active slider view, determine whether or not it is an active filter (value != default)
             filterStatuses[type] = active
+            let indexPath = IndexPath(row: type.rawValue, section: 0)
+            collectionView.reloadItems(at: [indexPath])
         }
     }
     
