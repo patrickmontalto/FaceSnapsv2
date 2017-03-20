@@ -8,10 +8,12 @@
 
 import UIKit
 
+/// Contains the filter and edit views for modifying a photo.
 class FSImageEditToolsController: UIView {
     // MARK: - Properties
     var coordinator: FSImageEditCoordinator!
-    var delegate: FSImageEditViewDelegate!
+    var editViewDelegate: FSImageEditViewDelegate!
+    var filterViewDelegate: FSImageFilterViewDelegate!
     
     lazy var filterButton: UIButton = {
         let button = UIButton()
@@ -34,7 +36,7 @@ class FSImageEditToolsController: UIView {
     }()
     
     lazy var filterSelectionView: FSImageFilterView = {
-        let view = FSImageFilterView()
+        let view = FSImageFilterView(delegate: self.filterViewDelegate)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isHidden = false
         view.alpha = 1.0
@@ -42,17 +44,18 @@ class FSImageEditToolsController: UIView {
     }()
     
     lazy var editorSelectionView: FSImageEditView = {
-        let view = FSImageEditView(delegate: self.delegate)
+        let view = FSImageEditView(delegate: self.editViewDelegate)
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.alpha = 0.0
         return view
     }()
     
-    convenience init(coordinator: FSImageEditCoordinator, delegate: FSImageEditViewDelegate) {
+    convenience init(coordinator: FSImageEditCoordinator, editViewDelegate: FSImageEditViewDelegate, filterViewDelegate: FSImageFilterViewDelegate) {
         self.init()
         self.coordinator = coordinator
-        self.delegate = delegate
+        self.editViewDelegate = editViewDelegate
+        self.filterViewDelegate = filterViewDelegate
         
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -120,7 +123,7 @@ class FSImageEditToolsController: UIView {
         // Hide the slider view
         editorSelectionView.toggleActiveIndicator()
         editorSelectionView.hideActiveAdjustmentView()
-        delegate.sliderViewDidDisappear()
+        editViewDelegate.sliderViewDidDisappear()
     }
     
     func resetTiltShift(mode: TiltShiftMode) {
@@ -130,7 +133,7 @@ class FSImageEditToolsController: UIView {
         editorSelectionView.hideActiveAdjustmentView()
         editorSelectionView.tiltShiftCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
         
-        delegate.tiltShiftDidDisappear()
+        editViewDelegate.tiltShiftDidDisappear()
     }
     
     func saveSlider() {
@@ -140,13 +143,13 @@ class FSImageEditToolsController: UIView {
         editorSelectionView.setNewSliderValue()
         // Hide the slider view
         editorSelectionView.hideActiveAdjustmentView()
-        delegate.sliderViewDidDisappear()
+        editViewDelegate.sliderViewDidDisappear()
     }
     
     func dismissTiltShift(mode: TiltShiftMode) {
         editorSelectionView.toggleActiveIndicator(mode: mode)
         editorSelectionView.hideActiveAdjustmentView()
         
-        delegate.tiltShiftDidDisappear()
+        editViewDelegate.tiltShiftDidDisappear()
     }
 }

@@ -139,7 +139,9 @@
 		D267036C1E2D448F001C06BE /* FeedItemSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267036B1E2D448F001C06BE /* FeedItemSectionController.swift */; };
 		D28186D01E79AADB00EC7D23 /* FSImageEditFilterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */; };
 		D28186D21E79C50100EC7D23 /* CIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28186D11E79C50100EC7D23 /* CIImageView.swift */; };
-		D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType.swift */; };
+		D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift */; };
+		D2AA025C1E806BAE0000E0BD /* FSFilterViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AA025B1E806BAE0000E0BD /* FSFilterViewCell.xib */; };
+		D2AA025E1E806BB70000E0BD /* FSFilterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA025D1E806BB70000E0BD /* FSFilterViewCell.swift */; };
 		D2DEE0051E1EF4D4004BCEF7 /* Strongbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */; };
 		D2DEE0081E204899004BCEF7 /* UsernameSignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */; };
 		D2F1A2421E6F27E200EFC6C8 /* ImagePickerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F1A2411E6F27E200EFC6C8 /* ImagePickerNavigationController.swift */; };
@@ -288,7 +290,9 @@
 		D267036B1E2D448F001C06BE /* FeedItemSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSectionController.swift; sourceTree = "<group>"; };
 		D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditFilterManager.swift; sourceTree = "<group>"; };
 		D28186D11E79C50100EC7D23 /* CIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIImageView.swift; sourceTree = "<group>"; };
-		D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageAdjustmentType.swift; sourceTree = "<group>"; };
+		D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FSImageAdjustmentType + TiltShiftMode.swift"; sourceTree = "<group>"; };
+		D2AA025B1E806BAE0000E0BD /* FSFilterViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSFilterViewCell.xib; sourceTree = "<group>"; };
+		D2AA025D1E806BB70000E0BD /* FSFilterViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSFilterViewCell.swift; sourceTree = "<group>"; };
 		D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strongbox.swift; sourceTree = "<group>"; };
 		D2DEE0061E201E87004BCEF7 /* FaceSnaps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FaceSnaps.entitlements; sourceTree = "<group>"; };
 		D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameSignUpController.swift; sourceTree = "<group>"; };
@@ -494,7 +498,6 @@
 				D2F1A2411E6F27E200EFC6C8 /* ImagePickerNavigationController.swift */,
 				3AC13E8C1E7509790036EB87 /* FSImageEditCoordinator.swift */,
 				3AC13E941E75ED1D0036EB87 /* FSImageEditToolsController.swift */,
-				3AC13E881E7504B80036EB87 /* FSImageFilterView.swift */,
 				3AC13E861E7503480036EB87 /* FSImageEditView.swift */,
 				3AC13E961E7855300036EB87 /* FSImageSliderMenuView.swift */,
 				3AC13E8E1E75D71C0036EB87 /* FSImageSliderAdjustmentView.swift */,
@@ -502,8 +505,11 @@
 				3AC13E921E75E73F0036EB87 /* FSImageEditViewCell.swift */,
 				3AC13E981E78893D0036EB87 /* FSImageSlider.swift */,
 				D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */,
-				D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType.swift */,
+				D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift */,
 				3AC13E9C1E7F825E0036EB87 /* FSTiltShiftFilter.swift */,
+				3AC13E881E7504B80036EB87 /* FSImageFilterView.swift */,
+				D2AA025B1E806BAE0000E0BD /* FSFilterViewCell.xib */,
+				D2AA025D1E806BB70000E0BD /* FSFilterViewCell.swift */,
 			);
 			name = "Image Pickers";
 			sourceTree = "<group>";
@@ -680,6 +686,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D21BD4841E54D1BD009196C8 /* UserSearchCell.xib in Resources */,
+				D2AA025C1E806BAE0000E0BD /* FSFilterViewCell.xib in Resources */,
 				3A32DD1A1DA0309100CD2669 /* LaunchScreen.storyboard in Resources */,
 				3A74B8501E3E97B700408BBB /* TimeView.xib in Resources */,
 				3AA3B23D1E5A95660000A312 /* EditableTableViewCell.xib in Resources */,
@@ -799,6 +806,7 @@
 				3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */,
 				D224C6611E36AEF100AA1DC6 /* CommentCell.swift in Sources */,
 				3A0805EB1DEF6CFE002DB0DF /* GradientLayerAnimator.swift in Sources */,
+				D2AA025E1E806BB70000E0BD /* FSFilterViewCell.swift in Sources */,
 				3AB17FB01E0B6AC3005E8739 /* UIDevice+CurrentDevice.swift in Sources */,
 				3ADE2A741E4D692C00D1D4C6 /* CALayer+AddBorder.swift in Sources */,
 				3A32DD121DA0309100CD2669 /* PhotoListController.swift in Sources */,
@@ -834,7 +842,7 @@
 				3AB17FB61E0CEA9C005E8739 /* SignUpViews.swift in Sources */,
 				3AA3B2391E5A90F90000A312 /* EditProfileViewController.swift in Sources */,
 				3A74B8481E3D9DCE00408BBB /* TextSize.swift in Sources */,
-				D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType.swift in Sources */,
+				D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift in Sources */,
 				3ADE2A681E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift in Sources */,
 				3AB17FAE1E0B6441005E8739 /* UITextField+Blank.swift in Sources */,
 				3AB17FB81E12F879005E8739 /* EmailSignUpController.swift in Sources */,

@@ -44,7 +44,6 @@ class FSImageEditCoordinator: UIViewController {
         return imageView
     }()
     
-    // TODO: Create an image view that can be manipulated with filters, brightness, etc
     /// Contains the selected image which is currently being manipulated.
     lazy var startingImageView: UIImageView = {
         let imgView = UIImageView()
@@ -70,7 +69,7 @@ class FSImageEditCoordinator: UIViewController {
     
     /// The edit tools controller which holds the two horizontal collectionViews and their slider views
     lazy var editToolsController: FSImageEditToolsController = {
-        let controller =  FSImageEditToolsController(coordinator: self, delegate: self)
+        let controller =  FSImageEditToolsController(coordinator: self, editViewDelegate: self, filterViewDelegate: self)
         controller.translatesAutoresizingMaskIntoConstraints = false
         return controller
     }()
@@ -156,7 +155,6 @@ class FSImageEditCoordinator: UIViewController {
 }
 // MARK: - FSImageEditViewDelegate
 extension FSImageEditCoordinator: FSImageEditViewDelegate {
-    // TODO: Remove individual slider moving methods and roll into one method that accepts the sender and the type.
     func sliderMoved(type: FSImageAdjustmentType, sender: UISlider) {
         let outputImage = editFilterManager.editedInputImage(filter: type, rawValue: sender.value)
         DispatchQueue.main.async {
@@ -184,10 +182,6 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         let rawValue = Float(mode.rawValue)
         let outputImage = editFilterManager.editedInputImage(filter: .tiltshift, rawValue: rawValue)
         animateTiltShift(mode: mode, outputImage: outputImage)
-//        DispatchQueue.main.async {
-//            // TODO: Animate flash of white gradient for mode
-//            self.editingImageView.image = outputImage
-//        }
     }
     
     func tiltShiftDidAppear() {
@@ -262,5 +256,23 @@ extension FSImageEditCoordinator: FSImageSliderMenuViewDelegate {
         sliderMenuTopAnchorConstraint.constant = 0
         animateConstraintChanges()
         
+    }
+}
+
+// MARK: - FSImageFilterViewDelegate
+extension FSImageEditCoordinator: FSImageFilterViewDelegate {
+    func selectedFilter(filter: FSImageFilter) {
+        // TODO: Change the editingImageView's image
+    }
+    
+    func thumbnailForFilter(filter: FSImageFilter) -> UIImage {
+        // TODO: FilteredImageBuilder will create thumbnails?
+//        return FilteredImageBuilder.thumbnails[filter]
+    }
+    
+    // TODO: Remove this and make it a method on the FilteredImageBuilder?
+    func imageForFilter(filter: FSImageFilter) -> CIImage {
+        // TODO: FilteredImageBuilder will return the filtered image?
+//        return FilteredImageBuilder.imageWithFilter(inputImage: CIImage, filter: FSImageFilter)
     }
 }

@@ -69,3 +69,40 @@ enum FSImageAdjustmentType: Int {
         return 0
     }
 }
+
+enum TiltShiftMode: Int {
+    case off = 0, radial, linear
+    
+    var stringRepresentation: String {
+        switch self {
+        case .off:
+            return "Off"
+        case .radial:
+            return "Radial"
+        case .linear:
+            return "Linear"
+        }
+    }
+    
+    var offIcon: UIImage {
+        switch self {
+        case .off:
+            return UIImage(named:"tiltshift_off")!
+        case .radial:
+            return UIImage(named:"tiltshift_radial")!
+        case .linear:
+            return UIImage(named:"tiltshift_linear")!
+        }
+    }
+    
+    var onIcon: UIImage {
+        switch self {
+        case .off:
+            return UIImage(named:"tiltshift_off_on")!
+        case .radial:
+            return UIImage(named:"tiltshift_radial_on")!
+        case .linear:
+            return UIImage(named:"tiltshift_linear_on")!
+        }
+    }
+}

@@ -9,42 +9,6 @@
 import Foundation
 import UIKit
 
-enum TiltShiftMode: Int {
-    case off = 0, radial, linear
-    
-    var stringRepresentation: String {
-        switch self {
-        case .off:
-            return "Off"
-        case .radial:
-            return "Radial"
-        case .linear:
-            return "Linear"
-        }
-    }
-    
-    var offIcon: UIImage {
-        switch self {
-        case .off:
-            return UIImage(named:"tiltshift_off")!
-        case .radial:
-            return UIImage(named:"tiltshift_radial")!
-        case .linear:
-            return UIImage(named:"tiltshift_linear")!
-        }
-    }
-    
-    var onIcon: UIImage {
-        switch self {
-        case .off:
-            return UIImage(named:"tiltshift_off_on")!
-        case .radial:
-            return UIImage(named:"tiltshift_radial_on")!
-        case .linear:
-            return UIImage(named:"tiltshift_linear_on")!
-        }
-    }
-}
 /// Delegate for FSImageEditView
 protocol FSImageEditViewDelegate {
     // Slider effect changes
@@ -296,12 +260,8 @@ extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource,
             delegate.sliderViewDidAppear(type: type)
         } else {
             let mode = tiltShiftModes[indexPath.row]
-//            let cell = self.collectionView(collectionView, cellForItemAt: indexPath) as! FSImageEditViewCell
-//            cell.iconView.image = mode.onIcon
-//            let unselectedModes = tiltShiftModes.filter() { $0 != mode }
             delegate.tiltShiftChanged(mode: mode)
         }
-        // TODO: Configure for selecting tilt shift effects (off, radial, linear)
     }
     
     /// Modifies the cell to the appropriate edit tool type
@@ -311,14 +271,6 @@ extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource,
             
             cell.label.text = type.stringRepresentation
             cell.iconView.image = type.icon
-
-//            if let activeSliderView = activeAdjustmentView as? FSImageSliderAdjustmentView {
-//                // Get the current type and the current type's associated collection view cell
-//                // Display the active indicator if the slider value is not the default value
-//                let hide = roundf(activeSliderView.slider.value) == type.defaultValue
-//                cell.hideActiveIndicator(hide)
-//            } else if let activeAdjustmentView = activeAdjustmentView as? UICollectionView {
-//            }
             if filterStatuses[type] == true {
                 cell.hideActiveIndicator(false)
             } else {
