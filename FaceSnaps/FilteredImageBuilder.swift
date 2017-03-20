@@ -81,6 +81,10 @@ final class FilteredImageBuilder {
         
         return outputImage.cropping(to: inputImage.extent)
     }
+    
+//    func image(image: CIImage, withFilter filter: FSImageFilter) -> CIImage {
+//        
+//    }
 }
 
 
