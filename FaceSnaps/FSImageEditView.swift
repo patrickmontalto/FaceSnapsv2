@@ -101,9 +101,11 @@ class FSImageEditView: UIView {
     
     let availableTypes: [FSImageAdjustmentType] = [.brightness, .contrast, .structure, .warmth, .saturation, .highlights, .shadows, .vignette, .tiltshift]
     
+    var filterStatuses = [FSImageAdjustmentType : Bool]()
+    
     let tiltShiftModes: [TiltShiftMode] = [.off, .radial, .linear]
     
-    var activeSliderView: UIView? {
+    var activeAdjustmentView: UIView? {
         get {
             let unHiddenView = [
                 self.brightnessView, self.contrastView, self.structureView,
@@ -223,15 +225,17 @@ class FSImageEditView: UIView {
         
         centerTiltShiftView()
     }
-    // TODO: Handle tilt-shift (as UIView instead of FSImageSliderAdjustmentView)
+    
     func resetSliderValue() {
-        guard let activeSliderView = activeSliderView as? FSImageSliderAdjustmentView else { return }
+        guard let activeSliderView = activeAdjustmentView as? FSImageSliderAdjustmentView else { return }
         activeSliderView.slider.value = activeSliderView.lastValue
         activeSliderView.sliderMoved(sender: activeSliderView.slider)
     }
-    
+
+    /// Stores the current slider value as the lastValue of the activeSliderView.
+    /// Also reloads the collectionViewCell 
     func setNewSliderValue() {
-        guard let activeSliderView = activeSliderView as? FSImageSliderAdjustmentView else { return }
+        guard let activeSliderView = activeAdjustmentView as? FSImageSliderAdjustmentView else { return }
         activeSliderView.lastValue = activeSliderView.slider.value
         activeSliderView.sliderMoved(sender: activeSliderView.slider)
         
@@ -241,9 +245,26 @@ class FSImageEditView: UIView {
         collectionView.reloadItems(at: [indexPath])
     }
     
-    func hideActiveSliderView() {
-        guard let activeSliderView = activeSliderView else { return }
-        activeSliderView.isHidden = true
+    /// Hides the active adjustment view
+    func hideActiveAdjustmentView() {
+        activeAdjustmentView?.isHidden = true
+    }
+    
+    /// Hides/displays the active indicator for a given edit adjustment cell
+    func toggleActiveIndicator(mode: TiltShiftMode? = nil) {
+        if let activeAdjustmentView = self.activeAdjustmentView as? FSImageSliderAdjustmentView {
+            let active = roundf(activeAdjustmentView.slider.value) != 0
+            let type = FSImageAdjustmentType(rawValue: activeAdjustmentView.tag)!
+            activeAdjustmentView.isHidden = true
+            // When hiding active slider view, determine whether or not it is an active filter (value != default)
+            filterStatuses[type] = active
+        } else if let activeAdjustmentView = self.activeAdjustmentView as? UICollectionView {
+            let active = mode!.rawValue == 0
+            let type = FSImageAdjustmentType.tiltshift
+            activeAdjustmentView.isHidden = true
+            // When hiding active slider view, determine whether or not it is an active filter (value != default)
+            filterStatuses[type] = active
+        }
     }
     
     /// Call this function for when the view loads
@@ -291,14 +312,18 @@ extension FSImageEditView: UICollectionViewDelegate, UICollectionViewDataSource,
             cell.label.text = type.stringRepresentation
             cell.iconView.image = type.icon
 
-            guard let activeSliderView = activeSliderView as? FSImageSliderAdjustmentView else {
+//            if let activeSliderView = activeAdjustmentView as? FSImageSliderAdjustmentView {
+//                // Get the current type and the current type's associated collection view cell
+//                // Display the active indicator if the slider value is not the default value
+//                let hide = roundf(activeSliderView.slider.value) == type.defaultValue
+//                cell.hideActiveIndicator(hide)
+//            } else if let activeAdjustmentView = activeAdjustmentView as? UICollectionView {
+//            }
+            if filterStatuses[type] == true {
+                cell.hideActiveIndicator(false)
+            } else {
                 cell.hideActiveIndicator(true)
-                return
             }
-            // Get the current type and the current type's associated collection view cell
-            // Display the active indicator if the slider value is not the default value
-            let hide = roundf(activeSliderView.slider.value) == type.defaultValue
-            cell.hideActiveIndicator(hide)
         } else {
             let mode = tiltShiftModes[indexPath.row]
             

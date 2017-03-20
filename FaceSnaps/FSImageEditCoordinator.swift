@@ -61,6 +61,13 @@ class FSImageEditCoordinator: UIViewController {
         return imgView
     }()
     
+    lazy var tiltAnimationView: CIImageView = {
+        let imgView = CIImageView(eaglContext: self.eaglContext, ciContext: self.context)
+        imgView.translatesAutoresizingMaskIntoConstraints = false
+        imgView.alpha = 0.0
+        return imgView
+    }()
+    
     /// The edit tools controller which holds the two horizontal collectionViews and their slider views
     lazy var editToolsController: FSImageEditToolsController = {
         let controller =  FSImageEditToolsController(coordinator: self, delegate: self)
@@ -94,6 +101,7 @@ class FSImageEditCoordinator: UIViewController {
         view.addSubview(editingImageView)
         view.addSubview(editToolsController)
         view.addSubview(sliderMenuView)
+        view.addSubview(tiltAnimationView)
         
         NSLayoutConstraint.activate([
             startingImageView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
@@ -105,6 +113,11 @@ class FSImageEditCoordinator: UIViewController {
             editingImageView.leftAnchor.constraint(equalTo: view.leftAnchor),
             editingImageView.rightAnchor.constraint(equalTo: view.rightAnchor),
             editingImageView.heightAnchor.constraint(equalToConstant: view.frame.width),
+            
+            tiltAnimationView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+            tiltAnimationView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            tiltAnimationView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            tiltAnimationView.heightAnchor.constraint(equalToConstant: view.frame.width),
             
             editToolsController.topAnchor.constraint(equalTo: editingImageView.bottomAnchor),
             editToolsController.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -170,15 +183,15 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
     func tiltShiftChanged(mode: TiltShiftMode) {
         let rawValue = Float(mode.rawValue)
         let outputImage = editFilterManager.editedInputImage(filter: .tiltshift, rawValue: rawValue)
-        DispatchQueue.main.async {
-            // TODO: Animate flash of white gradient for mode
-            self.editingImageView.image = outputImage
-        }
+        animateTiltShift(mode: mode, outputImage: outputImage)
+//        DispatchQueue.main.async {
+//            // TODO: Animate flash of white gradient for mode
+//            self.editingImageView.image = outputImage
+//        }
     }
     
     func tiltShiftDidAppear() {
         self.title = FSImageAdjustmentType.tiltshift.stringRepresentation
-        sliderMenuTopAnchorConstraint.constant = -48
         presentMenuView(forType: .tiltshift)
     }
     
@@ -186,6 +199,18 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         self.title = nil
         navigationItem.setHidesBackButton(false, animated: false)
         filterIconView.isHidden = false
+    }
+    
+    private func animateTiltShift(mode: TiltShiftMode, outputImage: CIImage) {
+        self.tiltAnimationView.image = self.editFilterManager.tiltShiftFilter.tiltShiftAnimation(inputImage: outputImage, mode: mode)
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseIn, animations: {
+            self.tiltAnimationView.alpha = 0.5
+        }, completion: { (completed) in
+            self.editingImageView.image = outputImage
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+                self.tiltAnimationView.alpha = 0.0
+            }, completion: nil)
+        })
     }
 
     private func presentMenuView(forType type: FSImageAdjustmentType) {
@@ -200,8 +225,21 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
 // MARK: - FSSliderMenuViewDelegate
 extension FSImageEditCoordinator: FSImageSliderMenuViewDelegate {
     func cancelButtonTapped(type: FSImageAdjustmentType) {
-        // Cancel button was tapped. Reset active slider to lastValue
-        editToolsController.resetSlider()
+        if type == .tiltshift {
+            guard let resetImage = editFilterManager.resetTiltShiftImage() else {
+                return
+            }
+            DispatchQueue.main.async {
+                self.editingImageView.image = resetImage
+            }
+            
+            let resetMode = Int(editFilterManager.storedFilterValues[.tiltshift]!)
+            
+            editToolsController.resetTiltShift(mode: TiltShiftMode(rawValue: resetMode)!)
+            
+        } else {
+            editToolsController.resetSlider()            
+        }
         // Notify filter manager to reset stored value to lastValue
         // Animate hiding the FSImageSliderMenuView
         sliderMenuTopAnchorConstraint.constant = 0
@@ -209,12 +247,20 @@ extension FSImageEditCoordinator: FSImageSliderMenuViewDelegate {
     }
     
     func doneButtonTapped(type: FSImageAdjustmentType) {
-        // Done button was tapped. Set active slider's lastValue to it's currentValue
-        // Animate hiding the FSImageSliderMenuView
-        editToolsController.saveSlider()
-        sliderMenuTopAnchorConstraint.constant = 0
-        animateConstraintChanges()
         // Notify the filter manager to store the current value
         editFilterManager.updateStoredValue(forType: type)
+        
+        // Done button was tapped. Set active slider's lastValue to it's currentValue
+        // Animate hiding the FSImageSliderMenuView
+        if type == .tiltshift {
+            let modeValue = Int(editFilterManager.storedFilterValues[.tiltshift]!)
+            let mode = TiltShiftMode(rawValue: modeValue)!
+            editToolsController.dismissTiltShift(mode: mode)
+        } else {
+            editToolsController.saveSlider()
+        }
+        sliderMenuTopAnchorConstraint.constant = 0
+        animateConstraintChanges()
+        
     }
 }

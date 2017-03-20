@@ -1,5 +1,5 @@
 //
-//  UIImage+Size.swift
+//  UIImage+Size+Color.swift
 //  FaceSnaps
 //
 //  Created by Patrick Montalto on 1/25/17.
@@ -52,5 +52,12 @@ extension UIImage {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
     
-    
+    static func with(color: UIColor, bounds: CGRect) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
+        color.setFill()
+        UIRectFill(bounds)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img
+    }
 }

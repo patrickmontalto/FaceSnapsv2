@@ -59,6 +59,10 @@ class FSImageEditFilterManager {
         .structure: FSImageAdjustmentType.structure.defaultValue,
         .warmth: FSImageAdjustmentType.warmth.defaultValue,
         .saturation: FSImageAdjustmentType.saturation.defaultValue,
+        .highlights: FSImageAdjustmentType.highlights.defaultValue,
+        .shadows: FSImageAdjustmentType.shadows.defaultValue,
+        .vignette: FSImageAdjustmentType.vignette.defaultValue,
+        .tiltshift: FSImageAdjustmentType.tiltshift.defaultValue
     ]
     
     var currentValue: Float?
@@ -168,7 +172,6 @@ class FSImageEditFilterManager {
         
         // Return edied output image
         return saturationFilter.outputImage!
-
     }
     private func editHighlights(image: CIImage, rawValue: Float) -> CIImage {
         let value = convertValueToScale(rawValue: rawValue, oldMin: -100.0, oldMax: 100.0, newMin: -5, newMax: 7)
@@ -199,9 +202,13 @@ class FSImageEditFilterManager {
         case .linear:
             return tiltShiftFilter.linearShift(inputImage: image)
         case .radial:
-            return CIImage()
+            return tiltShiftFilter.radialShift(inputImage: image)
         }
-        
+    }
+    
+    func resetTiltShiftImage() -> CIImage? {
+        let oldTiltShiftValue = storedFilterValues[.tiltshift]!
+        return editedInputImage(filter: .tiltshift, rawValue: oldTiltShiftValue)
     }
     
     func updateStoredValue(forType type: FSImageAdjustmentType) {

@@ -114,20 +114,39 @@ class FSImageEditToolsController: UIView {
         }
     }
     
-    // TODO: Make sure slider's valueChanged targets get triggered from programatically setting the slider value
     func resetSlider() {
         // Reset to last value
         editorSelectionView.resetSliderValue()
         // Hide the slider view
-        editorSelectionView.hideActiveSliderView()
+        editorSelectionView.toggleActiveIndicator()
+        editorSelectionView.hideActiveAdjustmentView()
         delegate.sliderViewDidDisappear()
     }
     
+    func resetTiltShift(mode: TiltShiftMode) {
+        let row = mode.rawValue
+        let indexPath = IndexPath(row: row, section: 0)
+        editorSelectionView.toggleActiveIndicator(mode: mode)
+        editorSelectionView.hideActiveAdjustmentView()
+        editorSelectionView.tiltShiftCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+        
+        delegate.tiltShiftDidDisappear()
+    }
+    
     func saveSlider() {
+        // Toggle the active indicator
+        editorSelectionView.toggleActiveIndicator()
         // Save new value
         editorSelectionView.setNewSliderValue()
         // Hide the slider view
-        editorSelectionView.hideActiveSliderView()
+        editorSelectionView.hideActiveAdjustmentView()
         delegate.sliderViewDidDisappear()
+    }
+    
+    func dismissTiltShift(mode: TiltShiftMode) {
+        editorSelectionView.toggleActiveIndicator(mode: mode)
+        editorSelectionView.hideActiveAdjustmentView()
+        
+        delegate.tiltShiftDidDisappear()
     }
 }
