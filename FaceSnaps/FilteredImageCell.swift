@@ -27,16 +27,30 @@ class FilteredImageCell: UICollectionViewCell {
         return view
     }()
     
+    lazy var label: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12.0)
+        label.textAlignment = .center
+        return label
+    }()
+    
     var image: CIImage!
     
     // In UIView Subclass, do layout in layoutSubviews()
     override func layoutSubviews() {
         // Add subviews to contentView
         contentView.addSubview(glkView)
+        contentView.addSubview(label)
+        
         glkView.translatesAutoresizingMaskIntoConstraints = false
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-                glkView.topAnchor.constraint(equalTo: contentView.topAnchor),
+                label.topAnchor.constraint(equalTo: contentView.topAnchor),
+                label.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+                label.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+                label.heightAnchor.constraint(equalToConstant: 15.0),
+                glkView.heightAnchor.constraint(equalToConstant: contentView.frame.width),
                 glkView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
                 glkView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
                 glkView.leftAnchor.constraint(equalTo: contentView.leftAnchor)

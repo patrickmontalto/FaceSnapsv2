@@ -9,35 +9,10 @@
 import Foundation
 import UIKit
 
-enum FSImageFilter: Int {
-    case normal = 0, clarendon, gingham, moon, lark, valencia, nashville
-    
-    var stringRepresentation: String {
-        switch self {
-        case .normal:
-            return "Normal"
-        case .clarendon:
-            return "Clarendon"
-        case .gingham:
-            return "Gingham"
-        case .moon:
-            return "Moon"
-        case .lark:
-            return "Lark"
-        case .valencia:
-            return "Valencia"
-        case .nashville:
-            return "Nashville"
-        }
-    }
-    static let availableFilters: [FSImageFilter] = [.normal, .clarendon, .gingham, .moon, .lark, .valencia, .nashville]
-
-}
-
 protocol FSImageFilterViewDelegate {
     func selectedFilter(filter: FSImageFilter)
-    func thumbnailForFilter(filter: FSImageFilter) -> UIImage
-    func imageForFilter(filter: FSImageFilter) -> CIImage
+    func thumbnailForFilter(filter: FSImageFilter) -> CIImage
+//    func imageForFilter(filter: FSImageFilter) -> CIImage
 }
 
 /// View containing a horizontal collcetion view and the preset filters.
@@ -55,9 +30,17 @@ class FSImageFilterView: UIView {
         cv.backgroundColor = .white
         cv.showsHorizontalScrollIndicator = false
         cv.contentInset = UIEdgeInsets(top: 0.0, left: 12, bottom: 0.0, right: 12)
-        let nib = UINib(nibName: "FSFilterViewCell", bundle: nil)
-        cv.register(nib, forCellWithReuseIdentifier: "FSFilterViewCell")
+        cv.register(FilteredImageCell.self, forCellWithReuseIdentifier: FilteredImageCell.reuseIdentifier)
+//        let nib = UINib(nibName: "FSFilterViewCell", bundle: nil)
+//        cv.register(nib, forCellWithReuseIdentifier: "FSFilterViewCell")
         return cv
+    }()
+    
+    lazy var eaglContext: EAGLContext = {
+        return EAGLContext(api: .openGLES2)!
+    }()
+    lazy var ciContext: CIContext = {
+        return CIContext(eaglContext: self.eaglContext)
     }()
     
     convenience init(delegate: FSImageFilterViewDelegate) {
@@ -88,14 +71,26 @@ extension FSImageFilterView: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FSFilterViewCell", for: indexPath) as! FSFilterViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FilteredImageCell.reuseIdentifier, for: indexPath) as! FilteredImageCell
+
         let filter = FSImageFilter.availableFilters[indexPath.row]
-        
-        cell.filterTitle.text = filter.stringRepresentation
+
         let thumbnail = delegate.thumbnailForFilter(filter: filter)
-        cell.filterThumbnail.image = thumbnail
+
+        cell.label.text = filter.stringRepresentation
+        cell.ciContext = ciContext
+        cell.eaglContext = eaglContext
+        cell.image = thumbnail
         
         return cell
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FSFilterViewCell", for: indexPath) as! FSFilterViewCell
+//        let filter = FSImageFilter.availableFilters[indexPath.row]
+//        
+//        cell.filterTitle.text = filter.stringRepresentation
+//        let thumbnail = delegate.thumbnailForFilter(filter: filter)
+//        cell.filterThumbnail.image = thumbnail
+//        
+//        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

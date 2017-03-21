@@ -79,6 +79,10 @@ class FSImageEditCoordinator: UIViewController {
         return FSImageSliderMenuView(delegate: self)
     }()
     
+    lazy var filteredImageBuilder: FilteredImageBuilder = {
+        return FilteredImageBuilder(context: self.context)
+    }()
+    
     var sliderMenuTopAnchorConstraint = NSLayoutConstraint()
     
     convenience init(image: UIImage, context: CIContext, eaglContext: EAGLContext) {
@@ -265,14 +269,11 @@ extension FSImageEditCoordinator: FSImageFilterViewDelegate {
         // TODO: Change the editingImageView's image
     }
     
-    func thumbnailForFilter(filter: FSImageFilter) -> UIImage {
+    func thumbnailForFilter(filter: FSImageFilter) -> CIImage {
         // TODO: FilteredImageBuilder will create thumbnails?
 //        return FilteredImageBuilder.thumbnails[filter]
-    }
-    
-    // TODO: Remove this and make it a method on the FilteredImageBuilder?
-    func imageForFilter(filter: FSImageFilter) -> CIImage {
-        // TODO: FilteredImageBuilder will return the filtered image?
-//        return FilteredImageBuilder.imageWithFilter(inputImage: CIImage, filter: FSImageFilter)
+        let index = filter.rawValue
+        let thumbnails = filteredImageBuilder.thumbnailsForImage(image: CIImage(image: startImage)!)
+        return thumbnails[index]
     }
 }

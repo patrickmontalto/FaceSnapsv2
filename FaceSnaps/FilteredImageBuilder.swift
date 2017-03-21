@@ -10,114 +10,126 @@ import Foundation
 import CoreImage
 import UIKit
 
-// This class applies the filters to the supplied image
+/// This class applies filters to the supplied image.
 final class FilteredImageBuilder {
     
-    // Responsible for holding available filters for application
-    private struct PhotoFilter {
-        
-        // Use static constants to avoid typos throughout application
-        static let ColorClamp = "CIColorClamp"
-        static let ColorControls = "CIColorControls"
-        static let PhotoEffectInstant = "CIPhotoEffectInstant"
-        static let PhotoEffectProcess = "CIPhotoEffectProcess"
-        static let PhotoEffectNoir = "CIPhotoEffectNoir"
-        static let Sepia = "CISepiaTone"
-        
-        // Return array of default filters
-        static func defaultFilters() -> [CIFilter] {
-            // MARK: Color Clamp
-            let colorClamp = CIFilter(name: PhotoFilter.ColorClamp)!
-            // Use KVC to set color clamp key values (min/max components)
-            colorClamp.setValue(CIVector(x: 0.2, y: 0.2, z: 0.2, w: 0.2), forKey: "inputMinComponents")
-            colorClamp.setValue(CIVector(x: 0.9, y: 0.9, z: 0.9, w: 0.9), forKey: "inputMaxComponents")
-            
-            // MARK: Color Controls
-            let colorControls = CIFilter(name: PhotoFilter.ColorControls)!
-            // Use KVC to set color controls key value (saturation)
-            colorControls.setValue(0.1, forKey: kCIInputSaturationKey)
-            
-            // MARK: Photo Effects
-            let photoEffectInstant = CIFilter(name: PhotoFilter.PhotoEffectInstant)!
-            let photoEffectProcess = CIFilter(name: PhotoFilter.PhotoEffectProcess)!
-            let photoEffectNoir = CIFilter(name: PhotoFilter.PhotoEffectNoir)!
-            
-            // MARK: Sepia
-            let sepia = CIFilter(name: PhotoFilter.Sepia)!
-            // Use KVC to set sepia key value
-            sepia.setValue(0.7, forKey: kCIInputIntensityKey)
-            
-            return [colorClamp, colorControls, photoEffectInstant, photoEffectProcess, photoEffectNoir, sepia]
-        }
-    }
+    // MARK: - Properties
+    let ColorClamp = "CIColorClamp"
+    let ColorControls = "CIColorControls"
+    let PhotoEffectTransfer = "CIPhotoEffectTransfer"
+    let PhotoEffectChrome = "CIPhotoEffectChrome"
+    let PhotoEffectInstant = "CIPhotoEffectInstant"
+    let PhotoEffectProcess = "CIPhotoEffectProcess"
+    let PhotoEffectNoir = "CIPhotoEffectNoir"
+    let Sepia = "CISepiaTone"
+    let HighlightShadowAdjust = "CIHighlightShadowAdjust"
     
-    private let image: UIImage
+    
     private let context: CIContext
     
-    init(context: CIContext, image: UIImage) {
-        self.image = image
+    // MARK: - Initializer
+    init(context: CIContext) {
         self.context = context
     }
     
-    // Apply default filters to image
-    func imageWithDefaultFilters() -> [CIImage] {
-        return image(withFilters: PhotoFilter.defaultFilters())
+    // MARK: - Apply Filter Functions
+    
+    func applyClarendon(image: CIImage) -> CIImage {
+        let clarendonFilter = CIFilter(name: PhotoEffectProcess)!
+        clarendonFilter.setValue(image, forKey: kCIInputImageKey)
+        return clarendonFilter.outputImage!.cropping(to: image.extent)
     }
     
-    // Apply filters to image
-    func image(withFilters filters: [CIFilter]) -> [CIImage] {
-        return filters.map { image(image: self.image, withFilter: $0) }
+    func applyGingham(image: CIImage) -> CIImage {
+        let ginghamFilter = CIFilter(name: PhotoEffectTransfer)!
+        ginghamFilter.setValue(image, forKey: kCIInputImageKey)
+        return ginghamFilter.outputImage!.cropping(to: image.extent)
+    }
+
+    func applyMoon(image: CIImage) -> CIImage {
+        let moonFilter = CIFilter(name: PhotoEffectNoir)!
+        moonFilter.setValue(image, forKey: kCIInputImageKey)
+        return moonFilter.outputImage!.cropping(to: image.extent)
     }
     
-    // Apply filter to image
-    func image(image: UIImage, withFilter filter: CIFilter) -> CIImage {
-        // Use nil-colescing operator incase .ciImage returns nil
-        let inputImage = image.ciImage ?? CIImage(image: image)!
+    func applyLark(image: CIImage) -> CIImage {
+        let highlightsFilter = CIFilter(name: HighlightShadowAdjust)!
+        let highlights: NSNumber = 4.0
+        highlightsFilter.setValue(image, forKey: kCIInputImageKey)
+        highlightsFilter.setValue(highlights, forKey: "inputHighlightAmount")
+        let highlightedImage = highlightsFilter.outputImage!
         
-        // Use KVC to set input image for filter
-        filter.setValue(inputImage, forKey: kCIInputImageKey)
+        let brightnessFilter = CIFilter(name: ColorControls)!
+        let brightness: NSNumber = 0.5
+        brightnessFilter.setValue(highlightedImage, forKey: kCIInputImageKey)
+        brightnessFilter.setValue(brightness, forKey: kCIInputBrightnessKey)
         
-        let outputImage = filter.outputImage!
-        
-        return outputImage.cropping(to: inputImage.extent)
+        return brightnessFilter.outputImage!.cropping(to: image.extent)
     }
     
-//    func image(image: CIImage, withFilter filter: FSImageFilter) -> CIImage {
-//        
-//    }
+    func applyValencia(image: CIImage) -> CIImage {
+        let valenciaFilter = CIFilter(name: PhotoEffectChrome)!
+        valenciaFilter.setValue(image, forKey: kCIInputImageKey)
+        return valenciaFilter.outputImage!.cropping(to: image.extent)
+    }
+    
+    func applyNashville(image: CIImage) -> CIImage {
+        let nashvilleFilter = CIFilter(name: PhotoEffectInstant)!
+        nashvilleFilter.setValue(image, forKey: kCIInputImageKey)
+        return nashvilleFilter.outputImage!.cropping(to: image.extent)
+    }
+    
+    func applySepia(image: CIImage) -> CIImage {
+        let sepiaFilter = CIFilter(name: Sepia)!
+        sepiaFilter.setValue(image, forKey: kCIInputImageKey)
+        sepiaFilter.setValue(0.7, forKey: kCIInputIntensityKey)
+        
+        return sepiaFilter.outputImage!.cropping(to: image.extent)
+    }
+    
+    func applyColorClamp(image: CIImage, minComponents: CIVector, maxComponents: CIVector) -> CIImage {
+        let colorClampFilter = CIFilter(name: ColorClamp)!
+        colorClampFilter.setValue(image, forKey: kCIInputImageKey)
+        colorClampFilter.setValue(minComponents, forKey: "inputMinComponents")
+        colorClampFilter.setValue(maxComponents, forKey: "inputMaxComponents")
+        
+        return colorClampFilter.outputImage!.cropping(to: image.extent)
+    }
+    
+    func thumbnailsForImage(image: CIImage) -> [CIImage] {
+        let filteredImages = FSImageFilter.availableFilters.map { (filter) -> CIImage in
+            return self.image(image, withFilter: filter)
+        }
+        
+        return filteredImages
+    }
+    
+    func image(_ image: CIImage, withFilter filter: FSImageFilter) -> CIImage {
+        switch filter {
+        case .normal:
+            return image
+        case .clarendon:
+            return applyClarendon(image: image)
+        case .gingham:
+            return applyGingham(image: image)
+        case .moon:
+            return applyMoon(image: image)
+        case .lark:
+            return applyLark(image: image)
+        case .valencia:
+            return applyValencia(image: image)
+        case .nashville:
+            return applyNashville(image: image)
+        case .sepia:
+            return applySepia(image: image)
+        case .arden:
+            let minComponents = CIVector(x: 0.2, y: 0.2, z: 0.2, w: 0.2)
+            let maxComponents = CIVector(x: 0.9, y: 0.9, z: 0.9, w: 0.9)
+            return applyColorClamp(image: image, minComponents: minComponents, maxComponents: maxComponents)
+        case .noah:
+            let minComponents = CIVector(x: 0.3, y: 0.1, z: 0.5, w: 0.2)
+            let maxComponents = CIVector(x: 0.6, y: 0.5, z: 0.7, w: 0.9)
+            return applyColorClamp(image: image, minComponents: minComponents, maxComponents: maxComponents)
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
