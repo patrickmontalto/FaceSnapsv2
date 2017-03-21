@@ -143,6 +143,8 @@
 		D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift */; };
 		D2AA025C1E806BAE0000E0BD /* FSFilterViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AA025B1E806BAE0000E0BD /* FSFilterViewCell.xib */; };
 		D2AA025E1E806BB70000E0BD /* FSFilterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA025D1E806BB70000E0BD /* FSFilterViewCell.swift */; };
+		D2AA02601E81A7EF0000E0BD /* CreatePostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA025F1E81A7EF0000E0BD /* CreatePostController.swift */; };
+		D2AA02631E81B4F50000E0BD /* PostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA02621E81B4F50000E0BD /* PostHeaderView.swift */; };
 		D2DEE0051E1EF4D4004BCEF7 /* Strongbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */; };
 		D2DEE0081E204899004BCEF7 /* UsernameSignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */; };
 		D2F1A2421E6F27E200EFC6C8 /* ImagePickerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F1A2411E6F27E200EFC6C8 /* ImagePickerNavigationController.swift */; };
@@ -295,6 +297,8 @@
 		D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FSImageAdjustmentType + TiltShiftMode.swift"; sourceTree = "<group>"; };
 		D2AA025B1E806BAE0000E0BD /* FSFilterViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSFilterViewCell.xib; sourceTree = "<group>"; };
 		D2AA025D1E806BB70000E0BD /* FSFilterViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSFilterViewCell.swift; sourceTree = "<group>"; };
+		D2AA025F1E81A7EF0000E0BD /* CreatePostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostController.swift; sourceTree = "<group>"; };
+		D2AA02621E81B4F50000E0BD /* PostHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostHeaderView.swift; sourceTree = "<group>"; };
 		D2DEE0041E1EF4D4004BCEF7 /* Strongbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strongbox.swift; sourceTree = "<group>"; };
 		D2DEE0061E201E87004BCEF7 /* FaceSnaps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FaceSnaps.entitlements; sourceTree = "<group>"; };
 		D2DEE0071E204899004BCEF7 /* UsernameSignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameSignUpController.swift; sourceTree = "<group>"; };
@@ -393,6 +397,7 @@
 				D267036A1E26D8F0001C06BE /* Home */,
 				3A9A3BA61E285DAC008A1334 /* Search */,
 				3A9A3BA71E285DC2008A1334 /* Camera */,
+				D2AA02611E81B4E10000E0BD /* Posts */,
 				3A9A3BA81E285DCB008A1334 /* Likes */,
 				D26703671E26D34D001C06BE /* Profile */,
 				D21BD48D1E608B8B009196C8 /* CollectionViewContainer.swift */,
@@ -619,6 +624,15 @@
 			name = Home;
 			sourceTree = "<group>";
 		};
+		D2AA02611E81B4E10000E0BD /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				D2AA025F1E81A7EF0000E0BD /* CreatePostController.swift */,
+				D2AA02621E81B4F50000E0BD /* PostHeaderView.swift */,
+			);
+			name = Posts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -797,6 +811,7 @@
 				D21BD48C1E5F526B009196C8 /* APIResult.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,
 				3AC13E8D1E7509790036EB87 /* FSImageEditCoordinator.swift in Sources */,
+				D2AA02601E81A7EF0000E0BD /* CreatePostController.swift in Sources */,
 				D26703631E26D1B1001C06BE /* ProfileNavigationController.swift in Sources */,
 				3A17EA501DFF644C00031834 /* LineView.swift in Sources */,
 				3AA3B2411E5E984D0000A312 /* ChangePasswordViewController.swift in Sources */,
@@ -804,6 +819,7 @@
 				D21BD4941E649BA0009196C8 /* UsersListViewController.swift in Sources */,
 				3AC13E781E6902440036EB87 /* ActiveLabel+Types.swift in Sources */,
 				3AB17FAC1E0B2080005E8739 /* LoginFlowNavigationController.swift in Sources */,
+				D2AA02631E81B4F50000E0BD /* PostHeaderView.swift in Sources */,
 				3A9A3BAA1E285E48008A1334 /* SearchNavigationController.swift in Sources */,
 				3A17EA4C1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift in Sources */,
 				3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */,
