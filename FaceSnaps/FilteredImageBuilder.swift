@@ -26,6 +26,8 @@ final class FilteredImageBuilder {
     
     var filteredImages = [FSImageFilter: UIImage]()
     
+    var activeFilter = FSImageFilter.normal
+    
     private let context: CIContext
     
     // MARK: - Initializer
@@ -55,13 +57,13 @@ final class FilteredImageBuilder {
     
     func applyLark(image: CIImage) -> CIImage {
         let highlightsFilter = CIFilter(name: HighlightShadowAdjust)!
-        let highlights: NSNumber = 4.0
+        let highlights: NSNumber = 2.0
         highlightsFilter.setValue(image, forKey: kCIInputImageKey)
         highlightsFilter.setValue(highlights, forKey: "inputHighlightAmount")
         let highlightedImage = highlightsFilter.outputImage!
         
         let brightnessFilter = CIFilter(name: ColorControls)!
-        let brightness: NSNumber = 0.5
+        let brightness: NSNumber = 0.2
         brightnessFilter.setValue(highlightedImage, forKey: kCIInputImageKey)
         brightnessFilter.setValue(brightness, forKey: kCIInputBrightnessKey)
         
@@ -113,7 +115,12 @@ final class FilteredImageBuilder {
         }
     }
     
+    func imageWithActiveFilter(_ image: CIImage) -> CIImage {
+        return self.image(image, withFilter: self.activeFilter)
+    }
+    
     func image(_ image: CIImage, withFilter filter: FSImageFilter) -> CIImage {
+        activeFilter = filter
         switch filter {
         case .normal:
             return image

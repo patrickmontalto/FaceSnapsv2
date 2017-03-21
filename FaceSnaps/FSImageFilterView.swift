@@ -49,6 +49,8 @@ class FSImageFilterView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(filterCollectionView)
+        
+        filterCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: [])
     }
     
     override func layoutSubviews() {

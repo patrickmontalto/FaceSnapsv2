@@ -16,6 +16,12 @@ class FSImageEditCoordinator: UIViewController {
     // MARK: - Properties
     var startImage: UIImage!
     
+    var editedImage: CIImage! {
+        didSet {
+            self.editingImageView.image = self.filteredImageBuilder.imageWithActiveFilter(self.editedImage)
+        }
+    }
+    
     var context: CIContext!
     var eaglContext: EAGLContext!
     
@@ -85,9 +91,11 @@ class FSImageEditCoordinator: UIViewController {
     
     var sliderMenuTopAnchorConstraint = NSLayoutConstraint()
     
+    // MARK: - Initializers
     convenience init(image: UIImage, context: CIContext, eaglContext: EAGLContext) {
         self.init()
         self.startImage = image
+        self.editedImage = CIImage(image: startImage)!
         self.context = context
         self.eaglContext = eaglContext
         
@@ -97,6 +105,7 @@ class FSImageEditCoordinator: UIViewController {
         sliderMenuTopAnchorConstraint = sliderMenuView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         
     }
+    // MARK: - Lifecycle Methods
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         navigationController!.navigationBar.addSubview(filterIconView)
@@ -144,6 +153,8 @@ class FSImageEditCoordinator: UIViewController {
         super.viewWillDisappear(animated)
         filterIconView.isHidden = true
     }
+    
+    // MARK: - Methods
 
     func handleHideGesture(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
@@ -164,7 +175,7 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
     func sliderMoved(type: FSImageAdjustmentType, sender: UISlider) {
         let outputImage = editFilterManager.editedInputImage(filter: type, rawValue: sender.value)
         DispatchQueue.main.async {
-            self.editingImageView.image = outputImage
+            self.editedImage = outputImage
         }
     }
     
@@ -206,7 +217,7 @@ extension FSImageEditCoordinator: FSImageEditViewDelegate {
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseIn, animations: {
             self.tiltAnimationView.alpha = 0.5
         }, completion: { (completed) in
-            self.editingImageView.image = outputImage
+            self.editedImage = outputImage
             UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
                 self.tiltAnimationView.alpha = 0.0
             }, completion: nil)
@@ -230,7 +241,7 @@ extension FSImageEditCoordinator: FSImageSliderMenuViewDelegate {
                 return
             }
             DispatchQueue.main.async {
-                self.editingImageView.image = resetImage
+                self.editedImage = resetImage
             }
             
             let resetMode = Int(editFilterManager.storedFilterValues[.tiltshift]!)
@@ -268,11 +279,13 @@ extension FSImageEditCoordinator: FSImageSliderMenuViewDelegate {
 // MARK: - FSImageFilterViewDelegate
 extension FSImageEditCoordinator: FSImageFilterViewDelegate {
     func selectedFilter(filter: FSImageFilter) {
-        // TODO: Change the editingImageView's image
+        // Change the editingImageView's image
+        let filteredImage = filteredImageBuilder.image(editedImage, withFilter: filter)
+        editingImageView.image = filteredImage
     }
     
     func thumbnailForFilter(filter: FSImageFilter) -> UIImage {
-        // TODO: FilteredImageBuilder will create thumbnails?
+        // FilteredImageBuilder will create thumbnails
 //        return FilteredImageBuilder.thumbnails[filter]
         return filteredImageBuilder.filteredImages[filter]!
 //        let thumbnails = filteredImageBuilder.thumbnailsForImage(image: CIImage(image: startImage)!)

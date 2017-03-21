@@ -21,7 +21,7 @@ class FSFilterViewCell: UICollectionViewCell {
                 filterTitle.textColor = .black
             } else {
                 filterTitle.font = UIFont.systemFont(ofSize: 12.0, weight: UIFontWeightRegular)
-                filterTitle.textColor = .lightGray
+                filterTitle.textColor = .gray
             }
         }
     }
