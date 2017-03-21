@@ -24,6 +24,7 @@ final class FilteredImageBuilder {
     let Sepia = "CISepiaTone"
     let HighlightShadowAdjust = "CIHighlightShadowAdjust"
     
+    var filteredImages = [FSImageFilter: UIImage]()
     
     private let context: CIContext
     
@@ -96,13 +97,20 @@ final class FilteredImageBuilder {
         return colorClampFilter.outputImage!.cropping(to: image.extent)
     }
     
-    func thumbnailsForImage(image: CIImage) -> [FSImageFilter: CIImage] {
-        var filteredImages = [FSImageFilter: CIImage]()
+//    func thumbnailsForImage(image: CIImage) {
+//        var filteredImages = [FSImageFilter: CIImage]()
+//        for filter in FSImageFilter.availableFilters {
+//            filteredImages[filter] = self.image(image, withFilter: filter)
+//        }
+//        
+//        return filteredImages
+//    }
+//    
+    
+    func thumbnailsForImage(image: CIImage) {
         for filter in FSImageFilter.availableFilters {
-            filteredImages[filter] = self.image(image, withFilter: filter)
+            filteredImages[filter] = UIImage(ciImage: self.image(image, withFilter: filter))
         }
-        
-        return filteredImages
     }
     
     func image(_ image: CIImage, withFilter filter: FSImageFilter) -> CIImage {

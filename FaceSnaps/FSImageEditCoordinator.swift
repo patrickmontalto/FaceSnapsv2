@@ -91,6 +91,8 @@ class FSImageEditCoordinator: UIViewController {
         self.context = context
         self.eaglContext = eaglContext
         
+        self.filteredImageBuilder.thumbnailsForImage(image: CIImage(image: image)!)
+        
         view.backgroundColor = .white
         sliderMenuTopAnchorConstraint = sliderMenuView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         
@@ -269,10 +271,11 @@ extension FSImageEditCoordinator: FSImageFilterViewDelegate {
         // TODO: Change the editingImageView's image
     }
     
-    func thumbnailForFilter(filter: FSImageFilter) -> CIImage {
+    func thumbnailForFilter(filter: FSImageFilter) -> UIImage {
         // TODO: FilteredImageBuilder will create thumbnails?
 //        return FilteredImageBuilder.thumbnails[filter]
-        let thumbnails = filteredImageBuilder.thumbnailsForImage(image: CIImage(image: startImage)!)
-        return thumbnails[filter]!
+        return filteredImageBuilder.filteredImages[filter]!
+//        let thumbnails = filteredImageBuilder.thumbnailsForImage(image: CIImage(image: startImage)!)
+//        return thumbnails[filter]!
     }
 }
