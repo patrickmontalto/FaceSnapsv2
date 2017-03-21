@@ -272,8 +272,7 @@ extension FSImageEditCoordinator: FSImageFilterViewDelegate {
     func thumbnailForFilter(filter: FSImageFilter) -> CIImage {
         // TODO: FilteredImageBuilder will create thumbnails?
 //        return FilteredImageBuilder.thumbnails[filter]
-        let index = filter.rawValue
         let thumbnails = filteredImageBuilder.thumbnailsForImage(image: CIImage(image: startImage)!)
-        return thumbnails[index]
+        return thumbnails[filter]!
     }
 }

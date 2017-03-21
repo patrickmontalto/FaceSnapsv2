@@ -57,6 +57,11 @@ class FilteredImageCell: UICollectionViewCell {
         ])
     }
     
+    override func prepareForReuse() {
+        self.image = CIImage()
+        super.prepareForReuse()
+    }
+    
 }
 
 // MARK: - GLKViewDelegate
