@@ -15,6 +15,7 @@
 		3A17EA4E1DFF57A000031834 /* UIView+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A17EA4D1DFF57A000031834 /* UIView+Resize.swift */; };
 		3A17EA501DFF644C00031834 /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A17EA4F1DFF644C00031834 /* LineView.swift */; };
 		3A1BE0A51E809C5000495F25 /* FSImageFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1BE0A41E809C5000495F25 /* FSImageFilter.swift */; };
+		3A1BE0A71E81F16A00495F25 /* LocationPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1BE0A61E81F16A00495F25 /* LocationPickerController.swift */; };
 		3A32A6AE1DA2E5E700AEE45F /* PhotoMetadataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6AD1DA2E5E700AEE45F /* PhotoMetadataController.swift */; };
 		3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */; };
 		3A32A6B21DA5F21C00AEE45F /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32A6B11DA5F21C00AEE45F /* CoreDataController.swift */; };
@@ -166,6 +167,7 @@
 		3A17EA4D1DFF57A000031834 /* UIView+Resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Resize.swift"; sourceTree = "<group>"; };
 		3A17EA4F1DFF644C00031834 /* LineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		3A1BE0A41E809C5000495F25 /* FSImageFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageFilter.swift; sourceTree = "<group>"; };
+		3A1BE0A61E81F16A00495F25 /* LocationPickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPickerController.swift; sourceTree = "<group>"; };
 		3A32A6AD1DA2E5E700AEE45F /* PhotoMetadataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoMetadataController.swift; sourceTree = "<group>"; };
 		3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		3A32A6B11DA5F21C00AEE45F /* CoreDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
@@ -373,6 +375,7 @@
 				3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */,
 				3A9A3BA21E219A5C008A1334 /* UsernameGenerator.swift */,
 				D267035A1E256BE0001C06BE /* ImageCoder.swift */,
+				3A1BE0A61E81F16A00495F25 /* LocationPickerController.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -821,6 +824,7 @@
 				3AB17FAC1E0B2080005E8739 /* LoginFlowNavigationController.swift in Sources */,
 				D2AA02631E81B4F50000E0BD /* PostHeaderView.swift in Sources */,
 				3A9A3BAA1E285E48008A1334 /* SearchNavigationController.swift in Sources */,
+				3A1BE0A71E81F16A00495F25 /* LocationPickerController.swift in Sources */,
 				3A17EA4C1DF7EFD500031834 /* UITapGestureRecognizer+AttributedText.swift in Sources */,
 				3A9FA61A1DA29BE800FDFE63 /* FilteredImageCell.swift in Sources */,
 				D224C6611E36AEF100AA1DC6 /* CommentCell.swift in Sources */,

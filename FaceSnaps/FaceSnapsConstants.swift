@@ -133,9 +133,15 @@ extension FaceSnapsClient {
 //                
 //            }
 //            
-//            enum LocationsEndpoint {
-//                
-//            }
+            enum LocationsEndpoint {
+                static func getLocation(id: Int) -> String {
+                    return "/locations/\(id)"
+                }
+                static func getLocationPosts(id: Int) -> String {
+                    return "/locations/\(id)/posts/recent"
+                }
+                static let search = "/locations/search"
+            }
         }
         
         // MARK: - JSON Response Keys
@@ -208,6 +214,11 @@ extension FaceSnapsClient {
             }
             
             // MARK: - Locations Data
+            enum Location {
+                static let query = "query"
+                static let latitude = "lat"
+                static let longitude = "lng"
+            }
             
             // MARK: - Pagination (should be header response)
         }

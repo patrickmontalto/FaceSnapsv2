@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 import RealmSwift
-
+import CoreLocation
 
 // MARK: - Face Snaps Client: NSObject
 
@@ -802,6 +802,23 @@ class FaceSnapsClient: NSObject {
             }
             
             completionHandler(postsResults, nil)
+        }
+    }
+    
+    // MARK: - Get Locations
+    func getLocations(query: String, coordinate: CLLocationCoordinate2D, completionHandler: @escaping([Location]?, APIError?) -> Void) {
+        
+        let locationEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.LocationsEndpoint.search)
+        let params: [String: Any] = ["query": query, "lat": coordinate.latitude, "lng": coordinate.longitude]
+        
+        // Make Request
+        Alamofire.request(locationEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Error?
+            guard response.result.error == nil else {
+                completionHandler(nil, .responseError(message: response.result.error!.localizedDescription))
+                return
+            }
         }
     }
 
