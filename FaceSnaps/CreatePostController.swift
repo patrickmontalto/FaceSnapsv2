@@ -26,8 +26,8 @@ class CreatePostController: UIViewController {
     }
     
     // TODO: Create LocationPicker
-//    lazy var locationPicker: LocationPicker = {
-//        let picker = LocationPicker(delegate: self)
+//    lazy var locationPicker: LocationPickerController = {
+//        let picker = LocationPickerController(delegate: self)
 //        return picker
 //    }()
     
@@ -93,11 +93,15 @@ extension CreatePostController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeue
+        // TODO: create cell with left accesosry image
+        // TODO: Create cell with horizontal scrolling view of locations
+        return UITableViewCell()
     }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: PostHeaderView.reuseIdentifier) as! PostHeaderView
         view.prepareView(withDelegate: self)
+        return view
     }
 }
 // MARK: - PostHeaderViewDelegate & UITextFieldDelegate

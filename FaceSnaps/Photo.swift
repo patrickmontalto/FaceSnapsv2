@@ -33,7 +33,7 @@ class Photo: NSManagedObject {
     class func photo(withImage image: UIImage, tags: [String], location: CLLocation?) -> Photo {
         let photo = Photo.photo(withImage: image)
         photo.addTags(tags: tags)
-        photo.addLocation(location: location)
+//        photo.addLocation(location: location)
         
         return photo
     }
@@ -51,13 +51,13 @@ class Photo: NSManagedObject {
         }
     }
     
-    // Add location
-    func addLocation(location: CLLocation?) {
-        if let location = location {
-            let photoLocation = Location.location(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            self.location = photoLocation
-        }
-    }
+//    // Add location
+//    func addLocation(location: CLLocation?) {
+//        if let location = location {
+//            let photoLocation = Location.location(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+//            self.location = photoLocation
+//        }
+//    }
 }
 
 // MARK: - Properties

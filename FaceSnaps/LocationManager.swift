@@ -14,6 +14,9 @@ class LocationSearchManager: NSObject {
     // TODO: Query location with lat, lng, and query (name)
     // Need to get location from LocationManager
     
+    /// MARK: - Singleton
+    static let sharedInstance = LocationSearchManager()
+    
     // MARK: - Properties
     lazy var locationManager: LocationManager = {
         return LocationManager()
@@ -40,6 +43,11 @@ class LocationSearchManager: NSObject {
             }
             completionHandler(locations)
         }
+    }
+    
+    func getLocation(completionHandler: @escaping ((CLLocation?) -> Void)) {
+        locationManager.manager.requestLocation()
+        locationManager.locationManager(<#T##manager: CLLocationManager##CLLocationManager#>, didUpdateLocations: <#T##[CLLocation]#>)
     }
     
 }
@@ -70,7 +78,7 @@ class LocationManager: NSObject {
 
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedWhenInUse {
+        if status == .authorizedWhenInUse || status == .authorizedAlways {
             manager.requestLocation()
         }
     }
