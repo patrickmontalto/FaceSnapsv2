@@ -20,6 +20,8 @@ class CreatePostController: UIViewController {
 
     var image: UIImage!
     
+    var location: FourSquareLocation?
+    
     var captionText: String? {
         let postHeaderView = postTableView.headerView(forSection: 0) as! PostHeaderView
         return postHeaderView.captionText
@@ -74,10 +76,22 @@ class CreatePostController: UIViewController {
     
     // TODO: Implement location picker
     func presentLocationPicker() {
+        let locationPicker = LocationPickerController(delegate: self)
+        let locationPickerNav = UINavigationController(rootViewController: locationPicker)
+        present(locationPickerNav, animated: true, completion: nil)
         // LocationPicker will have a locationManager property
         // locationPicker will have a a delegate property: LocationPickerDelegate!
         // locationPicker will notify the delegate once a location is picked:
         // locationPicker(_ locationPicker: LocationPicker, didFinishPickingLocation: (Location))
+    }
+}
+
+// MARK: - LocationPickerDelegate
+extension CreatePostController: LocationPickerDelegate {
+    func locationPicker(_ picker: LocationPickerController, didSelectLocation location: FourSquareLocation) {
+        // TODO
+        picker.dismiss(animated: true, completion: nil)
+        self.location = location
     }
 }
 

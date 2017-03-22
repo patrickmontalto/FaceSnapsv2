@@ -18,7 +18,9 @@ class LocationPickerController: UIViewController {
     
     // MARK: - Properties
     var delegate: LocationPickerDelegate!
-    var locationSearchManager = LocationSearchManager.sharedInstance
+    lazy var locationSearchManager: LocationSearchManager = {
+        return LocationSearchManager(searchBar: self.searchBar, tableView: self.locationsTableView, presentingViewController: self)
+    }()
     
     lazy var searchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -26,6 +28,12 @@ class LocationPickerController: UIViewController {
         sb.barTintColor = .white
         sb.placeholder = "Find a location"
         return sb
+    }()
+    
+    lazy var locationsTableView: UITableView = {
+        let tv = UITableView()
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        return tv
     }()
     
     var location: CLLocation?
@@ -44,7 +52,6 @@ class LocationPickerController: UIViewController {
         // Title: Locations
         // Right item: Cancel (black button)
         // TODO: Get location
-        LocationManager().manager
     }
     
     override func viewDidLayoutSubviews() {
@@ -56,4 +63,11 @@ class LocationPickerController: UIViewController {
         ])
     }
     
+    func animateLoading(_ loading: Bool) {
+        
+    }
+    
+    
 }
+
+
