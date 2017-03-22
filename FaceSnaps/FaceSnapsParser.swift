@@ -88,6 +88,24 @@ enum FaceSnapsParser {
         return User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount, privateProfile: privateProfile, outgoingStatus: outgoingStatus, incomingStatus: incomingStatus)
     }
     
+    /// Parse a single location
+    static func parse(locationDictionary: [String:Any]) -> Location? {
+        guard let id = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.id] as? String else {
+            return nil
+        }
+        guard let name = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.name] as? String else {
+            return nil
+        }
+        guard let lat = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.latitude] as? Double else {
+            return nil
+        }
+        guard let lng = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.longitude] as? Double else {
+            return nil
+        }
+        
+
+    }
+    
     /// Parses Comments Array
     static func parse(commentsArray: [[String:Any]]) -> List<Comment>? {
         // GUARD: Does the comment have a user?

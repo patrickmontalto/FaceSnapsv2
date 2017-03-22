@@ -215,7 +215,9 @@ extension FaceSnapsClient {
             
             // MARK: - Locations Data
             enum Location {
-                static let query = "query"
+                static let data = "data"
+                static let id = "id"
+                static let name = "name"
                 static let latitude = "lat"
                 static let longitude = "lng"
             }

@@ -819,6 +819,15 @@ class FaceSnapsClient: NSObject {
                 completionHandler(nil, .responseError(message: response.result.error!.localizedDescription))
                 return
             }
+            
+            // GUARD: Do we have a json response ?
+            guard let json = response.result.value as? [String:Any], let dataJSON = json[Constant.JSONResponseKey.Location.data] as? [[String:Any]] else {
+                completionHandler(nil, .noJSON)
+                return
+            }
+            
+            // Parse dataJSON
+            
         }
     }
 
