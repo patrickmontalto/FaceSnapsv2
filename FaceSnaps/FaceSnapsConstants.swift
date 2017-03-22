@@ -217,6 +217,7 @@ extension FaceSnapsClient {
             enum Location {
                 static let data = "data"
                 static let id = "id"
+                static let venueId = "venue_id"
                 static let name = "name"
                 static let latitude = "lat"
                 static let longitude = "lng"

@@ -806,7 +806,7 @@ class FaceSnapsClient: NSObject {
     }
     
     // MARK: - Get Locations
-    func getLocations(query: String, coordinate: CLLocationCoordinate2D, completionHandler: @escaping([Location]?, APIError?) -> Void) {
+    func getLocations(query: String, coordinate: CLLocationCoordinate2D, completionHandler: @escaping([FourSquareLocation]?, APIError?) -> Void) {
         
         let locationEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.LocationsEndpoint.search)
         let params: [String: Any] = ["query": query, "lat": coordinate.latitude, "lng": coordinate.longitude]
@@ -827,6 +827,9 @@ class FaceSnapsClient: NSObject {
             }
             
             // Parse dataJSON
+            let fourSquareLocations = FaceSnapsParser.parse(fsLocationsArray: dataJSON)
+            
+            completionHandler(fourSquareLocations, nil)
             
         }
     }

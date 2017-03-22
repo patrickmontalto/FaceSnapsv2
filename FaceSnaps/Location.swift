@@ -7,39 +7,59 @@
 //
 
 import Foundation
+import RealmSwift
 //import CoreData
 //import CoreLocation
+
+struct FourSquareLocation {
+    var venueId: String
+    var name: String
+    var latitude: Double
+    var longitude: Double
+}
 
 
 class Location: Object {
     
     dynamic var pk: Int = 0
-    dynamic var author: User?
-    dynamic var text: String = ""
-    dynamic var datePosted: Date = Date()
-    // TODO: Inverse relationship for post
-    // TODO: Inverse relationship for author?
+    dynamic var venueId: String = ""
+    dynamic var name: String = ""
+    dynamic var latitude: Double = 0
+    dynamic var longitude: Double = 0
+    // TODO: Inverse relationship for posts?
     
-    convenience init(pk: Int, author: User, text: String, datePosted: Date) {
+    convenience init(pk: Int, venueId: String, name: String, latitude: Double, longitude: Double) {
         self.init()
         
         self.pk = pk
-        self.author = author
-        self.text = text
-        self.datePosted = datePosted
+        self.venueId = venueId
+        self.name = name
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+    
+    convenience init(pk: Int, fourSquareLocation: FourSquareLocation) {
+        self.init()
+        self.pk = pk
+        
+        self.venueId = fourSquareLocation.venueId
+        self.name = fourSquareLocation.name
+        self.latitude = fourSquareLocation.latitude
+        self.longitude = fourSquareLocation.longitude
+        
     }
     
     // MARK: - IGListDiffable
     
-    func diffIdentifier() -> NSObjectProtocol {
-        return pk as NSObjectProtocol
-    }
-    
-    func isEqual(toDiffableObject object: IGListDiffable?) -> Bool {
-        guard self !== object else { return true }
-        guard let object = object as? Comment else { return false }
-        return author!.isEqual(toDiffableObject: object.author)
-    }
+//    func diffIdentifier() -> NSObjectProtocol {
+//        return pk as NSObjectProtocol
+//    }
+//
+//    func isEqual(toDiffableObject object: IGListDiffable?) -> Bool {
+//        guard self !== object else { return true }
+//        guard let object = object as? Comment else { return false }
+//        return author!.isEqual(toDiffableObject: object.author)
+//    }
     
     
 }

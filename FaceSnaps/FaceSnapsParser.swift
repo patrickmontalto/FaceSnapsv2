@@ -88,9 +88,44 @@ enum FaceSnapsParser {
         return User(pk: pk, name: fullName, email: email, userName: userName, photoURLString: photoURLstring, authToken: authToken, postsCount: postsCount, followersCount: followersCount, followingCount: followingCount, privateProfile: privateProfile, outgoingStatus: outgoingStatus, incomingStatus: incomingStatus)
     }
     
-    /// Parse a single location
+    /// Parses a FourSquare location dictionary
+    static func parse(fsLocationDictionary: [String:Any]) -> FourSquareLocation? {
+        guard let venueId = fsLocationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.id] as? String else {
+            return nil
+        }
+        guard let name = fsLocationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.name] as? String else {
+            return nil
+        }
+        guard let lat = fsLocationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.latitude] as? Double else {
+            return nil
+        }
+        guard let lng = fsLocationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.longitude] as? Double else {
+            return nil
+        }
+        
+        return FourSquareLocation(venueId: venueId, name: name, latitude: lat, longitude: lng)
+    }
+    
+    /// Parses an array of FourSquare location dictionaries
+    static func parse(fsLocationsArray: [[String:Any]]) -> [FourSquareLocation] {
+        var fsLocations = [FourSquareLocation]()
+        
+        for fsLocationDictionary in fsLocationsArray {
+            guard let fsLocation = parse(fsLocationDictionary: fsLocationDictionary) else {
+                continue
+            }
+            fsLocations.append(fsLocation)
+        }
+        
+        return fsLocations
+    }
+    
+    /// Parses a location dictionary
     static func parse(locationDictionary: [String:Any]) -> Location? {
-        guard let id = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.id] as? String else {
+        guard let id = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.id] as? Int else {
+            return nil
+        }
+        guard let venueId = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.venueId] as? String else {
             return nil
         }
         guard let name = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.name] as? String else {
@@ -103,7 +138,7 @@ enum FaceSnapsParser {
             return nil
         }
         
-
+        return Location(pk: id, venueId: venueId, name: name, latitude: lat, longitude: lng)
     }
     
     /// Parses Comments Array

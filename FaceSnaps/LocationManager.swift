@@ -19,14 +19,27 @@ class LocationSearchManager: NSObject {
         return LocationManager()
     }()
     
+    var coordinate: CLLocationCoordinate2D? {
+        return locationManager.manager.location?.coordinate
+    }
+    
     // MARK: - Initializers
     override init() {
         super.init()
     }
     
     // MARK: - Methods
-    func getLocationsForQuery(query: String, completionHandler: @escaping (([Location]?) -> Void)) {
-        FaceSnapsClient.sharedInstance
+    func getLocationsForQuery(query: String, completionHandler: @escaping (([FourSquareLocation]?) -> Void)) {
+        guard let coordinate = coordinate else {
+            print("No current coordinate for query")
+            return
+        }
+        FaceSnapsClient.sharedInstance.getLocations(query: query, coordinate: coordinate) { (locations, error) in
+            if let error = error {
+                _ = APIErrorHandler.handle(error: error, logError: true)
+            }
+            completionHandler(locations)
+        }
     }
     
 }
@@ -83,34 +96,4 @@ extension LocationManager: CLLocationManagerDelegate {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
