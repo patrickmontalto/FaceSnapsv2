@@ -27,11 +27,14 @@ class CreatePostController: UIViewController {
         return postHeaderView.captionText
     }
     
-    // TODO: Create LocationPicker
-//    lazy var locationPicker: LocationPickerController = {
-//        let picker = LocationPickerController(delegate: self)
-//        return picker
-//    }()
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    lazy var locationPicker: LocationPickerCoordinator = {
+        let picker = LocationPickerCoordinator(locationPickerDelegate: self)
+        return picker
+    }()
     
     lazy var postTableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .grouped)
@@ -40,6 +43,7 @@ class CreatePostController: UIViewController {
         tv.register(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: PostHeaderView.reuseIdentifier)
         tv.backgroundColor = .backgroundGray
         tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tv
     }()
     
@@ -90,8 +94,8 @@ class CreatePostController: UIViewController {
 extension CreatePostController: LocationPickerDelegate {
     func locationPicker(_ picker: LocationPickerController, didSelectLocation location: FourSquareLocation) {
         // TODO
-        picker.dismiss(animated: true, completion: nil)
         self.location = location
+        picker.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -99,23 +103,49 @@ extension CreatePostController: LocationPickerDelegate {
 extension CreatePostController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        if section == 0 { return 0 }
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // TODO: create cell with left accesosry image
-        // TODO: Create cell with horizontal scrolling view of locations
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        if let location = location {
+            cell.textLabel?.text = location.name
+        } else {
+            cell.textLabel?.text = "Add Location"
+        }
+        return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: PostHeaderView.reuseIdentifier) as! PostHeaderView
-        view.prepareView(withDelegate: self)
-        return view
+        if section == 0 {
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: PostHeaderView.reuseIdentifier) as! PostHeaderView
+            view.prepareView(withDelegate: self)
+            return view
+        }
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Present location picker
+        tableView.deselectRow(at: indexPath, animated: true)
+        present(locationPicker, animated: true, completion: nil)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return PostHeaderView.height
+        }
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 12
     }
 }
 // MARK: - PostHeaderViewDelegate & UITextFieldDelegate

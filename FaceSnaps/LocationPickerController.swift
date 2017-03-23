@@ -54,6 +54,10 @@ class LocationPickerController: UIViewController {
         return refreshBtn
     }()
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     // MARK: - Initializer
     convenience init(delegate: LocationPickerDelegate) {
         self.init()
@@ -68,6 +72,9 @@ class LocationPickerController: UIViewController {
         // let btnWidth = refreshBtn.bounds.size.width
         // let halfButtonHeight = refreshBtn.bounds.size.height / 2
         refreshBtn.addSubview(activityIndicator)
+        
+        view.addSubview(searchBar)
+        view.addSubview(locationsTableView)
 
         // Title: Locations
         title = "Locations"

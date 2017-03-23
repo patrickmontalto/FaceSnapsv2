@@ -233,7 +233,7 @@ class HomeController: UIViewController, CollectionViewContainer {
                 self.adapter.reloadObjects(self.data!)
                 self.adapter.performUpdates(animated: true, completion: { (completed) in
                     print("completed pull-to-fresh")
-                    print(self.data)
+                    //print(self.data)
                     self.refreshControl.endRefreshing()
                     self.refreshIndicator.stopAnimating()
                 })

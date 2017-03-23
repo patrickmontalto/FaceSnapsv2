@@ -11,7 +11,7 @@ import UIKit
 /// Contains the filter and edit views for modifying a photo.
 class FSImageEditToolsController: UIView {
     // MARK: - Properties
-    var coordinator: FSImageEditCoordinator!
+    weak var coordinator: FSImageEditCoordinator?
     var editViewDelegate: FSImageEditViewDelegate!
     var filterViewDelegate: FSImageFilterViewDelegate!
     
@@ -68,8 +68,8 @@ class FSImageEditToolsController: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let filterButtonCenterX = 0.25 * coordinator.view.frame.width
-        let editButtonCenterX = 0.75 * coordinator.view.frame.width
+        let filterButtonCenterX = 0.25 * coordinator!.view.frame.width
+        let editButtonCenterX = 0.75 * coordinator!.view.frame.width
         
         NSLayoutConstraint.activate([
             filterButton.centerXAnchor.constraint(equalTo: leftAnchor, constant: filterButtonCenterX),

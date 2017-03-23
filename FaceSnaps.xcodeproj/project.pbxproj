@@ -141,6 +141,7 @@
 		D267036C1E2D448F001C06BE /* FeedItemSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D267036B1E2D448F001C06BE /* FeedItemSectionController.swift */; };
 		D28186D01E79AADB00EC7D23 /* FSImageEditFilterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */; };
 		D28186D21E79C50100EC7D23 /* CIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28186D11E79C50100EC7D23 /* CIImageView.swift */; };
+		D2838EFB1E8462E5009F65F2 /* LocationPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2838EFA1E8462E5009F65F2 /* LocationPickerCoordinator.swift */; };
 		D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift */; };
 		D2AA025C1E806BAE0000E0BD /* FSFilterViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AA025B1E806BAE0000E0BD /* FSFilterViewCell.xib */; };
 		D2AA025E1E806BB70000E0BD /* FSFilterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA025D1E806BB70000E0BD /* FSFilterViewCell.swift */; };
@@ -296,6 +297,7 @@
 		D267036B1E2D448F001C06BE /* FeedItemSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSectionController.swift; sourceTree = "<group>"; };
 		D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditFilterManager.swift; sourceTree = "<group>"; };
 		D28186D11E79C50100EC7D23 /* CIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIImageView.swift; sourceTree = "<group>"; };
+		D2838EFA1E8462E5009F65F2 /* LocationPickerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPickerCoordinator.swift; sourceTree = "<group>"; };
 		D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FSImageAdjustmentType + TiltShiftMode.swift"; sourceTree = "<group>"; };
 		D2AA025B1E806BAE0000E0BD /* FSFilterViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSFilterViewCell.xib; sourceTree = "<group>"; };
 		D2AA025D1E806BB70000E0BD /* FSFilterViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSFilterViewCell.swift; sourceTree = "<group>"; };
@@ -367,7 +369,6 @@
 			children = (
 				3A32DD211DA1628800CD2669 /* MediaPickerManager.swift */,
 				3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */,
-				3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */,
 				3A32A6C71DA9845500AEE45F /* SortItemSelector.swift */,
 				CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */,
 				CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */,
@@ -375,7 +376,7 @@
 				3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */,
 				3A9A3BA21E219A5C008A1334 /* UsernameGenerator.swift */,
 				D267035A1E256BE0001C06BE /* ImageCoder.swift */,
-				3A1BE0A61E81F16A00495F25 /* LocationPickerController.swift */,
+				D2838EFC1E8462EB009F65F2 /* Location */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -627,6 +628,16 @@
 			name = Home;
 			sourceTree = "<group>";
 		};
+		D2838EFC1E8462EB009F65F2 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */,
+				3A1BE0A61E81F16A00495F25 /* LocationPickerController.swift */,
+				D2838EFA1E8462E5009F65F2 /* LocationPickerCoordinator.swift */,
+			);
+			name = Location;
+			sourceTree = "<group>";
+		};
 		D2AA02611E81B4E10000E0BD /* Posts */ = {
 			isa = PBXGroup;
 			children = (
@@ -810,6 +821,7 @@
 				3AA3B23B1E5A95400000A312 /* EditableTableViewCell.swift in Sources */,
 				D21BD4861E54D1DE009196C8 /* UserSearchCell.swift in Sources */,
 				3A9A3B9F1E20B929008A1334 /* Formatter.swift in Sources */,
+				D2838EFB1E8462E5009F65F2 /* LocationPickerCoordinator.swift in Sources */,
 				3AC13E891E7504B80036EB87 /* FSImageFilterView.swift in Sources */,
 				D21BD48C1E5F526B009196C8 /* APIResult.swift in Sources */,
 				3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */,

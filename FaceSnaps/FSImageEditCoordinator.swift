@@ -106,6 +106,10 @@ class FSImageEditCoordinator: UIViewController {
         
     }
     // MARK: - Lifecycle Methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(finishEditing))
+    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         navigationController!.navigationBar.addSubview(filterIconView)
@@ -155,6 +159,14 @@ class FSImageEditCoordinator: UIViewController {
     }
     
     // MARK: - Methods
+    
+    func finishEditing() {
+        guard let image = editingImageView.image else { return }
+        let uiImage = UIImage(ciImage: image)
+        let postController = CreatePostController()
+        postController.image = uiImage
+        navigationController?.pushViewController(postController, animated: true)
+    }
 
     func handleHideGesture(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
