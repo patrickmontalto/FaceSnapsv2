@@ -19,7 +19,7 @@ class LocationPickerController: UIViewController {
     // MARK: - Properties
     var delegate: LocationPickerDelegate!
     lazy var locationSearchManager: LocationSearchManager = {
-        return LocationSearchManager(searchBar: self.searchBar, tableView: self.locationsTableView, presentingViewController: self)
+        return LocationSearchManager(searchBar: self.searchBar, tableView: self.locationsTableView, picker: self)
     }()
     
     lazy var searchBar: UISearchBar = {
@@ -32,6 +32,7 @@ class LocationPickerController: UIViewController {
     
     lazy var locationsTableView: UITableView = {
         let tv = UITableView()
+        // tv.registerClass(UITableViewCell.self, identifier: "cell")?
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()

@@ -14,7 +14,7 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
     // TODO: Query location with lat, lng, and query (name)
     // Need to get location from LocationManager
     
-    weak var picker: LocationPickerController
+    weak var picker: LocationPickerController?
     
     var locationManager: LocationManager!
     
@@ -66,7 +66,7 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
         }
         
         // Start loading animation on picker
-        picker.animateLoading(true)
+        picker?.animateLoading(true)
         
         // Clear array of data
         self.locations.removeAll()
@@ -78,7 +78,7 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
                 // One table view cell with "No results." as text
             }
             self.locations = locations
-            picker.animateLoading(false)
+            self.picker?.animateLoading(false)
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -87,7 +87,13 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
 }
 // MARK: - UITableViewDataSource & UITableViewDelegate
 extension LocationSearchManager: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return max(self.locations.count, 1)
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: <#T##String#>)
+    }
 }
 // MARK: - CLLocationManagerDelegate
 extension LocationSearchManager: CLLocationManagerDelegate {
