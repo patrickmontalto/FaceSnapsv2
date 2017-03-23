@@ -14,6 +14,23 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
     // TODO: Query location with lat, lng, and query (name)
     // Need to get location from LocationManager
     
+    enum LocationError {
+        case unlocatable, emptyResults, unauthorized
+        
+        var cellText: String {
+            switch self {
+            case .emptyResults:
+                return "No locations found."
+            case .unlocatable:
+                return "Couldn't locate your position."
+            case .unauthorized:
+                return "Not authorized for location services."
+            }
+        }
+    }
+    
+    var emptyTableText: String?
+    
     weak var picker: LocationPickerController?
     
     var locationManager: LocationManager!
@@ -54,11 +71,13 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
         locationManager.getLocation()
     }
     
+    
     // MARK: - UISearchBarDelegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard locationManager.authorized else {
             // TODO: Dismiss picker with error message?
             print("Not authorized for location services.")
+            emptyTableText = LocationError.unauthorized.cellText
         }
         
         guard let coordinate = coordinate else {
@@ -74,8 +93,12 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
         // Make API call to get the results of the location search
         getLocationsForQuery(query: searchText, coordinate: coordinate) { (locations) in
             guard let locations = locations else {
-                // TODO: No locations for query and coordinate
+                // No locations for query and coordinate
                 // One table view cell with "No results." as text
+                self.emptyTableText = LocationError.emptyResults.cellText
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             }
             self.locations = locations
             self.picker?.animateLoading(false)
@@ -92,7 +115,22 @@ extension LocationSearchManager: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: <#T##String#>)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        
+        // Set visual properties of cell text labels
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightMedium)
+        cell.textLabel?.textColor = .black
+        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 12.0, weight: UIFontWeightRegular)
+        cell.detailTextLabel?.textColor = .gray
+        
+        // Get location
+        let location = self.locations[indexPath.row]
+        // Set text
+        cell.textLabel?.text = location.name
+        // TODO: get location details?
+//        cell.detailTextLabel?.text =
+        
+        return cell
     }
 }
 // MARK: - CLLocationManagerDelegate
@@ -107,6 +145,7 @@ extension LocationSearchManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         // TODO: Failed with error. Update tableView cell to say "Couldn't locate your position"
+        self.emptyTableText = LocationError.unlocatable.cellText
     }
 }
 

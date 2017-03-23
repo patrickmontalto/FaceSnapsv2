@@ -32,12 +32,28 @@ class LocationPickerController: UIViewController {
     
     lazy var locationsTableView: UITableView = {
         let tv = UITableView()
-        // tv.registerClass(UITableViewCell.self, identifier: "cell")?
+        tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
     
     var location: CLLocation?
+    
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        indicator.hidesWhenStopped = true
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: indicator)
+        return indicator
+    }()
+    
+    lazy var refreshBtn: UIButton = {
+        let refreshBtn = UIButton()
+        refreshBtn.translatesAutoresizingMaskIntoConstraints = false
+        let locationIcon = UIImage(named: "location_icon")!
+        refreshBtn.imageView = UIImageView(image: locationIcon)
+        refreshBtn.addTarget(self, action: #selector(self.handleRefreshBtn(sender:)), for: .touchUpInside)
+        return refreshBtn
+    }()
     
     // MARK: - Initializer
     convenience init(delegate: LocationPickerDelegate) {
@@ -64,7 +80,18 @@ class LocationPickerController: UIViewController {
         ])
     }
     
+    func handleRefreshBtn(sender: UIButton) {
+        
+    }
+    
     func animateLoading(_ loading: Bool) {
+        
+        if loading {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
+        
         
     }
     
