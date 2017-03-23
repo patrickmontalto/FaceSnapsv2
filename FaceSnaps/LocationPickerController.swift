@@ -42,7 +42,6 @@ class LocationPickerController: UIViewController {
     lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         indicator.hidesWhenStopped = true
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: indicator)
         return indicator
     }()
     
@@ -50,7 +49,7 @@ class LocationPickerController: UIViewController {
         let refreshBtn = UIButton()
         refreshBtn.translatesAutoresizingMaskIntoConstraints = false
         let locationIcon = UIImage(named: "location_icon")!
-        refreshBtn.imageView = UIImageView(image: locationIcon)
+        refreshBtn.setImage(locationIcon, for: .normal)
         refreshBtn.addTarget(self, action: #selector(self.handleRefreshBtn(sender:)), for: .touchUpInside)
         return refreshBtn
     }()
@@ -65,10 +64,17 @@ class LocationPickerController: UIViewController {
         super.viewDidLoad()
         // TODO: Navigation item:
         // Left item: Arrow/location indicator button
-            // Press to refresh location
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: refreshBtn)
+        // let btnWidth = refreshBtn.bounds.size.width
+        // let halfButtonHeight = refreshBtn.bounds.size.height / 2
+        refreshBtn.addSubview(activityIndicator)
+
         // Title: Locations
+        title = "Locations"
         // Right item: Cancel (black button)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(dismissPicker))
         // TODO: Get location
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -76,23 +82,35 @@ class LocationPickerController: UIViewController {
         
         // Constraints
         NSLayoutConstraint.activate([
+            searchBar.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+            searchBar.leftAnchor.constraint(equalTo: view.leftAnchor),
+            searchBar.rightAnchor.constraint(equalTo: view.rightAnchor),
             
+            locationsTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            locationsTableView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            locationsTableView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            locationsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
     
     func handleRefreshBtn(sender: UIButton) {
-        
+        // 
     }
     
     func animateLoading(_ loading: Bool) {
-        
         if loading {
+            refreshBtn.imageView?.isHidden = true
+            refreshBtn.isEnabled = false
             activityIndicator.startAnimating()
         } else {
             activityIndicator.stopAnimating()
+            refreshBtn.imageView?.isHidden = false
+            refreshBtn.isEnabled = true
         }
-        
-        
+    }
+    
+    func dismissPicker() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     

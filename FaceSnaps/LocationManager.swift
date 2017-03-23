@@ -58,12 +58,44 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
     }
     
     // MARK: - Methods
-    func getLocationsForQuery(query: String, coordinate: CLLocationCoordinate2D, completionHandler: @escaping (([FourSquareLocation]?) -> Void)) {
+    func getLocationsForQuery(query: String) {
+        
+        // Check authorization status
+        guard locationManager.authorized else {
+            // TODO: Dismiss picker with error message?
+            print("Not authorized for location services.")
+            emptyTableText = LocationError.unauthorized.cellText
+            return
+        }
+        
+        // Check if coordinate was gotten
+        guard let coordinate = coordinate else {
+            getUserLocation()
+            return
+        }
+        
+        // Start loading animation on picker
+        picker?.animateLoading(true)
+        
+        // Clear array of data
+        self.locations.removeAll()
+        
         FaceSnapsClient.sharedInstance.getLocations(query: query, coordinate: coordinate) { (locations, error) in
             if let error = error {
                 _ = APIErrorHandler.handle(error: error, logError: true)
             }
-            completionHandler(locations)
+            if let locations = locations {
+                self.locations = locations
+            } else {
+                self.emptyTableText = LocationError.emptyResults.cellText
+            }
+            
+            self.picker?.animateLoading(false)
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+
         }
     }
     
@@ -74,38 +106,8 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
     
     // MARK: - UISearchBarDelegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard locationManager.authorized else {
-            // TODO: Dismiss picker with error message?
-            print("Not authorized for location services.")
-            emptyTableText = LocationError.unauthorized.cellText
-        }
-        
-        guard let coordinate = coordinate else {
-            getUserLocation()
-        }
-        
-        // Start loading animation on picker
-        picker?.animateLoading(true)
-        
-        // Clear array of data
-        self.locations.removeAll()
-        
         // Make API call to get the results of the location search
-        getLocationsForQuery(query: searchText, coordinate: coordinate) { (locations) in
-            guard let locations = locations else {
-                // No locations for query and coordinate
-                // One table view cell with "No results." as text
-                self.emptyTableText = LocationError.emptyResults.cellText
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
-            self.locations = locations
-            self.picker?.animateLoading(false)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
+        getLocationsForQuery(query: searchText)
     }
 }
 // MARK: - UITableViewDataSource & UITableViewDelegate
