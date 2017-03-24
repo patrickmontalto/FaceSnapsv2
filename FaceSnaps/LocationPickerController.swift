@@ -18,6 +18,7 @@ class LocationPickerController: UIViewController {
     
     // MARK: - Properties
     var delegate: LocationPickerDelegate!
+    
     lazy var locationSearchManager: LocationSearchManager = {
         return LocationSearchManager(searchBar: self.searchBar, tableView: self.locationsTableView, picker: self)
     }()
@@ -46,7 +47,7 @@ class LocationPickerController: UIViewController {
     }()
     
     lazy var refreshBtn: UIButton = {
-        let refreshBtn = UIButton()
+        let refreshBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
         refreshBtn.translatesAutoresizingMaskIntoConstraints = false
         let locationIcon = UIImage(named: "location_icon")!
         refreshBtn.setImage(locationIcon, for: .normal)
@@ -81,6 +82,8 @@ class LocationPickerController: UIViewController {
         // Right item: Cancel (black button)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(dismissPicker))
         // TODO: Get location
+        locationSearchManager.getUserLocation()
+        locationSearchManager.getLocationsForQuery(query: "")
         
     }
     
@@ -101,25 +104,32 @@ class LocationPickerController: UIViewController {
     }
     
     func handleRefreshBtn(sender: UIButton) {
-        // 
+        locationSearchManager.getUserLocation()
     }
     
     func animateLoading(_ loading: Bool) {
-        if loading {
-            refreshBtn.imageView?.isHidden = true
-            refreshBtn.isEnabled = false
-            activityIndicator.startAnimating()
-        } else {
-            activityIndicator.stopAnimating()
-            refreshBtn.imageView?.isHidden = false
-            refreshBtn.isEnabled = true
+        DispatchQueue.main.async {
+            if loading {
+                self.refreshBtn.imageView?.isHidden = true
+                self.refreshBtn.isEnabled = false
+                self.activityIndicator.startAnimating()
+            } else {
+                self.activityIndicator.stopAnimating()
+                self.refreshBtn.imageView?.isHidden = false
+                self.refreshBtn.isEnabled = true
+            }
         }
     }
     
+    // Cancel button tapped or location selected
     func dismissPicker() {
         self.dismiss(animated: true, completion: nil)
     }
     
+    // Inform delegate that location was selected
+    func selectLocation(location: FourSquareLocation) {
+        delegate.locationPicker(self, didSelectLocation: location)
+    }
     
 }
 

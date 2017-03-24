@@ -142,6 +142,7 @@
 		D28186D01E79AADB00EC7D23 /* FSImageEditFilterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */; };
 		D28186D21E79C50100EC7D23 /* CIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28186D11E79C50100EC7D23 /* CIImageView.swift */; };
 		D2838EFB1E8462E5009F65F2 /* LocationPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2838EFA1E8462E5009F65F2 /* LocationPickerCoordinator.swift */; };
+		D2838EFE1E859360009F65F2 /* LocationSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2838EFD1E859360009F65F2 /* LocationSearchManager.swift */; };
 		D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift */; };
 		D2AA025C1E806BAE0000E0BD /* FSFilterViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2AA025B1E806BAE0000E0BD /* FSFilterViewCell.xib */; };
 		D2AA025E1E806BB70000E0BD /* FSFilterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AA025D1E806BB70000E0BD /* FSFilterViewCell.swift */; };
@@ -298,6 +299,7 @@
 		D28186CF1E79AADB00EC7D23 /* FSImageEditFilterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSImageEditFilterManager.swift; sourceTree = "<group>"; };
 		D28186D11E79C50100EC7D23 /* CIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIImageView.swift; sourceTree = "<group>"; };
 		D2838EFA1E8462E5009F65F2 /* LocationPickerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPickerCoordinator.swift; sourceTree = "<group>"; };
+		D2838EFD1E859360009F65F2 /* LocationSearchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchManager.swift; sourceTree = "<group>"; };
 		D2AA02591E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FSImageAdjustmentType + TiltShiftMode.swift"; sourceTree = "<group>"; };
 		D2AA025B1E806BAE0000E0BD /* FSFilterViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FSFilterViewCell.xib; sourceTree = "<group>"; };
 		D2AA025D1E806BB70000E0BD /* FSFilterViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSFilterViewCell.swift; sourceTree = "<group>"; };
@@ -631,9 +633,10 @@
 		D2838EFC1E8462EB009F65F2 /* Location */ = {
 			isa = PBXGroup;
 			children = (
-				3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */,
-				3A1BE0A61E81F16A00495F25 /* LocationPickerController.swift */,
 				D2838EFA1E8462E5009F65F2 /* LocationPickerCoordinator.swift */,
+				3A1BE0A61E81F16A00495F25 /* LocationPickerController.swift */,
+				3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */,
+				D2838EFD1E859360009F65F2 /* LocationSearchManager.swift */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -877,6 +880,7 @@
 				3AB17FB61E0CEA9C005E8739 /* SignUpViews.swift in Sources */,
 				3AA3B2391E5A90F90000A312 /* EditProfileViewController.swift in Sources */,
 				3A74B8481E3D9DCE00408BBB /* TextSize.swift in Sources */,
+				D2838EFE1E859360009F65F2 /* LocationSearchManager.swift in Sources */,
 				D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift in Sources */,
 				3A1BE0A51E809C5000495F25 /* FSImageFilter.swift in Sources */,
 				3ADE2A681E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift in Sources */,
