@@ -55,6 +55,7 @@ class ThumbnailAnimator {
         viewController.view.addSubview(dimmingView)
         viewController.view.addSubview(animatedImage)
         viewController.view.addGestureRecognizer(backgroundTapGesture)
+        backgroundTapGesture.isEnabled = false
     }
     
     @objc private func handleThumbnailTap() {
