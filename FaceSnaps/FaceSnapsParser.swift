@@ -103,7 +103,10 @@ enum FaceSnapsParser {
             return nil
         }
         
-        return FourSquareLocation(venueId: venueId, name: name, latitude: lat, longitude: lng)
+        let address = fsLocationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.address] as? String
+        let city = fsLocationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.city] as? String
+        
+        return FourSquareLocation(venueId: venueId, name: name, latitude: lat, longitude: lng, address: address, city: city)
     }
     
     /// Parses an array of FourSquare location dictionaries

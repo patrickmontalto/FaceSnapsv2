@@ -221,6 +221,8 @@ extension FaceSnapsClient {
                 static let name = "name"
                 static let latitude = "lat"
                 static let longitude = "lng"
+                static let address = "addr"
+                static let city = "city"
             }
             
             // MARK: - Pagination (should be header response)

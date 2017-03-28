@@ -17,14 +17,9 @@ class PostHeaderView: UITableViewHeaderFooterView {
     
     private var delegate: PostHeaderViewDelegate!
     
-    private lazy var thumbnailTapGesture: UITapGestureRecognizer = {
-        return UITapGestureRecognizer(target: self, action: #selector(self.handleThumbnailTap))
-    }()
-    
     private lazy var thumbnailView: UIImageView = {
         let imgView = UIImageView()
         imgView.image = self.delegate.imageForPost()
-        imgView.addGestureRecognizer(self.thumbnailTapGesture)
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
@@ -40,21 +35,27 @@ class PostHeaderView: UITableViewHeaderFooterView {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = UIFont.systemFont(ofSize: 14.0)
-        textView.delegate = self
+        textView.delegate = self.delegate
         textView.isScrollEnabled = true
         textView.text = "Write a caption..."
         textView.textColor = .lightGray
         return textView
     }()
     
+    private var topImageConstraint = NSLayoutConstraint()
+    private var leftImageConstraint = NSLayoutConstraint()
+    private var widthImageConstraint = NSLayoutConstraint()
+    private var heightImageConstraint = NSLayoutConstraint()
+    
     override func layoutSubviews() {
         super.layoutSubviews()
+        setDefaultConstraints()
         
         NSLayoutConstraint.activate([
-            thumbnailView.heightAnchor.constraint(equalToConstant: 72),
-            thumbnailView.widthAnchor.constraint(equalToConstant: 72),
-            thumbnailView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8),
-            thumbnailView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            topImageConstraint,
+            leftImageConstraint,
+            widthImageConstraint,
+            heightImageConstraint,
             captionTextView.heightAnchor.constraint(equalToConstant: 72),
             captionTextView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
             captionTextView.leftAnchor.constraint(equalTo: thumbnailView.rightAnchor, constant: 8),
@@ -68,6 +69,23 @@ class PostHeaderView: UITableViewHeaderFooterView {
     
     
     // MARK: - Interface
+    func setDefaultConstraints() {
+        heightImageConstraint = thumbnailView.heightAnchor.constraint(equalToConstant: 72)
+        widthImageConstraint = thumbnailView.widthAnchor.constraint(equalToConstant: 72)
+        leftImageConstraint = thumbnailView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8)
+        topImageConstraint = thumbnailView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8)
+    }
+    
+    func hideThumbnail() {
+        DispatchQueue.main.async {
+            self.thumbnailView.isHidden = true
+        }
+    }
+    
+    func thumbnail() -> UIImageView {
+        return thumbnailView
+    }
+    
     func prepareView(withDelegate delegate: PostHeaderViewDelegate) {
         self.delegate = delegate
         
@@ -81,29 +99,11 @@ class PostHeaderView: UITableViewHeaderFooterView {
     var captionText: String? {
         return captionTextView.text
     }
-    
-    func handleThumbnailTap() {
-        delegate.tappedThumbnail()
-    }
-}
 
-extension PostHeaderView: UITextViewDelegate {
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        textView.text = nil
-        textView.textColor = .black
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = "Write a caption..."
-            textView.textColor = .lightGray
-        }
-    }
 }
 
 /// PostHeaderViewDelegate is responsible for supplying the image to the imgView, responding to
 /// when the thumbnail is tapped, and serves as the delegate for the caption text field.
-protocol PostHeaderViewDelegate: UITextFieldDelegate {
+protocol PostHeaderViewDelegate: UITextViewDelegate {
     func imageForPost() -> UIImage
-    func tappedThumbnail()
 }

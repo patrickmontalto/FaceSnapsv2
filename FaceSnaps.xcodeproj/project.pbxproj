@@ -112,6 +112,7 @@
 		CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */; };
 		CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */; };
 		CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */; };
+		D20000C71E8ACF060096CD5F /* ThumbnailAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */; };
 		D21BD4801E54A487009196C8 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD47F1E54A487009196C8 /* SearchManager.swift */; };
 		D21BD4821E54B95B009196C8 /* UISegmentedControl+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */; };
 		D21BD4841E54D1BD009196C8 /* UserSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */; };
@@ -269,6 +270,7 @@
 		CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDeletionManager.swift; sourceTree = "<group>"; };
 		CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+FilterDuplicates.swift"; sourceTree = "<group>"; };
+		D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailAnimator.swift; sourceTree = "<group>"; };
 		D21BD47F1E54A487009196C8 /* SearchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Appearance.swift"; sourceTree = "<group>"; };
 		D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserSearchCell.xib; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				3A9A3BA21E219A5C008A1334 /* UsernameGenerator.swift */,
 				D267035A1E256BE0001C06BE /* ImageCoder.swift */,
 				D2838EFC1E8462EB009F65F2 /* Location */,
+				D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -860,6 +863,7 @@
 				3A9A3BA11E219138008A1334 /* NextButton.swift in Sources */,
 				3A8C1DE81E12FF370095CE32 /* UIButton+setBackgroundColor.swift in Sources */,
 				D267035D1E269C9D001C06BE /* URL+Parameters.swift in Sources */,
+				D20000C71E8ACF060096CD5F /* ThumbnailAnimator.swift in Sources */,
 				D21BD4921E60D800009196C8 /* FeedItemThumbnailSectionController.swift in Sources */,
 				D2F8D2F61E2D644C00723204 /* User.swift in Sources */,
 				D21BD4981E64C9CB009196C8 /* UserFollowCell.swift in Sources */,

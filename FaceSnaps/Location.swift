@@ -16,6 +16,18 @@ struct FourSquareLocation {
     var name: String
     var latitude: Double
     var longitude: Double
+    var address: String?
+    var city: String?
+    
+    var detailString: String {
+        if let address = address {
+            if let city = city {
+                return "\(address), \(city)"
+            }
+            return address
+        }
+        return ""
+    }
 }
 
 

@@ -20,7 +20,11 @@ class CreatePostController: UIViewController {
 
     var image: UIImage!
     
-    var location: FourSquareLocation?
+    var location: FourSquareLocation? {
+        didSet {
+            self.postTableView.reloadData()
+        }
+    }
     
     var captionText: String? {
         let postHeaderView = postTableView.headerView(forSection: 0) as! PostHeaderView
@@ -36,6 +40,14 @@ class CreatePostController: UIViewController {
         return picker
     }()
     
+    lazy var backgroundDimmingView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .black
+        view.alpha = 0
+        return view
+    }()
+    
     lazy var postTableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .grouped)
         tv.delegate = self
@@ -43,9 +55,10 @@ class CreatePostController: UIViewController {
         tv.register(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: PostHeaderView.reuseIdentifier)
         tv.backgroundColor = .backgroundGray
         tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tv
     }()
+    
+    var thumbnailAnimator: ThumbnailAnimator?
     
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
@@ -53,11 +66,17 @@ class CreatePostController: UIViewController {
         title = Constant.defaultTitle
         
         view.addSubview(postTableView)
+        view.addSubview(backgroundDimmingView)
         automaticallyAdjustsScrollViewInsets = false
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .done, target: self, action: #selector(submitPost))
+        setShareButton()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        let thumbnail = (postTableView.headerView(forSection: 0) as! PostHeaderView).thumbnail()
+        thumbnailAnimator = ThumbnailAnimator(thumbnail: thumbnail, viewController: self)
+    }
+        
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -68,32 +87,47 @@ class CreatePostController: UIViewController {
             postTableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             postTableView.rightAnchor.constraint(equalTo: view.rightAnchor),
             postTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            backgroundDimmingView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: PostHeaderView.height),
+            backgroundDimmingView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            backgroundDimmingView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            backgroundDimmingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
         ])
     }
     
     // MARK: - Methods
     
     // TODO: Configure method to submit post
-    func submitPost() {
+    @objc private func submitPost() {
         
     }
     
-    // TODO: Implement location picker
-    func presentLocationPicker() {
+    @objc private func confirmCaption() {
+        view.endEditing(true)
+    }
+    
+    @objc private func presentLocationPicker() {
         let locationPicker = LocationPickerController(delegate: self)
         let locationPickerNav = UINavigationController(rootViewController: locationPicker)
         present(locationPickerNav, animated: true, completion: nil)
-        // LocationPicker will have a locationManager property
-        // locationPicker will have a a delegate property: LocationPickerDelegate!
-        // locationPicker will notify the delegate once a location is picked:
-        // locationPicker(_ locationPicker: LocationPicker, didFinishPickingLocation: (Location))
+    }
+    
+    // MARK: - Updating UI
+    fileprivate func setShareButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .done, target: self, action: #selector(submitPost))
+        navigationItem.rightBarButtonItem?.tintColor = .buttonBlue
+    }
+    
+    fileprivate func setCaptionButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "OK", style: .done, target: self, action: #selector(confirmCaption))
+        navigationItem.rightBarButtonItem?.tintColor = .buttonBlue
     }
 }
 
 // MARK: - LocationPickerDelegate
 extension CreatePostController: LocationPickerDelegate {
     func locationPicker(_ picker: LocationPickerController, didSelectLocation location: FourSquareLocation) {
-        // TODO
         self.location = location
         picker.dismiss(animated: true, completion: nil)
     }
@@ -112,10 +146,17 @@ extension CreatePostController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: create cell with left accesosry image
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        var cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         if let location = location {
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
             cell.textLabel?.text = location.name
+            // TODO: Correct detail text label text from API
+            cell.detailTextLabel?.text = location.detailString
+            let cancelButton = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+            cancelButton.setImage(#imageLiteral(resourceName: "cancel_button"), for: .normal)
+            cancelButton.addTarget(self, action: #selector(resetLocation), for: .touchUpInside)
+            cell.accessoryView = cancelButton
+            cell.imageView?.image = #imageLiteral(resourceName: "location")
         } else {
             cell.textLabel?.text = "Add Location"
         }
@@ -147,20 +188,38 @@ extension CreatePostController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 12
     }
+    
+    @objc private func resetLocation() {
+        location = nil
+    }
 }
 // MARK: - PostHeaderViewDelegate & UITextFieldDelegate
-extension CreatePostController: UITextFieldDelegate, PostHeaderViewDelegate {
+extension CreatePostController: UITextViewDelegate, PostHeaderViewDelegate {
     func imageForPost() -> UIImage {
         return self.image
     }
     
-    func tappedThumbnail() {
-        // TODO: Animate presenting the image full screen, dim the background
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "Write a caption..." {
+            textView.text = nil
+        }
+        textView.textColor = .black
+        title = Constant.captionTitle
+        setCaptionButton()
+        UIView.animate(withDuration: 0.1) {
+            self.backgroundDimmingView.alpha = 0.7
+        }
     }
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        // TODO: Dim the rest of the view, change the title to "Caption"
-    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        // TODO: Reset the display, change title back to "New Post"
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Write a caption..."
+            textView.textColor = .lightGray
+        }
+        title = Constant.defaultTitle
+        setShareButton()
+        UIView.animate(withDuration: 0.1) {
+            self.backgroundDimmingView.alpha = 0
+        }
     }
 }
