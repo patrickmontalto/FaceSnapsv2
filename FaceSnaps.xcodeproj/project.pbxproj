@@ -113,6 +113,8 @@
 		CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */; };
 		CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */; };
 		D20000C71E8ACF060096CD5F /* ThumbnailAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */; };
+		D20000C91E8AF7300096CD5F /* FeedItemPrototype.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000C81E8AF7300096CD5F /* FeedItemPrototype.swift */; };
+		D20000CB1E8AF83F0096CD5F /* FourSquareLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000CA1E8AF83F0096CD5F /* FourSquareLocation.swift */; };
 		D21BD4801E54A487009196C8 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD47F1E54A487009196C8 /* SearchManager.swift */; };
 		D21BD4821E54B95B009196C8 /* UISegmentedControl+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */; };
 		D21BD4841E54D1BD009196C8 /* UserSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */; };
@@ -271,6 +273,8 @@
 		CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDeletionManager.swift; sourceTree = "<group>"; };
 		CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+FilterDuplicates.swift"; sourceTree = "<group>"; };
 		D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailAnimator.swift; sourceTree = "<group>"; };
+		D20000C81E8AF7300096CD5F /* FeedItemPrototype.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemPrototype.swift; sourceTree = "<group>"; };
+		D20000CA1E8AF83F0096CD5F /* FourSquareLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourSquareLocation.swift; sourceTree = "<group>"; };
 		D21BD47F1E54A487009196C8 /* SearchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Appearance.swift"; sourceTree = "<group>"; };
 		D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserSearchCell.xib; sourceTree = "<group>"; };
@@ -380,8 +384,8 @@
 				3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */,
 				3A9A3BA21E219A5C008A1334 /* UsernameGenerator.swift */,
 				D267035A1E256BE0001C06BE /* ImageCoder.swift */,
-				D2838EFC1E8462EB009F65F2 /* Location */,
 				D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */,
+				D2838EFC1E8462EB009F65F2 /* Location */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -442,8 +446,10 @@
 				3A32A6B61DA6060A00AEE45F /* Photo.swift */,
 				3A32A6B81DA6067E00AEE45F /* Tag.swift */,
 				3A32A6BB1DA6069900AEE45F /* Location.swift */,
+				D20000CA1E8AF83F0096CD5F /* FourSquareLocation.swift */,
 				3A32A6BD1DA94AAA00AEE45F /* PhotoDataSource.swift */,
 				3A32A6C51DA97A8E00AEE45F /* SortableDataSource.swift */,
+				D20000C81E8AF7300096CD5F /* FeedItemPrototype.swift */,
 				D2F8D2F11E2D63D600723204 /* FeedItem.swift */,
 				D2F8D2F51E2D644C00723204 /* User.swift */,
 				D2F8D2F31E2D644600723204 /* Comment.swift */,
@@ -796,6 +802,7 @@
 				3AC13E931E75E73F0036EB87 /* FSImageEditViewCell.swift in Sources */,
 				D21BD4821E54B95B009196C8 /* UISegmentedControl+Appearance.swift in Sources */,
 				3AC13E7A1E6C8C240036EB87 /* FSLibraryImagePickerController.swift in Sources */,
+				D20000C91E8AF7300096CD5F /* FeedItemPrototype.swift in Sources */,
 				3AA3B2311E516FE00000A312 /* ViewAllCommentsCell.swift in Sources */,
 				3AA3B22D1E4FEC3D0000A312 /* CommentBoxView.swift in Sources */,
 				D2318A901E1D621D00E0347F /* APIConstants.swift in Sources */,
@@ -874,6 +881,7 @@
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,
 				D267035B1E256BE0001C06BE /* ImageCoder.swift in Sources */,
+				D20000CB1E8AF83F0096CD5F /* FourSquareLocation.swift in Sources */,
 				3AC13E991E78893D0036EB87 /* FSImageSlider.swift in Sources */,
 				3ADE2A641E41356500D1D4C6 /* SpinnerCell.swift in Sources */,
 				3A9A3BB01E285F83008A1334 /* LikesController.swift in Sources */,

@@ -103,6 +103,8 @@ extension FaceSnapsClient {
                 static func getPost(_ postId: Int) -> String {
                     return "/posts/\(postId)"
                 }
+                // POST post data
+                static let submitPost = "/users/self/posts"
             }
             
             enum LikesEndpoint {

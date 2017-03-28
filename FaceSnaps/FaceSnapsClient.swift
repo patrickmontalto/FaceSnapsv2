@@ -428,6 +428,29 @@ class FaceSnapsClient: NSObject {
         }
     }
     
+    // MARK: Submit a new post
+    func submitPost(post: FeedItemPrototype, completionHandler: @escaping(_ success: Bool) -> Void) {
+        let submitPostEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.PostsEndpoint.submitPost)
+        let params = post.params
+        // Make request
+        Alamofire.request(submitPostEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                completionHandler(false)
+                return
+            }
+            
+            guard response.response?.statusCode == 201 else {
+                completionHandler(false)
+                return
+            }
+            
+            completionHandler(true)
+            
+        }
+    }
+    
 
     
     

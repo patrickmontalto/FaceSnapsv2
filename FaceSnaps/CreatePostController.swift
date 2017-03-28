@@ -100,7 +100,8 @@ class CreatePostController: UIViewController {
     
     // TODO: Configure method to submit post
     @objc private func submitPost() {
-        
+        let post = FeedItemPrototype(photo: image, caption: captionText ?? "", location: location)
+//        FaceSnapsClient.sharedInstance
     }
     
     @objc private func confirmCaption() {
