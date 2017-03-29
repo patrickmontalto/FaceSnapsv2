@@ -134,10 +134,10 @@ enum FaceSnapsParser {
         guard let name = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.name] as? String else {
             return nil
         }
-        guard let lat = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.latitude] as? Double else {
+        guard let lat = (locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.latitude] as? NSString)?.doubleValue else {
             return nil
         }
-        guard let lng = locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.longitude] as? Double else {
+        guard let lng = (locationDictionary[FaceSnapsClient.Constant.JSONResponseKey.Location.longitude] as? NSString)?.doubleValue else {
             return nil
         }
         

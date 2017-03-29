@@ -36,10 +36,21 @@ final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
         return button
     }()
     
+    let locationButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.font = .systemFont(ofSize: 12.0)
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0.01, bottom: 0.01, right: 0)
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.gray, for: .highlighted)
+        button.isHidden = true
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(userIcon)
         contentView.addSubview(nameButton)
+        contentView.addSubview(locationButton)
         contentView.backgroundColor = .white
     }
     
@@ -52,16 +63,38 @@ final class UserHeaderView: UICollectionViewCell, FeedItemSubSectionCell {
         
         userIcon.translatesAutoresizingMaskIntoConstraints = false
         nameButton.translatesAutoresizingMaskIntoConstraints = false
-
+        locationButton.translatesAutoresizingMaskIntoConstraints = false
+        nameButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0.01, bottom: 0.01, right: 0)
         NSLayoutConstraint.activate([
             userIcon.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12),
             userIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             userIcon.heightAnchor.constraint(equalToConstant: 32.0),
             userIcon.widthAnchor.constraint(equalToConstant: 32.0),
-            nameButton.leftAnchor.constraint(equalTo: userIcon.rightAnchor, constant: 8),
-            nameButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
+        
+        if let location = self.post.location {
+            locationButton.isHidden = false
+            locationButton.setTitle(location.name, for: .normal)
+            NSLayoutConstraint.activate([
+                nameButton.topAnchor.constraint(equalTo: userIcon.topAnchor),
+                nameButton.leftAnchor.constraint(equalTo: userIcon.rightAnchor, constant: 8),
+                locationButton.bottomAnchor.constraint(equalTo: userIcon.bottomAnchor, constant: 0),
+                locationButton.leftAnchor.constraint(equalTo: nameButton.leftAnchor, constant: 0)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                nameButton.leftAnchor.constraint(equalTo: userIcon.rightAnchor, constant: 8),
+                nameButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            ])
+        }
     }
+//    
+//    override func prepareForReuse() {
+//        for view in contentView.subviews {
+//            view.removeFromSuperview()
+//        }
+//        super.prepareForReuse()
+//    }
     
     func handleUserTap() {
         delegate?.didPressUserButton(forUser: post.user!)

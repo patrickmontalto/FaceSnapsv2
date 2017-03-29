@@ -98,15 +98,17 @@ class CreatePostController: UIViewController {
     
     // MARK: - Methods
     
-    // TODO: Configure method to submit post
+    // Submit post to API
     @objc private func submitPost() {
         let post = FeedItemPrototype(photo: image, caption: captionText ?? "", location: location)
         FaceSnapsClient.sharedInstance.submitPost(post: post) { (success) in
             if success {
+                // TODO: - Debugging print
                 print("Created new post!")
                 self.dismiss(animated: true, completion: nil)
             } else {
-                print("Couldnt create new post...:(")
+                let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+                self.displayAlert(withMessage: "Unable to create post.", title: "Error", actions: [action])
             }
         }
     }

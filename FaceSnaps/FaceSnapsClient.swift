@@ -451,9 +451,6 @@ class FaceSnapsClient: NSObject {
         }
     }
     
-
-    
-    
     // MARK: Get a list of posts IDs for the user
     private func getUserFeedPostId(completionHandler: @escaping (_ success: Bool) -> Void) {
         let userFeedEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.UserEndpoint.getUserFeedIds)
