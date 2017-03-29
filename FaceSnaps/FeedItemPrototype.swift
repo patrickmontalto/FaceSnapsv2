@@ -21,7 +21,7 @@ struct FeedItemPrototype {
     var location: FourSquareLocation?
     
     var params: [String: Any] {
-        let base64string = ImageCoder.encodeToBase64(image: photo)!
+        let base64string = "data:image/jpeg;base64,\(ImageCoder.encodeToBase64(image: photo)!)"
         if let location = location {
             return [Key.post: [Key.caption: caption, Key.photo: base64string], Key.location: location.parameterized ]
         } else {

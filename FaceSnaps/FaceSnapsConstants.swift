@@ -197,6 +197,7 @@ extension FaceSnapsClient {
                 static let likes = "likes"
                 static let createdAt = "created_at"
                 static let postsIds = "posts_ids"
+                static let location = "location"
             }
             
             // MARK: - Comments Data

@@ -144,6 +144,7 @@ enum FaceSnapsParser {
         return Location(pk: id, venueId: venueId, name: name, latitude: lat, longitude: lng)
     }
     
+    
     /// Parses Comments Array
     static func parse(commentsArray: [[String:Any]]) -> List<Comment>? {
         // GUARD: Does the comment have a user?
@@ -284,7 +285,12 @@ enum FaceSnapsParser {
             }
         }
         
-        let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked, datePosted: datePosted, likesCount: likesCount)
+        if let locationDictionary = post[FaceSnapsClient.Constant.JSONResponseKey.Post.location] as? [String:Any], let location = parse(locationDictionary: locationDictionary) {
+            let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked, datePosted: datePosted, likesCount: likesCount, location: location)
+            return post
+        }
+        
+        let post = FeedItem(pk: pk, user: user, caption: caption, comments: comments, photoURLString: photoURLstring, liked: liked, datePosted: datePosted, likesCount: likesCount, location: nil)
         
         return post
     }

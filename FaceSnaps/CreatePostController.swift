@@ -101,7 +101,14 @@ class CreatePostController: UIViewController {
     // TODO: Configure method to submit post
     @objc private func submitPost() {
         let post = FeedItemPrototype(photo: image, caption: captionText ?? "", location: location)
-//        FaceSnapsClient.sharedInstance
+        FaceSnapsClient.sharedInstance.submitPost(post: post) { (success) in
+            if success {
+                print("Created new post!")
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                print("Couldnt create new post...:(")
+            }
+        }
     }
     
     @objc private func confirmCaption() {

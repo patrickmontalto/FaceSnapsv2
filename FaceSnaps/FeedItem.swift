@@ -20,8 +20,9 @@ final class FeedItem: Object, IGListDiffable {
     dynamic var likesCount: Int = 0
     dynamic var datePosted: Date = Date()
     var photoURLString: String = ""
+    dynamic var location: Location?
     
-    convenience init(pk: Int, user: User, caption: String, comments: List<Comment>, photoURLString: String, liked: Bool, datePosted: Date, likesCount: Int) {
+    convenience init(pk: Int, user: User, caption: String, comments: List<Comment>, photoURLString: String, liked: Bool, datePosted: Date, likesCount: Int, location: Location?) {
         self.init()
         
         self.pk = pk
@@ -31,6 +32,7 @@ final class FeedItem: Object, IGListDiffable {
         self.liked = liked
         self.likesCount = likesCount
         self.datePosted = datePosted
+        self.location = location
         
         // Return if invalid URL string
         guard let _ = URL(string: photoURLString) else {

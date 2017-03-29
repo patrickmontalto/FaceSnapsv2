@@ -11,7 +11,13 @@ import UIKit
 
 struct ImageCoder {
     static func encodeToBase64(image: UIImage) -> String? {
-        guard let imageData = UIImageJPEGRepresentation(image, 0.9) else {
+        var uiImage = image
+        if uiImage.cgImage == nil {
+            guard let ciImage = image.ciImage, let cgImage = CIContext(options: nil).createCGImage(ciImage, from: ciImage.extent) else { return nil }
+            uiImage = UIImage(cgImage: cgImage)
+            
+        }
+        guard let imageData = UIImageJPEGRepresentation(uiImage, 0.9) else {
             return nil
         }
         

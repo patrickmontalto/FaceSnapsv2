@@ -166,5 +166,11 @@ extension LocationSearchManager: CLLocationManagerDelegate {
         // TODO: Failed with error. Update tableView cell to say "Couldn't locate your position"
         self.emptyTableText = LocationError.unlocatable.cellText
     }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
+            getUserLocation()
+        }
+    }
 }
 
