@@ -407,6 +407,7 @@
 				D21BD4951E64C8AD009196C8 /* UserFollowCell.xib */,
 				D21BD4971E64C9CB009196C8 /* UserFollowCell.swift */,
 				D26703641E26D1FF001C06BE /* Log In / Sign Up */,
+				D23589271E8D950F0080D894 /* FeedItem */,
 				D267036A1E26D8F0001C06BE /* Home */,
 				3A9A3BA61E285DAC008A1334 /* Search */,
 				3A9A3BA71E285DC2008A1334 /* Camera */,
@@ -583,6 +584,23 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		D23589271E8D950F0080D894 /* FeedItem */ = {
+			isa = PBXGroup;
+			children = (
+				D267036B1E2D448F001C06BE /* FeedItemSectionController.swift */,
+				3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */,
+				D2F8D2EB1E2D615400723204 /* UserHeaderView.swift */,
+				D2F8D2EF1E2D630800723204 /* ImageCell.swift */,
+				D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */,
+				D2F8D2F71E2E64B900723204 /* LikesViewCell.swift */,
+				D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */,
+				3AA3B2301E516FE00000A312 /* ViewAllCommentsCell.swift */,
+				D224C6601E36AEF100AA1DC6 /* CommentCell.swift */,
+				D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */,
+			);
+			name = FeedItem;
+			sourceTree = "<group>";
+		};
 		D26703641E26D1FF001C06BE /* Log In / Sign Up */ = {
 			isa = PBXGroup;
 			children = (
@@ -618,16 +636,6 @@
 			children = (
 				D26703681E26D8E1001C06BE /* HomeNavigationController.swift */,
 				3A7C7FB61DEE2737008608D1 /* HomeController.swift */,
-				D267036B1E2D448F001C06BE /* FeedItemSectionController.swift */,
-				D2F8D2EB1E2D615400723204 /* UserHeaderView.swift */,
-				D2F8D2EF1E2D630800723204 /* ImageCell.swift */,
-				D224C65C1E36AC8D00AA1DC6 /* ControlsCell.swift */,
-				D2F8D2F71E2E64B900723204 /* LikesViewCell.swift */,
-				D224C65E1E36ACEC00AA1DC6 /* CaptionCell.swift */,
-				3AA3B2301E516FE00000A312 /* ViewAllCommentsCell.swift */,
-				D224C6601E36AEF100AA1DC6 /* CommentCell.swift */,
-				D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */,
-				3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */,
 				3A74B84D1E3E97B700408BBB /* TimeView.swift */,
 				3A74B84E1E3E97B700408BBB /* TimeView.xib */,
 				3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */,

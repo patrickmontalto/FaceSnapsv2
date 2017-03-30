@@ -22,7 +22,7 @@ class FSLibraryImagePickerController: UIViewController {
         cv.delegate = self
         cv.dataSource = self
         cv.allowsSelection = true
-
+        cv.backgroundColor = .white
         let cellNib = UINib(nibName: "FSLibraryViewCell", bundle: nil)
         cv.register(cellNib, forCellWithReuseIdentifier: "FSLibraryViewCell")
         return cv
@@ -30,7 +30,7 @@ class FSLibraryImagePickerController: UIViewController {
     
     var selectedImageViewContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = .blue
+        view.backgroundColor = .white
         return view
     }()
 
@@ -89,7 +89,7 @@ class FSLibraryImagePickerController: UIViewController {
         if PHPhotoLibrary.authorizationStatus() == .authorized {
             initializeUserInterface()
         } else {
-            PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
+            requestAuthorizationWithRedirectionToSettings()
         }
     }
     
@@ -97,15 +97,35 @@ class FSLibraryImagePickerController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
-    func requestAuthorizationHandler(status: PHAuthorizationStatus) {
-        if PHPhotoLibrary.authorizationStatus() == .authorized {
-            DispatchQueue.main.async {
+
+    func requestAuthorizationWithRedirectionToSettings() {
+        DispatchQueue.main.async {
+            let status = PHPhotoLibrary.authorizationStatus()
+            if status == .authorized {
                 self.initializeUserInterface()
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.dismiss(animated: true, completion: nil)
+            } else {
+                // No permission granted. Trying to normally request it.
+                PHPhotoLibrary.requestAuthorization({ (authStatus) in
+                    if authStatus != .authorized {
+                        // User did not give permission. Showing alert with redirection to settings.
+                        // Getting description string from info.plist file
+                        let accessDescription = Bundle.main.object(forInfoDictionaryKey: "NSPhotoLibraryUsageDescription") as! String
+                        let alertController = UIAlertController(title: accessDescription, message: "To give permissions tap on 'Change Settings' button", preferredStyle: .alert)
+                        
+                        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                        alertController.addAction(cancelAction)
+                        
+                        let settingsAction = UIAlertAction(title: "Change Settings", style: .default, handler: { (action) in
+                            let settingsURL = URL(string: UIApplicationOpenSettingsURLString)!
+                            UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+                        })
+                        alertController.addAction(settingsAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                })
             }
         }
     }

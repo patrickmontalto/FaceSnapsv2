@@ -24,6 +24,8 @@ protocol FeedItemSectionDelegate {
     func didPressCommentButton(forPost post: FeedItem)
     
     func didPressLikesCount(forPost post: FeedItem)
+    
+    func didPressLocationButton(location: Location)
 }
 
 extension FeedItemSectionDelegate where Self:UIViewController, Self:CommentDelegate, Self: FeedItemReloadDelegate {
@@ -45,7 +47,14 @@ extension FeedItemSectionDelegate where Self:UIViewController, Self:CommentDeleg
     }
     
     func didPressUserButton(forUser user: User) {
-        // .. Go to user profile
+        let vc = ProfileController()
+        vc.user = user
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    
+    func didPressLocationButton(location: Location) {
+        // .. Go to location map
     }
     
     func didPressLikeButton(forPost post: FeedItem, inSectionController sectionController: FeedItemSectionController, withButton button: UIButton) {
@@ -66,8 +75,7 @@ extension FeedItemSectionDelegate where Self:UIViewController, Self:CommentDeleg
                 }
                 
                 // Post notification that the feed item (post) has been modified
-                let object = ["post": post] //, "notifier": self]
-//                NotificationCenter.default.post(name: Notification.Name.postWasModifiedNotification, object: post)
+                let object = ["post": post]
                 NotificationCenter.default.post(name: Notification.Name.postWasModifiedNotification, object: self, userInfo: object)
                 
                 likesViewCell.setLikesCount(count: post.likesCount)

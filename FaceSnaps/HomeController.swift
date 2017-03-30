@@ -95,6 +95,11 @@ class HomeController: UIViewController, CollectionViewContainer {
         (navigationController as? HomeNavigationController)?.logoIsHidden = false
         tabBarController?.tabBar.isHidden = false
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+    }
     
     private func configureRefreshControl() {
         collectionView.refreshControl = refreshControl

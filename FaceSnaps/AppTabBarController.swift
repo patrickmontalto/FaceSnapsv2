@@ -10,6 +10,12 @@ import UIKit
 
 class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
     
+    private var snapshotView: UIView? {
+        willSet {
+            snapshotView?.removeFromSuperview()
+        }
+    }
+    
     fileprivate let imageSize = CGSize(width: 22.0, height: 22.0)
     
     override func viewDidLoad() {
@@ -17,10 +23,6 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         
         self.delegate = self
         UITabBar.appearance().tintColor = .black
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
         // Home view controller
         let homeTab = HomeNavigationController()
@@ -63,19 +65,29 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         let tabBarTitleOffset = UIOffsetMake(0, 50)
         profileTabBarItem.titlePositionAdjustment = tabBarTitleOffset
         profileTabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
-
+        
         profileTab.tabBarItem = profileTabBarItem
         
         // Set VCs
         self.viewControllers = [homeTab, searchTab, cameraTab, likesTab, profileTab]
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.snapshotView = nil
+    }
 
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         
         if viewController is ImagePickerNavigationController {
+            if let snapshot = UIApplication.shared.keyWindow?.snapshotView(afterScreenUpdates: false) {
+                view.addSubview(snapshot)
+                snapshot.frame = view.bounds
+                snapshotView = snapshot
+            }
+            
             let vc = ImagePickerNavigationController()
-            present(vc, animated: true, completion: nil)
+            present(vc, animated: true, completion: {})
             return false
         }
         
@@ -83,6 +95,7 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
         if viewController is HomeNavigationController && self.selectedIndex == 0 {
             NotificationCenter.default.post(name: .tappedHomeNotificationName, object: nil)
         }
+        
         return true
     }
     // MARK: - UITabBarControllerDelegate
