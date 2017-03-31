@@ -56,6 +56,9 @@ class SearchManager: NSObject, UISearchBarDelegate {
             })
             // TODO: Get Tags
             // TODO: Get Locations
+        case 2:
+            // Get locations
+            FaceSnapsClient.sharedInstance.getLocations(query: searchText, coordinate: <#T##CLLocationCoordinate2D#>, completionHandler: <#T##([FourSquareLocation]?, APIError?) -> Void#>)
         default:
             break
         }

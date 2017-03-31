@@ -553,6 +553,7 @@ class FaceSnapsClient: NSObject {
             completionHandler(userResults, nil)
         }
     }
+    
 
     // MARK: Get information about the owner of the access token (user)
     
