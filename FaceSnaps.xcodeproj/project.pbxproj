@@ -35,6 +35,8 @@
 		3A32DD1A1DA0309100CD2669 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A32DD181DA0309100CD2669 /* LaunchScreen.storyboard */; };
 		3A32DD221DA1628800CD2669 /* MediaPickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32DD211DA1628800CD2669 /* MediaPickerManager.swift */; };
 		3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */; };
+		3A4172B91E8E105B0043045E /* LocationPostsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4172B81E8E105B0043045E /* LocationPostsController.swift */; };
+		3A4172BB1E8E15AD0043045E /* LocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4172BA1E8E15AD0043045E /* LocationMapView.swift */; };
 		3A5714B31E397709003C7BC5 /* UIImage+Size+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5714B21E397709003C7BC5 /* UIImage+Size+Color.swift */; };
 		3A5714B51E398030003C7BC5 /* FeedItemSectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */; };
 		3A74B8481E3D9DCE00408BBB /* TextSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74B8471E3D9DCE00408BBB /* TextSize.swift */; };
@@ -194,6 +196,8 @@
 		3A32DD1B1DA0309100CD2669 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A32DD211DA1628800CD2669 /* MediaPickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerManager.swift; sourceTree = "<group>"; };
 		3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoFilterController.swift; sourceTree = "<group>"; };
+		3A4172B81E8E105B0043045E /* LocationPostsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPostsController.swift; sourceTree = "<group>"; };
+		3A4172BA1E8E15AD0043045E /* LocationMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationMapView.swift; sourceTree = "<group>"; };
 		3A5714B21E397709003C7BC5 /* UIImage+Size+Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Size+Color.swift"; sourceTree = "<group>"; };
 		3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSectionDelegate.swift; sourceTree = "<group>"; };
 		3A74B8471E3D9DCE00408BBB /* TextSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextSize.swift; sourceTree = "<group>"; };
@@ -400,12 +404,14 @@
 				3A32A6BF1DA94BD900AEE45F /* PhotoFetchedResultsController.swift */,
 				3A32A6C31DA95BE800AEE45F /* PhotoSortListController.swift */,
 				D26703601E26AFFD001C06BE /* AppTabBarController.swift */,
-				3AC13E7B1E6C8C300036EB87 /* Image Picking + Editing */,
+				3A4172B81E8E105B0043045E /* LocationPostsController.swift */,
+				3A4172BA1E8E15AD0043045E /* LocationMapView.swift */,
 				D21BD48F1E609A33009196C8 /* PostsCollectionViewContainer.swift */,
 				D21BD4911E60D800009196C8 /* FeedItemThumbnailSectionController.swift */,
 				D21BD4931E649BA0009196C8 /* UsersListViewController.swift */,
 				D21BD4951E64C8AD009196C8 /* UserFollowCell.xib */,
 				D21BD4971E64C9CB009196C8 /* UserFollowCell.swift */,
+				3AC13E7B1E6C8C300036EB87 /* Image Picking + Editing */,
 				D26703641E26D1FF001C06BE /* Log In / Sign Up */,
 				D23589271E8D950F0080D894 /* FeedItem */,
 				D267036A1E26D8F0001C06BE /* Home */,
@@ -886,6 +892,7 @@
 				D2F8D2F01E2D630800723204 /* ImageCell.swift in Sources */,
 				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,
 				3A9A3BB21E285FA3008A1334 /* CameraTabBarController.swift in Sources */,
+				3A4172BB1E8E15AD0043045E /* LocationMapView.swift in Sources */,
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
 				3A32A6B01DA30A8500AEE45F /* LocationManager.swift in Sources */,
 				D267035B1E256BE0001C06BE /* ImageCoder.swift in Sources */,
@@ -929,6 +936,7 @@
 				D24EB8901E492216003960F0 /* FaceSnapsParser.swift in Sources */,
 				3A9A3BA51E2416E6008A1334 /* UsernameTextField.swift in Sources */,
 				D2DEE0051E1EF4D4004BCEF7 /* Strongbox.swift in Sources */,
+				3A4172B91E8E105B0043045E /* LocationPostsController.swift in Sources */,
 				D2F8D2F21E2D63D600723204 /* FeedItem.swift in Sources */,
 				3A9D88311E1A175900FB928D /* FaceSnapsDataSource.swift in Sources */,
 				3A32A6C01DA94BD900AEE45F /* PhotoFetchedResultsController.swift in Sources */,

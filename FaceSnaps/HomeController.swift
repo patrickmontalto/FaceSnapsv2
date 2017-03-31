@@ -98,7 +98,8 @@ class HomeController: UIViewController, CollectionViewContainer {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        // Hide FaceSnaps logo
+        (navigationController as? HomeNavigationController)?.logoIsHidden = true
     }
     
     private func configureRefreshControl() {

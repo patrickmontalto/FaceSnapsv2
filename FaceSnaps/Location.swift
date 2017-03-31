@@ -8,8 +8,9 @@
 
 import Foundation
 import RealmSwift
+import MapKit
 
-class Location: Object {
+class Location: Object, MKAnnotation {
     
     dynamic var pk: Int = 0
     dynamic var venueId: String = ""
@@ -37,6 +38,10 @@ class Location: Object {
         self.latitude = fourSquareLocation.latitude
         self.longitude = fourSquareLocation.longitude
         
+    }
+    
+    var coordinate: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
     }
     
     // MARK: - IGListDiffable
