@@ -12,6 +12,8 @@ import MapKit
 /// A mapView reusable view container for UICollectionView.
 class LocationMapView: UICollectionReusableView {
     
+    static let reuseId = String(describing: LocationMapView.self)
+    
     // MARK: - Properties
     var location: Location! {
         didSet {

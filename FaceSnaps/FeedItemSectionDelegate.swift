@@ -54,7 +54,8 @@ extension FeedItemSectionDelegate where Self:UIViewController, Self:CommentDeleg
     }
     
     func didPressLocationButton(location: Location) {
-        // .. Go to location map
+        let vc = LocationPostsController(location: location)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func didPressLikeButton(forPost post: FeedItem, inSectionController sectionController: FeedItemSectionController, withButton button: UIButton) {

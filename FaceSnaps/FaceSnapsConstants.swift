@@ -139,8 +139,8 @@ extension FaceSnapsClient {
                 static func getLocation(id: Int) -> String {
                     return "/locations/\(id)"
                 }
-                static func getLocationPosts(id: Int) -> String {
-                    return "/locations/\(id)/posts/recent"
+                static func getLocationPosts(venueId: String) -> String {
+                    return "/locations/\(venueId)/posts/recent"
                 }
                 static let search = "/locations/search"
             }

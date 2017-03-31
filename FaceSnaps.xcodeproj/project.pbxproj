@@ -404,8 +404,7 @@
 				3A32A6BF1DA94BD900AEE45F /* PhotoFetchedResultsController.swift */,
 				3A32A6C31DA95BE800AEE45F /* PhotoSortListController.swift */,
 				D26703601E26AFFD001C06BE /* AppTabBarController.swift */,
-				3A4172B81E8E105B0043045E /* LocationPostsController.swift */,
-				3A4172BA1E8E15AD0043045E /* LocationMapView.swift */,
+				D23589281E8E95AF0080D894 /* Location */,
 				D21BD48F1E609A33009196C8 /* PostsCollectionViewContainer.swift */,
 				D21BD4911E60D800009196C8 /* FeedItemThumbnailSectionController.swift */,
 				D21BD4931E649BA0009196C8 /* UsersListViewController.swift */,
@@ -605,6 +604,15 @@
 				D224C65A1E36A51300AA1DC6 /* FeedItemSubSectionCell.swift */,
 			);
 			name = FeedItem;
+			sourceTree = "<group>";
+		};
+		D23589281E8E95AF0080D894 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				3A4172B81E8E105B0043045E /* LocationPostsController.swift */,
+				3A4172BA1E8E15AD0043045E /* LocationMapView.swift */,
+			);
+			name = Location;
 			sourceTree = "<group>";
 		};
 		D26703641E26D1FF001C06BE /* Log In / Sign Up */ = {

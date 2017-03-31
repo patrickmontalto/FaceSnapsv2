@@ -392,6 +392,42 @@ class FaceSnapsClient: NSObject {
         }
     }
     
+    // MARK: Get posts for a location
+    func getPosts(forLocation location: Location, completionHandler: @escaping (_ data: [FeedItem]?, _ error: APIError?) -> Void) {
+        let locationPostsEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.LocationsEndpoint.getLocationPosts(venueId: location.venueId))
+        
+        // Make request
+        Alamofire.request(locationPostsEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                let message = response.result.error!.localizedDescription
+                completionHandler(nil, APIError.responseError(message: message))
+                return
+            }
+            
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                completionHandler(nil, APIError.noJSON)
+                return
+            }
+
+            // GUARD: Is there a posts array?
+            guard let postsArray = json[Constant.JSONResponseKey.Post.posts] as? [[String: Any]] else {
+                completionHandler(nil, APIError.missingKey(message: "Missing posts response from server."))
+                return
+            }
+            
+            // Parse the postsArray
+            if let postsResult = FaceSnapsParser.parse(postsArray: postsArray) {
+                completionHandler(Array(postsResult), nil)
+            } else {
+                completionHandler([FeedItem](), nil)
+            }
+        }
+    }
+    
     // MARK: Get data for a single post
     func getPostData(postId: Int, completionHandler: @escaping ( _ data: FeedItem?, _ error: APIError?) -> Void) {
         

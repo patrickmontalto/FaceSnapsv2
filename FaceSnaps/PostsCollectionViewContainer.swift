@@ -16,7 +16,7 @@ enum PostsCollectionViewContainerStyle {
 enum PostsCollectionViewDataSourceType {
     case postsLiked
     case postsForTag(tag: String)
-    case postsForGeotag(geotag: String)
+    case postsForLocation(location: Location, atRow: Int)
     case individualPost(postId: Int)
 }
 
@@ -26,6 +26,8 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
     var page = 0
     var loading = false
     let spinToken = "spinner"
+    
+    var startingRow = 0
     
     lazy var initLoadFeedIndicator: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(activityIndicatorStyle: .gray)
@@ -129,7 +131,12 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
         loadData { (postsData, error) in
             guard let postsData = postsData else { return }
             self.data = postsData
-            self.adapter.performUpdates(animated: true, completion: nil)
+            self.adapter.performUpdates(animated: true, completion: { (completed) in
+                if let object = self.adapter.object(atSection: self.startingRow) {
+                    self.adapter.scroll(to: object, supplementaryKinds: nil, scrollDirection: .vertical, scrollPosition: .top, animated: true)
+                }
+            })
+            
         }
     }
     
@@ -144,10 +151,17 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
             })
             break
         // TODO: Posts for Geotag
-        case .postsForGeotag(let geotag):
-//            FaceSnapsClient.sharedInstance.getPostsForGeotag(geotag: geotag, atPage: nextPage, completionHandler: { (posts, error) in
-//                completionHandler(posts, error)
-//            })
+        case .postsForLocation(let location, let row):
+            // Get posts for location
+            FaceSnapsClient.sharedInstance.getPosts(forLocation: location) { (data, error) in
+                if let data = data {
+                    completionHandler(data, nil)
+                    self.startingRow = row
+                } else {
+                    completionHandler(nil, error!)
+                    _ = APIErrorHandler.handle(error: error!, logError: true)
+                }
+            }
             break
         // TODO: Posts for Tag
         case .postsForTag(let tag):
