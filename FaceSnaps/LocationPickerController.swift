@@ -79,10 +79,6 @@ class LocationPickerController: UIViewController {
         title = "Locations"
         // Right item: Cancel (black button)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(dismissPicker))
-        // TODO: Get location
-//        locationSearchManager.getUserLocation()
-        // shouldnt need this if getUserLocations is called locationSearchManager.getLocationsForQuery(query: "")
-        
     }
     
     override func viewDidLayoutSubviews() {
