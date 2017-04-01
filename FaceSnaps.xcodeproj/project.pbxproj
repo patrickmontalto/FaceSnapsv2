@@ -37,6 +37,7 @@
 		3A32DD281DA16C2C00CD2669 /* PhotoFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */; };
 		3A4172B91E8E105B0043045E /* LocationPostsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4172B81E8E105B0043045E /* LocationPostsController.swift */; };
 		3A4172BB1E8E15AD0043045E /* LocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4172BA1E8E15AD0043045E /* LocationMapView.swift */; };
+		3A4172BD1E8F2A940043045E /* LocationSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4172BC1E8F2A940043045E /* LocationSearcher.swift */; };
 		3A5714B31E397709003C7BC5 /* UIImage+Size+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5714B21E397709003C7BC5 /* UIImage+Size+Color.swift */; };
 		3A5714B51E398030003C7BC5 /* FeedItemSectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */; };
 		3A74B8481E3D9DCE00408BBB /* TextSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74B8471E3D9DCE00408BBB /* TextSize.swift */; };
@@ -198,6 +199,7 @@
 		3A32DD271DA16C2C00CD2669 /* PhotoFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoFilterController.swift; sourceTree = "<group>"; };
 		3A4172B81E8E105B0043045E /* LocationPostsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPostsController.swift; sourceTree = "<group>"; };
 		3A4172BA1E8E15AD0043045E /* LocationMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationMapView.swift; sourceTree = "<group>"; };
+		3A4172BC1E8F2A940043045E /* LocationSearcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearcher.swift; sourceTree = "<group>"; };
 		3A5714B21E397709003C7BC5 /* UIImage+Size+Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Size+Color.swift"; sourceTree = "<group>"; };
 		3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSectionDelegate.swift; sourceTree = "<group>"; };
 		3A74B8471E3D9DCE00408BBB /* TextSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextSize.swift; sourceTree = "<group>"; };
@@ -668,6 +670,7 @@
 				3A1BE0A61E81F16A00495F25 /* LocationPickerController.swift */,
 				3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */,
 				D2838EFD1E859360009F65F2 /* LocationSearchManager.swift */,
+				3A4172BC1E8F2A940043045E /* LocationSearcher.swift */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -918,6 +921,7 @@
 				D2838EFE1E859360009F65F2 /* LocationSearchManager.swift in Sources */,
 				D2AA025A1E7C3B400000E0BD /* FSImageAdjustmentType + TiltShiftMode.swift in Sources */,
 				3A1BE0A51E809C5000495F25 /* FSImageFilter.swift in Sources */,
+				3A4172BD1E8F2A940043045E /* LocationSearcher.swift in Sources */,
 				3ADE2A681E41770B00D1D4C6 /* Array+RemoveObjectsInArray.swift in Sources */,
 				3AB17FAE1E0B6441005E8739 /* UITextField+Blank.swift in Sources */,
 				3AB17FB81E12F879005E8739 /* EmailSignUpController.swift in Sources */,

@@ -9,36 +9,21 @@
 import UIKit
 import CoreLocation
 
-/// This class is responsible for building the query for getting location data and returning it.
+/// This class is responsible for building the query for getting location data and managing dependent views.
 class LocationSearchManager: NSObject, UISearchBarDelegate {
-    enum LocationError {
-        case unlocatable, emptyResults, unauthorized
-        
-        var cellText: String {
-            switch self {
-            case .emptyResults:
-                return "No locations found."
-            case .unlocatable:
-                return "Couldn't locate your position."
-            case .unauthorized:
-                return "Not authorized for location services."
-            }
-        }
-    }
     
-    var emptyTableText: String?
+    // MARK: - Properties
+    fileprivate var emptyTableText: String?
     
     weak var picker: LocationPickerController?
     
-    var searchBar: UISearchBar!
+    fileprivate var searchBar: UISearchBar!
     
-    var locationManager: LocationManager!
+    fileprivate var tableView: UITableView!
     
-    var tableView: UITableView!
+    fileprivate var locations = [FourSquareLocation]()
     
-    var locations = [FourSquareLocation]()
-    
-    var coordinate: CLLocationCoordinate2D?
+    fileprivate var locationSearcher: LocationSearcher!
     
     // MARK: - Initializers
     convenience init(searchBar: UISearchBar, tableView: UITableView, picker: LocationPickerController) {
@@ -52,27 +37,13 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
         tableView.allowsSelection = true
         
         self.picker = picker
+        self.locationSearcher = LocationSearcher()
         
-        // Init of locationManager will trigger requesting permission
-        self.locationManager = LocationManager(delegate: self)
+        subscribeToLocationNotifications()
     }
     
-    // MARK: - Methods
+    // MARK: - Actions
     func getLocationsForQuery(query: String) {
-        
-        // Check authorization status
-        guard locationManager.authorized else {
-            // TODO: Dismiss picker with error message?
-            print("Not authorized for location services.")
-            emptyTableText = LocationError.unauthorized.cellText
-            return
-        }
-        
-        // Check if coordinate was gotten
-        guard let coordinate = coordinate else {
-            getUserLocation()
-            return
-        }
         
         // Start loading animation on picker
         picker?.animateLoading(true)
@@ -80,14 +51,13 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
         // Clear array of data
         self.locations.removeAll()
         
-        FaceSnapsClient.sharedInstance.getLocations(query: query, coordinate: coordinate) { (locations, error) in
-            if let error = error {
-                _ = APIErrorHandler.handle(error: error, logError: true)
-            }
-            if let locations = locations {
+        locationSearcher.getLocationsForQuery(query: query) { (result) in
+            if let locations = result.0 {
                 self.locations = locations
+            } else if let locationError = result.1 {
+                self.emptyTableText = locationError.cellText
             } else {
-                self.emptyTableText = LocationError.emptyResults.cellText
+                return
             }
             
             self.picker?.animateLoading(false)
@@ -95,14 +65,33 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-            
         }
+        
     }
     
-    func getUserLocation() {
-        locationManager.getLocation()
+    deinit {
+        unsubscribeToLocationNotifications()
     }
-
+    
+    // MARK: - Notifications
+    private func subscribeToLocationNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(locationDidUpdate), name: .locationManagerDidUpdateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(locationDidFail), name: .locationManagerDidFailNotification, object: nil)
+    }
+    
+    private func unsubscribeToLocationNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .locationManagerDidUpdateNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .locationManagerDidFailNotification, object: nil)
+    }
+    
+    @objc private func locationDidUpdate() {
+        getLocationsForQuery(query: searchBar.text ?? "")
+    }
+    
+    @objc private func locationDidFail() {
+        emptyTableText = LocationError.unlocatable.cellText
+    }
+    
     // MARK: - UISearchBarDelegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // Make API call to get the results of the location search
@@ -132,8 +121,6 @@ extension LocationSearchManager: UITableViewDataSource, UITableViewDelegate {
             let location = self.locations[indexPath.row]
             // Set text
             cell.textLabel?.text = location.name
-            // TODO: get location details?
-            //        cell.detailTextLabel?.text =
         }
         return cell
     }
@@ -150,26 +137,5 @@ extension LocationSearchManager: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
-// MARK: - CLLocationManagerDelegate
-extension LocationSearchManager: CLLocationManagerDelegate {
-    // Notified when the location update completes
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        // Grab the first location in array
-        guard let location = locations.first else { return }
-        // Update the coordinate property
-        self.coordinate = location.coordinate
-        getLocationsForQuery(query: searchBar.text ?? "")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        // TODO: Failed with error. Update tableView cell to say "Couldn't locate your position"
-        self.emptyTableText = LocationError.unlocatable.cellText
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if status == .authorizedAlways || status == .authorizedWhenInUse {
-            getUserLocation()
-        }
-    }
-}
+
 

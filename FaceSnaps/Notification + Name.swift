@@ -14,4 +14,6 @@ extension Notification.Name {
     static let userProfileUpdatedNotification = Notification.Name("userProfileUpdatedNotification")
     static let userDidLogOutNotification = Notification.Name("userDidLogOutNotification")
     static let postWasModifiedNotification = Notification.Name("postWasModifiedNotification")
+    static let locationManagerDidFailNotification = Notification.Name("locationManagerDidFailNotification")
+    static let locationManagerDidUpdateNotification = Notification.Name("locationManagerDidUpdateNotification")
 }
