@@ -16,7 +16,7 @@ enum PostsCollectionViewContainerStyle {
 enum PostsCollectionViewDataSourceType {
     case postsLiked
     case postsForTag(tag: String)
-    case postsForLocation(location: Location, atRow: Int)
+    case postsForLocation(location: FourSquareLocation, atRow: Int)
     case individualPost(postId: Int)
 }
 

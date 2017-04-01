@@ -38,10 +38,6 @@ class LocationSearcher: NSObject {
 
     fileprivate var coordinate: CLLocationCoordinate2D?
     
-//    fileprivate var lastQuery: String?
-//    
-//    fileprivate var lastCompletionHandler: LocationHandler?
-    
     // MARK: - Initializers
     override init() {
         super.init()
@@ -50,17 +46,12 @@ class LocationSearcher: NSObject {
     
     // MARK: - Actions
     func getLocationsForQuery(query: String, completionHandler: @escaping LocationHandler) {
-        
-//        lastQuery = query
-//        lastCompletionHandler = completionHandler
-        
         // Check authorization status
         guard locationManager.authorized else {
             // TODO: Dismiss picker with error message?
             print("Not authorized for location services.")
             let result: LocationQueryResult = (nil, LocationError.unauthorized)
             completionHandler(result)
-//            emptyTableText = LocationError.unauthorized.cellText
             return
         }
         
@@ -69,13 +60,7 @@ class LocationSearcher: NSObject {
             getUserLocation()
             return
         }
-        
-//        // Start loading animation on picker
-//        picker?.animateLoading(true)
-        
-        // Clear array of data
-//        self.locations.removeAll()
-        
+    
         FaceSnapsClient.sharedInstance.getLocations(query: query, coordinate: coordinate) { (locations, error) in
             
             var result: LocationQueryResult
@@ -95,7 +80,6 @@ class LocationSearcher: NSObject {
             }
             
             completionHandler(result)
-//            self.picker?.animateLoading(false)
         }
     }
     

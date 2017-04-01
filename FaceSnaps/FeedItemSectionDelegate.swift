@@ -54,7 +54,8 @@ extension FeedItemSectionDelegate where Self:UIViewController, Self:CommentDeleg
     }
     
     func didPressLocationButton(location: Location) {
-        let vc = LocationPostsController(location: location)
+        let fsLocation = FourSquareLocation(location: location)
+        let vc = LocationPostsController(location: fsLocation)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

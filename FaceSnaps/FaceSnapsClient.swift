@@ -393,7 +393,7 @@ class FaceSnapsClient: NSObject {
     }
     
     // MARK: Get posts for a location
-    func getPosts(forLocation location: Location, completionHandler: @escaping (_ data: [FeedItem]?, _ error: APIError?) -> Void) {
+    func getPosts(forLocation location: FourSquareLocation, completionHandler: @escaping (_ data: [FeedItem]?, _ error: APIError?) -> Void) {
         let locationPostsEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.LocationsEndpoint.getLocationPosts(venueId: location.venueId))
         
         // Make request

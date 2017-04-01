@@ -19,9 +19,7 @@ class LocationPickerController: UIViewController {
     // MARK: - Properties
     var delegate: LocationPickerDelegate!
     
-    lazy var locationSearchManager: LocationSearchManager = {
-        return LocationSearchManager(searchBar: self.searchBar, tableView: self.locationsTableView, picker: self)
-    }()
+    var locationSearchManager: LocationSearchManager!
     
     lazy var searchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -63,15 +61,15 @@ class LocationPickerController: UIViewController {
     convenience init(delegate: LocationPickerDelegate) {
         self.init()
         self.delegate = delegate
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: Navigation item:
+        self.locationSearchManager = LocationSearchManager(searchBar: self.searchBar, tableView: self.locationsTableView, picker: self)
+
         // Left item: Arrow/location indicator button
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: refreshBtn)
-        // let btnWidth = refreshBtn.bounds.size.width
-        // let halfButtonHeight = refreshBtn.bounds.size.height / 2
         refreshBtn.addSubview(activityIndicator)
         
         view.addSubview(searchBar)
@@ -82,8 +80,8 @@ class LocationPickerController: UIViewController {
         // Right item: Cancel (black button)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(dismissPicker))
         // TODO: Get location
-        locationSearchManager.getUserLocation()
-        locationSearchManager.getLocationsForQuery(query: "")
+//        locationSearchManager.getUserLocation()
+        // shouldnt need this if getUserLocations is called locationSearchManager.getLocationsForQuery(query: "")
         
     }
     
@@ -104,7 +102,7 @@ class LocationPickerController: UIViewController {
     }
     
     func handleRefreshBtn(sender: UIButton) {
-        locationSearchManager.getUserLocation()
+        locationSearchManager.refreshUserLocation()
     }
     
     func animateLoading(_ loading: Bool) {

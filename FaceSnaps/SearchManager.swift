@@ -8,20 +8,27 @@
 
 import UIKit
 
-class SearchManager: NSObject, UISearchBarDelegate {
+class SearchManager: NSObject, UISearchBarDelegate, LocationManagerObserver {
     
     // MARK: - Properties
     weak var presentingViewController: UIViewController?
     
-    var tableView: UITableView!
+    fileprivate var tableView: UITableView!
     
-    var data = [Any]()
+    fileprivate var data = [Any]()
     
-    var selectedScope = 0
+    fileprivate var selectedScope = 0
+    
+    fileprivate var searchBar: UISearchBar!
+    
+    fileprivate var emptyTableText: String?
+    
+    private var locationSearcher: LocationSearcher!
     
     // MARK: - Initializers
     init(searchBar: UISearchBar, tableView: UITableView, presentingViewController: UIViewController) {
         super.init()
+        self.searchBar = searchBar
         self.tableView = tableView
         self.presentingViewController = presentingViewController
         searchBar.delegate = self
@@ -33,7 +40,15 @@ class SearchManager: NSObject, UISearchBarDelegate {
         
         let nib = UINib(nibName: "UserSearchCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "userSearchCell")
-
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: String(describing: UITableViewCell.self))
+        
+        self.locationSearcher = LocationSearcher()
+        
+        subscribeToLocationNotifications()
+    }
+    
+    deinit {
+        unsubscribeToLocationNotifications()
     }
     
     // MARK: - UISearchBarDelegate
@@ -56,7 +71,7 @@ class SearchManager: NSObject, UISearchBarDelegate {
             break
         case 2:
             // Get locations
-            FaceSnapsClient.sharedInstance.getLocations(query: searchText, coordinate: <#T##CLLocationCoordinate2D#>, completionHandler: <#T##([FourSquareLocation]?, APIError?) -> Void#>)
+            getLocations(searchText: searchText)
         default:
             break
         }
@@ -84,9 +99,32 @@ class SearchManager: NSObject, UISearchBarDelegate {
     }
     
     private func getLocations(searchText: String) {
+        // Clear data
+        self.data.removeAll()
         
+        locationSearcher.getLocationsForQuery(query: searchText) { (result) in
+            if let locations = result.0 {
+                self.data = locations
+            } else if let locationError = result.1 {
+                self.emptyTableText = locationError.cellText
+            } else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+
+    // MARK: - Notifications
+    func locationDidUpdate() {
+        getLocations(searchText: searchBar.text ?? "")
     }
     
+    func locationDidFail() {
+        emptyTableText = LocationError.unlocatable.cellText
+    }
 }
 
 // MARK: - UITableViewDelegate & Data Source
@@ -116,7 +154,25 @@ extension SearchManager: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         case 2:
             // Location search
-            return UITableViewCell()
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self))!
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightMedium)
+            cell.textLabel?.textColor = .black
+        
+            if data.count == 0 {
+                cell.textLabel?.text = emptyTableText
+                return cell
+            }
+            
+            guard let locationData = data as? [FourSquareLocation] else { return UITableViewCell() }
+            
+            guard indexPath.row < locationData.count else { return UITableViewCell() }
+            
+            let location = locationData[indexPath.row]
+        
+            cell.textLabel?.text = location.name
+            
+            return cell
         default:
             return UITableViewCell()
         }
@@ -124,7 +180,11 @@ extension SearchManager: UITableViewDelegate, UITableViewDataSource {
     
     // Delegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70.0
+        if selectedScope == 0 {
+            return 70.0
+        } else {
+            return 56
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -132,9 +192,18 @@ extension SearchManager: UITableViewDelegate, UITableViewDataSource {
         presentingViewController?.view.endEditing(true)
         switch selectedScope {
         case 0:
+            // User
             let vc = ProfileController()
             let user = data[indexPath.row] as! User
             vc.user = user
+            presentingViewController?.navigationController?.pushViewController(vc, animated: true)
+        case 1:
+            // Tag
+            break
+        case 2:
+            // Location
+            let location = data[indexPath.row] as! FourSquareLocation
+            let vc = LocationPostsController(location: location)
             presentingViewController?.navigationController?.pushViewController(vc, animated: true)
         default:
             break

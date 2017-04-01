@@ -38,6 +38,7 @@
 		3A4172B91E8E105B0043045E /* LocationPostsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4172B81E8E105B0043045E /* LocationPostsController.swift */; };
 		3A4172BB1E8E15AD0043045E /* LocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4172BA1E8E15AD0043045E /* LocationMapView.swift */; };
 		3A4172BD1E8F2A940043045E /* LocationSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4172BC1E8F2A940043045E /* LocationSearcher.swift */; };
+		3A4172BF1E8F5BC40043045E /* LocationManagerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4172BE1E8F5BC40043045E /* LocationManagerObserver.swift */; };
 		3A5714B31E397709003C7BC5 /* UIImage+Size+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5714B21E397709003C7BC5 /* UIImage+Size+Color.swift */; };
 		3A5714B51E398030003C7BC5 /* FeedItemSectionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */; };
 		3A74B8481E3D9DCE00408BBB /* TextSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74B8471E3D9DCE00408BBB /* TextSize.swift */; };
@@ -200,6 +201,7 @@
 		3A4172B81E8E105B0043045E /* LocationPostsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPostsController.swift; sourceTree = "<group>"; };
 		3A4172BA1E8E15AD0043045E /* LocationMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationMapView.swift; sourceTree = "<group>"; };
 		3A4172BC1E8F2A940043045E /* LocationSearcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearcher.swift; sourceTree = "<group>"; };
+		3A4172BE1E8F5BC40043045E /* LocationManagerObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManagerObserver.swift; sourceTree = "<group>"; };
 		3A5714B21E397709003C7BC5 /* UIImage+Size+Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Size+Color.swift"; sourceTree = "<group>"; };
 		3A5714B41E398030003C7BC5 /* FeedItemSectionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemSectionDelegate.swift; sourceTree = "<group>"; };
 		3A74B8471E3D9DCE00408BBB /* TextSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextSize.swift; sourceTree = "<group>"; };
@@ -671,6 +673,7 @@
 				3A32A6AF1DA30A8500AEE45F /* LocationManager.swift */,
 				D2838EFD1E859360009F65F2 /* LocationSearchManager.swift */,
 				3A4172BC1E8F2A940043045E /* LocationSearcher.swift */,
+				3A4172BE1E8F5BC40043045E /* LocationManagerObserver.swift */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -899,6 +902,7 @@
 				D21BD4921E60D800009196C8 /* FeedItemThumbnailSectionController.swift in Sources */,
 				D2F8D2F61E2D644C00723204 /* User.swift in Sources */,
 				D21BD4981E64C9CB009196C8 /* UserFollowCell.swift in Sources */,
+				3A4172BF1E8F5BC40043045E /* LocationManagerObserver.swift in Sources */,
 				3AC13E971E7855300036EB87 /* FSImageSliderMenuView.swift in Sources */,
 				D2F8D2F01E2D630800723204 /* ImageCell.swift in Sources */,
 				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,

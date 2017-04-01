@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 
 /// This class is responsible for building the query for getting location data and managing dependent views.
-class LocationSearchManager: NSObject, UISearchBarDelegate {
+class LocationSearchManager: NSObject, UISearchBarDelegate, LocationManagerObserver {
     
     // MARK: - Properties
     fileprivate var emptyTableText: String?
@@ -66,29 +66,22 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
                 self.tableView.reloadData()
             }
         }
-        
     }
     
     deinit {
         unsubscribeToLocationNotifications()
     }
     
+    func refreshUserLocation() {
+        locationSearcher.getUserLocation()
+    }
+    
     // MARK: - Notifications
-    private func subscribeToLocationNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(locationDidUpdate), name: .locationManagerDidUpdateNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(locationDidFail), name: .locationManagerDidFailNotification, object: nil)
-    }
-    
-    private func unsubscribeToLocationNotifications() {
-        NotificationCenter.default.removeObserver(self, name: .locationManagerDidUpdateNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .locationManagerDidFailNotification, object: nil)
-    }
-    
-    @objc private func locationDidUpdate() {
+    func locationDidUpdate() {
         getLocationsForQuery(query: searchBar.text ?? "")
     }
     
-    @objc private func locationDidFail() {
+    func locationDidFail() {
         emptyTableText = LocationError.unlocatable.cellText
     }
     
@@ -137,5 +130,9 @@ extension LocationSearchManager: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+
+
+
+
 
 

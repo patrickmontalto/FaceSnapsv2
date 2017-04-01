@@ -15,7 +15,7 @@ import UIKit
 class LocationPostsController: UIViewController {
     
     // MARK: - Properties
-    fileprivate let location: Location
+    fileprivate let location: FourSquareLocation
     fileprivate var posts = [FeedItem]()
     
     lazy var collectionView: UICollectionView = {
@@ -39,7 +39,7 @@ class LocationPostsController: UIViewController {
     
     // MARK: - Initializers
     
-    init(location: Location) {
+    init(location: FourSquareLocation) {
         self.location = location
         super.init(nibName: nil, bundle: nil)
     }
@@ -146,6 +146,7 @@ extension LocationPostsController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
 //        let post = posts[indexPath.row]
+    
         let vc = PostsCollectionViewContainer(style: .feed, dataSource: .postsForLocation(location: self.location, atRow: indexPath.row))
 //        let vc = PostsCollectionViewContainer(style: .feed, dataSource: .individualPost(postId: post.pk))
         navigationController?.pushViewController(vc, animated: true)
