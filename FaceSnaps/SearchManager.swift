@@ -10,6 +10,7 @@ import UIKit
 
 class SearchManager: NSObject, UISearchBarDelegate {
     
+    // MARK: - Properties
     weak var presentingViewController: UIViewController?
     
     var tableView: UITableView!
@@ -18,6 +19,7 @@ class SearchManager: NSObject, UISearchBarDelegate {
     
     var selectedScope = 0
     
+    // MARK: - Initializers
     init(searchBar: UISearchBar, tableView: UITableView, presentingViewController: UIViewController) {
         super.init()
         self.tableView = tableView
@@ -34,6 +36,7 @@ class SearchManager: NSObject, UISearchBarDelegate {
 
     }
     
+    // MARK: - UISearchBarDelegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // Make call to API to get search results
         // API Call will either be for Users, Tags, or Locations depending on which is selected
@@ -47,15 +50,10 @@ class SearchManager: NSObject, UISearchBarDelegate {
         switch selectedScope {
         case 0:
             // Get users
-            FaceSnapsClient.sharedInstance.searchUsers(queryString: searchText, completionHandler: { (usersArray, error) in
-                guard let usersArray = usersArray else { return }
-                self.data = usersArray
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            })
+            getUsers(searchText: searchText)
+        case 1:
             // TODO: Get Tags
-            // TODO: Get Locations
+            break
         case 2:
             // Get locations
             FaceSnapsClient.sharedInstance.getLocations(query: searchText, coordinate: <#T##CLLocationCoordinate2D#>, completionHandler: <#T##([FourSquareLocation]?, APIError?) -> Void#>)
@@ -72,6 +70,21 @@ class SearchManager: NSObject, UISearchBarDelegate {
         self.data = [Any]()
         // Reload tableview
         tableView.reloadData()
+    }
+    
+    // MARK: - Actions
+    private func getUsers(searchText: String) {
+        FaceSnapsClient.sharedInstance.searchUsers(queryString: searchText, completionHandler: { (usersArray, error) in
+            guard let usersArray = usersArray else { return }
+            self.data = usersArray
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
+    private func getLocations(searchText: String) {
+        
     }
     
 }

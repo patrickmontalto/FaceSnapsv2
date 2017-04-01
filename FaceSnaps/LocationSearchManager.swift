@@ -102,8 +102,7 @@ class LocationSearchManager: NSObject, UISearchBarDelegate {
     func getUserLocation() {
         locationManager.getLocation()
     }
-    
-    
+
     // MARK: - UISearchBarDelegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // Make API call to get the results of the location search
