@@ -30,5 +30,8 @@ extension CommentDelegate where Self:UIViewController {
     func didTapHashtag(tag: String) {
         // TODO: Present FeedItemThumbnailSectionController with hashtag as title.
         // Make new API endpoint for this in client.
+        let tag = Tag(id: 0, name: tag, postsCount: 0)
+        let vc = TagPostsController(tag: tag)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

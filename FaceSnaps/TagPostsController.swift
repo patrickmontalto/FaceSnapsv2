@@ -41,7 +41,7 @@ class TagPostsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = tag.name
+        self.title = "#\(tag.name)"
         
         view.addSubview(collectionView)
         
