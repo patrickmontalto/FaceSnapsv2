@@ -88,9 +88,7 @@ extension ActiveLabel {
         }
         
         label.handleMentionTap { (username) in
-            // Find user by username
-            
-            // Make request to API
+            delegate.didTapMention(username: username)
         }
         
         label.hashtagColor = .hashtagBlue
