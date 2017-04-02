@@ -130,11 +130,14 @@ extension FaceSnapsClient {
                     return "/posts/\(postId)/comments/"
                 }
             }
-//
-//            enum TagsEndpoint {
-//                
-//            }
-//            
+
+            enum TagsEndpoint {
+                static let search = "/tags/search"
+                static func getTagPosts(tagName: String) -> String {
+                    return "/tags/\(tagName)/posts/recent"
+                }
+            }
+            
             enum LocationsEndpoint {
                 static func getLocation(id: Int) -> String {
                     return "/locations/\(id)"
@@ -212,8 +215,10 @@ extension FaceSnapsClient {
             
             // MARK: - Tags Data
             enum Tag {
+                static let tags = "tags"
                 static let id = "id"
                 static let name = "name"
+                static let postsCount = "posts_count"
             }
             
             // MARK: - Locations Data

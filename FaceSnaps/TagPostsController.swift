@@ -1,21 +1,16 @@
 //
-//  LocationPostsController.swift
+//  TagPostsController.swift
 //  FaceSnaps
 //
-//  Created by Patrick Montalto on 3/31/17.
+//  Created by Patrick Montalto on 4/1/17.
 //  Copyright © 2017 Patrick Montalto. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-/// A View Controller containing a map with the pinned location,
-/// as well as the posts for that particular location.
-
-class LocationPostsController: UIViewController {
-    
+class TagPostsController: UIViewController {
     // MARK: - Properties
-    fileprivate let location: FourSquareLocation
+    fileprivate let tag: Tag
     fileprivate var posts = [FeedItem]()
     
     lazy var collectionView: UICollectionView = {
@@ -25,35 +20,29 @@ class LocationPostsController: UIViewController {
         let itemWidth = (self.view.frame.width - 2)/3
         cvLayout.itemSize = CGSize(width: itemWidth, height: itemWidth)
         let cv = UICollectionView(frame: .zero, collectionViewLayout: cvLayout)
-        cvLayout.headerReferenceSize = CGSize(width: self.view.frame.width, height: 150)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.delegate = self
         cv.dataSource = self
         cv.backgroundColor = .white
-        cv.register(LocationMapView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: LocationMapView.reuseId)
-        cv.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Header")
         cv.register(ImageCell.self, forCellWithReuseIdentifier: "imageCell")
+        cv.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "Header")
         return cv
     }()
-
-    
     // MARK: - Initializers
-    
-    init(location: FourSquareLocation) {
-        self.location = location
+    init(tag: Tag) {
+        self.tag = tag
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
     // MARK: - UIViewController
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = location.name
-
+        self.title = tag.name
+        
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -66,29 +55,20 @@ class LocationPostsController: UIViewController {
         self.automaticallyAdjustsScrollViewInsets = false
         
         // Get posts for location
-        FaceSnapsClient.sharedInstance.getPosts(forLocation: location) { (data, error) in
+        FaceSnapsClient.sharedInstance.getPosts(forTag: tag) { (data, error) in
             if let data = data {
-                self.posts = Array(data)
+                self.posts = data
                 self.collectionView.reloadData()
             } else {
                 _ = APIErrorHandler.handle(error: error!, logError: true)
             }
         }
-
-        
     }
-    
     // MARK: - Actions
 }
-
-// MARK: - UICollectionViewDelegate & UICollectionViewDataSource
-extension LocationPostsController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
-    
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
+extension TagPostsController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 { return 0 }
         return posts.count
     }
     
@@ -113,40 +93,26 @@ extension LocationPostsController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if indexPath.section == 0 {
-            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: LocationMapView.reuseId, for: indexPath) as! LocationMapView
-            
-            view.location = self.location
-            
-            return view
-        } else {
-            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath)
-            
-            let label = UILabel(frame: CGRect(x: 10, y: 10, width: 120, height: 18))
-            label.text = "MOST RECENT"
-            label.textAlignment = .left
-            label.font = UIFont.systemFont(ofSize: 12.0)
-            label.textColor = .gray
-            view.addSubview(label)
-            return view
-        }
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath)
+        
+        let label = UILabel(frame: CGRect(x: 10, y: 10, width: 120, height: 18))
+        label.text = "MOST RECENT"
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 12.0)
+        label.textColor = .gray
+        view.addSubview(label)
+        return view
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if section == 0 {
-            return CGSize(width: view.frame.width, height: 150)
-        } else {
             return CGSize(width: view.frame.width, height: 40)
-        }
     }
     
     // Present the individual post selected
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-//        let post = posts[indexPath.row]
-    
-        let vc = PostsCollectionViewContainer(style: .feed, dataSource: .postsForLocation(location: self.location, atRow: indexPath.row))
-//        let vc = PostsCollectionViewContainer(style: .feed, dataSource: .individualPost(postId: post.pk))
+        
+        let vc = PostsCollectionViewContainer(style: .feed, dataSource: .postsForTag(tag: self.tag, atRow: indexPath.row))
         navigationController?.pushViewController(vc, animated: true)
     }
 

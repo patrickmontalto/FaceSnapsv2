@@ -15,7 +15,7 @@ enum PostsCollectionViewContainerStyle {
 
 enum PostsCollectionViewDataSourceType {
     case postsLiked
-    case postsForTag(tag: String)
+    case postsForTag(tag: Tag, atRow: Int)
     case postsForLocation(location: FourSquareLocation, atRow: Int)
     case individualPost(postId: Int)
 }
@@ -164,11 +164,16 @@ class PostsCollectionViewContainer: UIViewController, CollectionViewContainer {
             }
             break
         // TODO: Posts for Tag
-        case .postsForTag(let tag):
-//            FaceSnapsClient.sharedInstance.getPostsForTag(tag: tag, atPage: nextPage, completionHandler: { (posts, error) in
-//                completionHandler(posts, error)
-//            })
-            break
+        case .postsForTag(let tag, let row):
+            FaceSnapsClient.sharedInstance.getPosts(forTag: tag, completionHandler: { (data, error) in
+                if let data = data {
+                    completionHandler(data, nil)
+                    self.startingRow = row
+                } else {
+                    completionHandler(nil, error!)
+                    _ = APIErrorHandler.handle(error: error!, logError: true)
+                }
+            })
         case .individualPost(let postId):
             FaceSnapsClient.sharedInstance.getPostData(postId: postId, completionHandler: { (post, error) in
                 if let post = post {

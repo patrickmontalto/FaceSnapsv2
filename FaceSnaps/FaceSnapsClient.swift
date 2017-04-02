@@ -554,6 +554,73 @@ class FaceSnapsClient: NSObject {
         }
     }
     
+    // MARK: Search tags
+    func searchTags(queryString: String, completionHandler: @escaping ([Tag]?, APIError?) -> Void) {
+        let tagsSearchEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.TagsEndpoint.search)
+        
+        let params = ["query": queryString]
+        
+        // Make request
+        Alamofire.request(tagsSearchEndpoint, method: .post, parameters: params, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                completionHandler(nil, APIError.responseError(message: response.result.error!.localizedDescription))
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                completionHandler(nil, APIError.noJSON)
+                return
+            }
+            
+            guard let tagsArray = json[Constant.JSONResponseKey.Tag.tags] as? [[String:Any]] else {
+                completionHandler(nil, APIError.missingKey(message: "Missing tags key."))
+                return
+            }
+            
+            let tagResults = FaceSnapsParser.parse(tagsArray: tagsArray)
+            
+            completionHandler(tagResults, nil)
+        }
+    }
+    
+    // MARK: Get posts for tag
+    func getPosts(forTag tag: Tag, completionHandler: @escaping ([FeedItem]?, APIError?) -> Void) {
+        let tagPostsEndpoint = FaceSnapsClient.urlString(forEndpoint: FaceSnapsClient.Constant.APIMethod.TagsEndpoint.getTagPosts(tagName: tag.name))
+        
+        // Make request
+        Alamofire.request(tagPostsEndpoint, method: .get, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                completionHandler(nil, APIError.responseError(message: response.result.error!.localizedDescription))
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String: Any] else {
+                completionHandler(nil, APIError.noJSON)
+                return
+            }
+            
+            
+            // GUARD: Is there a posts array?
+            guard let postsArray = json[Constant.JSONResponseKey.Post.posts] as? [[String: Any]] else {
+                completionHandler(nil, APIError.missingKey(message: "Missing posts response from server."))
+                return
+            }
+            
+            // Parse the postsArray
+            if let postsResult = FaceSnapsParser.parse(postsArray: postsArray) {
+                completionHandler(Array(postsResult), nil)
+            } else {
+                completionHandler([FeedItem](), nil)
+            }
+            
+        }
+    }
+    
 
     // MARK: Get information about the owner of the access token (user)
     

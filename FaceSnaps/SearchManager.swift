@@ -10,6 +10,22 @@ import UIKit
 
 class SearchManager: NSObject, UISearchBarDelegate, LocationManagerObserver {
     
+    enum SearchScope: Int {
+        case user, tag, location
+        
+        var placeholder: String {
+            switch self {
+            case .user:
+                return "Search users"
+            case .tag:
+                return "Search hashtags"
+            case .location:
+                return "Search locations"
+            }
+        }
+        
+    }
+    
     // MARK: - Properties
     weak var presentingViewController: UIViewController?
     
@@ -68,7 +84,7 @@ class SearchManager: NSObject, UISearchBarDelegate, LocationManagerObserver {
             getUsers(searchText: searchText)
         case 1:
             // TODO: Get Tags
-            break
+            getTags(searchText: searchText)
         case 2:
             // Get locations
             getLocations(searchText: searchText)
@@ -79,12 +95,15 @@ class SearchManager: NSObject, UISearchBarDelegate, LocationManagerObserver {
     }
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        // TODO: Handle switching search types
+        guard let scope = SearchScope(rawValue: selectedScope) else { return }
+        // Handle switching search types
         self.selectedScope = selectedScope
         // Clear data
-        self.data = [Any]()
+        self.data.removeAll()
         // Reload tableview
         tableView.reloadData()
+        // Change placeholder text
+        searchBar.placeholder = scope.placeholder
     }
     
     // MARK: - Actions
@@ -92,6 +111,19 @@ class SearchManager: NSObject, UISearchBarDelegate, LocationManagerObserver {
         FaceSnapsClient.sharedInstance.searchUsers(queryString: searchText, completionHandler: { (usersArray, error) in
             guard let usersArray = usersArray else { return }
             self.data = usersArray
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
+    private func getTags(searchText: String) {
+        // Clear Data
+        self.data.removeAll()
+        
+        FaceSnapsClient.sharedInstance.searchTags(queryString: searchText, completionHandler: {(tags, error) in
+            guard let tags = tags else { return }
+            self.data = tags
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -151,7 +183,17 @@ extension SearchManager: UITableViewDelegate, UITableViewDataSource {
             
         case 1:
             // Tag search
-            return UITableViewCell()
+            guard let tagData = data as? [Tag] else { return UITableViewCell() }
+            guard indexPath.row < tagData.count else { return UITableViewCell() }
+            let tag = tagData[indexPath.row]
+            
+            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: String.init(describing: UITableViewCell.self))
+            cell.textLabel?.text = "#\(tag.name)"
+            
+
+            cell.detailTextLabel?.text = "\(tag.postsCount) \(tag.postsCount == 1 ? "post" : "posts")"
+            
+            return cell
         case 2:
             // Location search
             
@@ -199,6 +241,9 @@ extension SearchManager: UITableViewDelegate, UITableViewDataSource {
             presentingViewController?.navigationController?.pushViewController(vc, animated: true)
         case 1:
             // Tag
+            let tag = data[indexPath.row] as! Tag
+            let vc = TagPostsController(tag: tag)
+            presentingViewController?.navigationController?.pushViewController(vc, animated: true)
             break
         case 2:
             // Location

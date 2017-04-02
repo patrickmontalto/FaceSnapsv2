@@ -192,7 +192,7 @@ enum FaceSnapsParser {
         return list
     }
     
-    // TODO: Parse Comments Array
+    // MARK: -  Parse Comments Array
     static func parse(commentDictionary: [String:Any], forUser user: User) -> Comment? {
         
         // GUARD: Does the comment have an ID?
@@ -306,6 +306,30 @@ enum FaceSnapsParser {
         }
         
         return feedItems
+    }
+    
+    /// Parses Tags Array
+    static func parse(tagsArray: [[String:Any]]) -> [Tag] {
+        var result = [Tag]()
+        for tag in tagsArray {
+            guard let id = tag[FaceSnapsClient.Constant.JSONResponseKey.Tag.id] as? Int else {
+                continue
+            }
+            
+            guard let name = tag[FaceSnapsClient.Constant.JSONResponseKey.Tag.name] as? String else {
+                continue
+            }
+            
+            guard let postsCount = tag[FaceSnapsClient.Constant.JSONResponseKey.Tag.postsCount] as? Int else {
+                continue
+            }
+            
+            let tag = Tag(id: id, name: name, postsCount: postsCount)
+            
+            result.append(tag)
+        }
+        
+        return result
     }
 
 }
