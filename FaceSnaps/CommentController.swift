@@ -15,15 +15,10 @@ protocol CommentSubmissionDelegate {
 
 class CommentController: UIViewController {
     
+    // MARK: - Properties
     var post: FeedItem!
     var data: [Comment]! = []
     var delegate: FeedItemReloadDelegate!
-    
-    convenience init(post: FeedItem, delegate: FeedItemReloadDelegate) {
-        self.init()
-        self.delegate = delegate
-        self.post = post
-    }
     
     lazy var commentsTableView: UITableView = {
         let tv = UITableView()
@@ -45,7 +40,15 @@ class CommentController: UIViewController {
     }()
     
     var commentBoxViewBottomAnchor: NSLayoutConstraint!
+    
+    // MARK: - Initializers
+    convenience init(post: FeedItem, delegate: FeedItemReloadDelegate) {
+        self.init()
+        self.delegate = delegate
+        self.post = post
+    }
 
+    // MARK: - UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(commentsTableView)
@@ -69,13 +72,6 @@ class CommentController: UIViewController {
         (navigationController as? HomeNavigationController)?.logoIsHidden = true
         // Hide tab bar
         tabBarController?.tabBar.isHidden = true
-        
-        // Add notification to know when to increase/decrease the comment box view height
-        NotificationCenter.default.addObserver(self, selector: #selector(adjustCommentBoxView), name: .textViewWillChangeHeightNotification, object: nil)
-        // Add notification for keyboard showing/hiding
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
-        
     }
     
     override func viewWillLayoutSubviews() {
@@ -94,8 +90,31 @@ class CommentController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Add notification to know when to increase/decrease the comment box view height
+        NotificationCenter.default.addObserver(self, selector: #selector(adjustCommentBoxView), name: .textViewWillChangeHeightNotification, object: nil)
+        // Add notification for keyboard showing/hiding
+        addKeyboardObservers(showSelector: #selector(keyboardWillShow(notification:)), hideSelector: #selector(keyboardWillHide(notification:)))
+        
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    
+        delegate.didUpdateFeedItem(feedItem: post)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // Remove notification observers
+        NotificationCenter.default.removeObserver(self, name: .textViewWillChangeHeightNotification, object: nil)
+        removeKeyboardObservers()
+        
+        super.viewDidAppear(animated)
+    }
+    
+    // MARK: - Actions
     private func getComments() {
         FaceSnapsClient.sharedInstance.getComments(forPost: post) { (comments, error) in
             guard let comments = comments else { return }
@@ -105,7 +124,7 @@ class CommentController: UIViewController {
         }
     }
 
-    
+    /// Scroll to the bottom of the comments table view
     func scrollToBottom() {
         let section = commentsTableView.numberOfSections - 1
         guard section >= 0 else { return }
@@ -115,7 +134,7 @@ class CommentController: UIViewController {
         commentsTableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: true)
     }
     
-    // Adjust the height of the comment box view and the uitextview for dynamic height
+    /// Adjust the height of the comment box view and the uitextview for dynamic height
     func adjustCommentBoxView() {
         let height = commentBoxView.commentTextViewHeight.constant + 32
         commentBoxView.height.constant = height
@@ -187,9 +206,7 @@ extension CommentController: CommentDelegate {
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        delegate.didUpdateFeedItem(feedItem: post)
-    }
+   
 }
 
 extension CommentController: CommentSubmissionDelegate {
@@ -212,10 +229,5 @@ extension CommentController: CommentSubmissionDelegate {
             }
         }
     }
-}
-
-// MARK: - UIGestureRecognizerDelegate
-extension CommentController: UIGestureRecognizerDelegate {
-    
 }
 

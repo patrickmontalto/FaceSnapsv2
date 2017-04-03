@@ -139,7 +139,7 @@ class SignInHelpController: UIViewController {
         usernameTextField.addTarget(self, action: #selector(SignInHelpController.textFieldEmptyCheck(sender:)), for: .editingChanged)
         
         // Observe keyboard notifications to slide screen up/down
-        addKeyboardObservers(showSelector: #selector(SignInHelpController.keyboardWillShow(sender:)), hideSelector: #selector(SignInHelpController.keyboardWillHide(sender:)))
+        addKeyboardObservers(showSelector: #selector(SignInHelpController.keyboardWillShow(sender:)), hideSelector: #selector(SignInHelpController.keyboardWillHide(sender:)), object: self.view.window)
     }
     
     // Add animation to gradient
@@ -182,7 +182,7 @@ class SignInHelpController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        removeKeyboardObservers()
+        removeKeyboardObservers(object: self.view.window)
     }
     
     // MARK: Go Back Button Behavior

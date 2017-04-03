@@ -400,6 +400,7 @@
 				3AC13E7B1E6C8C300036EB87 /* Image Picking + Editing */,
 				D26703641E26D1FF001C06BE /* Log In / Sign Up */,
 				D23589271E8D950F0080D894 /* FeedItem */,
+				3A4172C31E91F2620043045E /* Comments */,
 				D267036A1E26D8F0001C06BE /* Home */,
 				3A9A3BA61E285DAC008A1334 /* Search */,
 				3A9A3BA71E285DC2008A1334 /* Camera */,
@@ -455,6 +456,17 @@
 				3A4172C01E90111B0043045E /* TagPostsController.swift */,
 			);
 			name = Tags;
+			sourceTree = "<group>";
+		};
+		3A4172C31E91F2620043045E /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				3ADE2A6B1E4D2F7000D1D4C6 /* CommentController.swift */,
+				D21BD4991E69E714009196C8 /* FullCommentCell.xib */,
+				3ADE2A6D1E4D319400D1D4C6 /* FullCommentCell.swift */,
+				3ADE2A6F1E4D343800D1D4C6 /* CommentDelegate.swift */,
+			);
+			name = Comments;
 			sourceTree = "<group>";
 		};
 		3A9A3BA61E285DAC008A1334 /* Search */ = {
@@ -647,10 +659,6 @@
 				3A74B84D1E3E97B700408BBB /* TimeView.swift */,
 				3A74B84E1E3E97B700408BBB /* TimeView.xib */,
 				3ADE2A631E41356500D1D4C6 /* SpinnerCell.swift */,
-				3ADE2A6B1E4D2F7000D1D4C6 /* CommentController.swift */,
-				D21BD4991E69E714009196C8 /* FullCommentCell.xib */,
-				3ADE2A6D1E4D319400D1D4C6 /* FullCommentCell.swift */,
-				3ADE2A6F1E4D343800D1D4C6 /* CommentDelegate.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";

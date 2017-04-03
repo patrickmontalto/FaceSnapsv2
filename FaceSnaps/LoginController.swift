@@ -76,7 +76,7 @@ class LoginViewController: UIViewController {
         
         configureTapRecognizers()
         
-        addKeyboardObservers(showSelector: #selector(LoginViewController.keyboardWillShow(sender:)), hideSelector: #selector(LoginViewController.keyboardWillHide(sender:)))
+        addKeyboardObservers(showSelector: #selector(LoginViewController.keyboardWillShow(sender:)), hideSelector: #selector(LoginViewController.keyboardWillHide(sender:)), object: self.view.window)
         
         // Configure constraint for stackView position
         fbLoginStackViewTopConstraint = NSLayoutConstraint(item: facebookLoginStackView, attribute: .top, relatedBy: .equal, toItem: loginStackView, attribute: .bottom, multiplier: 1.0, constant: verticalSpacing)
@@ -114,7 +114,7 @@ class LoginViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        removeKeyboardObservers()
+        removeKeyboardObservers(object: self.view.window)
     }
     
     func configureTapRecognizers() {
