@@ -18,6 +18,7 @@ enum FeedItemButtonType {
 
 protocol FeedItemSectionDelegate {
     func didPressLikeButton(forPost post: FeedItem, inSectionController sectionController: FeedItemSectionController, withButton button: UIButton)
+    func didTapImage(forPost post: FeedItem, imageView: UIImageView, inSectionController sectionController: FeedItemSectionController)
     
     func didPressUserButton(forUser user: User)
     
@@ -75,13 +76,68 @@ extension FeedItemSectionDelegate where Self:UIViewController, Self:CommentDeleg
                     button.setImage(image, for: .normal)
                     post.likesCount -= 1
                 }
-                
-                // Post notification that the feed item (post) has been modified
-                let object = ["post": post]
-                NotificationCenter.default.post(name: Notification.Name.postWasModifiedNotification, object: self, userInfo: object)
-                
+               
+                self.postWasModifiedNotification(post: post)
+
+                // TODO: Will the notification observer handle setting the likes count??
                 likesViewCell.setLikesCount(count: post.likesCount)
             }
         }
     }
+
+    func didTapImage(forPost post: FeedItem, imageView: UIImageView, inSectionController sectionController: FeedItemSectionController) {
+        let action = FaceSnapsClient.LikeAction.like
+        if post.liked {
+            animateLike(imageView: imageView)
+        }
+        FaceSnapsClient.sharedInstance.likeOrUnlikePost(action: action, postId: post.pk) { (error) in
+            if error == nil {
+                // Liked post successfully
+                post.liked = true
+                post.likesCount += 1
+
+                self.animateLike(imageView: imageView)
+                
+                // Get reference to controls cell
+                guard let collectionContext = sectionController.collectionContext else { return }
+                let likesViewCell = collectionContext.cellForItem(at: FeedItemSubsection.likes.rawValue, sectionController: sectionController) as! LikesViewCell
+                let controlsCell = collectionContext.cellForItem(at: FeedItemSubsection.controls.rawValue, sectionController: sectionController) as! ControlsCell
+                likesViewCell.setLikesCount(count: post.likesCount)
+                controlsCell.setLikeButtonImage(liked: true)
+            
+                self.postWasModifiedNotification(post: post)
+                
+            } else {
+                _ = APIErrorHandler.handle(error: error!, logError: true)
+            }
+        }
+    }
+
+    
+    /// Post notification that the feed item (post) has been modified
+    private func postWasModifiedNotification(post: FeedItem) {
+        let object = ["post": post]
+        NotificationCenter.default.post(name: .postWasModifiedNotification, object: self, userInfo: object)
+    }
+    
+    private func animateLike(imageView: UIImageView) {
+        let heartView = UIImageView(image: #imageLiteral(resourceName: "big_heart"))
+        let center = imageView.center
+        heartView.frame.size = CGSize(width: 50, height: 46)
+        heartView.contentMode = .scaleAspectFit
+        imageView.addSubview(heartView)
+        heartView.center = CGPoint(x: center.x, y: center.y)
+        UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 5, options: .curveEaseOut, animations: {
+            heartView.transform = CGAffineTransform(scaleX: 4, y: 4)
+        }) { (finished) in
+            UIView.animate(withDuration: 0.2, animations: {
+                // Shrink heart
+                heartView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+            }, completion: { (finished) in
+                // Hide heart
+                heartView.removeFromSuperview()
+            })
+        }
+    }
+    
 }

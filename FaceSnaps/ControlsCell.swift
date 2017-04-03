@@ -19,7 +19,7 @@ class ControlsCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     var delegate: FeedItemSectionDelegate?
     
-    private lazy var likeButton: UIButton = {
+    lazy var likeButton: UIButton = {
         let btn = UIButton()
         btn.addTarget(self, action: #selector(likeButtonPressed), for: .touchUpInside)
         return btn

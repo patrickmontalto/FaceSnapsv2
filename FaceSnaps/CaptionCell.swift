@@ -19,7 +19,7 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         
         return labelHeight + 8
     }
-    
+    // MARK: - Properties
     var post: FeedItem! {
         didSet {
             setContentLabel()
@@ -42,6 +42,7 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         contentLabel = ActiveLabel.captionLabel(author: author, caption: caption, delegate: delegate!)
     }
     
+    // MARK: - UICollectionViewCell
     override func layoutSubviews() {
         contentView.backgroundColor = .white
         backgroundColor = .white

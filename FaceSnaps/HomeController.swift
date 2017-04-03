@@ -164,6 +164,7 @@ class HomeController: UIViewController, CollectionViewContainer {
     func updatePostInData(_ notification: Notification) {
         
         guard let notifier = notification.object as? UIViewController, notifier != self else {
+            // Do not reloadObjects in order to avoid reload animation unnecessarily
             return
         }
         
