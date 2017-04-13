@@ -17,7 +17,7 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
         let text = comment.text
         let labelHeight = TextSize.height(author + text, width: UIScreen.main.bounds.width - 30, attributes: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14.0)])
         
-        return min(labelHeight + 8, 42)
+        return min(labelHeight + 8, 25.0)
     }
     
     var delegate: CommentDelegate?
