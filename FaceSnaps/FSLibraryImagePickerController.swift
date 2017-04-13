@@ -84,6 +84,8 @@ class FSLibraryImagePickerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .white
+        
         PHPhotoLibrary.shared().register(self)
         
         if PHPhotoLibrary.authorizationStatus() == .authorized {
@@ -93,11 +95,7 @@ class FSLibraryImagePickerController: UIViewController {
         }
     }
     
-    
-    override func viewDidAppear(_ animated: Bool) {
-        print("view did appear")
-    }
-    
+
     // Hide the status bar
     override var prefersStatusBarHidden: Bool {
         return true

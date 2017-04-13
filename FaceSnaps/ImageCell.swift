@@ -82,19 +82,22 @@ class ImageCell: UICollectionViewCell, FeedItemSubSectionCell {
         
         // Check to see if the image is currently cached in the file directory
         // If it is not, begin async request to download image
-        if feedItem.photo != nil {
+        if feedItem.photo == nil {
             cell.configureCell(post: feedItem, sectionController: sectionController as! FeedItemSectionController)
             // TODO: Set placeholder Image
             cell.setImage(image: UIImage())
             let caching = index < 10
             // Begin background process to download image from URL
             // Cache if necessary
-            FaceSnapsDataSource.sharedInstance.photoFromURL(for: feedItem, cache: caching, completionHandler: { (image) in
-                DispatchQueue.main.async {
-                    cell.setImage(image: image)
+            ImageLoader.sharedInstance.loadImageForPost(feedItem, cache: caching, completion: { (image) in
+                guard let image = image else {
+                    print("No image returned for photoURLString")
+                    return
                 }
+                cell.setImage(image: image)
             })
-            
+        } else {
+            cell.setImage(image: feedItem.photo!)
         }
         
         return cell

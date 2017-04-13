@@ -111,6 +111,9 @@
 		D20000C71E8ACF060096CD5F /* ThumbnailAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */; };
 		D20000C91E8AF7300096CD5F /* FeedItemPrototype.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000C81E8AF7300096CD5F /* FeedItemPrototype.swift */; };
 		D20000CB1E8AF83F0096CD5F /* FourSquareLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000CA1E8AF83F0096CD5F /* FourSquareLocation.swift */; };
+		D210C6A81E9FD1BC008CB68E /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210C6A71E9FD1BC008CB68E /* ImageLoader.swift */; };
+		D210C6AA1E9FE5E0008CB68E /* UIScreen+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210C6A91E9FE5E0008CB68E /* UIScreen+Screenshot.swift */; };
+		D210C6AC1E9FE74F008CB68E /* UIView+SnapshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D210C6AB1E9FE74F008CB68E /* UIView+SnapshotView.swift */; };
 		D21BD4801E54A487009196C8 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD47F1E54A487009196C8 /* SearchManager.swift */; };
 		D21BD4821E54B95B009196C8 /* UISegmentedControl+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */; };
 		D21BD4841E54D1BD009196C8 /* UserSearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */; };
@@ -267,6 +270,9 @@
 		D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailAnimator.swift; sourceTree = "<group>"; };
 		D20000C81E8AF7300096CD5F /* FeedItemPrototype.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemPrototype.swift; sourceTree = "<group>"; };
 		D20000CA1E8AF83F0096CD5F /* FourSquareLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourSquareLocation.swift; sourceTree = "<group>"; };
+		D210C6A71E9FD1BC008CB68E /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		D210C6A91E9FE5E0008CB68E /* UIScreen+Screenshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Screenshot.swift"; sourceTree = "<group>"; };
+		D210C6AB1E9FE74F008CB68E /* UIView+SnapshotView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+SnapshotView.swift"; sourceTree = "<group>"; };
 		D21BD47F1E54A487009196C8 /* SearchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Appearance.swift"; sourceTree = "<group>"; };
 		D21BD4831E54D1BD009196C8 /* UserSearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserSearchCell.xib; sourceTree = "<group>"; };
@@ -376,6 +382,7 @@
 				D267035A1E256BE0001C06BE /* ImageCoder.swift */,
 				D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */,
 				D2838EFC1E8462EB009F65F2 /* Location */,
+				D210C6A71E9FD1BC008CB68E /* ImageLoader.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -576,6 +583,8 @@
 				3AA3B22E1E50F45F0000A312 /* UITextView+NumLines.swift */,
 				D21BD4811E54B95B009196C8 /* UISegmentedControl+Appearance.swift */,
 				3AC13E771E6902440036EB87 /* ActiveLabel+Types.swift */,
+				D210C6A91E9FE5E0008CB68E /* UIScreen+Screenshot.swift */,
+				D210C6AB1E9FE74F008CB68E /* UIView+SnapshotView.swift */,
 			);
 			name = Convenience;
 			sourceTree = "<group>";
@@ -826,7 +835,9 @@
 				3AA3B2311E516FE00000A312 /* ViewAllCommentsCell.swift in Sources */,
 				3AA3B22D1E4FEC3D0000A312 /* CommentBoxView.swift in Sources */,
 				D2318A901E1D621D00E0347F /* APIConstants.swift in Sources */,
+				D210C6AC1E9FE74F008CB68E /* UIView+SnapshotView.swift in Sources */,
 				3AB17FA41E04FEE9005E8739 /* InteractableLabel.swift in Sources */,
+				D210C6AA1E9FE5E0008CB68E /* UIScreen+Screenshot.swift in Sources */,
 				3ADE2A701E4D343800D1D4C6 /* CommentDelegate.swift in Sources */,
 				D2F8D2EC1E2D615400723204 /* UserHeaderView.swift in Sources */,
 				3A32A6B91DA6067E00AEE45F /* Tag.swift in Sources */,
@@ -930,6 +941,7 @@
 				D2318A921E1D623D00E0347F /* APIClient.swift in Sources */,
 				3A17EA4E1DFF57A000031834 /* UIView+Resize.swift in Sources */,
 				D21BD4901E609A33009196C8 /* PostsCollectionViewContainer.swift in Sources */,
+				D210C6A81E9FD1BC008CB68E /* ImageLoader.swift in Sources */,
 				3AA3B2331E58F0980000A312 /* APIError.swift in Sources */,
 				3A7C7FB71DEE2737008608D1 /* HomeController.swift in Sources */,
 				3AB17F9E1E02264E005E8739 /* FacebookLoginViews.swift in Sources */,

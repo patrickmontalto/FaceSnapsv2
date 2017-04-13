@@ -10,7 +10,7 @@ import UIKit
 
 class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
     
-    private var snapshotView: UIView? {
+    private var snapshotView: UIImageView? {
         willSet {
             snapshotView?.removeFromSuperview()
         }
@@ -80,11 +80,15 @@ class AppTabBarController: UITabBarController , UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         
         if viewController is ImagePickerNavigationController {
-            if let snapshot = UIApplication.shared.keyWindow?.snapshotView(afterScreenUpdates: false) {
-                view.addSubview(snapshot)
-                snapshot.frame = view.bounds
-                snapshotView = snapshot
-            }
+            
+           // if let snapshot = UIApplication.shared.keyWindow?.snapshotView(afterScreenUpdates: false) {
+           //     view.addSubview(snapshot)
+           //     snapshot.frame = view.bounds
+           //     snapshotView = snapshot
+           // }
+            let snapshot = view.snapshotImageView()
+            view.addSubview(snapshot)
+            snapshotView = snapshot
             
             let vc = ImagePickerNavigationController()
             present(vc, animated: true, completion: {})

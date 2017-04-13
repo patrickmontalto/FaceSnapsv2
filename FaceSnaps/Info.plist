@@ -28,7 +28,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) camera use</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location is used as metadata for the selfie</string>
+	<string>Location needed for tagging.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) photo use</string>
 	<key>UILaunchStoryboardName</key>

@@ -129,10 +129,8 @@ extension ProfileController: UICollectionViewDataSource, UICollectionViewDelegat
             let caching = true
             // Begin background process to download image from URL
             // Cache if necessary
-            FaceSnapsDataSource.sharedInstance.photoFromURL(for: post, cache: caching, completionHandler: { (image) in
-                DispatchQueue.main.async {
-                    cell.setImage(image: image)
-                }
+            ImageLoader.sharedInstance.loadImageForPost(post, cache: caching, completion: { (image) in
+                cell.setImage(image: image)
             })
             
         }
