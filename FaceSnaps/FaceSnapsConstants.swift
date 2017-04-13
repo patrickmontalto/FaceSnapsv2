@@ -126,8 +126,8 @@ extension FaceSnapsClient {
                 static func postComment(postId: Int) -> String {
                     return "/posts/\(postId)/comments"
                 }
-                static func deleteComment(postId: Int) -> String {
-                    return "/posts/\(postId)/comments/"
+                static func deleteComment(postId: Int, commentId: Int) -> String {
+                    return "/posts/\(postId)/comments/\(commentId)"
                 }
             }
 

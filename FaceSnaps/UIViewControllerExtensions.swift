@@ -11,7 +11,7 @@ import UIKit
 extension UIViewController {
     
     // MARK: Display Alert
-    func displayAlert(withMessage message: String, title: String, actions: [UIAlertAction]) {
+    func displayAlert(withMessage message: String, title: String, actions: [UIAlertAction], style: UIAlertControllerStyle = .alert) {
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
             for action in actions {
@@ -20,6 +20,7 @@ extension UIViewController {
             self.present(alertController, animated: true, completion: nil)
         }
     }
+    
     
     // MARK: Display Notification Alert with Dismiss button
     func displayNotification(withMessage message: String, completionHandler: ((UIAlertAction) -> Void)?) {

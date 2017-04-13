@@ -8,6 +8,7 @@
 
 import UIKit
 import IGListKit
+import RealmSwift
 
 protocol CommentSubmissionDelegate {
     func didSubmitComment(withText text: String)
@@ -19,6 +20,8 @@ class CommentController: UIViewController {
     var post: FeedItem!
     var data: [Comment]! = []
     var delegate: FeedItemReloadDelegate!
+    
+    var deleteCommentIndexPath: IndexPath? = nil
     
     lazy var commentsTableView: UITableView = {
         let tv = UITableView()
@@ -183,6 +186,70 @@ extension CommentController: UITableViewDataSource, UITableViewDelegate {
         cell.prepare(comment: comment, delegate: self, captionCell: false)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if indexPath.row == 0 {
+            return .none
+        } else {
+            let comment = data[indexPath.row]
+            if comment.author!.pk != FaceSnapsDataSource.sharedInstance.currentUser!.pk {
+                return .none
+            }
+            return UITableViewCellEditingStyle.delete
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        // Don't allow deletion of the caption
+        if indexPath.row == 0 { return }
+        if editingStyle == .delete {
+            deleteCommentIndexPath = indexPath
+            let commentToDelete = data[indexPath.row]
+            confirmDelete(comment: commentToDelete)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        return nil
+    }
+    
+    @objc private func confirmDelete(comment: Comment) {
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: handleCommentDeletion)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] (alert) in
+            self?.deleteCommentIndexPath = nil
+        }
+        displayAlert(withMessage: "Are you sure you want to delete your comment?", title: "Delete Comment", actions: [deleteAction, cancelAction], style: .actionSheet)
+    }
+    
+    @objc private func handleCommentDeletion(alert: UIAlertAction!) {
+        if let indexPath = deleteCommentIndexPath {
+            let comment = data[indexPath.row]
+            FaceSnapsClient.sharedInstance.deleteComment(comment, post: post, completionHandler: { (success) in
+                if success {
+                    // TODO: Post notification to remove comment from post throughout application
+                    //let predicate = NSPredicate(format: "pk != %@", comment.pk)
+                    self.post.comments.remove(objectAtIndex: indexPath.row - 1)
+                    let userInfo = ["post": self.post]
+                    NotificationCenter.default.post(name: .postWasModifiedNotification, object: self, userInfo: userInfo)
+                    self.removeCommentFromTableView(indexPath: indexPath)
+                } else {
+                    self.displayNotification(withMessage: "Unable to delete comment.", completionHandler: nil)
+                }
+            })
+            
+        }
+    }
+    
+    @objc private func removeCommentFromTableView(indexPath: IndexPath) {
+        commentsTableView.beginUpdates()
+        
+        data.remove(at: indexPath.row)
+        commentsTableView.deleteRows(at: [indexPath], with: .automatic)
+        
+        deleteCommentIndexPath = nil
+        
+        commentsTableView.endUpdates()
     }
 
 }

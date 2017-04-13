@@ -871,6 +871,34 @@ class FaceSnapsClient: NSObject {
     }
     
     // MARK: Remove a comment on a post (as the current user)
+    func deleteComment(_ comment: Comment, post: FeedItem, completionHandler: @escaping (Bool) -> Void) {
+        let deleteCommentsEndpoint = FaceSnapsClient.urlString(forEndpoint: Constant.APIMethod.CommentsEndpoint.deleteComment(postId: post.pk, commentId: comment.pk))
+        
+        // Make Request
+        Alamofire.request(deleteCommentsEndpoint, method: .delete, parameters: nil, encoding: URLEncoding.default, headers: Constant.AuthorizationHeader).responseJSON { (response) in
+            
+            // GUARD: Was there an error?
+            guard response.result.error == nil else {
+                completionHandler(false)
+                return
+            }
+            
+            // GUARD: Do we have a json response?
+            guard let json = response.result.value as? [String:Any] else {
+                completionHandler(false)
+                return
+            }
+            
+            // GUARD: Code 200 ?
+            guard let meta = json[Constant.JSONResponseKey.Meta.meta] as? [String: Any],
+                let code = meta[Constant.JSONResponseKey.Meta.code] as? Int, code == 200 else {
+                    completionHandler(false)
+                    return
+            }
+            
+            completionHandler(true)
+        }
+    }
     
     // MARK: Get a list of comments on a post (*paginated in reverse)
     func getComments(forPost post: FeedItem, completionHandler: @escaping (_ data: [Comment]?, _ error: APIError?) -> Void) {

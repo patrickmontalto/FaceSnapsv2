@@ -78,6 +78,7 @@ class HomeController: UIViewController, CollectionViewContainer {
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .tappedHomeNotificationName, object: nil)
         // Add notification to reload the feed when a new post is submitted by the user
         NotificationCenter.default.addObserver(self, selector: #selector(getNewFeed), name: .userDidMakePostNotification, object: nil)
+        // Add notification to reload item when a comment is deleted
         
         configureRefreshControl()
         

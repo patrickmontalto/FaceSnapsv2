@@ -35,6 +35,10 @@ class Comment: Object, IGListDiffable {
         return pk as NSObjectProtocol
     }
     
+    func delete() {
+        realm?.delete(self)
+    }
+    
     func isEqual(toDiffableObject object: IGListDiffable?) -> Bool {
         guard self !== object else { return true }
         guard let object = object as? Comment else { return false }
