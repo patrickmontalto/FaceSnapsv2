@@ -55,6 +55,7 @@ class CreatePostController: UIViewController {
         tv.register(PostHeaderView.self, forHeaderFooterViewReuseIdentifier: PostHeaderView.reuseIdentifier)
         tv.backgroundColor = .backgroundGray
         tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.isScrollEnabled = false
         return tv
     }()
     
@@ -105,6 +106,7 @@ class CreatePostController: UIViewController {
             if success {
                 // TODO: - Debugging print
                 print("Created new post!")
+                NotificationCenter.default.post(name: .userDidMakePostNotification, object: nil)
                 self.dismiss(animated: true, completion: nil)
             } else {
                 let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)

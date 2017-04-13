@@ -79,11 +79,10 @@ class ImageCell: UICollectionViewCell, FeedItemSubSectionCell {
     
     func cell(forFeedItem feedItem: FeedItem, withCollectionContext collectionContext: IGListCollectionContext, andSectionController sectionController: IGListSectionController, atIndex index: Int) -> UICollectionViewCell {
         let cell = collectionContext.dequeueReusableCell(of: ImageCell.self, for: sectionController, at: index) as! ImageCell
-        
+        cell.configureCell(post: feedItem, sectionController: sectionController as! FeedItemSectionController)
         // Check to see if the image is currently cached in the file directory
         // If it is not, begin async request to download image
         if feedItem.photo == nil {
-            cell.configureCell(post: feedItem, sectionController: sectionController as! FeedItemSectionController)
             // TODO: Set placeholder Image
             cell.setImage(image: UIImage())
             let caching = index < 10

@@ -16,7 +16,7 @@ class ViewAllCommentsCell: UICollectionViewCell {
         }
     }
     
-    static let cellHeight: CGFloat = 24
+    static let cellHeight: CGFloat = 18
     
     var delegate: FeedItemSectionDelegate!
     

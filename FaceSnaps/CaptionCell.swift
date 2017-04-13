@@ -55,6 +55,7 @@ class CaptionCell: UICollectionViewCell, FeedItemSubSectionCell {
         NSLayoutConstraint.activate([
             contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentLabel.heightAnchor.constraint(equalToConstant: frame.height),
             contentView.heightAnchor.constraint(equalToConstant: frame.height),
             contentView.trailingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 12),
         ])

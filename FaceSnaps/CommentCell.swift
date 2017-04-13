@@ -15,7 +15,7 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
     static func cellHeight(forComment comment: Comment) -> CGFloat {
         let author = comment.author!.userName
         let text = comment.text
-        let labelHeight = TextSize.height(author + text, width: UIScreen.main.bounds.width - 24, attributes: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14.0)])
+        let labelHeight = TextSize.height(author + text, width: UIScreen.main.bounds.width - 30, attributes: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14.0)])
         
         return min(labelHeight + 8, 42)
     }
@@ -58,6 +58,7 @@ class CommentCell: UICollectionViewCell, FeedItemSubSectionCell {
         NSLayoutConstraint.activate([
             contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            contentLabel.heightAnchor.constraint(equalToConstant: frame.height),
             //            contentView.bottomAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 12),
             contentView.heightAnchor.constraint(equalToConstant: frame.height),
             contentView.trailingAnchor.constraint(equalTo: contentLabel.trailingAnchor, constant: 12),

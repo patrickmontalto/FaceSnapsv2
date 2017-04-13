@@ -76,6 +76,8 @@ class HomeController: UIViewController, CollectionViewContainer {
         
         // Add notification to scroll view to top when home is tapped
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .tappedHomeNotificationName, object: nil)
+        // Add notification to reload the feed when a new post is submitted by the user
+        NotificationCenter.default.addObserver(self, selector: #selector(getNewFeed), name: .userDidMakePostNotification, object: nil)
         
         configureRefreshControl()
         
@@ -182,7 +184,7 @@ class HomeController: UIViewController, CollectionViewContainer {
         }
     }
     
-    private func getNewFeed() {
+    @objc private func getNewFeed() {
         // Start animating
         initLoadFeedIndicator.startAnimating()
         
@@ -226,8 +228,6 @@ class HomeController: UIViewController, CollectionViewContainer {
     }
     
     func refreshData(sender: UIRefreshControl) {
-
-
         FaceSnapsClient.sharedInstance.getUserFeed(atPage: 1) { (newData, error) in
             DispatchQueue.main.async {
 
@@ -239,8 +239,6 @@ class HomeController: UIViewController, CollectionViewContainer {
                 self.data = Array(newData)
                 self.adapter.reloadObjects(self.data!)
                 self.adapter.performUpdates(animated: true, completion: { (completed) in
-                    print("completed pull-to-fresh")
-                    //print(self.data)
                     self.refreshControl.endRefreshing()
                     self.refreshIndicator.stopAnimating()
                 })

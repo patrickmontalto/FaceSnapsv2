@@ -37,6 +37,7 @@ class PostHeaderView: UITableViewHeaderFooterView {
         textView.font = UIFont.systemFont(ofSize: 14.0)
         textView.delegate = self.delegate
         textView.isScrollEnabled = true
+        textView.autocapitalizationType = .none
         textView.text = "Write a caption..."
         textView.textColor = .lightGray
         return textView
