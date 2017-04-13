@@ -93,6 +93,11 @@ class FSLibraryImagePickerController: UIViewController {
         }
     }
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("view did appear")
+    }
+    
     // Hide the status bar
     override var prefersStatusBarHidden: Bool {
         return true
@@ -122,7 +127,7 @@ class FSLibraryImagePickerController: UIViewController {
                             UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
                         })
                         alertController.addAction(settingsAction)
-                        
+                                            
                         self.present(alertController, animated: true, completion: nil)
                     }
                 })
@@ -130,7 +135,7 @@ class FSLibraryImagePickerController: UIViewController {
         }
     }
     
-    private func initializeUserInterface() {
+    fileprivate func initializeUserInterface() {
         // View hierarchies
         view.addSubview(collectionView)
         view.addSubview(selectedImageViewContainer)
@@ -344,6 +349,11 @@ extension FSLibraryImagePickerController: UICollectionViewDataSource, UICollecti
 extension FSLibraryImagePickerController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         // TODO
+        if PHPhotoLibrary.authorizationStatus() == .authorized {
+            DispatchQueue.main.async { [weak self] in
+                self?.initializeUserInterface()
+            }
+        }
     }
 }
 

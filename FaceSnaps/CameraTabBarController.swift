@@ -55,8 +55,6 @@ class CameraTabBarController: UITabBarController, UITabBarControllerDelegate {
 // MARK: - FSLibaryImagePickerControllerDelegate
 extension CameraTabBarController: FSLibraryImagePickerControllerDelegate {
     func libraryImagePickerController(_ picker: FSLibraryImagePickerController, didFinishPickingImage image: UIImage) {
-        // TODO: Get notified from FSLibraryImagePickerController that next button was tapped
-        // Get image and present image editing controller via navigation controller
         let eaglContext = EAGLContext(api: .openGLES2)!
         let ciContext = CIContext(eaglContext: eaglContext)
 

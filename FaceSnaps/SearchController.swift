@@ -20,7 +20,7 @@ class SearchController: UIViewController {
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).textColor = .gray
         let segmentedControl = UISegmentedControl.appearance(whenContainedInInstancesOf: [UISearchBar.self])
         UISegmentedControl.customAppearance(forSegmentedControl: segmentedControl)
-
+        sb.autocapitalizationType = .none
         sb.showsScopeBar = true
         sb.scopeButtonTitles = ["People", "Tags", "Places"]
         

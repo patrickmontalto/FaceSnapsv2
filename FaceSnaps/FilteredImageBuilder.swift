@@ -99,16 +99,6 @@ final class FilteredImageBuilder {
         return colorClampFilter.outputImage!.cropping(to: image.extent)
     }
     
-//    func thumbnailsForImage(image: CIImage) {
-//        var filteredImages = [FSImageFilter: CIImage]()
-//        for filter in FSImageFilter.availableFilters {
-//            filteredImages[filter] = self.image(image, withFilter: filter)
-//        }
-//        
-//        return filteredImages
-//    }
-//    
-    
     func thumbnailsForImage(image: CIImage) {
         for filter in FSImageFilter.availableFilters {
             filteredImages[filter] = UIImage(ciImage: self.image(image, withFilter: filter))

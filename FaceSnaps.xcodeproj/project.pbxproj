@@ -105,10 +105,8 @@
 		3ADE2A701E4D343800D1D4C6 /* CommentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A6F1E4D343800D1D4C6 /* CommentDelegate.swift */; };
 		3ADE2A741E4D692C00D1D4C6 /* CALayer+AddBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE2A731E4D692C00D1D4C6 /* CALayer+AddBorder.swift */; };
 		63326B2C9953F92A38E4C7AE /* Pods_FaceSnaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */; };
-		CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */; };
 		CDD5D6021E173689007364B4 /* CameraFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD5D6011E173689007364B4 /* CameraFocusView.swift */; };
 		CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */; };
-		CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */; };
 		CDE86F391DBEC66400076D65 /* Array+FilterDuplicates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */; };
 		D20000C71E8ACF060096CD5F /* ThumbnailAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */; };
 		D20000C91E8AF7300096CD5F /* FeedItemPrototype.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20000C81E8AF7300096CD5F /* FeedItemPrototype.swift */; };
@@ -263,10 +261,8 @@
 		3ADE2A731E4D692C00D1D4C6 /* CALayer+AddBorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CALayer+AddBorder.swift"; sourceTree = "<group>"; };
 		8B34D4AC687307AA226D35C0 /* Pods_FaceSnaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceSnaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DFA07437B7867F08D307F4 /* Pods-FaceSnaps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceSnaps.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FaceSnaps/Pods-FaceSnaps.debug.xcconfig"; sourceTree = "<group>"; };
-		CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellAnimator.swift; sourceTree = "<group>"; };
 		CDD5D6011E173689007364B4 /* CameraFocusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFocusView.swift; sourceTree = "<group>"; };
 		CDE86F321DB4069E00076D65 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
-		CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDeletionManager.swift; sourceTree = "<group>"; };
 		CDE86F381DBEC66400076D65 /* Array+FilterDuplicates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+FilterDuplicates.swift"; sourceTree = "<group>"; };
 		D20000C61E8ACF060096CD5F /* ThumbnailAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailAnimator.swift; sourceTree = "<group>"; };
 		D20000C81E8AF7300096CD5F /* FeedItemPrototype.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemPrototype.swift; sourceTree = "<group>"; };
@@ -374,8 +370,6 @@
 				3A32DD211DA1628800CD2669 /* MediaPickerManager.swift */,
 				3A9FA6171DA17FF800FDFE63 /* FilteredImageBuilder.swift */,
 				3A32A6C71DA9845500AEE45F /* SortItemSelector.swift */,
-				CDCE98501DB1B75400BBB0FF /* CellAnimator.swift */,
-				CDE86F341DB43F6C00076D65 /* PhotoDeletionManager.swift */,
 				3A0805EA1DEF6CFE002DB0DF /* GradientLayerAnimator.swift */,
 				3A9D882B1E199C6100FB928D /* ImageCropHelper.swift */,
 				3A9A3BA21E219A5C008A1334 /* UsernameGenerator.swift */,
@@ -850,7 +844,6 @@
 				3AC13E7D1E6C933F0036EB87 /* FSImageCropView.swift in Sources */,
 				3A9D88341E1A184A00FB928D /* FaceSnapsClient.swift in Sources */,
 				3A17EA4A1DF7EC0100031834 /* AttributedString.swift in Sources */,
-				CDE86F351DB43F6C00076D65 /* PhotoDeletionManager.swift in Sources */,
 				3A9A3BA31E219A5C008A1334 /* UsernameGenerator.swift in Sources */,
 				3ADE2A6E1E4D319400D1D4C6 /* FullCommentCell.swift in Sources */,
 				3A32A6C21DA94D8F00AEE45F /* PhotoCell.swift in Sources */,
@@ -902,7 +895,6 @@
 				3A4172BF1E8F5BC40043045E /* LocationManagerObserver.swift in Sources */,
 				3AC13E971E7855300036EB87 /* FSImageSliderMenuView.swift in Sources */,
 				D2F8D2F01E2D630800723204 /* ImageCell.swift in Sources */,
-				CDCE98511DB1B75400BBB0FF /* CellAnimator.swift in Sources */,
 				3A9A3BB21E285FA3008A1334 /* CameraTabBarController.swift in Sources */,
 				3A4172BB1E8E15AD0043045E /* LocationMapView.swift in Sources */,
 				CDE86F331DB4069E00076D65 /* UIViewControllerExtensions.swift in Sources */,
