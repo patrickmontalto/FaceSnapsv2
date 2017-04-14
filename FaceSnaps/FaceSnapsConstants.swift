@@ -26,11 +26,11 @@ extension FaceSnapsClient {
     }
     
     // MARK: - Set Application Environment
-    static let ApplicationEnvironment: Environment = .development
+    static let ApplicationEnvironment: Environment = .production
     
     enum Constant {
         static let ApiScheme = "http"
-        static let ApiHost = FaceSnapsClient.ApplicationEnvironment == .production ? "192.168.2.3" : "localhost"//"67.81.24.198"
+        static let ApiHost = FaceSnapsClient.ApplicationEnvironment == .production ? "192.168.2.14" : "localhost"//"67.81.24.198"
         static let ApiPort: NSNumber? = FaceSnapsClient.ApplicationEnvironment == .production ? 81 : 3000// 81
         static let ApiPath = ""
         static let ApiKey = ""

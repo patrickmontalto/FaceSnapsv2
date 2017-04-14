@@ -12,7 +12,7 @@ import Foundation
 extension Timer {
     static func timeAgoSinceDate(date:NSDate, numericDates:Bool, shortened: Bool) -> String {
         let calendar = NSCalendar.current
-        let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]
+        let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .year, .second]
         let now = NSDate()
         let earliest = now.earlierDate(date as Date)
         let latest = (earliest == now as Date) ? date : now

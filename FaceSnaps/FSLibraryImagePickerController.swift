@@ -69,6 +69,8 @@ class FSLibraryImagePickerController: UIViewController {
     var dragStartPos: CGPoint = .zero
     /// Whether the selectedImageViewContainer is currently raised or being risen
     var viewDidRaise = false
+    /// Determines if the view will go down
+    var viewWillLower = false
     
     lazy var gesture: UIPanGestureRecognizer = {
         let gstr = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
@@ -181,6 +183,7 @@ class FSLibraryImagePickerController: UIViewController {
         // Get data from library
         let options = PHFetchOptions()
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        options
         let results = PHAsset.fetchAssets(with: .image, options: options)
         results.enumerateObjects({ (obj, idx, stop) in
             self.images.append(obj)
@@ -239,6 +242,13 @@ class FSLibraryImagePickerController: UIViewController {
             dragStartPos = recognizer.location(in: self.view)
         case .changed:
             
+            // Selected image view is hidden and top of collection view is reached.
+            if collectionView.contentOffset.y < 0 && selectedImageViewIsHidden {
+                viewWillLower = true
+                // Constrain selectedImageView bottom to top of collectionView 
+                // So that it may be dragged when scrolling
+            }
+            
             // Calculate the difference above the bottom Y of the selectedImageViewContainer
             let difference = selectedImageViewBottomY - dragPos.y
             
@@ -270,18 +280,17 @@ class FSLibraryImagePickerController: UIViewController {
             }
 
         case .ended:
-            
-            if selectedImageViewShouldScrollUp {
+            // Image view was scrolled up when touch began, and then pulled down when collectionView scroll reached top
+            // Pull the selectedImageView down
+            if viewWillLower {
+                resetSlidingViewConstraints()
+            } else if selectedImageViewShouldScrollUp {
                 // Slide it up to the top
                 selectedImageViewConstraintTopAnchor.constant = -selectedImageViewContainer.frame.height + 40
                 collectionViewConstraintHeight.constant = view.frame.height - bottomLayoutGuide.length - self.navigationController!.navigationBar.frame.height - 40
-            } else if velocity.y > 0 {
-//                print("Resetting position.")
-                // Slide it back down
-                resetSlidingViewConstraints()
             }
             animateConstraintChanges()
-//            print("TouchEnded")
+            viewWillLower = false
         default:
             break
         }
@@ -295,7 +304,7 @@ class FSLibraryImagePickerController: UIViewController {
     }
     
     private func animateConstraintChanges() {
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -330,7 +339,7 @@ extension FSLibraryImagePickerController: UICollectionViewDataSource, UICollecti
         
         let asset = images[indexPath.row]
         imageManager.requestImage(for: asset, targetSize: cellSize, contentMode: .aspectFill, options: nil) { (image, info) in
-
+            cell.imageView.contentMode = .scaleAspectFill
             cell.image = image
         }
         
